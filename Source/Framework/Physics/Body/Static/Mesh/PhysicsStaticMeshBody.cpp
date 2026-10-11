@@ -128,7 +128,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
         FWK_ASSERT_RETURN_VALUE_IF(l_modelIndexList.empty(),                                                               "StaticModelMeshのIndexリストが空のため、MeshShapeの作成に失敗しました。",        {});
         FWK_ASSERT_RETURN_VALUE_IF((l_modelIndexList.size() % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "StaticModelMeshのIndex数が3の倍数ではないため、MeshShapeの作成に失敗しました。", {});
 
-        const auto& l_vertexOffset = static_cast<JPH::uint32>(l_triangleVertexList.size());
+        const auto l_vertexOffset = static_cast<JPH::uint32>(l_triangleVertexList.size());
 
         for (const auto& l_modelVertex : l_vertexList)
         {
@@ -141,7 +141,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 
         for (std::size_t l_indexOffset = 0ULL; l_indexOffset < l_modelIndexList.size(); l_indexOffset += Constant::k_triangleVertexCount)
         {
-            const auto& l_localIndexZero = l_modelIndexList[l_indexOffset + k_triangleIndexZeroOffset];
+            const auto  l_localIndexZero = l_modelIndexList[l_indexOffset + k_triangleIndexZeroOffset];
                   auto  l_localIndexOne  = l_modelIndexList[l_indexOffset + k_triangleIndexOneOffset];
                   auto  l_localIndexTwo  = l_modelIndexList[l_indexOffset + k_triangleIndexTwoOffset];
 

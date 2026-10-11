@@ -149,7 +149,7 @@ void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const RootSignatu
 
     FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、定数バッファビュー設定に失敗しました。");
 
-    const auto& l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
+    const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
     FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、定数バッファビュー設定に失敗しました。");
 
@@ -245,7 +245,7 @@ void FWK::Graphics::DirectCommandList::SetupRoot32BitConstants(const RootSignatu
 
     // ルートシグネチャの中で、この種類のルートパラメーターが何番目かを探す
     // 例 : ModelStandardのルートシグネチャなら、RCModelDrawItemは1番
-    const auto& l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
+    const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
     FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "ルートパラメーターの番号が無効なため、ルート定数の設定に失敗しました。");
 

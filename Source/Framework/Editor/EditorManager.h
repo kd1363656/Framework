@@ -11,9 +11,6 @@ namespace FWK::Editor
     {
     private:
 
-        using IMGUISRVDescriptorIndexMap = std::unordered_map<std::uint64_t,           TypeAlias::DescriptorIndex>;
-        using EditorWindowMap            = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<EditorWindowBase>>;
-
         friend class SingletonBase<EditorManager>;
 
          EditorManager();
@@ -142,11 +139,11 @@ namespace FWK::Editor
 
         TypeAlias::CBVSRVUAVDescriptorPool m_imGuiCBVSRVUAVDescriptorPool;
 
-        IMGUISRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap;
+        std::unordered_map<std::uint64_t, TypeAlias::DescriptorIndex> m_imGuiSRVDescriptorIndexMap;
 
         LogEditorWindow m_logEditorWindow;
 
-        EditorWindowMap m_editorWindowMap;
+        std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<EditorWindowBase>> m_editorWindowMap;
 
         std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
 

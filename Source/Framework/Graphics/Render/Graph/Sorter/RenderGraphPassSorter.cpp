@@ -79,8 +79,8 @@ void FWK::Graphics::RenderGraphPassSorter::AddPassExecutionLayerDependencyEdge(c
     FWK_ASSERT_RETURN_IF(!l_beforePass, "BeforePassが無効となっており、ExecutionLayer依存関係の作成に失敗しました。");
     FWK_ASSERT_RETURN_IF(!l_afterPass,  "AfterPassが無効となっており、ExecutionLayer依存関係の作成に失敗しました。");
 
-    const auto& l_beforeExecutionLayer = l_beforePass->GetVALExecutionLayer();
-    const auto& l_afterExecutionLayer  = l_afterPass->GetVALExecutionLayer ();
+    const auto l_beforeExecutionLayer = l_beforePass->GetVALExecutionLayer();
+    const auto l_afterExecutionLayer  = l_afterPass->GetVALExecutionLayer ();
 
     FWK_ASSERT_RETURN_IF(l_beforeExecutionLayer == Enum::RenderGraphPassExecutionLayer::Invalid ||
                          l_beforeExecutionLayer == Enum::RenderGraphPassExecutionLayer::Count,
@@ -131,10 +131,10 @@ void FWK::Graphics::RenderGraphPassSorter::AddPassResourceDependencyEdge(const s
             // 違うRenderGraphResource対象なら依存関係は作らない
             if (!IsSameRenderGraphResource(l_beforeResourceAccess, l_afterResourceAccess)) { continue; }
 
-            const auto& l_isBeforeRead  = IsReadResourceAccess (l_beforeResourceAccess);
-            const auto& l_isBeforeWrite = IsWriteResourceAccess(l_beforeResourceAccess);
-            const auto& l_isAfterRead   = IsReadResourceAccess (l_afterResourceAccess);
-            const auto& l_isAfterWrite  = IsWriteResourceAccess(l_afterResourceAccess);
+            const auto l_isBeforeRead  = IsReadResourceAccess (l_beforeResourceAccess);
+            const auto l_isBeforeWrite = IsWriteResourceAccess(l_beforeResourceAccess);
+            const auto l_isAfterRead   = IsReadResourceAccess (l_afterResourceAccess);
+            const auto l_isAfterWrite  = IsWriteResourceAccess(l_afterResourceAccess);
 
             // beforeが書いてafterが読む場合
             // afterはbeforeの書き込み結果を読む必要があるため、

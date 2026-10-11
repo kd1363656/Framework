@@ -4,11 +4,6 @@ namespace FWK::Graphics
 {
     class Renderer final
     {
-    private:
-
-        using RootSignatureMap = std::unordered_map<Enum::RootSignatureType, std::shared_ptr<RootSignature>>;
-        using PipelineStateMap = std::unordered_map<Enum::PipelineStateType, std::shared_ptr<PipelineStateBase>>;
-
     public:
 
          Renderer() = default;
@@ -127,8 +122,8 @@ namespace FWK::Graphics
         static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
         static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;
 
-        RootSignatureMap m_rootSignatureMap = {};
-        PipelineStateMap m_pipelineStateMap = {};
+        std::unordered_map<Enum::RootSignatureType, std::shared_ptr<RootSignature>>     m_rootSignatureMap = {};
+        std::unordered_map<Enum::PipelineStateType, std::shared_ptr<PipelineStateBase>> m_pipelineStateMap = {};
 
         std::vector<std::shared_ptr<FrameResource>> m_frameResourceList = {};
 

@@ -125,7 +125,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DepthStencilTexture::FetchVALDSVD
     // Array One  / Mip One
     // そのためArray IndexにMip数を掛け、
     // その後へMip Sliceを加えることで一次元配列の位置を求める
-    const auto& l_descriptorIndex = a_arrayIndex * m_depthStencilTextureSettings.m_mipLevels + a_mipSlice;
+    const auto l_descriptorIndex = a_arrayIndex * m_depthStencilTextureSettings.m_mipLevels + a_mipSlice;
 
     if (l_descriptorIndex >= m_dsvDescriptorIndexList.size()) { return DescriptorHeap::k_invalidDescriptorIndex; }
 
@@ -314,7 +314,7 @@ bool FWK::Graphics::DepthStencilTexture::CreateDSVList(const Device& a_device, T
     {
         for (UINT l_mipSlice = k_firstMIPSlice; l_mipSlice < m_depthStencilTextureSettings.m_mipLevels; ++l_mipSlice)
         {
-            const auto& l_dsvDescriptorIndex = a_dsvDescriptorPool.Allocate();
+            const auto l_dsvDescriptorIndex = a_dsvDescriptorPool.Allocate();
 
             if (l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex)
             {
@@ -350,7 +350,7 @@ bool FWK::Graphics::DepthStencilTexture::CreateSRV(const Device& a_device, TypeA
     FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource,                                        "GPUResourceが無効のため、DepthStencilTexture用SRVの作成に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_srvFormat == DXGI_FORMAT_UNKNOWN, "DepthStencilTextureのSRVFormatが無効のため、SRVの作成に失敗しました。",   false);
 
-    const auto& l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
+    const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DepthStencilTexture用SRVDescriptorIndexの確保に失敗しまた。", false);
 

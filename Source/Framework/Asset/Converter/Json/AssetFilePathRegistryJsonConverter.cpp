@@ -34,7 +34,7 @@ void FWK::Converter::AssetFilePathRegistryJsonConverter::DeserializeFilePathRegi
 
         const auto& l_uuid                 = Utility::DeserializeUUID(l_json, k_uuidJsonKey);
         const auto& l_filePath             = l_json.value            (k_filePathJsonKey,             std::filesystem::path{});
-        const auto& l_filePathRegistryType = l_json.value            (k_filePathRegistryTypeJsonKey, Enum::AssetFilePathType::Invalid);
+        const auto  l_filePathRegistryType = l_json.value            (k_filePathRegistryTypeJsonKey, Enum::AssetFilePathType::Invalid);
 
         // 読み込めないファイルパスがある場合はMapに追加しない
         if (!Utility::CanLoadFilePath(l_filePath)) { continue; }

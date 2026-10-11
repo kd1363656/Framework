@@ -4,10 +4,6 @@ namespace FWK::Graphics
 {
     class RootSignature final
     {
-    private:
-
-        using RootParameterIndexMap = std::unordered_map<Enum::RootParameterType, UINT>;
-
     public:
 
          RootSignature() = default;
@@ -45,7 +41,7 @@ namespace FWK::Graphics
         // ポインタが無効になる可能性があるのでreserveするかemplace_backした後にポインタを渡す
         std::vector<Struct::RootParameterRecord> m_rootParameterRecordList = {};
 
-        RootParameterIndexMap m_rootParameterIndexMap = {};
+        std::unordered_map<Enum::RootParameterType, UINT> m_rootParameterIndexMap = {};
 
         TypeAlias::ComPtr<ID3D12RootSignature> m_rootSignature = nullptr;
 

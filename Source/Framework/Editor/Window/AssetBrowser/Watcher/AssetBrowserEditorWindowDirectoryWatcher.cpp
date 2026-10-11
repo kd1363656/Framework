@@ -146,7 +146,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
     // ReadDirectoryChangesExW()の非同期Readが完了したか確認する
     // WaitForSingleObject(状態を確認するNotificationEventHandle,
     //                     最大待機時間);
-    const auto& l_waitResult = WaitForSingleObject(m_notificationEventHandle, k_noWaitMilliseconds);
+    const auto l_waitResult = WaitForSingleObject(m_notificationEventHandle, k_noWaitMilliseconds);
 
     // WAIT_TIMEOUTは、NotificationEventがまだSignal状態ではない
     // つまり今Frameでは新しいWindows通知が届いていない状態

@@ -222,7 +222,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::IsAnimationEnd() const
     // 再生を継続するため終了状態にならない
     if (m_animation.m_isLoop) { return false; }
 
-    const auto& l_motionDurationSecond = FetchVALMotionDurationSecond(m_animation);
+    const auto l_motionDurationSecond = FetchVALMotionDurationSecond(m_animation);
 
     // 負の再生速度ではMotion先頭へ到達した時点で終了する
     if (m_animation.m_playbackSpeed < k_stoppedPlaybackSpeed) { return m_animationTimeSecond <= Constant::k_initialAnimationTimeSecond; }
@@ -318,7 +318,7 @@ float FWK::Graphics::SkeletalAnimationPlayer::FetchVALBlendWeight() const
     // 0除算を防ぐため、取得時にもBlend時間を確認する
     if (l_blendDurationSecond <= Struct::SkeletalAnimationPlayerAnimation::k_initialBlendDurationSecond) { return k_completeBlendWeight; }
 
-    const auto& l_blendWeight = m_blendElapsedSecond / l_blendDurationSecond;
+    const auto l_blendWeight = m_blendElapsedSecond / l_blendDurationSecond;
 
     if (l_blendWeight <= k_initialBlendWeight)  { return k_initialBlendWeight; }
     if (l_blendWeight >= k_completeBlendWeight) { return k_completeBlendWeight; }
@@ -348,7 +348,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::EvaluateCurrentPose()
 
 float FWK::Graphics::SkeletalAnimationPlayer::CalculateAdvancedTimeSecond(const Struct::SkeletalAnimationPlayerAnimation& a_animation, const float a_timeSecond, const float a_deltaTime) const
 {
-    const auto& l_motionDurationSecond = FetchVALMotionDurationSecond(a_animation);
+    const auto l_motionDurationSecond = FetchVALMotionDurationSecond(a_animation);
 
     // 再生時間が0秒のMotionは時刻を進められないため、
     // 0秒の固定Poseとして扱う

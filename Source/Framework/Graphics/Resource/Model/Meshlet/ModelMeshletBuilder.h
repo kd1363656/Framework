@@ -111,11 +111,11 @@ namespace FWK::Graphics
             // 頂点インデックスリストに必要な分のみ要素を確保(最後のメッシュレットのオフセットと頂点数を足した数が必要なサイズ)
             l_meshletData.m_uniqueVertexIndexList.resize(l_lastMeshlet.vertex_offset + l_lastMeshlet.vertex_count);
 
-            const auto& l_lastMeshletPrimitiveIndexCount = l_lastMeshlet.triangle_count * Constant::k_triangleVertexCount;
+            const auto l_lastMeshletPrimitiveIndexCount = l_lastMeshlet.triangle_count * Constant::k_triangleVertexCount;
 
             // meshoptimizerのPrimitiveIndex配列は4byte境界にそろえて扱うため、
             // 最後のMeshletで実際に使用したPrimitiveIndex数を4byte境界へ切り上げる
-            const auto& l_usedPrimitiveIndexCount = l_lastMeshlet.triangle_offset + l_lastMeshletPrimitiveIndexCount;
+            const auto l_usedPrimitiveIndexCount = l_lastMeshlet.triangle_offset + l_lastMeshletPrimitiveIndexCount;
 
             // プリミティブインデックスリストに必要な分のみ要素を確保
             l_meshoptPrimitiveIndexList.resize(l_usedPrimitiveIndexCount);
@@ -219,9 +219,9 @@ namespace FWK::Graphics
                 // uint32_t1個にuint8_t3個を入れるため、3倍する
                 const auto& l_sourcePrimitiveIndex = l_triangleIndex * Constant::k_triangleVertexCount;
 
-                const auto& l_firstPrimitiveIndex  = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_firstPrimitiveVertexOffset];
-                const auto& l_secondPrimitiveIndex = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_secondPrimitiveVertexOffset];
-                const auto& l_thirdPrimitiveIndex  = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_thirdPrimitiveVertexOffset];
+                const auto l_firstPrimitiveIndex  = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_firstPrimitiveVertexOffset];
+                const auto l_secondPrimitiveIndex = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_secondPrimitiveVertexOffset];
+                const auto l_thirdPrimitiveIndex  = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_thirdPrimitiveVertexOffset];
 
                 // uint32_t1個に、三角形1個分のPrimitiveIndex3個をPackする。
                 // bits 0  : 1個目

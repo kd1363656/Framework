@@ -160,7 +160,7 @@ bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Dev
 
         // TextureStorageへ登録するためのStorageIDを先に確保する
         // 作成に失敗した場合は、このStorageIDを返却する
-        const auto& l_allocatedStorageID = m_textureStorage.AllocateStorageID();
+        const auto l_allocatedStorageID = m_textureStorage.AllocateStorageID();
 
         FWK_ASSERT_RETURN_VALUE_IF(l_allocatedStorageID == Constant::k_invalidStorageID, "DefaultTexture用StorageIDの割り当てに失敗しました。", false);
 
@@ -197,7 +197,7 @@ void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBatchUpload
 {
     Struct::TextureBatchUploadRecord l_textureBatchUploadRecord = {};
 
-    const auto& l_allocatedStorageID = m_textureStorage.AllocateStorageID();
+    const auto l_allocatedStorageID = m_textureStorage.AllocateStorageID();
 
     FWK_ASSERT_RETURN_IF(l_allocatedStorageID == Constant::k_invalidStorageID, "StorageIDの割り当てに失敗したため、バッチテクスチャ登録に失敗しました。");
 

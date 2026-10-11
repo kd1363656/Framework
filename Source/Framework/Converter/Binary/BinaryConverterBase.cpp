@@ -62,13 +62,13 @@ bool FWK::Converter::BinaryConverterBase::CreateReadMemoryMappedFile(const std::
     // ファイルサイズを上位、下位32bitで取得している
     // GetFileSize(ファイルハンドル、
     //             ファイルサイズ上位32bitの受取先);
-    const auto& l_fileSizeLow = GetFileSize(m_fileHandle, &l_fileSizeHigh);
+    const auto l_fileSizeLow = GetFileSize(m_fileHandle, &l_fileSizeHigh);
 
     // GetFileSize()の戻り値である下位32bitがINVALID_FILE_SIZEだった場合、
     // それが本当にエラーなのか、またはファイルサイズの下位32bitがたまたま0xFFFFFFFFなのかをGetLastError()で確認する
     if (l_fileSizeLow == INVALID_FILE_SIZE)
     {
-        const auto& l_error = GetLastError();
+        const auto l_error = GetLastError();
 
         if (l_error != NO_ERROR)
         {
@@ -170,7 +170,7 @@ bool FWK::Converter::BinaryConverterBase::CreateWriteMemoryMappedFile(const std:
         FWK_ASSERT_RETURN_VALUE("BinaryFileの書き込み用ファイルハンドル作成に失敗しました。", false);
     }
 
-    const auto& l_fileSizeLow  = static_cast<DWORD>(a_fileSize);
+    const auto  l_fileSizeLow  = static_cast<DWORD>(a_fileSize);
           auto  l_fileSizeHigh = static_cast<LONG> (a_fileSize >> k_highDWORDShiftBitCount);
 
     SetLastError(NO_ERROR);
@@ -190,7 +190,7 @@ bool FWK::Converter::BinaryConverterBase::CreateWriteMemoryMappedFile(const std:
                                                             FILE_BEGIN);
         l_setFilePointerResult == INVALID_SET_FILE_POINTER)
     {
-        const auto& l_error = GetLastError();
+        const auto l_error = GetLastError();
 
         if (l_error != NO_ERROR)
         {
@@ -324,7 +324,22 @@ bool FWK::Converter::BinaryConverterBase::TryReadWStringBinaryData(const std::ui
 
 bool FWK::Converter::BinaryConverterBase::TryReadStringBinaryData(const std::uint64_t& a_stringBinaryFileSize, std::string& a_destinationString, std::uint64_t& a_memoryReadOffset) const
 {
-    return false;
+    // 保存されている文字列のバイト数が0なら、空の文字列として読み込み成功にする
+    if (a_stringBinaryFileSize == k_emptyReadDataSize)
+    {
+        a_destinationString.clear();
+
+        return true;
+    }
+
+    // 保存されているバイト数が、ファイルの残りに収まっているかを確かめてから読む
+    // charは1バイトなので、wstringのような「割り切れるか」の確認は要らない
+    if (!CanReadBinaryData(a_memoryReadOffset, a_stringBinaryFileSize)) { return false; }
+
+    // string情報を読み込む
+    ReadStringBinaryData(a_stringBinaryFileSize, a_destinationString, a_memoryReadOffset);
+
+    return true;
 }
 
 void FWK::Converter::BinaryConverterBase::WriteWStringBinaryData(const std::wstring& a_wString, std::uint64_t& a_memoryWriteOffset) const

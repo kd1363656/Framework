@@ -574,6 +574,9 @@
     <Filter Include="Source\Framework\Definition\Concept\IsModelRenderTableElement">
       <UniqueIdentifier>{2a6d8052-7deb-4e68-80db-b4f019e8c23a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Model\DrawItem">
+      <UniqueIdentifier>{e4c3655a-f00c-476e-9793-5be53d384ea4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Model\Table">
       <UniqueIdentifier>{894a90b8-839f-472c-bb5c-86e7c8d951a4}</UniqueIdentifier>
     </Filter>
@@ -826,35 +829,11 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics\Buffer">
       <UniqueIdentifier>{c52abb80-953f-4316-8b1d-dacbe3ce670f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer">
-      <UniqueIdentifier>{579be1ae-b767-4e61-9b1c-dae6196145d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal">
       <UniqueIdentifier>{cab651c8-34f0-4d5e-8947-6902155b8d27}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer">
       <UniqueIdentifier>{1c4c6dc4-3d11-4441-b53b-d6c0ae61a71a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static">
-      <UniqueIdentifier>{a6d02665-0c34-4959-b349-8bec9f18f60c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard">
-      <UniqueIdentifier>{ef29d548-fbe5-4455-b21e-330cb8cd21e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard">
-      <UniqueIdentifier>{2cfa1c57-57c9-4d1e-bc72-5bec8fc430bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit">
-      <UniqueIdentifier>{cabc13ab-3665-44aa-880b-1c61419dc20d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit">
-      <UniqueIdentifier>{96a6bdae-7a91-4759-8dd7-aef35c5f3c81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\Lit">
-      <UniqueIdentifier>{80ea5135-1e44-4605-971e-4570ef6a9286}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\UnLit">
-      <UniqueIdentifier>{fe8e3f0c-cc5c-4fd5-bf56-c6a51a471cbf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard">
       <UniqueIdentifier>{95fb524c-125b-425c-a023-e66906dfd5b9}</UniqueIdentifier>
@@ -895,9 +874,6 @@
     <Filter Include="Source\Framework\Utility\UUID">
       <UniqueIdentifier>{856e5243-73b1-488f-8ce4-72c0cab8432d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant">
-      <UniqueIdentifier>{c2b0d355-98da-4589-bf0b-a857e636b12a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\Constant">
       <UniqueIdentifier>{d526fa7e-eb07-49f1-99c1-c5eb11af040e}</UniqueIdentifier>
     </Filter>
@@ -915,12 +891,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\Constant">
       <UniqueIdentifier>{ff3dd2f3-e622-4ca8-b362-d02f37c3bff0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow">
-      <UniqueIdentifier>{9171e837-9f21-423c-a188-353463079f63}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow">
-      <UniqueIdentifier>{9a34861d-a454-4a61-997a-1b5f3db4d76b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\Buffer">
       <UniqueIdentifier>{c57725a9-f133-498a-856d-60269d7161ba}</UniqueIdentifier>
@@ -1014,12 +984,6 @@
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Details">
       <UniqueIdentifier>{25abc7e1-8920-44cb-8000-eaa09690e4e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade">
-      <UniqueIdentifier>{d65e0655-113b-4e26-8967-fb284b10dd9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade">
-      <UniqueIdentifier>{7f668f1e-30f4-4f02-b21e-082bcf5819cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade">
       <UniqueIdentifier>{51eeed03-70d3-43b8-953f-36f3f2c36105}</UniqueIdentifier>
@@ -2136,6 +2100,9 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelRenderSystemConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\ModelRenderSystemEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Root\RCModelStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Root</Filter>
     </ClInclude>
@@ -2172,6 +2139,12 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Model\ModelRenderSystem.h">
       <Filter>Source\Framework\Graphics\Render\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Model\DrawItem\ModelDrawItemList.h">
+      <Filter>Source\Framework\Graphics\Render\Model\DrawItem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Model\DrawItem\ModelDrawRegistration.h">
+      <Filter>Source\Framework\Graphics\Render\Model\DrawItem</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant\DynamicConstantBufferUploaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant</Filter>
     </ClInclude>
@@ -2191,9 +2164,6 @@
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePerObjectStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelPerObjectStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex\VBPhysicsDebugStruct.h">
@@ -2499,9 +2469,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\UnLit</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLitPass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\Lit</Filter>
     </ClInclude>
@@ -2565,9 +2532,6 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelCascadeShadowPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant\ModelPerObjectDynamicConstantBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\Constant\SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\Constant</Filter>
     </ClInclude>
@@ -2592,24 +2556,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\Constant\SpriteScreenPassDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelCascadeShadowPassStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\StaticModelPerObjectDrawRequestBase.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit\StaticModelStandardLitPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit\StaticModelStandardUnLitPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLitPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\Lit</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationModelPerObjectDrawRequestBase.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\Buffer\Constant\ModelCascadeShadowPassDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\Buffer\Constant</Filter>
     </ClInclude>
@@ -2621,9 +2567,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\CascadeShadowMapPassDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBModelPerObjectStructConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\RayCast\PhysicsRayCast.h">
       <Filter>Source\Framework\Physics\RayCast</Filter>
@@ -2702,12 +2645,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Details\Scene\DetailsEditorScene.h">
       <Filter>Source\Framework\Editor\Window\Details\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\CascadeShadowMap.h">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade</Filter>
@@ -3318,9 +3255,6 @@
     <ClInclude Include="Source\Framework\Definition\Concept\Graphics\IsDeferredReleaseRecordConcept.h">
       <Filter>Source\Framework\Definition\Concept\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectModelComponentStruct.h">
-      <Filter>Source\Framework\Definition\Struct\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Converter\Binary\ModelMaterialBinaryConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Material\Converter\Binary</Filter>
     </ClInclude>
@@ -3644,6 +3578,12 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Model\ModelRenderSystem.cpp">
       <Filter>Source\Framework\Graphics\Render\Model</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Model\DrawItem\ModelDrawItemList.cpp">
+      <Filter>Source\Framework\Graphics\Render\Model\DrawItem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Model\DrawItem\ModelDrawRegistration.cpp">
+      <Filter>Source\Framework\Graphics\Render\Model\DrawItem</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics\PhysicsDebugPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics</Filter>
     </ClCompile>
@@ -3818,12 +3758,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\ModelCascadeShadowPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\StaticModelPerObjectDrawRequestBase.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationModelPerObjectDrawRequestBase.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\CascadeShadowMapPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade</Filter>
     </ClCompile>
@@ -3859,12 +3793,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Details\Scene\DetailsEditorScene.cpp">
       <Filter>Source\Framework\Editor\Window\Details\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\CascadeShadowMap.cpp">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade</Filter>

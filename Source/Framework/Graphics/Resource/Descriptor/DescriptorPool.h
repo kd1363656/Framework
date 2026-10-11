@@ -19,7 +19,7 @@ namespace FWK::Graphics
         bool Create(const Device& a_device)
         {
             // DescriptorHeapの作成数はDescriptorHeapIndexAllocatorの管理数に依存させる
-            const auto& l_capacity = m_descriptorIndexAllocator.GetVALCapacity();
+            const auto l_capacity = m_descriptorIndexAllocator.GetVALCapacity();
 
             // 容量が0ならassert
             FWK_ASSERT_RETURN_VALUE_IF(l_capacity == DescriptorHeap::k_invalidDescriptorIndex, "DescriptorHeapIndexAllocatorの管理数が無効のため、DescriptorPoolの作成に失敗しました。", false);

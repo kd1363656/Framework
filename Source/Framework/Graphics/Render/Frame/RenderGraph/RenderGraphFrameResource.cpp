@@ -139,7 +139,7 @@ void FWK::Graphics::RenderGraphFrameResource::AddRenderTargetPassTexture(const s
 {
     FWK_ASSERT_RETURN_IF(!a_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
 
-    const auto& l_renderTargetType = a_renderTargetPassTexture->GetVALRenderGraphRenderTargetType();
+    const auto l_renderTargetType = a_renderTargetPassTexture->GetVALRenderGraphRenderTargetType();
 
     FWK_ASSERT_RETURN_IF(l_renderTargetType == Enum::RenderGraphRenderTargetType::Invalid, "RenderTargetPassTextureのRenderGraphRenderTargetTypeが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
     FWK_ASSERT_RETURN_IF(m_renderTargetPassTextureMap.contains(l_renderTargetType),        "同じRenderGraphRenderTargetTypeのRenderTargetPassTextureを二重登録しようとしており、RenderGraphFrameResourceへの登録に失敗しました。");
@@ -152,7 +152,7 @@ void FWK::Graphics::RenderGraphFrameResource::AddDepthStencilPassTexture(const s
 {
     FWK_ASSERT_RETURN_IF(!a_depthStencilPassTexture, "DepthStencilPassTextureが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
 
-    const auto& l_depthStencilType = a_depthStencilPassTexture->GetVALRenderGraphDepthStencilType();
+    const auto l_depthStencilType = a_depthStencilPassTexture->GetVALRenderGraphDepthStencilType();
 
     FWK_ASSERT_RETURN_IF(l_depthStencilType == Enum::RenderGraphDepthStencilType::Invalid, "DepthStencilPassTextureのRenderGraphDepthStencilTypeが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
     FWK_ASSERT_RETURN_IF(m_depthStencilPassTextureMap.contains(l_depthStencilType),        "同じRenderGraphDepthStencilTypeのDepthStencilPassTextureを二重登録しようとしており、RenderGraphFrameResourceへの登録に失敗しました。");

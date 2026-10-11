@@ -43,7 +43,7 @@ void FWK::Converter::AssetBrowserEditorWindowFolderPaneJsonConverter::Deserializ
     for (const auto& l_json : a_rootJson)
     {
         const auto& l_folderPath = l_json.value(k_folderOpenStateFilePathJsonKey, std::filesystem::path{});
-        const auto& l_isOpen     = l_json.value(k_folderOpenStateIsOpenJsonKey,   k_initialIsFolderOpen);
+        const auto  l_isOpen     = l_json.value(k_folderOpenStateIsOpenJsonKey,   k_initialIsFolderOpen);
 
         // ファイルが存在しなければMapには追加しない
         if (l_folderPath.empty() ||

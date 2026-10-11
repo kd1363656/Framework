@@ -39,9 +39,9 @@ void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::Deserialize(const n
         DeserializeSampleDesc(l_json, a_graphicsPipelineStateBase);
     }
 
-    const auto& l_primitiveTopologyType = a_rootJson.value(k_primitiveTopologyTypeJsonKey, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
-    const auto& l_dsvFormat             = a_rootJson.value(k_dsvFormatJsonKey,             DXGI_FORMAT_UNKNOWN);
-    const auto& l_sampleMask            = a_rootJson.value(k_sampleMaskJsonKey,            UINT_MAX);
+    const auto l_primitiveTopologyType = a_rootJson.value(k_primitiveTopologyTypeJsonKey, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
+    const auto l_dsvFormat             = a_rootJson.value(k_dsvFormatJsonKey,             DXGI_FORMAT_UNKNOWN);
+    const auto l_sampleMask            = a_rootJson.value(k_sampleMaskJsonKey,            UINT_MAX);
 
     a_graphicsPipelineStateBase.SetPrimitiveTopologyType(l_primitiveTopologyType);
     a_graphicsPipelineStateBase.SetDSVFormat            (l_dsvFormat);

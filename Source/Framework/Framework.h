@@ -321,7 +321,6 @@
 #include "Graphics/Resource/Model/Material/Standard/UnLit/ModelStandardUnLitMaterial.h"
 #include "Graphics/Resource/Model/Material/Record/ModelMaterialRecord.h"
 #include "Graphics/Resource/Model/Material/ModelMaterial.h"
-#include "Definition/Struct/GameObject/GameObjectModelComponentStruct.h"
 #include "Graphics/Resource/Model/Material/Converter/Json/ModelMaterialSystemJsonConverter.h"
 #include "Graphics/Resource/Model/Material/ModelMaterialSystem.h"
 
@@ -447,19 +446,7 @@
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Constant/SpriteScreenPerObjectDynamicConstantBufferUploader.h"
 #include "Definition/Struct/Graphics/SpriteScreenPerObjectDrawRequestStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
-#include "Definition/Constant/Graphics/Buffer/Constant/CBModelPerObjectStructConstant.h"
-#include "Definition/Struct/Graphics/Buffer/Constant/CBModelPerObjectStruct.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Buffer/Constant/ModelPerObjectDynamicConstantBufferUploader.h"
 #include "Utility/Math/MathMatrixUtility.h"
-#include "Definition/Struct/Graphics/ModelCascadeShadowPassStruct.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Static/StaticModelPerObjectDrawRequestBase.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/SkeletalAnimationModelPerObjectDrawRequestBase.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/UnLit/SkeletalAnimationModelStandardUnLitPerObjectDrawRequest.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/Lit/SkeletalAnimationModelStandardLitPerObjectDrawRequest.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Static/Shadow/Cascade/StaticModelCascadeShadowPerObjectDrawRequest.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Shadow/Cascade/SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.h"
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"
@@ -496,6 +483,7 @@
 
 // モデルの描画テーブル
 #include "Definition/Constant/Graphics/ModelRenderSystemConstant.h"
+#include "Definition/Enum/Graphics/ModelRenderSystemEnum.h"
 #include "Definition/Struct/Graphics/Buffer/Root/RCModelStruct.h"
 #include "Definition/Struct/Graphics/ModelRenderSystemStruct.h"
 #include "Definition/Struct/Graphics/ModelRenderTableINFORegistryStruct.h"
@@ -507,7 +495,9 @@
 #include "Graphics/Resource/Model/Material/Standard/Lit/ModelStandardLitMaterialGPUData.h"
 #include "Graphics/Resource/Model/Material/Standard/UnLit/ModelStandardUnLitMaterialGPUData.h"
 #include "Graphics/Render/Model/Converter/Json/ModelRenderSystemJsonConverter.h"
+#include "Graphics/Render/Model/DrawItem/ModelDrawItemList.h"
 #include "Graphics/Render/Model/ModelRenderSystem.h"
+#include "Graphics/Render/Model/DrawItem/ModelDrawRegistration.h"
 
 // レンダーラー
 #include "Graphics/Render/Converter/Json/RendererJsonConverter.h"

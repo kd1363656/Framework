@@ -69,7 +69,7 @@ namespace FWK::Graphics
             // ComputeShaderの書き込み完了後に、
             // DirectQueueの描画処理を開始する
             // 反対方向に待機させれば、前回の描画がBufferを読み終えるまで次回のCompute書き込みを開始しないようにできる
-            const auto& l_hr = m_commandQueue->Wait(l_waitFence.Get(), a_waitFenceValue);
+            const auto l_hr = m_commandQueue->Wait(l_waitFence.Get(), a_waitFenceValue);
 
             FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "CommandQueue間のGPU待機命令登録に失敗しました。", false);
 
@@ -184,7 +184,7 @@ namespace FWK::Graphics
             FWK_ASSERT_RETURN_VALUE_IF(!m_commandQueue, "CommandQueueが作成されておらず、Fence Signalに失敗しました。", Fence::k_unusedFenceValue);
 
             const auto& l_signaledFenceValue = FetchREFLastSignaledFenceValue() + k_incrementFenceValue;
-            const auto& l_hr                 = m_commandQueue->Signal        (l_fence.Get(), l_signaledFenceValue);
+            const auto  l_hr                 = m_commandQueue->Signal        (l_fence.Get(), l_signaledFenceValue);
 
             FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "CommandQueueへのFence Signalに失敗しました。", Fence::k_unusedFenceValue);
 

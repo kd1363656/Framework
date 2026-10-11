@@ -27,17 +27,13 @@ void FWK::Graphics::SkeletalAnimationModelStandardUnLitPass::Execute(const Resou
     FWK_ASSERT_RETURN_IF(!l_rootSignature,        "SkeletalAnimationModelUnLit用RootSignatureを取得できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "現在FrameResourceを取得できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。");
 
-    const auto& l_cameraPassDrawRequest                                   = a_renderGraph.FindVALDrawRequestPass     <CameraPassDrawRequest>                                  ().lock();
-    const auto& l_cullingCameraPassDrawRequest                            = a_renderGraph.FindVALDrawRequestPass     <CullingCameraPassDrawRequest>                           ().lock();
-    const auto& l_skeletalAnimationModelStandardUnLitPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<SkeletalAnimationModelStandardUnLitPerObjectDrawRequest>().lock();
+    const auto& l_modelRenderSystem         = a_renderer.GetREFModelRenderSystem        ();
+    const auto& l_currentFrameResourceIndex = a_renderer.GetREFCurrentFrameResourceIndex();
 
-    FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest,                                                                                                 "CameraPassDrawRequestを取得できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。");
-    FWK_ASSERT_RETURN_IF(!l_cullingCameraPassDrawRequest,                                                                                          "CullingCameraPassDrawRequestを取得できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。");
-    FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelStandardUnLitPerObjectDrawRequest,                                                               "SkeletalAnimationModelStandardUnLitPerObjectDrawRequestを取得できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。");
-    FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource),        "Camera定数を設定できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。");
-    FWK_ASSERT_RETURN_IF(!l_cullingCameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "カリング用カメラ定数を設定できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。");
-
-    // 登録されている各SkeletalAnimationModelについて
-    // Model定数を設定してMeshShaderをDispatchする
-    l_skeletalAnimationModelStandardUnLitPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer, *l_rootSignature, *l_currentFrameResource);
+    // SkeletalAnimationModelで、StandardUnLitのマテリアルを使うメッシュの描画項目の一覧を描く
+    // 描くマテリアルは、マテリアルのGPUデータの型で指定する(このパスのPSが読む型)
+    l_modelRenderSystem.RecordDraw<ModelStandardUnLitMaterialGPUData>(*l_rootSignature,
+                                                                      l_directCommandList,
+                                                                      l_currentFrameResourceIndex,
+                                                                      Enum::ModelMeshType::Skeletal);
 }

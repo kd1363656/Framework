@@ -6,8 +6,6 @@ namespace FWK
     {
     private:
 
-        using SoundEffectMap = std::unordered_map<std::filesystem::path, std::shared_ptr<SoundEffect>>;
-
         friend class SingletonBase<AudioManager>;
 
          AudioManager();
@@ -58,7 +56,7 @@ namespace FWK
 
         static constexpr bool k_isRightHandedCoordinates = false;
 
-        SoundEffectMap m_soundEffectMap;
+        std::unordered_map<std::filesystem::path, std::shared_ptr<SoundEffect>> m_soundEffectMap;
 
         std::vector<std::weak_ptr<SoundEffectInstanceBase>> m_soundEffectInstanceList;
 

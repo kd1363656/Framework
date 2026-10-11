@@ -40,18 +40,35 @@
 - S2 写経済み / S3 完了(C++ は写経済み、HLSL はこちらが一括で書いた)/ **S4 の骨組みを書いた(次は写経。詳細は `S4_Material.md` の冒頭の表)**。
 - S4-4 の ModelComponent 側(スロット・JSON・インスペクター・Renderer の2関数)は、S0 で ModelComponent を作るときに書く(`S0_ModelComponent.md` に追記済み)。
 
+## 進捗の追記(2026-10-11 夜)
+
+- S4 は `TryReadStringBinaryData` だけ写経済み。ユーザー指示で S5 を先に写経する(S5 の骨組みは書いた。削除したファイルの退避先はセッションの scratchpad)。
+- 写経が済んだら S4-1 の続き(`ModelMaterialBinaryConverter` から)に戻る。
+
+## ModelComponent を設計から外した(2026-10-11、ユーザー指示)
+
+ユーザー指示 :「ModelComponent はまだ実装しないので設計に加えないで、S4 ~ S6 までとりあえず実装する」。
+
+- S4 ~ S6 は ModelComponent のファイルを1つも触らない形にした。S0 は S6 のビルドの後に設計し直す(材料は `S0_ModelComponent.md` の末尾)。
+- 変わったこと
+  - S4 : S4-4(スロット)を S0 へ移した。骨組みの `GameObjectModelComponentStruct.h` を消した。`CreateDefaultModelMaterialFilePath` を private の static にした。
+  - S5 : 描画項目を作って一覧へ登録・解除する処理を、描き方(コンポーネント)から Graphics の **`ModelDrawRegistration`** へ移した。
+    `Struct::ModelDrawRegistration` と `Struct::ModelDrawMaterial` は作らない(入れ子の構造体と、マテリアルのハンドルを直接受け取る形にした)。
+  - S6 : 処理は変わらない。ビルドの後の確認を「モデルはまだ描かれない」前提に直した。
+- 描画項目を出す側が無いので、**S6 のビルドの後もモデルは描かれない**(起動・終了でアサートや D3D12 のエラーが出ないことまで確かめる)。
+
 ## ステップ一覧
 
 ### フェーズ1(高速化 + マテリアル)… 最後にビルド
 
 | ステップ | 内容 | 文書 |
 |---|---|---|
-| S0 | ModelComponent(最小)。描画申請を出す側を作る。コンポーネントの Attach / Detach。AssetFilePathType::Model | `S0_ModelComponent.md` |
+| S0 | ModelComponent(S6 の後に設計し直す)。`ModelDrawRegistration` を使って描画項目を出す側を作る。コンポーネントの Attach / Detach。マテリアルのスロット | `S0_ModelComponent.md` |
 | S1 | GPU の計測(タイムスタンプクエリ)と CPU の計測、プロファイラーのウィンドウ | `S1_GPUProfiler.md` |
 | S2 | GPUElementTable(変わった要素だけ GPU へ送るテーブル)。オブジェクト・メッシュ・マテリアルで使い回す | `S2_GPUElementTable.md` |
 | S3 | ModelRenderSystem(オブジェクトのテーブル・メッシュのテーブル)。CBModelPerObject をやめてルート定数にする | `S3_ModelRenderSystem.md` |
-| S4 | マテリアル(クラスと .mat / System とハンドル / GPU テーブル / サブメッシュ名と取り込み時の .mat / ModelComponent のスロット) | `S4_Material.md` |
-| S5 | 描画の登録(状態が変わった時だけ描画項目を作る。パスは項目を回すだけ) | `S5_DrawRegistration.md` |
+| S4 | マテリアル(クラスと .mat / System とハンドル / GPU テーブル / サブメッシュ名と取り込み時の .mat)。スロットは S0 へ移した | `S4_Material.md` |
+| S5 | 描画の登録(状態が変わった時だけ `ModelDrawRegistration` が描画項目を作る。パスは項目を回すだけ) | `S5_DrawRegistration.md` |
 | S6 | ExecuteIndirect(コマンドシグネチャ・引数のバッファ)… **ここでビルド** | `S6_ExecuteIndirect.md` |
 
 ### フェーズ2(揺れもの + トゥーン)… 設計は `P_Phase2.md`

@@ -28,13 +28,8 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
 
     FWK_ASSERT_RETURN_IF(!l_modelCascadeShadowPassDynamicConstantBufferUploader, "ModelCascadeShadowPassDynamicConstantBufferUploaderを取得できないため、ModelCascadeShadowPassを実行できません。");
 
-    // 通常描画で登録されているModelの描画申請を
-    // Shadow描画でも再利用する
-    const auto& l_staticModelCascadeShadowPerObjectDrawRequest            = a_renderGraph.FindVALDrawRequestPerObject<StaticModelCascadeShadowPerObjectDrawRequest>           ().lock();
-    const auto& l_skeletalAnimationModelCascadeShadowPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<SkeletalAnimationModelCascadeShadowPerObjectDrawRequest>().lock();
-
-    FWK_ASSERT_RETURN_IF(!l_staticModelCascadeShadowPerObjectDrawRequest,            "StaticModelCascadeShadowPerObjectDrawRequestを取得できないため、ModelCascadeShadowPassを実行できません。");
-    FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelCascadeShadowPerObjectDrawRequest, "SkeletalAnimationModelCascadeShadowPerObjectDrawRequestを取得できないため、ModelCascadeShadowPassを実行できません。");
+    const auto& l_modelRenderSystem         = a_renderer.GetREFModelRenderSystem        ();
+    const auto& l_currentFrameResourceIndex = a_renderer.GetREFCurrentFrameResourceIndex();
 
     auto& l_shadowContext    = a_renderer.GetMutableREFShadowContext        ();
     auto& l_cascadeShadowMap = l_shadowContext.GetMutableREFCascadeShadowMap();
@@ -54,9 +49,9 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
     // StaticModelとSkeletalAnimationModelのDepthを書き込む
     for (UINT l_cascadeIndex = 0U; l_cascadeIndex < l_depthStencilTextureSettings.m_arraySize; ++l_cascadeIndex)
     {
-        const auto& l_dsvDescriptorIndex = l_cascadeShadowMap.FetchVALCascadeDSVDescriptorIndex(l_cascadeIndex);
+        const auto l_dsvDescriptorIndex = l_cascadeShadowMap.FetchVALCascadeDSVDescriptorIndex(l_cascadeIndex);
 
-        FWK_ASSERT_RETURN_IF(l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "Cascadeに知王するDSVDescriptorIndexが無効なため、ModelCascadeShadowPassを実行できませんでした。");
+        FWK_ASSERT_RETURN_IF(l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "Cascadeに対応するDSVDescriptorIndexが無効なため、ModelCascadeShadowPassを実行できませんでした。");
 
         // 現在Cascadeに対応するTexture2DArraySliceを、Depth出力先として設定する
         l_directCommandList.SetupDepthStencil(l_dsvDescriptorPool, l_dsvDescriptorIndex);
@@ -83,8 +78,13 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
         FWK_ASSERT_RETURN_IF(!l_staticModelRootSignature, "StaticModelCascadeShadow用RootSignatureを取得できないため、ModelCascadeShadowPassを実行できません。");
 
         // StaticModelShadowの定数バッファを書き込む
-        l_directCommandList.SetupConstantBufferView                                 (*l_staticModelRootSignature, l_gpuVirtualAddress,         Enum::RootParameterType::CBModelCascadeShadowPass);
-        l_staticModelCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,                  *l_staticModelRootSignature, *l_currentFrameResource);
+        l_directCommandList.SetupConstantBufferView(*l_staticModelRootSignature, l_gpuVirtualAddress, Enum::RootParameterType::CBModelCascadeShadowPass);
+
+        // 影はマテリアルに関係なく、Staticの一覧を全部描く(マテリアルのテーブルは送らない)
+        l_modelRenderSystem.RecordDrawWithoutMaterial(*l_staticModelRootSignature,
+                                                      l_directCommandList,
+                                                      l_currentFrameResourceIndex,
+                                                      Enum::ModelMeshType::Static);
 
         const auto& l_skeletalAnimationModelRootSignature = SetupGraphicsRenderPipeline(Enum::PipelineStateType::SkeletalAnimationModelCascadeShadow, a_renderer).lock();
 
@@ -95,7 +95,11 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
         FWK_ASSERT_RETURN_IF(l_staticModelRootSignature != l_skeletalAnimationModelRootSignature, "StaticとSkeletalのCascade Shadow Pipeline Stateが異なるRootSignatureを使用しています。");
 
         // SkeletalAnimationShadowの定数バッファを書き込む
-        l_directCommandList.SetupConstantBufferView                                            (*l_skeletalAnimationModelRootSignature, l_gpuVirtualAddress,                    Enum::RootParameterType::CBModelCascadeShadowPass);
-        l_skeletalAnimationModelCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,                             *l_skeletalAnimationModelRootSignature, *l_currentFrameResource);
+        l_directCommandList.SetupConstantBufferView(*l_skeletalAnimationModelRootSignature, l_gpuVirtualAddress, Enum::RootParameterType::CBModelCascadeShadowPass);
+
+        l_modelRenderSystem.RecordDrawWithoutMaterial(*l_skeletalAnimationModelRootSignature,
+                                                      l_directCommandList,
+                                                      l_currentFrameResourceIndex,
+                                                      Enum::ModelMeshType::Skeletal);
     }
 }

@@ -115,7 +115,7 @@ void FWK::Physics::PhysicsCharacterVirtualBase::Update(const Struct::PhysicsChar
 
     // CharacterVirtualの衝突Queryで使用するObjectLayerへ登録するわけはなく
     // 「どのLayerを探索してよいか」を判断するために使用する
-    const auto& l_characterObjectLayer = l_physicsLayerSetting->FetchVALObjectLayer(Enum::PhysicsObjectLayerType::CharacterObject);
+    const auto l_characterObjectLayer = l_physicsLayerSetting->FetchVALObjectLayer(Enum::PhysicsObjectLayerType::CharacterObject);
 
     // BroadPhaseのどの領域をCharacterVirtualが探索するかを決めるFilter
     const auto& l_broadPhaseLayerFilter = l_physicsSystem.GetDefaultBroadPhaseLayerFilter(l_characterObjectLayer);
@@ -283,7 +283,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyShapeChange()
     FWK_ASSERT_RETURN_VALUE_IF(!l_tempAllocator,       "TempAllocatorが無効なため、Shape変更に失敗しました。",       false);
     FWK_ASSERT_RETURN_VALUE_IF(!l_physicsLayerSetting, "PhysicsLayerSettingが無効なため、Shape変更に失敗しました。", false);
 
-    const auto&            l_characterObjectLayer  = l_physicsLayerSetting->FetchVALObjectLayer     (Enum::PhysicsObjectLayerType::CharacterObject);
+    const auto             l_characterObjectLayer  = l_physicsLayerSetting->FetchVALObjectLayer     (Enum::PhysicsObjectLayerType::CharacterObject);
     const auto&            l_broadPhaseLayerFilter = l_physicsSystem.GetDefaultBroadPhaseLayerFilter(l_characterObjectLayer);
     const auto&            l_objectLayerFilter     = l_physicsSystem.GetDefaultLayerFilter          (l_characterObjectLayer);
     const JPH::BodyFilter  l_bodyFilter            = {};

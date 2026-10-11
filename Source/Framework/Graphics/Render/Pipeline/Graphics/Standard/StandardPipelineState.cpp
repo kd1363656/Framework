@@ -127,7 +127,7 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
     auto& l_pipelineState = GetMutableREFPipelineState();
 
     // パイプラインステートの作成
-    const auto& l_hr = l_device->CreateGraphicsPipelineState(&l_pipelineStateDesc, IID_PPV_ARGS(l_pipelineState.ReleaseAndGetAddressOf()));
+    const auto l_hr = l_device->CreateGraphicsPipelineState(&l_pipelineStateDesc, IID_PPV_ARGS(l_pipelineState.ReleaseAndGetAddressOf()));
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "StandardPipelineStateの作成処理に失敗しました。", false);
 

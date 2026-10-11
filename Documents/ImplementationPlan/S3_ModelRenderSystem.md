@@ -863,7 +863,7 @@ void FWK::Graphics::ModelRenderSystem::AddTable(const Struct::ModelRenderTableIN
 
     // 種類はStaticTypeIDで区別する(FindVALTableもこの番号で探す)
     // 同じ型の名前がCONFIGに2回書かれていると、片方が使われないテーブルになるので弾く
-    const auto& l_tableStaticTypeID = a_tableINFO.k_typeINFO->k_staticTypeID;
+    const auto l_tableStaticTypeID = a_tableINFO.k_typeINFO->k_staticTypeID;
 
     FWK_ASSERT_RETURN_IF(m_tableMap.contains(l_tableStaticTypeID), "同じ種類のテーブルが追加済みのため、テーブルの追加に失敗しました。");
 

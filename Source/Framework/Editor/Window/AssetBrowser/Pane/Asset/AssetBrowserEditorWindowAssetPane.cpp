@@ -178,8 +178,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionUp(const Asset
     const auto l_cardsPerRow = m_lastCardsPerRow;
 
     // インデックスを計算
-    const auto& l_cursorIndex = static_cast<std::uint32_t>(std::distance(l_displayedList.begin(), l_cursorITR));
-    const auto& l_newIndex    = l_cursorIndex - l_cardsPerRow;
+    const auto l_cursorIndex = static_cast<std::uint32_t>(std::distance(l_displayedList.begin(), l_cursorITR));
+    const auto l_newIndex    = l_cursorIndex - l_cardsPerRow;
 
     // 先頭より前なのか、サイズに収まっているかを確認する
     if (l_newIndex >= l_displayedList.size())
@@ -248,8 +248,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionDown(const Ass
     // Draw時に保持した値を使用する
     const auto l_cardsPerRow = m_lastCardsPerRow;
 
-    const auto& l_cursorIndex = static_cast<std::uint32_t>(std::distance(l_displayedList.begin(), l_cursorITR));
-    const auto& l_newIndex    = l_cursorIndex + l_cardsPerRow;
+    const auto l_cursorIndex = static_cast<std::uint32_t>(std::distance(l_displayedList.begin(), l_cursorITR));
+    const auto l_newIndex    = l_cursorIndex + l_cardsPerRow;
 
     // 末尾を超えたら何もしない
     if (l_newIndex >= l_displayedList.size()) { return; }

@@ -26,7 +26,7 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
     FWK_ASSERT_RETURN_VALUE_IF(!l_rootSignature, "ルートシグネチャが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
 
     const auto& l_rtvFormatList   = GetREFRTVFormatList();
-    const auto& l_dsvFormat       = GetVALDSVFormat    ();
+    const auto  l_dsvFormat       = GetVALDSVFormat    ();
     const bool  l_hasRenderTarget = !l_rtvFormatList.empty();
     const bool  l_hasDepthStencil = l_dsvFormat != DXGI_FORMAT_UNKNOWN;
 

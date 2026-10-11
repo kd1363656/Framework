@@ -4,10 +4,6 @@ namespace FWK::Editor
 {
     class WorldOutlinerEditorWindowGameObjectOperation final
     {
-    private:
-
-        using ChildGameObjectDataList = std::vector<Struct::SmartPointerVectorListArrayElementData<std::weak_ptr<GameObject>>>;
-
     public:
 
          WorldOutlinerEditorWindowGameObjectOperation() = default;
@@ -33,7 +29,7 @@ namespace FWK::Editor
 
         Struct::DestroyedGameObjectRecord FetchVALDestroyedGameObjectRecord(const std::weak_ptr<GameObject>& a_gameObject) const;
 
-        ChildGameObjectDataList::iterator FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const;
+        std::vector<Struct::SmartPointerVectorListArrayElementData<std::weak_ptr<GameObject>>>::iterator FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, std::vector<Struct::SmartPointerVectorListArrayElementData<std::weak_ptr<GameObject>>>& a_childDataList) const;
 
         static constexpr std::size_t k_rootPasteParentCount = 1ULL;
     };

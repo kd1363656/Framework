@@ -11,12 +11,6 @@ namespace FWK::Graphics
     // またリソースの状態遷移が必要なら状態遷移を行う。
     class RenderGraph final
     {
-    private:
-
-        using DrawRequestPassMap         = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPassBase>>;
-        using ComputeRequestPerObjectMap = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<ComputeRequestPerObjectBase>>;
-        using DrawRequestPerObjectMap    = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPerObjectBase>>;
-
     public:
 
          RenderGraph() = default;
@@ -103,9 +97,9 @@ namespace FWK::Graphics
 
         void RemoveExpiredPassList();
 
-        DrawRequestPassMap         m_drawRequestPassMap         = {};
-        ComputeRequestPerObjectMap m_computeRequestPerObjectMap = {};
-        DrawRequestPerObjectMap    m_drawRequestPerObjectMap    = {};
+        std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPassBase>>         m_drawRequestPassMap         = {};
+        std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<ComputeRequestPerObjectBase>> m_computeRequestPerObjectMap = {};
+        std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPerObjectBase>>    m_drawRequestPerObjectMap    = {};
 
         std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList = {};
 

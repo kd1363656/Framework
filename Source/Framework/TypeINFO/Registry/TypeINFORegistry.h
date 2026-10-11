@@ -8,8 +8,7 @@ namespace FWK
     private:
 
         // k_nameは静的寿命であることを前提にstd::string_viewをキーとして使用
-        using TypeINFONameMap         = std::unordered_map<std::string_view,        const Struct::TypeINFO* const, Struct::StringHash, std::equal_to<>>;
-        using TypeINFOStaticTypeIDMap = std::unordered_map<TypeAlias::StaticTypeID, const Struct::TypeINFO* const>;
+        using TypeINFONameMap = std::unordered_map<std::string_view, const Struct::TypeINFO* const, Struct::StringHash, std::equal_to<>>;
 
         friend class SingletonBase<TypeINFORegistry>;
 
@@ -28,7 +27,8 @@ namespace FWK
     private:
 
         // 文字列がキーのマップはjsonのシリアライズ時に使用
-        TypeINFONameMap         m_typeINFONameMap         = {};
-        TypeINFOStaticTypeIDMap m_typeINFOStaticTypeIDMap = {};
+        TypeINFONameMap m_typeINFONameMap = {};
+
+        std::unordered_map<TypeAlias::StaticTypeID, const Struct::TypeINFO* const> m_typeINFOStaticTypeIDMap = {};
     };
 }

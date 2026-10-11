@@ -4,11 +4,6 @@ namespace FWK::Graphics
 {
     class RenderGraphFrameResource final
     {
-    private:
-
-        using RenderTargetPassTextureMap = std::unordered_map<Enum::RenderGraphRenderTargetType, std::weak_ptr<RenderTargetPassTexture>>;
-        using DepthStencilPassTextureMap = std::unordered_map<Enum::RenderGraphDepthStencilType, std::weak_ptr<DepthStencilPassTexture>>;
-
     public:
 
          RenderGraphFrameResource() = default;
@@ -48,8 +43,8 @@ namespace FWK::Graphics
 
     private:
 
-        RenderTargetPassTextureMap m_renderTargetPassTextureMap = {};
-        DepthStencilPassTextureMap m_depthStencilPassTextureMap = {};
+        std::unordered_map<Enum::RenderGraphRenderTargetType, std::weak_ptr<RenderTargetPassTexture>> m_renderTargetPassTextureMap = {};
+        std::unordered_map<Enum::RenderGraphDepthStencilType, std::weak_ptr<DepthStencilPassTexture>> m_depthStencilPassTextureMap = {};
 
         std::vector<std::shared_ptr<RenderTargetPassTexture>> m_renderTargetPassTextureList = {};
         std::vector<std::shared_ptr<DepthStencilPassTexture>> m_depthStencilPassTextureList = {};

@@ -155,7 +155,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
     // 現在作成されているCascade数を取得する
     // Cascadeの番号をCameraFrustum全体に対する
     // Zeroより大きくOne以下の割合へ変換する際に使用する
-    const auto& l_cascadeCount = static_cast<float>(m_cascadeDataList.size());
+    const auto l_cascadeCount = static_cast<float>(m_cascadeDataList.size());
 
     // 最初のCascadeはCameraのNearPlaneから始まる
     // Camera Frustum全体におけるNearPlaneの位置は、
@@ -244,7 +244,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
         // ShadowProjectionが毎Frame拡大縮小しないようにする
         l_cascadeRadius = std::ceil(l_cascadeRadius * k_cascadeRadiusQuantizationScale) / k_cascadeRadiusQuantizationScale;
 
-        const auto& l_shadowMapResolution = static_cast<float>(m_resolution);
+        const auto l_shadowMapResolution = static_cast<float>(m_resolution);
 
         // 量子化済みRadiusから、最初の一TexelのWorldサイズを求める
         const float l_initialWorldUnitPerTexel = (l_cascadeRadius * k_orthographicDiameterScale) / l_shadowMapResolution;

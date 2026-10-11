@@ -13,13 +13,13 @@ namespace FWK::Graphics
         void CreateDefaultModelMaterialFileList(const std::filesystem::path& a_modelFilePath, const ModelRecordType& a_modelRecord)
         {}
 
-        static std::filesystem::path CreateDefaultModelMaterialFilePath(const std::filesystem::path& a_modelFilePath, const std::wstring& a_subMeshName);
-
     private:
 
         void CreateDefaultModelMaterialFile(const std::filesystem::path& a_modelFilePath, const std::wstring& a_subMeshName, const Struct::ModelMaterialAssetData& a_materialAssetData);
 
         AssetFilePath CreateTextureAssetFilePath(const std::filesystem::path& a_modelFilePath, const std::wstring& a_textureFilePath) const;
+
+        static std::filesystem::path CreateDefaultModelMaterialFilePath(const std::filesystem::path& a_modelFilePath, const std::wstring& a_subMeshName);
 
         static std::wstring ReplaceInvalidFileNameCharacter(const std::wstring& a_name);
 

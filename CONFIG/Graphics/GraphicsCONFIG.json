@@ -42,12 +42,6 @@
                     },
                     {
                         "DynamicBufferUploader": {
-                            "CreateCount": 300000
-                        },
-                        "DynamicBufferUploaderTypeName": "ModelPerObjectDynamicConstantBufferUploader"
-                    },
-                    {
-                        "DynamicBufferUploader": {
                             "CreateCount": 1
                         },
                         "DynamicBufferUploaderTypeName": "LightPassDynamicConstantBufferUploader"
@@ -1885,24 +1879,6 @@
                 }
             ],
             "DrawRequestPerObjectList": [
-                {
-                    "DrawRequestPerObjectTypeName": "StaticModelStandardUnLitPerObjectDrawRequest"
-                },
-                {
-                    "DrawRequestPerObjectTypeName": "StaticModelStandardLitPerObjectDrawRequest"
-                },
-                {
-                    "DrawRequestPerObjectTypeName": "SkeletalAnimationModelStandardUnLitPerObjectDrawRequest"
-                },
-                {
-                    "DrawRequestPerObjectTypeName": "SkeletalAnimationModelStandardLitPerObjectDrawRequest"
-                },
-                {
-                    "DrawRequestPerObjectTypeName": "StaticModelCascadeShadowPerObjectDrawRequest"
-                },
-                {
-                    "DrawRequestPerObjectTypeName": "SkeletalAnimationModelCascadeShadowPerObjectDrawRequest"
-                },
                 {
                     "DrawRequestPerObjectTypeName": "SpriteScreenPerObjectDrawRequest"
                 }

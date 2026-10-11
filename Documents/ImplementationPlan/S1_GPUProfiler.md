@@ -387,7 +387,7 @@ namespace FWK::Graphics
             // 上限を超えた区間は測らずに無効な番号を返す(EndScopeも何もしない)
             if (l_scopeList.size() >= k_maxScopeCount) { return k_invalidScopeIndex; }
 
-            const auto& l_scopeIndex     = static_cast<std::uint32_t>(l_scopeList.size());
+            const auto  l_scopeIndex     = static_cast<std::uint32_t>(l_scopeList.size());
             const auto& l_frameBaseIndex = FetchVALFrameBaseQueryIndex(m_currentFrameIndex);
 
             Struct::GPUTimestampProfilerScope l_scope = {};
@@ -434,7 +434,7 @@ namespace FWK::Graphics
             if (l_scopeList.empty()) { return; }
 
             const auto& l_frameBaseIndex = FetchVALFrameBaseQueryIndex(m_currentFrameIndex);
-            const auto& l_queryCount     = static_cast<UINT>(l_scopeList.size()) * k_queryCountPerScope;
+            const auto  l_queryCount     = static_cast<UINT>(l_scopeList.size()) * k_queryCountPerScope;
 
             // READBACKバッファの並びは、クエリヒープの並びと同じにしてある
             // そのため、コピー先の位置は「ヒープの番号 × 8バイト」になる
@@ -505,7 +505,7 @@ bool FWK::Graphics::GPUTimestampProfiler::Create(const TypeAlias::ComPtr<ID3D12C
     // GPUの時計が1秒に何回進むかを取得する
     // タイムスタンプの差をこの値で割ると、秒になる
     // GetTimestampFrequency(1秒あたりの時計の進み数を書き込むアドレス);
-    const auto& l_hr = a_commandQueue->GetTimestampFrequency(&m_timestampFrequency);
+    const auto l_hr = a_commandQueue->GetTimestampFrequency(&m_timestampFrequency);
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "タイムスタンプの周波数の取得に失敗しました。", false);
 
@@ -557,7 +557,7 @@ bool FWK::Graphics::GPUTimestampProfiler::CreateQueryHeap(const Device& a_device
     // CreateQueryHeap(クエリヒープの設定、
     //                 受け取りたいCOMインターフェース型のID、
     //                 作成結果のポインタを書き込むアドレス);
-    const auto& l_hr = l_device->CreateQueryHeap(&l_queryHeapDesc, IID_PPV_ARGS(m_queryHeap.ReleaseAndGetAddressOf()));
+    const auto l_hr = l_device->CreateQueryHeap(&l_queryHeapDesc, IID_PPV_ARGS(m_queryHeap.ReleaseAndGetAddressOf()));
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "クエリヒープの作成に失敗しました。", false);
 
@@ -586,12 +586,12 @@ bool FWK::Graphics::GPUTimestampProfiler::CreateReadbackBuffer(const Device& a_d
     //                         受け取りたいインターフェース型、
     //                         作成結果のポインタ書き込み先);
     // READBACKヒープのリソースは、GPUからのコピー先にしか使えないため、COPY_DESTで作る(ほかの状態へは遷移できない)
-    const auto& l_hr = l_device->CreateCommittedResource(&l_heapProperties,
-                                                         D3D12_HEAP_FLAG_NONE,
-                                                         &l_resourceDesc,
-                                                         D3D12_RESOURCE_STATE_COPY_DEST,
-                                                         nullptr,
-                                                         IID_PPV_ARGS(m_readbackBuffer.ReleaseAndGetAddressOf()));
+    const auto l_hr = l_device->CreateCommittedResource(&l_heapProperties,
+                                                        D3D12_HEAP_FLAG_NONE,
+                                                        &l_resourceDesc,
+                                                        D3D12_RESOURCE_STATE_COPY_DEST,
+                                                        nullptr,
+                                                        IID_PPV_ARGS(m_readbackBuffer.ReleaseAndGetAddressOf()));
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "READBACKバッファの作成に失敗しました。", false);
 
@@ -621,7 +621,7 @@ void FWK::Graphics::GPUTimestampProfiler::ReadFrameResult(const std::size_t& a_f
     // Map(サブリソースの番号(バッファは0)、
     //     CPUが読む範囲、
     //     CPUから読めるアドレスの受け取り先);
-    const auto& l_hr = m_readbackBuffer->Map(UploadBuffer::k_firstSubresourceIndex, &l_readRange, &l_mappedData);
+    const auto l_hr = m_readbackBuffer->Map(UploadBuffer::k_firstSubresourceIndex, &l_readRange, &l_mappedData);
 
     FWK_ASSERT_RETURN_IF(FAILED(l_hr), "READBACKバッファのMapに失敗しました。");
 

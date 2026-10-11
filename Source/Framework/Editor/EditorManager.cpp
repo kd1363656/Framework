@@ -277,7 +277,7 @@ void FWK::Editor::EditorManager::ClearCommandHistory()
 
 FWK::TypeAlias::DescriptorIndex FWK::Editor::EditorManager::AllocateIMGUISRVDescriptorIndex()
 {
-    const auto& l_imGuiSRVDescriptorIndex = m_imGuiCBVSRVUAVDescriptorPool.Allocate();
+    const auto l_imGuiSRVDescriptorIndex = m_imGuiCBVSRVUAVDescriptorPool.Allocate();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_imGuiSRVDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex, "ImGui用SRVDescriptorIndexの確保に失敗しました。", Graphics::DescriptorHeap::k_invalidDescriptorIndex);
 
@@ -304,7 +304,7 @@ void FWK::Editor::EditorManager::AddEditorWindow(const std::shared_ptr<EditorWin
 {
     FWK_ASSERT_RETURN_IF(!a_editorWindow, "作成しようとしているEditorWindowが無効になっており、追加処理を行えませんでした。");
 
-    const auto& l_staticID = a_editorWindow->GetREFRuntimeTypeINFO().k_staticTypeID;
+    const auto l_staticID = a_editorWindow->GetREFRuntimeTypeINFO().k_staticTypeID;
 
     // 既に作成されているならばreturn
     if (m_editorWindowMap.contains(l_staticID)) { return; }
@@ -324,7 +324,7 @@ void FWK::Editor::EditorManager::AllocateSRVDescriptor(ImGui_ImplDX12_InitInfo* 
 
     FWK_ASSERT_RETURN_IF(!l_editorManager, "EditorManagerが無効のため、ImGui用SRVDescriptorIndexの確保に失敗しました。");
 
-    const auto& l_imGuiSRVDescriptorIndex = l_editorManager->m_imGuiCBVSRVUAVDescriptorPool.Allocate();
+    const auto l_imGuiSRVDescriptorIndex = l_editorManager->m_imGuiCBVSRVUAVDescriptorPool.Allocate();
 
     FWK_ASSERT_RETURN_IF(l_imGuiSRVDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex, "ImGui用SRVDescriptorIndex確保に失敗しました。");
 

@@ -30,7 +30,7 @@ void FWK::Graphics::ComputeCommandList::SetupConstantBufferView(const RootSignat
 
     FWK_ASSERT_RETURN_IF(!l_computeCommandList, "コンピュートコマンドリストが作成されておらず、定数バッファビュー設定に失敗しました。");
 
-    const auto& l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
+    const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
     FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、コンピュート用定数バッファービュー設定に失敗しました。");
 
@@ -65,7 +65,7 @@ void FWK::Graphics::ComputeCommandList::SetupRoot32BitConstants(const RootSignat
 
     FWK_ASSERT_RETURN_IF(!l_computeCommandList, "コンピュートコマンドリストが作成されておらず、Root32BitConstantsの設定に失敗しました。");
 
-    const auto& l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
+    const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
     FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、Root32BitConstantsの設定に失敗しました。");
 

@@ -227,12 +227,12 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
         // GetBuffer(取得したいバックバッファーのインデックス、
         //           受け取りたいCOMインターフェース型のID、
         //           作成結果のポインタを書き込むアドレス);
-        const auto& l_hr = m_swapChain->GetBuffer(l_backBufferIndex, IID_PPV_ARGS(m_backBufferList[l_backBufferIndex].m_backBufferResource.ReleaseAndGetAddressOf()));
+        const auto l_hr = m_swapChain->GetBuffer(l_backBufferIndex, IID_PPV_ARGS(m_backBufferList[l_backBufferIndex].m_backBufferResource.ReleaseAndGetAddressOf()));
 
         FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "スワップチェインとバックバッファーの紐づけに失敗ており、バックバッファーの作成に失敗しました。。", false);
 
         // レンダーターゲット用アロケータを進める
-        const auto& l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
+        const auto l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
 
         FWK_ASSERT_RETURN_VALUE_IF(l_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "バックバッファ用RTVIndexの確保に失敗しており、バッファーの作成に失敗しました。", false);
 

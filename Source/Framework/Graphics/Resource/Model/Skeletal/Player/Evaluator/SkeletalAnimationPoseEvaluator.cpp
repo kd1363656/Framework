@@ -350,7 +350,7 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
     // FrameRate     = 30FPS
     // FramePosition = 7.5
     // この場合、KeyFrame[7]とKeyFrame[8]の間を補間する
-    const auto& l_sampleFramePosition = a_timeSecond * a_motionSequence.m_frameRate;
+    const auto l_sampleFramePosition = a_timeSecond * a_motionSequence.m_frameRate;
 
     auto l_startKeyFrameIndex = k_firstKeyFrameIndex;
 
@@ -396,14 +396,14 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
 
     l_endLocalTransform.m_rotation.Normalize();
 
-    const auto& l_keyFrameTimeRange = l_endKeyFrame.m_timeSecond - l_startKeyFrame.m_timeSecond;
+    const auto l_keyFrameTimeRange = l_endKeyFrame.m_timeSecond - l_startKeyFrame.m_timeSecond;
 
     // 最後のKeyFrameはMotion終了時刻へClampされる場合がある
     // そのため補間率にはFramePositionの小数部分を直接使わず、
     // 実際に保存されているKeyFrame時刻から計算する
     if (l_keyFrameTimeRange <= k_minKeyFrameTimeRange) { return l_startLocalTransform; }
 
-    const auto& l_interpolationWeight = (a_timeSecond - l_startKeyFrame.m_timeSecond) / l_keyFrameTimeRange;
+    const auto l_interpolationWeight = (a_timeSecond - l_startKeyFrame.m_timeSecond) / l_keyFrameTimeRange;
 
     return InterpolateLocalTransform(l_startLocalTransform, l_endLocalTransform, l_interpolationWeight);
 }

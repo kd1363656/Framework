@@ -8,7 +8,6 @@ namespace FWK::Utility
     private:
 
         using StringToValueMap = std::unordered_map<std::string, Type, Struct::StringHash, std::equal_to<>>;
-        using ValueToStringMap = std::unordered_map<Type,        std::string>;
 
         friend class SingletonBase<StringValueBidirectionalRegistry<Type>>;
 
@@ -52,6 +51,7 @@ namespace FWK::Utility
         const auto& GetREFStringToValueMap() const { return m_stringToValueMap; }
 
         StringToValueMap m_stringToValueMap = {};
-        ValueToStringMap m_valueToStringMap = {};
+
+        std::unordered_map<Type, std::string> m_valueToStringMap = {};
     };
 }

@@ -398,6 +398,12 @@
                                                  列挙型は = Enum::XxxType::Invalid
      ・コンストラクタで初期化するクラス(引数を受け取るなど、= default ではないコンストラクタを書くクラス)は、
        すべてのメンバ変数を、.cpp のコンストラクタの初期化子リストで初期化します。
+     ・コンストラクタとデストラクタのどちらか一方でも .cpp に定義するクラスは、もう一方も .cpp に定義し、
+       すべてのメンバ変数を初期化子リストで初期化します(2026-10-11 ユーザー指示)。
+       デストラクタだけを .cpp に書き、コンストラクタを = default にして既定メンバ初期化子を使う形にはしません。
+         NG : ModelDrawRegistration() = default; / ~ModelDrawRegistration();(.cpp)/ m_drawItemListRegistrationList = {};
+         OK : ModelDrawRegistration();(.cpp で m_drawItemListRegistrationList() と初期化)/ ~ModelDrawRegistration();(.cpp)
+       クラスの中の private の入れ子の構造体は構造体なので、7-11 のとおり宣言の位置で初期化します。
        この場合、メンバ変数の宣言には既定メンバ初期化子(= {} など)を書きません。
        一部のメンバだけを初期化子リストに書き、残りを既定メンバ初期化子にする、という混ぜ方はしません。
          m_beforeName(a_beforeName),
@@ -765,9 +771,15 @@
 ================================================================================
 
 10-1. 関数の戻り値など、式の結果を受け取るローカル変数は auto を基本に使います。
-     ・関数の戻り値は、値を返す関数であっても const auto& で受け取ります。
+     ・関数の戻り値は、値を返す関数であっても(8バイト以上なら)const auto& で受け取ります。
          const auto& l_nodeCount = a_dependencyList.size();
      ・後で変更する変数は auto / auto& を使い、ポインタは const auto* / auto* を使います。
+     ・8バイト未満の変数(bool / float / int / UINT / std::uint32_t / DWORD / HRESULT / 列挙型 /
+       DescriptorIndex / StaticTypeID / StorageID / DXGI_FORMAT / D3D12_RESOURCE_STATES など)は、
+       const auto& にせず const auto(値)で受け取ります。引数の渡し方(13-4)と同じ基準です。
+         NG : const auto& l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
+         OK : const auto  l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
+       const auto& の行とそろえて並べるときは、auto の後ろに空白を2つ入れて変数名の位置をそろえます。
      ・bool / float / int などは型を明示しても構いません: const bool l_isInserted = ...;
      ・8バイト以上の変数(std::size_t / UINT64 / double / 数学の型 / UUID / 文字列 / イテレータ / スマートポインタなど)は、
        後で変更しないのであれば必ず const auto& で受け取ります。値で受け取ることはしません。
@@ -796,7 +808,8 @@
          auto l_adapterIndex = k_firstAdapterIndex;
          for (auto l_boneIndex = k_firstBoneIndex; l_boneIndex < l_boneCount; ++l_boneIndex)
        std:: の型(std::uint32_t / std::size_t / std::string / コンテナなど)やスマートポインタ
-       (std::unique_ptr / std::shared_ptr / std::weak_ptr)も同じです。参照で受け取れる場合は const auto& で受け取ります。
+       (std::unique_ptr / std::shared_ptr / std::weak_ptr)も同じです。8バイト以上で参照で受け取れる場合は const auto& で、
+       8バイト未満(std::uint32_t など)は const auto で受け取ります(10-1)。
      ・ヘッダーで定義するもの(定数・メンバ変数)は、右辺に関係なく必ず型名を書きます(10-7)。
      既定値で構築するときは Type l_xxx = {}; と書きます。
          nlohmann::json l_rootJson = {};
@@ -851,6 +864,17 @@
      ・プログラムの誤りで、起きてはいけない状態              → FWK_ASSERT_RETURN_IF / FWK_ASSERT_RETURN_VALUE_IF を使います。
      ・処理は続けられるが知らせておきたい状態                → FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "...") の後に return します。
 11-5. null の判定は !l_xxx と書きます。== nullptr や == true / == false は書きません。
+     ・ポインタは、-> で使う前に必ず nullptr を確認します。TypeINFO の k_typeINFO のように、
+       起動時に必ず入るはずの構造体のメンバのポインタでも省略しません(2026-10-11 ユーザー指示)。
+       いったん const auto* の変数に受けてから確認し、確認した変数を使います。
+         NG : return FindVALTable(l_tableINFO.k_typeINFO->k_staticTypeID);
+         OK : const auto* l_typeINFO = l_tableINFO.k_typeINFO;
+
+              if (!l_typeINFO) { return {}; }
+
+              return FindVALTable(l_typeINFO->k_staticTypeID);
+       ループの中なら continue、bool を返す作成処理なら FWK_ASSERT_RETURN_VALUE_IF で知らせます。
+       std::make_shared / std::make_unique の戻り値は nullptr にならない(失敗すると例外で止まる)ため、確認しません。
 11-6. キャストには static_cast を使います。必要な場合だけ reinterpret_cast / std::static_pointer_cast を使います。
      dynamic_cast は使いません。型の判定には TypeINFO の k_staticTypeID を使います。
 11-7. インクリメントは前置(++l_xxx)で書きます。
@@ -1055,6 +1079,11 @@
              )
          }
      ・最初の値は Invalid(または None)にし、要素数が必要な場合は最後に Count を置きます。
+     ・種類が決まっていて増えない列挙型で、種類ごとに値を持つときは、unordered_map ではなく std::array で持ち、
+       列挙型の値をそのまま添字に使います。この列挙型には Invalid を置かず、最初の値を 0 にします(2026-10-11 ユーザー指示)。
+         enum class ModelMeshType { Static, Skeletal, Count, };
+         std::array<ModelDrawItemListMap, static_cast<std::size_t>(Enum::ModelMeshType::Count)>
+       添字の範囲の確認は、配列から取り出す関数(FindPTRXxx)の1か所にまとめ、範囲外なら nullptr を返します。
      ・JSON に保存する列挙型は、すぐ後ろに FWK_JSON_SERIALIZE_ENUM を書きます。
      ・ビットフラグは XxxBitShiftFlag : std::uint32_t { Invalid = 0U, X = 1U << 0U, Y = 1U << 1U, ... } の形で書きます。
      ・インスペクタで文字列から選ぶ列挙型は、namespace の外に次の登録を書きます。
@@ -1093,6 +1122,11 @@
          }
      ・ファクトリーは using XxxSharedFactory = GenericFactory<std::shared_ptr<XxxBase>>; の形で定義します。
      ・数学の型は TypeAlias::Math::Vector3 / Matrix / Quaternion / Color(DirectX::SimpleMath)を使います。
+     ・std::vector は別名を作らず、std::vector<std::vector<Xxx>> のような入れ子もそのまま書きます。
+         std::vector<std::vector<Struct::ModelDrawItem>> m_frameDrawItemList;
+     ・std::unordered_map の別名は、第3・第4引数(ハッシュ・比較)を使うときだけ作ります。それ以外はそのまま書きます。
+         using TypeINFONameMap = std::unordered_map<std::string_view, const Struct::TypeINFO* const, Struct::StringHash, std::equal_to<>>;
+         std::unordered_map<TypeAlias::StaticTypeID, const Struct::TypeINFO* const> m_typeINFOStaticTypeIDMap = {};
 14-5. Concept
          namespace FWK::Concept
          {
@@ -1248,7 +1282,7 @@
      ・パイプラインステートなどを共有していて、レイアウトを合わせる必要がある場合は、static_assert で大きさの一致を確認します。
 18-7. 派生クラスのインスタンスを「型」で取り出す仕組みは、次の形で作ります(EditorManager / RenderGraph が先例です)。
      ・所有は std::vector<std::shared_ptr<XxxBase>> の XxxList、検索用は
-       std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<XxxBase>> の XxxMap(private の using)で持ちます。
+       std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<XxxBase>> の XxxMap(別名は作りません。14-4)で持ちます。
      ・登録は AddXxx(const std::shared_ptr<XxxBase>&) で、List に加えて Map に k_staticTypeID をキーとして登録します。
      ・取り出しはテンプレートの FindVALXxx<Type>() で、Type::GetREFTypeINFO().k_staticTypeID で探し、
        lock() してから std::static_pointer_cast<Type> で返します。見つからないときは {} を返します。
@@ -1459,6 +1493,7 @@
 [ ] private は 関数 → static constexpr k_ → m_ メンバ(初期化子は {} / nullptr / 定数) → 型情報マクロ の順
 [ ] ヘッダーで定義するものと、リテラルで初期値を与える変数は、auto を使わず型名を書いている
 [ ] 8バイト以上の引数は const 参照、8バイト以上のローカル変数は const auto& で受け取っている
+[ ] 8バイト未満(UINT / enum / DescriptorIndex / HRESULT など)を const 参照・const auto& で受け取っていない
 [ ] メンバ変数・定数を第20章の順番(配列 → ポインタ → 値)で、引数を修飾子の順番(const 参照 → const ポインタ → const 値 → 参照 → 右辺値参照 → ポインタ → 値)で並べている
 [ ] 変数は l_ / 引数は a_ / メンバは m_ / 定数は k_(直後は小文字)、Setter の引数は a_set
 [ ] GetREF / GetMutableREF / GetVAL / FetchVAL / FindPTR を使い分け、略語は大文字(REF VAL PTR ITR INFO UUID ID MIN MAX など)

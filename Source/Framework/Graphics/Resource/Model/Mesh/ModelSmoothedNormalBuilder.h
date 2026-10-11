@@ -139,7 +139,7 @@ namespace FWK::Graphics
 
             for (std::size_t l_cornerIndex = 0ULL; l_cornerIndex < Constant::k_triangleVertexCount; ++l_cornerIndex)
             {
-                const auto& l_vertexIndex = l_indexList[a_triangleStartIndex + l_cornerIndex];
+                const auto  l_vertexIndex = l_indexList[a_triangleStartIndex + l_cornerIndex];
                 const auto& l_modelVertex = l_vertexList[l_vertexIndex];
 
                 l_cornerVertexIndexList[l_cornerIndex] = l_vertexIndex;

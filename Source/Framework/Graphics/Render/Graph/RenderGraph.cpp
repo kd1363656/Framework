@@ -102,7 +102,7 @@ void FWK::Graphics::RenderGraph::EndFrame(Renderer& a_renderer) const
           auto& l_swapChain         = a_renderer.GetMutableREFSwapChain ();
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
-    const auto& l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
+    const auto  l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
           auto& l_backBufferList  = l_swapChain.GetMutableREFBackBufferList   ();
 
     FWK_ASSERT_RETURN_IF(l_backBufferList.empty(),                                        "BackBufferListが空のため、BackBufferのPresent遷移に失敗しました。");
@@ -169,7 +169,7 @@ void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resour
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList       ();
     const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
 
-    const auto& l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
+    const auto  l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
           auto& l_backBufferList  = l_swapChain.GetMutableREFBackBufferList   ();
 
     FWK_ASSERT_RETURN_IF(l_backBufferList.empty(),                                        "BackBufferListが空のため、BackBufferのClearに失敗しました。");

@@ -4,10 +4,6 @@ namespace FWK::Graphics
 {
     class FrameResource final
     {
-    private:
-
-        using DynamicBufferUploaderMap = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DynamicBufferUploaderBase>>;
-
     public:
 
          FrameResource() = default;
@@ -74,7 +70,7 @@ namespace FWK::Graphics
         void RemoveExpiredConstantBufferUploaderList();
         void RemoveExpiredConstantBufferUploaderMap ();
 
-        DynamicBufferUploaderMap m_dynamicBufferUploaderMap = {};
+        std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DynamicBufferUploaderBase>> m_dynamicBufferUploaderMap = {};
 
         std::vector<std::shared_ptr<DynamicBufferUploaderBase>> m_dynamicBufferUploaderList = {};
 

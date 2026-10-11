@@ -27,7 +27,7 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
     // Storage登録済み、またはGPUアップロード町の場合は既存Recordを返す
     if (TryResolveCachedSkeletalAnimationModelResult(a_filePath, l_skeletalAnimationModelLoadResult)) { return l_skeletalAnimationModelLoadResult; }
 
-    const auto& l_allocateStorageID = m_modelStorage.AllocateStorageID();
+    const auto l_allocateStorageID = m_modelStorage.AllocateStorageID();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_allocateStorageID == Constant::k_invalidStorageID, "StorageIDの割り当てに失敗したため、SkeletalAnimationModel読み込み処理に失敗しました。", l_skeletalAnimationModelLoadResult);
 

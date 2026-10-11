@@ -215,8 +215,8 @@ FWK::TypeAlias::Math::Vector3 FWK::GameObjectBenchmarkComponent::FetchVALSpawnPo
         l_originPosition = l_transform.m_position;
     }
 
-    const auto& l_gridX = static_cast<float>(a_spawnIndex % a_gridSideCount);
-    const auto& l_gridZ = static_cast<float>(a_spawnIndex / a_gridSideCount);
+    const auto l_gridX = static_cast<float>(a_spawnIndex % a_gridSideCount);
+    const auto l_gridZ = static_cast<float>(a_spawnIndex / a_gridSideCount);
 
     return l_originPosition + TypeAlias::Math::Vector3{ l_gridX * m_spacing, k_spawnPositionY, l_gridZ * m_spacing };
 }

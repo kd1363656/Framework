@@ -25,18 +25,13 @@ void FWK::Graphics::StaticModelStandardUnLitPass::Execute(const ResourceContext&
     const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (Enum::PipelineStateType::StaticModelUnLit, a_renderer).lock();
     const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock                                                     ();
 
-    FWK_ASSERT_RETURN_IF(!l_rootSignature,        "ルートシグネチャの取得に失敗しており、StaticModelStandardUnLitPassの実行に失敗しました。");
-    FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "現在のフレームリソースの取得に失敗しており、StaticModelStandardUnLitPassの実行に失敗しました。");
+    const auto& l_modelRenderSystem         = a_renderer.GetREFModelRenderSystem        ();
+    const auto& l_currentFrameResourceIndex = a_renderer.GetREFCurrentFrameResourceIndex();
 
-    const auto& l_cameraPassDrawRequest                   = a_renderGraph.FindVALDrawRequestPass     <CameraPassDrawRequest>                       ().lock();
-    const auto& l_cullingCameraPassDrawRequest            = a_renderGraph.FindVALDrawRequestPass     <CullingCameraPassDrawRequest>                ().lock();
-    const auto& l_staticModelStandardPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<StaticModelStandardUnLitPerObjectDrawRequest>().lock();
-
-    FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest,                                                                                                 "カメラパスのポインタが無効になっており、StaticModelStandardUnLitPassの実行に失敗しました。");
-    FWK_ASSERT_RETURN_IF(!l_cullingCameraPassDrawRequest,                                                                                          "CullingCameraPassDrawRequestを取得できないため、StaticModelStandardUnLitPassを実行できません。");
-    FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource),        "カメラ定数の設定が出来ておらず、StaticModelStandardUnLitPassの実行に失敗しました。");
-    FWK_ASSERT_RETURN_IF(!l_cullingCameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "カリング用カメラ定数を設定できないため、StaticModelStandardUnLitPassを実行できません。");
-    FWK_ASSERT_RETURN_IF(!l_staticModelStandardPerObjectDrawRequest,                                                                               "StaticModelStandardPerObjectDrawRequestが無効のため、StaticModelStandardUnLitPassの実行に失敗しました。");
-
-    l_staticModelStandardPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer, *l_rootSignature, *l_currentFrameResource);
+    // StaticModelで、StandardUnLitのマテリアルを使うメッシュの描画項目の一覧を描く
+    // 描くマテリアルは、マテリアルのGPUデータの型で指定する(このパスのPSが読む型)
+    l_modelRenderSystem.RecordDraw<ModelStandardUnLitMaterialGPUData>(*l_rootSignature,
+                                                                      l_directCommandList,
+                                                                      l_currentFrameResourceIndex,
+                                                                      Enum::ModelMeshType::Static);
 }

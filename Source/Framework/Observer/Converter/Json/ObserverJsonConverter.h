@@ -30,7 +30,7 @@ namespace FWK::Converter
             {
                 if (l_json.is_null()) { continue; }
 
-                const auto& l_eventEnum = l_json.value(k_eventJsonKey, Type::Invalid);
+                const auto l_eventEnum = l_json.value(k_eventJsonKey, Type::Invalid);
 
                 a_observer.AddEvent(l_eventEnum);
             }

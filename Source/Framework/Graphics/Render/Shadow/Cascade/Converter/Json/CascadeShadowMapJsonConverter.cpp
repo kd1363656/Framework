@@ -21,9 +21,9 @@ void FWK::Converter::CascadeShadowMapJsonConverter::Deserialize(const nlohmann::
     l_depthStencilTextureSettings.m_sampleCount   = a_rootJson.value(k_sampleCountJsonKey,   Constant::k_defaultSampleCount);
     l_depthStencilTextureSettings.m_sampleQuality = a_rootJson.value(k_sampleQualityJsonKey, Constant::k_defaultSampleQuality);
 
-    const auto& l_sampleDepthBias   = a_rootJson.value(k_sampleDepthBiasJsonKey,   Constant::k_cascadeShadowMapDefaultSampleDepthBias);
-    const auto& l_maxShadowDistance = a_rootJson.value(k_maxShadowDistanceJsonKey, Constant::k_cascadeShadowMapDefaultMAXShadowDistance);
-    const auto& l_resolution        = a_rootJson.value(k_resolutionJsonKey,        Constant::k_cascadeShadowMapDefaultResolution);
+    const auto l_sampleDepthBias   = a_rootJson.value(k_sampleDepthBiasJsonKey,   Constant::k_cascadeShadowMapDefaultSampleDepthBias);
+    const auto l_maxShadowDistance = a_rootJson.value(k_maxShadowDistanceJsonKey, Constant::k_cascadeShadowMapDefaultMAXShadowDistance);
+    const auto l_resolution        = a_rootJson.value(k_resolutionJsonKey,        Constant::k_cascadeShadowMapDefaultResolution);
 
     a_cascadeShadowMap.SetDepthStencilTextureSettings(l_depthStencilTextureSettings);
     a_cascadeShadowMap.SetResolution                 (l_resolution);

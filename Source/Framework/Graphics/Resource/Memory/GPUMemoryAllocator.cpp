@@ -20,7 +20,7 @@ bool FWK::Graphics::GPUMemoryAllocator::Create(const Device& a_device)
 
     // D3D12MA::CreateAllocator(アロケータ作成設定、
     //                          作成されたD3D12MAアロケータの受け取り先);
-    const auto& l_hr = D3D12MA::CreateAllocator(&l_allocatorDesc, m_allocator.ReleaseAndGetAddressOf());
+    const auto l_hr = D3D12MA::CreateAllocator(&l_allocatorDesc, m_allocator.ReleaseAndGetAddressOf());
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "D3D12MAアロケータの作成に失敗しており、、GPUメモリアロケータの作成に失敗しました。", false);
 

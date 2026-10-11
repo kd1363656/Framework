@@ -12,7 +12,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWin
 {
     const auto& l_paneSplitter = a_editorWindow.GetREFPaneSplitter   ();
     const auto& l_popupDrawer  = a_editorWindow.GetREFPopupDrawer    ();
-    const auto& l_paneWidth    = l_paneSplitter.GetVALPrimaryPaneSize();
+    const auto  l_paneWidth    = l_paneSplitter.GetVALPrimaryPaneSize();
 
     // ImGui::BeginChild()は
     // 現在のWindowの内部にもう一つの描画領域を作成するAPI

@@ -384,8 +384,8 @@ void FWK::Window::SetupNormalWindowClientSize()
     // 欲しいクライアント領域からウィンドウ全体サイズを逆算する
     FWK_ASSERT_RETURN_IF(!AdjustWindowRect(&l_clientRECT, k_generalWindowStyle, FALSE), "通常ウィンドウのサイズ調整に失敗しました。");
 
-    const auto& l_windowWidth  = static_cast<int>(l_clientRECT.right  - l_clientRECT.left);
-    const auto& l_windowHeight = static_cast<int>(l_clientRECT.bottom - l_clientRECT.top);
+    const auto l_windowWidth  = static_cast<int>(l_clientRECT.right  - l_clientRECT.left);
+    const auto l_windowHeight = static_cast<int>(l_clientRECT.bottom - l_clientRECT.top);
 
     SetWindowPos(m_hwnd,
                  nullptr,
@@ -504,8 +504,8 @@ void FWK::Window::ApplyNormalWindowStyle()
     // ウィンドウの見た目を通常ウィンドウへ戻す
     SetWindowLongPtr(m_hwnd, GWL_STYLE, k_generalWindowStyle);
 
-    const auto& l_saveWindowWidth  = static_cast<int>(m_normalWindowRECT.right  - m_normalWindowRECT.left);
-    const auto& l_saveWindowHeight = static_cast<int>(m_normalWindowRECT.bottom - m_normalWindowRECT.top);
+    const auto l_saveWindowWidth  = static_cast<int>(m_normalWindowRECT.right  - m_normalWindowRECT.left);
+    const auto l_saveWindowHeight = static_cast<int>(m_normalWindowRECT.bottom - m_normalWindowRECT.top);
 
     if (const bool l_hasSavedWindowRECT = l_saveWindowWidth  > Constant::k_invalidClientWidth &&
                                           l_saveWindowHeight > Constant::k_invalidClientHeight;
@@ -553,8 +553,8 @@ void FWK::Window::ApplyBorderlessFullScreenWindowStyle()
     FWK_ASSERT_RETURN_IF(!GetMonitorInfo(l_monitor, &l_monitorINFO), "モニター情報の取得に失敗しました。");
 
     const RECT& l_monitorRECT   = l_monitorINFO.rcMonitor;
-    const auto& l_monitorWidth  = static_cast<int>(l_monitorRECT.right  - l_monitorRECT.left);
-    const auto& l_monitorHeight = static_cast<int>(l_monitorRECT.bottom - l_monitorRECT.top);
+    const auto  l_monitorWidth  = static_cast<int>(l_monitorRECT.right  - l_monitorRECT.left);
+    const auto  l_monitorHeight = static_cast<int>(l_monitorRECT.bottom - l_monitorRECT.top);
 
     // モニター全体を覆う位置とサイズに変更する
     SetWindowPos(m_hwnd,

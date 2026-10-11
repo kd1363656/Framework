@@ -137,7 +137,7 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
     // UnregisterTypesをReleaseで呼べるようにしておく
     m_isJoltTypeRegistered = true;
 
-    const auto& l_tempAllocatorSize = k_tempAllocatorSizeMB * k_kiloBytePerMB * k_bytePerKB;
+    const auto l_tempAllocatorSize = k_tempAllocatorSizeMB * k_kiloBytePerMB * k_bytePerKB;
 
     // Joltの一時作業用メモリの作成
     m_tempAllocator = std::make_shared<JPH::TempAllocatorImpl>(l_tempAllocatorSize);

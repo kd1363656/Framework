@@ -1155,15 +1155,327 @@ void FWK::GameObjectModelComponentInspector::EditInspector(GameObjectModelCompon
 
 ---
 
-## S4-4 で保留した分(ModelComponent のマテリアルのスロット)
+## S0 を設計し直すときの材料(2026-10-11、S4 / S5 から移した)
 
-S4 を先に作ったため、ModelComponent 側は S0 で一緒に書く。コードは `S4_Material.md` の「S4-4」にある。
+ユーザー指示(2026-10-11)「ModelComponent はまだ実装しないので設計に加えないで、S4 ~ S6 を実装する」により、
+S4 / S5 から ModelComponent に関わる部分を外し、ここへ移した。**この文書の上の部分(S3 より前の DrawRequest の形)も含め、S0 は S6 のビルドの後に設計し直す。**
+ここにあるのは、そのときの材料(確定した設計ではない)。
 
-- `GameObjectModelComponent` : `m_materialSlotList` / `m_materialAssignmentMap`、`BuildMaterialSlotList` / `ApplyMaterialListToRenderer` / `ApplyMaterialFilePath` / `FetchVALDefaultMaterialUUID`、`ReloadModel` の最後で `BuildMaterialSlotList()` → `ApplyMaterialListToRenderer()`
-- Renderer(Static / Skeletal)の基底 : `FetchVALSubMeshNameList` / `ApplyMaterialList`(`std::vector<Struct::ModelDrawMaterial>` を覚える。S5 で描画項目に使う)
-- JsonConverter : `"MaterialSlotList"`(名前と UUID の組。今のモデルに無い名前の組も残す)
-- インスペクター : スロットごとに、サブメッシュ名のラベルと .mat の `AssetFilePath` のボタン
-- `Struct::GameObjectModelComponentMaterialSlot` / `Struct::ModelDrawMaterial` は S4 の骨組みで作成済み(`Definition/Struct/GameObject/GameObjectModelComponentStruct.h`)
+**S4 ~ S6 で、ModelComponent の代わりに Graphics 側にできたもの**
+
+| もの | S0 での使い方 |
+|---|---|
+| `Graphics::ModelDrawRegistration`(S5) | 描き方(または ModelComponent)がメンバに1つ持つ。モデル・マテリアルが変わったときに `Register(フレームごとのメッシュの番号, Meshletの数, マテリアルのハンドル, メッシュの種類, オブジェクトの番号)` を呼ぶ。破棄で自動解除。Detach では `Unregister` |
+| `ModelMaterialFileCreator::CreateDefaultModelMaterialFilePath`(S4) | 今は private の static。スロットで既定の .mat を探すときに public へ移す |
+| `ModelMaterial::FetchVALMaterial` / `ModelMaterialSystem::GetREFErrorMaterial` | エラーマテリアルへの切り替えは `ModelDrawRegistration` の中で行うので、コンポーネントは呼ばなくてよい |
+
+## 材料 1 : S5 の登録を使う側(旧 S5 の「ModelComponent の描き方」の変更から)
+
+- 旧 S5 では、描き方の基底(`GameObjectModelComponentRendererBase`)に `RegisterDrawItemList` / `UnregisterDrawItemList` / `FetchVALFrameCount` と
+  登録の一覧を持たせ、Static / Skeletal の `Register` がそれぞれ描画項目を作っていた。これらはすべて `ModelDrawRegistration` に入ったので、作らない。
+- 描き方が用意するもの(S3 の分と合わせて S0 で書く):
+  - オブジェクトのテーブルの番号(`m_objectIndex`)と、メッシュのテーブルの番号(Static は `m_meshIndexList`、Skeletal はフレームごとの `m_frameMeshIndexList`)
+  - メッシュごとの Meshlet の数の一覧(`static_cast<std::uint32_t>(l_modelMesh.m_meshletData.m_meshletList.size())`。AS のグループ数への変換は `ModelDrawRegistration` が行う)
+  - メッシュごとのマテリアルのハンドルの一覧(`std::vector<Graphics::ModelMaterial>`。スロットからサブメッシュ名で引いて並べる)
+- Static は、同じ `m_meshIndexList` をフレームの数だけ並べた一覧を渡す(`std::vector<std::vector<std::uint32_t>>(l_frameCount, m_meshIndexList)`。個数と値で作るので `( )`、規約 9-11)。
+- 旧 S4-4 の `ApplyMaterialListToRenderer` / `Renderer::ApplyMaterialList` / `Struct::ModelDrawMaterial` は要らなくなる(マテリアルのハンドルを並べて `Register` を呼び直すだけ)。
+- 旧 S4-4 の `Struct::GameObjectModelComponentMaterialSlot` は、S4 の骨組みから消した(`GameObjectModelComponentStruct.h` ごと)。S0 で作り直す。
+
+## 材料 2 : 旧 S4-4 ModelComponent のマテリアルのスロット(S4_Material.md から移した、2026-10-11 時点のまま)
+
+> 下のコードは、`Struct::ModelDrawMaterial` があった頃の形のまま。使うときは材料 1 のとおりに直す。
+### 目的
+
+- ModelComponent が「サブメッシュ名 → .mat(AssetFilePath)」の対応を持ち、メッシュごとのマテリアルを決める。
+- 保存(シーン / プレハブの JSON)は名前と UUID の組。番号は保存しない。今のモデルに無い名前の組も消さずに残す(モデルを差し替えて戻したときに復活する)。
+- スロットに何も割り当てていなければ、モデルと同じフォルダの `StandardLit_<サブメッシュ名>.mat` を探して使う。それも無ければエラーマテリアル。
+- 描き方(Renderer)は、メッシュごとに「マテリアルの種類(テーブル)と番号」を受け取って、描画項目を作る(S5)。
+
+### ファイル一覧
+
+#### 新規
+
+| ファイル | 内容 |
+|---|---|
+| `Definition/Struct/GameObject/GameObjectModelComponentStruct.h` | `Struct::GameObjectModelComponentMaterialSlot` / `Struct::ModelDrawMaterial` |
+
+#### 変更
+
+| ファイル | 変更 |
+|---|---|
+| `GameObject/Component/Model/GameObjectModelComponent.h/.cpp` | スロットの一覧・名前と UUID の対応・スロットを作る処理 |
+| `GameObject/Component/Model/Converter/Json/GameObjectModelComponentJsonConverter.h/.cpp` | `"MaterialSlotList"` |
+| `GameObject/Component/Model/Inspector/GameObjectModelComponentInspector.h/.cpp` | スロットごとに .mat のボタン |
+| `GameObject/Component/Model/Renderer/*` | `FetchVALSubMeshNameList` / `ApplyMaterialList` |
+
+### コード
+
+#### Definition/Struct/GameObject/GameObjectModelComponentStruct.h(新規)
+
+```cpp
+#pragma once
+
+namespace FWK::Struct
+{
+    struct GameObjectModelComponentMaterialSlot final
+    {
+        std::wstring m_subMeshName = {};
+
+        AssetFilePath m_materialFilePath = {};
+
+        Graphics::ModelMaterial m_material = {};
+    };
+
+    struct ModelDrawMaterial final
+    {
+        TypeAlias::StaticTypeID m_tableStaticTypeID = StaticTypeIDGenerator::k_invalidStaticTypeID;
+
+        std::uint32_t m_tableElementIndex = Graphics::GPUElementTable::k_invalidElementIndex;
+    };
+}
+```
+
+> `GameObjectModelComponentMaterialSlot` は AssetFilePath(クラス)とハンドルを持つので、Framework.h では
+> `ModelMaterial.h` と `AssetFilePath.h` より後に include する。`ModelDrawMaterial` は Renderer と ModelComponent の両方が使う。
+
+#### GameObjectModelComponent.h(変更)
+
+```cpp
+        void ReloadModel();
+
+        void ApplyMaterialFilePath(const std::size_t& a_slotIndex);
+
+        void ApplyIsSkeletal(const bool a_isSkeletal);
+
+        void SetMaterialAssignmentMap(std::unordered_map<std::wstring, boost::uuids::uuid>&& a_set) { m_materialAssignmentMap = std::move(a_set); }
+
+        void SetIsSkeletal(const bool a_set) { m_isSkeletal = a_set; }
+
+        const auto& GetREFMaterialSlotList() const { return m_materialSlotList; }
+
+        const auto& GetREFMaterialAssignmentMap() const { return m_materialAssignmentMap; }
+
+        const auto& GetREFModelFilePath() const { return m_modelFilePath; }
+
+        auto& GetMutableREFMaterialSlotList() { return m_materialSlotList; }
+
+        auto& GetMutableREFModelFilePath() { return m_modelFilePath; }
+```
+
+private:
+
+```cpp
+        void BuildMaterialSlotList();
+
+        void ApplyMaterialListToRenderer() const;
+
+        void ApplyWorldMatrixToRenderer() const;
+
+        boost::uuids::uuid FetchVALDefaultMaterialUUID(const std::wstring& a_subMeshName) const;
+
+        std::vector<Struct::GameObjectModelComponentMaterialSlot> m_materialSlotList;
+
+        std::unordered_map<std::wstring, boost::uuids::uuid> m_materialAssignmentMap;
+
+        std::unique_ptr<GameObjectModelComponentRendererBase> m_renderer;
+```
+
+#### GameObjectModelComponent.cpp(変更・写経)
+
+`ReloadModel` で、`m_renderer = std::move(l_renderer);` の後に `BuildMaterialSlotList();` と `ApplyMaterialListToRenderer();` を呼ぶ。
+
+```cpp
+void FWK::GameObjectModelComponent::ApplyMaterialFilePath(const std::size_t& a_slotIndex)
+{
+    // インスペクターでスロットの.matを変えたときに呼ばれる
+    FWK_ASSERT_RETURN_IF(a_slotIndex >= m_materialSlotList.size(), "スロットの番号が範囲外のため、マテリアルの変更に失敗しました。");
+
+    auto& l_materialSlot = m_materialSlotList[a_slotIndex];
+
+    // 名前とUUIDの対応を書き換える(保存されるのはこの対応)
+    m_materialAssignmentMap.insert_or_assign(l_materialSlot.m_subMeshName, l_materialSlot.m_materialFilePath.GetREFAssetFilePathUUID());
+
+    // 新しい.matを読み込む(読み込めなければハンドルは無効のまま → エラーマテリアルで描かれる)
+    const auto& l_materialFilePath = l_materialSlot.m_materialFilePath.FetchVALFilePath();
+
+    l_materialSlot.m_material.Load(l_materialFilePath);
+
+    // マテリアルの種類が変わるとパスも変わるため、描き方へ渡し直す(S5で描画項目を作り直す)
+    ApplyMaterialListToRenderer();
+}
+
+void FWK::GameObjectModelComponent::BuildMaterialSlotList()
+{
+    // モデルのサブメッシュ名の一覧から、スロットの一覧を作り直す
+    // モデルを読み込んだとき(ReloadModel)にだけ呼ばれ、毎フレームは呼ばれない
+    m_materialSlotList.clear();
+
+    if (!m_renderer) { return; }
+
+    const auto& l_subMeshNameList = m_renderer->FetchVALSubMeshNameList();
+
+    for (const auto& l_subMeshName : l_subMeshNameList)
+    {
+        // 同じサブメッシュ名は1つのスロットにまとめる(同じ.matを使う)
+        const bool l_hasSlot = std::ranges::any_of(m_materialSlotList,
+                                                   [&l_subMeshName](const auto& a_materialSlot)
+                                                   {
+                                                       return a_materialSlot.m_subMeshName == l_subMeshName;
+                                                   });
+
+        if (l_hasSlot) { continue; }
+
+        Struct::GameObjectModelComponentMaterialSlot l_materialSlot = {};
+
+        l_materialSlot.m_subMeshName = l_subMeshName;
+
+        l_materialSlot.m_materialFilePath.SetAllowedType(Enum::AssetFilePathType::ModelMaterial);
+
+        // 1. 保存されていた対応があればそのUUID
+        // 2. 無ければ、モデルと同じフォルダの既定の.mat(StandardLit_<名前>.mat)のUUID
+        // 3. それも無ければ空のまま(エラーマテリアルで描かれる)
+        if (const auto& l_assignmentITR = m_materialAssignmentMap.find(l_subMeshName);
+            l_assignmentITR != m_materialAssignmentMap.end())
+        {
+            l_materialSlot.m_materialFilePath.SetAssetFilePathUUID(l_assignmentITR->second);
+        }
+        else
+        {
+            l_materialSlot.m_materialFilePath.SetAssetFilePathUUID(FetchVALDefaultMaterialUUID(l_subMeshName));
+        }
+
+        const auto& l_materialFilePath = l_materialSlot.m_materialFilePath.FetchVALFilePath();
+
+        if (!l_materialFilePath.empty())
+        {
+            l_materialSlot.m_material.Load(l_materialFilePath);
+        }
+
+        m_materialSlotList.emplace_back(std::move(l_materialSlot));
+    }
+}
+
+void FWK::GameObjectModelComponent::ApplyMaterialListToRenderer() const
+{
+    if (!m_renderer) { return; }
+
+    const auto& l_graphicsManager     = Graphics::GraphicsManager::GetInstance       ();
+    const auto& l_resourceContext     = l_graphicsManager.GetREFResourceContext      ();
+    const auto& l_modelMaterialSystem = l_resourceContext.GetREFModelMaterialSystem  ();
+    const auto& l_errorMaterial       = l_modelMaterialSystem.GetREFErrorMaterial    ();
+    const auto& l_subMeshNameList     = m_renderer->FetchVALSubMeshNameList          ();
+
+    // メッシュごとに「マテリアルの種類(どのテーブルか = GPUデータの型のStaticTypeID)と、テーブルの何番目か」を並べる
+    // 例 : メッシュ0("Body") → StandardLitの3番 / メッシュ1("Face") → StandardLitの4番
+    std::vector<Struct::ModelDrawMaterial> l_drawMaterialList = {};
+
+    l_drawMaterialList.reserve(l_subMeshNameList.size());
+
+    for (const auto& l_subMeshName : l_subMeshNameList)
+    {
+        const auto& l_materialSlotITR = std::ranges::find_if(m_materialSlotList,
+                                                             [&l_subMeshName](const auto& a_materialSlot)
+                                                             {
+                                                                 return a_materialSlot.m_subMeshName == l_subMeshName;
+                                                             });
+
+        // スロットのマテリアルが無い(読み込めなかった)ときは、エラーマテリアルにする
+        auto l_material = l_errorMaterial;
+
+        if (l_materialSlotITR != m_materialSlotList.end())
+        {
+            if (const auto& l_slotMaterial = l_materialSlotITR->m_material.FetchVALMaterial();
+                l_slotMaterial)
+            {
+                l_material = l_slotMaterial;
+            }
+        }
+
+        Struct::ModelDrawMaterial l_drawMaterial = {};
+
+        if (l_material)
+        {
+            // マテリアルの種類は、GPUデータの型のStaticTypeIDで渡す(S5で、どの描画項目の一覧に入れるかを決めるのに使う)
+            const auto& l_tableINFO = l_material->FetchREFTableINFO();
+
+            l_drawMaterial.m_tableStaticTypeID = l_tableINFO.k_typeINFO->k_staticTypeID;
+            l_drawMaterial.m_tableElementIndex = l_material->GetVALTableElementIndex();
+        }
+
+        l_drawMaterialList.emplace_back(l_drawMaterial);
+    }
+
+    m_renderer->ApplyMaterialList(l_drawMaterialList);
+}
+
+boost::uuids::uuid FWK::GameObjectModelComponent::FetchVALDefaultMaterialUUID(const std::wstring& a_subMeshName) const
+{
+    // モデルと同じフォルダにある既定の.mat(StandardLit_<名前>.mat)を、RegistryからUUIDで探す
+    const auto& l_modelFilePath    = m_modelFilePath.FetchVALFilePath                                      ();
+    const auto& l_materialFilePath = Graphics::ModelMaterialFileCreator::CreateDefaultModelMaterialFilePath(l_modelFilePath, a_subMeshName);
+
+    const auto& l_application           = Application::GetInstance                 ();
+    const auto& l_assetFilePathRegistry = l_application.GetREFAssetFilePathRegistry();
+
+    if (const auto* l_assetUUID = l_assetFilePathRegistry.FindPTRAssetUUID(l_materialFilePath);
+        l_assetUUID)
+    {
+        return *l_assetUUID;
+    }
+
+    return {};
+}
+```
+
+> `l_materialSlot.m_materialFilePath.SetAllowedType(...)` のように、構造体のメンバ(クラス)の Set を呼ぶのは規約 11-11 の対象外(自作の関数の戻り値ではなく、変数のメンバ)。
+> 禁止文字の置き換えは `CreateDefaultModelMaterialFilePath` の中で行うので、作る側と探す側で名前がずれない。
+
+#### Renderer(Static / Skeletal)への追加
+
+```cpp
+        virtual std::vector<std::wstring> FetchVALSubMeshNameList() const = 0;
+
+        virtual void ApplyMaterialList(const std::vector<Struct::ModelDrawMaterial>& a_drawMaterialList) = 0;
+```
+
+- `FetchVALSubMeshNameList` : Record のメッシュの `m_subMeshName` を、メッシュの順に並べて返す。
+- `ApplyMaterialList` : メッシュごとのマテリアルを `std::vector<Struct::ModelDrawMaterial> m_drawMaterialList` に覚える。
+  S5 で、これを使って描画項目(どのパスに、どの番号で)を作る。
+
+#### JsonConverter(変更)
+
+```json
+"MaterialSlotList": [
+    { "SubMeshName": "Body", "MaterialFilePath": { "AssetFilePathUUID": "..." } },
+    { "SubMeshName": "Face", "MaterialFilePath": { "AssetFilePathUUID": "..." } }
+]
+```
+
+- Deserialize : 配列を読んで `std::unordered_map<std::wstring, boost::uuids::uuid>` を作り、`SetMaterialAssignmentMap(std::move(...))`。
+- Serialize : `GetREFMaterialAssignmentMap()` を全部書く(今のモデルに無い名前の組も残す)。
+- サブメッシュ名は wstring なので、JSON へは UTF-8 の std::string に変換して書く(`Utility::WStringToString` / `StringToWString`)。
+
+#### インスペクター(変更)
+
+スロットごとに、サブメッシュ名のラベルと .mat の AssetFilePath のボタンを出す。ボタンへドロップして変わったら `ApplyMaterialFilePath(スロットの番号)`。
+
+```cpp
+    auto& l_materialSlotList = a_modelComponent.GetMutableREFMaterialSlotList();
+
+    for (std::size_t l_slotIndex = 0ULL; l_slotIndex < l_materialSlotList.size(); ++l_slotIndex)
+    {
+        auto& l_materialSlot = l_materialSlotList[l_slotIndex];
+
+        ImGui::TextUnformatted(Utility::WStringToString(l_materialSlot.m_subMeshName).c_str());
+
+        if (l_materialSlot.m_materialFilePath.EditInspector())
+        {
+            a_modelComponent.ApplyMaterialFilePath(l_slotIndex);
+        }
+    }
+```
+
+> ここでは `GetMutableREFMaterialSlotList` を使ってよい(AssetFilePath の EditInspector = 子のオブジェクトの処理関数に任せる、規約 6-4)。
 
 ## テスト用のベンチマークのコンポーネントの登録(こちらが行う)
 

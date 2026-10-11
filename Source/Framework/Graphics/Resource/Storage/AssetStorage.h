@@ -5,10 +5,6 @@ namespace FWK::Graphics
     template <Concept::IsDerivedAssetRecordBaseConcept RecordType>
     class AssetStorage final
     {
-    private:
-
-        using RecordMap = std::unordered_map<std::wstring, std::shared_ptr<RecordType>>;
-
     public:
 
          AssetStorage() = default;
@@ -88,7 +84,7 @@ namespace FWK::Graphics
             const auto& l_filePath = l_record->GetREFFilePath ();
 
             // マップで管理していたレコードのストレージIDをリリース
-            if (const auto& l_storageID = l_record->GetVALStorageID();
+            if (const auto l_storageID = l_record->GetVALStorageID();
                 l_storageID != Constant::k_invalidStorageID)
             {
                 m_storageIDAllocator.Release(l_storageID);
@@ -137,7 +133,7 @@ namespace FWK::Graphics
 
     private:
 
-        RecordMap m_recordMap = {};
+        std::unordered_map<std::wstring, std::shared_ptr<RecordType>> m_recordMap = {};
 
         Utility::StorageIDAllocator m_storageIDAllocator = {};
 

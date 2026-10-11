@@ -154,7 +154,7 @@ void FWK::Editor::ViewportEditorWindow::SetupViewportTextureDescriptors()
 
         // ImGuiでTextureを表示するにはTextureをShaderから読めるSRVが必要になる
         // ここではRenderTargetTextureに割り当てられているSRVのDescriptorIndexを取得する
-        const auto& l_srvDescriptorIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
+        const auto l_srvDescriptorIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
 
         FWK_ASSERT_RETURN_IF(l_srvDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex, "SRVDescriptorIndexが無効値になっており、PostDeserialize処理に失敗しました。");
 
@@ -235,7 +235,7 @@ void FWK::Editor::ViewportEditorWindow::DrawCameraPreview() const
     if (!l_finalColorPassTexture) { return; }
 
     const auto& l_renderTargetTexture = l_finalColorPassTexture->GetREFRenderTargetTexture();
-    const auto& l_srvDescriptorIndex  = l_renderTargetTexture.GetVALSRVDescriptorIndex    ();
+    const auto  l_srvDescriptorIndex  = l_renderTargetTexture.GetVALSRVDescriptorIndex    ();
 
     if (l_srvDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex) { return; }
 
@@ -273,7 +273,7 @@ void FWK::Editor::ViewportEditorWindow::DrawCameraPreview() const
                          l_uvMAX);
 
     // プレビューの範囲が分かるよう、アクセントカラーの枠線を描く
-    const auto& l_borderColor = ImGui::ColorConvertFloat4ToU32(Constant::k_imguiAccentColor);
+    const auto l_borderColor = ImGui::ColorConvertFloat4ToU32(Constant::k_imguiAccentColor);
 
     l_drawList->AddRect(l_previewMIN,
                         l_previewMAX,
@@ -309,8 +309,8 @@ void FWK::Editor::ViewportEditorWindow::RequestCameraPreview(const EditorManager
 
     // プレビューの幅はビューポートの幅のk_cameraPreviewWidthRatio倍(4分の1)
     // 高さはカメラの縦横比から求める
-    const auto& l_previewWidth  = static_cast<UINT>(a_viewportSize.x * k_cameraPreviewWidthRatio);
-    const auto& l_previewHeight = static_cast<UINT>(static_cast<float>(l_previewWidth) / l_aspectRatio);
+    const auto l_previewWidth  = static_cast<UINT>(a_viewportSize.x * k_cameraPreviewWidthRatio);
+    const auto l_previewHeight = static_cast<UINT>(static_cast<float>(l_previewWidth) / l_aspectRatio);
 
     // 0サイズのテクスチャは作れないため、小さすぎる場合は依頼しない
     if (!Utility::IsValidTextureSize(l_previewWidth, l_previewHeight)) { return; }

@@ -122,7 +122,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector
     // 貼り付け先フォルダが一つもなければ何もしない
     if (a_destinationFolderPathList.empty()) { return; }
 
-    const auto& l_operationType = a_clipboard.GetVALOperationType();
+    const auto l_operationType = a_clipboard.GetVALOperationType();
 
     // 操作種別がInvalidなら何もしない
     if (l_operationType == Enum::AssetBrowserFileClipboardOperationType::Invalid) { return; }

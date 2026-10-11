@@ -128,7 +128,7 @@ bool FWK::Graphics::UploadBuffer::Map()
     //     マップした先頭アドレスの受取先);
     // Bufferリソースなのでサブリソースは0固定で扱う
     // UploadBufferはCPUから書き込みたい用途なのでMapして生ポインタを取得する
-    const auto& l_hr = m_uploadBuffer->Map(k_firstSubresourceIndex, nullptr, &l_mappedData);
+    const auto l_hr = m_uploadBuffer->Map(k_firstSubresourceIndex, nullptr, &l_mappedData);
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "UploadBufferのMapに失敗しました。", false);
 

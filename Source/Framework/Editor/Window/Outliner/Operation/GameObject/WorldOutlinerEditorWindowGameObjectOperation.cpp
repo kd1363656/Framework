@@ -313,7 +313,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects
     if (a_clipboard.IsEmpty()) { return; }
 
     const auto& l_uuidList      = a_clipboard.GetREFClipboardGameObjectUUIDList();
-    const auto& l_operationType = a_clipboard.GetVALOperationType              ();
+    const auto  l_operationType = a_clipboard.GetVALOperationType              ();
 
     // PasteしたGameObjectを選択状態にするためのリスト
     std::vector<std::weak_ptr<GameObject>> l_pastedList = {};
@@ -438,7 +438,7 @@ FWK::Struct::DestroyedGameObjectRecord FWK::Editor::WorldOutlinerEditorWindowGam
     return l_record;
 }
 
-FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ChildGameObjectDataList::iterator FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const
+std::vector<FWK::Struct::SmartPointerVectorListArrayElementData<std::weak_ptr<FWK::GameObject>>>::iterator FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, std::vector<Struct::SmartPointerVectorListArrayElementData<std::weak_ptr<GameObject>>>& a_childDataList) const
 {
    // 同じアドレスを持つゲームオブジェクトのイテレータ位置を返す
    return std::find_if(a_childDataList.begin(), a_childDataList.end(),

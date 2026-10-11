@@ -253,9 +253,9 @@ bool FWK::Graphics::ModelDrawCommandSignature::Create(const Device& a_device, co
     //                        ルートシグネチャ(ルート定数を書き換えるときは必須)、
     //                        受け取りたいCOMインターフェース型のID、
     //                        作成結果のポインタを書き込むアドレス);
-    const auto& l_hr = l_device->CreateCommandSignature(&l_commandSignatureDesc,
-                                                        l_d3dRootSignature.Get(),
-                                                        IID_PPV_ARGS(m_commandSignature.ReleaseAndGetAddressOf()));
+    const auto l_hr = l_device->CreateCommandSignature(&l_commandSignatureDesc,
+                                                       l_d3dRootSignature.Get(),
+                                                       IID_PPV_ARGS(m_commandSignature.ReleaseAndGetAddressOf()));
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "コマンドシグネチャの作成に失敗しました。", false);
 
@@ -290,7 +290,7 @@ private:
         static constexpr std::size_t k_initialArgumentBufferCapacity = 1024ULL;
         static constexpr std::size_t k_argumentBufferGrowthRate      = 2ULL;
 
-        FrameDrawItemList m_frameDrawItemList;
+        std::vector<std::vector<Struct::ModelDrawItem>> m_frameDrawItemList;
 
         std::vector<UploadBuffer> m_argumentBufferList;
 
@@ -298,7 +298,7 @@ private:
 
         std::vector<std::uint64_t> m_uploadedVersionList;
 
-        RegistrationMap m_registrationMap;
+        std::unordered_map<std::uint64_t, std::vector<std::vector<Struct::ModelDrawItem>>> m_registrationMap;
 
         std::size_t m_frameCount;
 
@@ -309,6 +309,7 @@ private:
 ```
 
 > - `RecordDraw` からルートシグネチャの引数が消え、代わりにコマンドシグネチャを受け取る。
+> - public の `Register` / `Unregister` / `k_invalidRegistrationID`(S5)は変えない。`ModelDrawRegistration`(S5)も変えない。
 > - コマンドシグネチャは一覧には持たせない。一覧は「メッシュの種類 × マテリアル」の数だけあり(マテリアルを足すと増える)、
 >   影のパスは同じ一覧を別のルートシグネチャ(ModelCascadeShadow)で描くので、一覧ごとに1つでは足りないため。
 >   ModelRenderSystem が「ルートシグネチャごとに1つ」持ち、描くときに渡す(下の ModelRenderSystem)。
@@ -419,23 +420,16 @@ bool FWK::Graphics::ModelDrawItemList::UploadArgumentBufferIfNeeded(const std::s
 ```cpp
     private:
 
-        using RootSignatureMap = std::unordered_map<Enum::RootSignatureType, std::shared_ptr<RootSignature>>;
-
-        using ModelRenderTableMap = std::unordered_map<TypeAlias::StaticTypeID, std::shared_ptr<GPUElementTable>>;
-
-        using ModelDrawItemListMap         = std::unordered_map<TypeAlias::StaticTypeID, std::shared_ptr<ModelDrawItemList>>;
-        using ModelMeshTypeDrawItemListMap = std::unordered_map<Enum::ModelMeshType, ModelDrawItemListMap>;
-
-        using ModelDrawCommandSignatureMap = std::unordered_map<const RootSignature*, ModelDrawCommandSignature>;
+        using ModelMeshTypeDrawItemListMapList = std::array<std::unordered_map<TypeAlias::StaticTypeID, std::shared_ptr<ModelDrawItemList>>, static_cast<std::size_t>(Enum::ModelMeshType::Count)>;
 
     public:
         ...
 
-        bool Create(const RootSignatureMap&                   a_rootSignatureMap,
-                    const Device&                             a_device,
-                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                    const std::size_t&                        a_frameCount,
-                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+        bool Create(const std::unordered_map<Enum::RootSignatureType, std::shared_ptr<RootSignature>>& a_rootSignatureMap,
+                    const Device&                                                                   a_device,
+                    const GPUMemoryAllocator&                                                       a_gpuMemoryAllocator,
+                    const std::size_t&                                                              a_frameCount,
+                          TypeAlias::CBVSRVUAVDescriptorPool&                                       a_cbvSRVUAVDescriptorPool);
         ...
 
     private:
@@ -446,16 +440,19 @@ bool FWK::Graphics::ModelDrawItemList::UploadArgumentBufferIfNeeded(const std::s
                                 const Enum::ModelMeshType     a_meshType,
                                 const TypeAlias::StaticTypeID a_materialTableStaticTypeID) const;
 
+        const std::unordered_map<TypeAlias::StaticTypeID, std::shared_ptr<ModelDrawItemList>>* FindPTRDrawItemListMap(const Enum::ModelMeshType a_meshType) const;
+
         const ModelDrawCommandSignature* FindPTRCommandSignature(const RootSignature& a_rootSignature) const;
 
-        ModelRenderTableMap          m_tableMap                = {};
-        ModelMeshTypeDrawItemListMap m_meshTypeDrawItemListMap = {};
-        ModelDrawCommandSignatureMap m_commandSignatureMap     = {};
+        std::unordered_map<TypeAlias::StaticTypeID, std::shared_ptr<GPUElementTable>> m_tableMap            = {};
+        std::unordered_map<const RootSignature*, ModelDrawCommandSignature>           m_commandSignatureMap = {};
+
+        ModelMeshTypeDrawItemListMapList m_meshTypeDrawItemListMapList = {};
 
         Converter::ModelRenderSystemJsonConverter m_jsonConverter = {};
 ```
 
-> - `RootSignatureMap` は Renderer の `m_rootSignatureMap` と同じ型(Renderer の別名は private なので、こちらにも同じ別名を置く)。
+> - `a_rootSignatureMap` は Renderer の `m_rootSignatureMap` と同じ型(unordered_map の別名は第3・第4引数を使うときだけ作るので、型をそのまま書く。規約 14-4)。
 >   引数の並びは「配列(map)→ 自作クラス → 数値 → 参照」(規約 20-4)。
 > - コマンドシグネチャの map のキーは、ルートシグネチャの**アドレス**(`const RootSignature*`)。
 >   パスは `SetupGraphicsRenderPipeline` で受け取ったルートシグネチャ(の参照)を渡してくるので、そのアドレスでそのまま探せる。
@@ -554,13 +551,13 @@ const FWK::Graphics::ModelDrawCommandSignature* FWK::Graphics::ModelRenderSystem
 
 ## ビルドと動作の確認(ここでこちらがビルドする)
 
-1. MSBuild(VS 18、Debug | x64)でビルドし、S0 ~ S6 のコンパイルエラーを直す。
+1. MSBuild(VS 18、Debug | x64)でビルドし、S2 ~ S6 のコンパイルエラーを直す(ModelComponent(S0)はまだ無い)。
 2. checker の `runall.py` / `filtercheck.py` で規約とフィルターを確認する。
-3. ユーザーに起動してもらい、次を確かめる。
-   - モデル(Static / Skeletal)・影・マテリアルのスロットが、S5 の確認項目どおりに動く。
-   - D3D12 のデバッグレイヤーのエラー(出力ウィンドウの `D3D12 ERROR`)が出ない。
-   - プロファイラーの CPU「描画命令の記録」が、モデルの数を増やしてもほとんど増えない。
-   - GPU の各パスの時間を、S1 の時点の数字と比べる。
+3. ユーザーに起動してもらい、次を確かめる(描画項目を出す側が無いので、モデルはまだ描かれない)。
+   - 起動・終了でアサートが出ない(テーブル・描画項目の一覧・コマンドシグネチャ・エラーマテリアルの作成、終了時の破棄の順番)。
+   - D3D12 のデバッグレイヤーのエラー(出力ウィンドウの `D3D12 ERROR`)が出ない。一覧が空なので、`ModelDrawItemList::RecordDraw` の `empty()` の確認で ExecuteIndirect を呼ばずに戻っていること。
+   - FBX を初めて置くと `StandardLit_<名前>.mat` ができる(S4)。
+4. モデル・影・マテリアルの切り替え・「描画命令の記録」の時間の比較は、S0 で ModelComponent を作った後に確かめる。
 
 ## 次(フェーズ2)
 

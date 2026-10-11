@@ -198,7 +198,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
 
         if (a_materialIndex != k_invalidMaterialIndex)
         {
-            const auto& l_faceMaterialIndex = l_fbxMesh->face_material.data[l_faceIndex];
+            const auto l_faceMaterialIndex = l_fbxMesh->face_material.data[l_faceIndex];
 
             FWK_ASSERT_RETURN_VALUE_IF(l_faceMaterialIndex >= l_fbxMesh->materials.count, "Faceが参照するMaterialIndexが範囲外です。", false);
 
@@ -303,7 +303,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
             break;
         }
 
-        const auto& l_skinWeightIndex = l_fbxSkinVertex.weight_begin + l_skinWeightOffset;
+        const auto  l_skinWeightIndex = l_fbxSkinVertex.weight_begin + l_skinWeightOffset;
         const auto& l_fbxSkinWeight   = a_fbxSkinDeformer->weights.data[l_skinWeightIndex];
 
         // Weightは降順なので0以下になった時点で終了する

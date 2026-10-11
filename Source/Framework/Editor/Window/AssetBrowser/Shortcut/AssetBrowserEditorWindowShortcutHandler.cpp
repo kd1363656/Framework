@@ -7,7 +7,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
                                                                         AssetBrowserEditorWindow&           a_editorWindow) const
 {
     // アクティブPane無効の場合は何もしない
-    if (const auto& l_activePane = a_editorWindow.GetVALActivePane();
+    if (const auto l_activePane = a_editorWindow.GetVALActivePane();
         l_activePane == Enum::AssetBrowserActivePaneType::Invalid)
     {
         return;

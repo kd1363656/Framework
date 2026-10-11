@@ -38,7 +38,7 @@ bool FWK::Physics::PhysicsStaticBodyBase::CreateAndAddStaticBody(const JPH::RefC
     l_bodyCreationSettings.mIsSensor = !a_isPushBackEnabled;
 
           auto& l_bodyInterface = l_physicsSystem.GetBodyInterface();
-    const auto& l_bodyID        = l_bodyInterface.CreateAndAddBody(l_bodyCreationSettings, JPH::EActivation::DontActivate);
+    const auto  l_bodyID        = l_bodyInterface.CreateAndAddBody(l_bodyCreationSettings, JPH::EActivation::DontActivate);
 
     FWK_ASSERT_RETURN_VALUE_IF(l_bodyID.IsInvalid(), "StaticBodyの作成に失敗しました。", false);
 

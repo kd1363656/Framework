@@ -27,10 +27,10 @@ void FWK::Converter::RootSignatureJsonConverter::Deserialize(const nlohmann::jso
 
     // このルートシグネチャをパイプラインからどう使うかを決定するフラグ
     // どのシェーダーステージからアクセスするか、InputAssemblerを使うかLocalRootSignatureかを決める
-    const auto& l_flags = a_rootJson.value(k_rootSignatureFlagsJsonKey, D3D12_ROOT_SIGNATURE_FLAG_NONE);
+    const auto l_flags = a_rootJson.value(k_rootSignatureFlagsJsonKey, D3D12_ROOT_SIGNATURE_FLAG_NONE);
 
     // どのバージョンのルートシグネチャ仕様でシリアライズするかを決める
-    const auto& l_version = a_rootJson.value(k_rootSignatureVersionJsonKey, D3D_ROOT_SIGNATURE_VERSION_1);
+    const auto l_version = a_rootJson.value(k_rootSignatureVersionJsonKey, D3D_ROOT_SIGNATURE_VERSION_1);
 
     a_rootSignature.SetRootSignatureFlags  (l_flags);
     a_rootSignature.SetRootSignatureVersion(l_version);
@@ -63,8 +63,8 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterIndexMa
 
     for (const auto& l_json : a_rootJson)
     {
-        const auto& l_rootParameterType = l_json.value(k_rootParameterTypeJsonKey, Enum::RootParameterType::Invalid);
-        const auto& l_index             = l_json.value(k_indexJsonKey,             k_invalidRootParameterIndex);
+        const auto l_rootParameterType = l_json.value(k_rootParameterTypeJsonKey, Enum::RootParameterType::Invalid);
+        const auto l_index             = l_json.value(k_indexJsonKey,             k_invalidRootParameterIndex);
 
         l_rootParameterIndexMap.try_emplace(l_rootParameterType, l_index);
     }

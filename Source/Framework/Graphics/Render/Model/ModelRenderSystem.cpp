@@ -42,6 +42,17 @@ bool FWK::Graphics::ModelRenderSystem::Create(const Device&                     
         FWK_ASSERT_RETURN_VALUE_IF(!l_isCreated, "ModelRenderSystemのテーブルの作成に失敗しました。", false);
     }
 
+    // AddTableで入れた描画項目の一覧を、フレームの数で作る
+    // 1段目 = メッシュの種類(配列)、2段目 = マテリアルのテーブルのStaticTypeID(map)
+    for (const auto& l_drawItemListMap : m_meshTypeDrawItemListMapList)
+    {
+        for (const auto& [l_materialTableStaticTypeID, l_drawItemList] : l_drawItemListMap)
+        {
+            FWK_ASSERT_RETURN_VALUE_IF(!l_drawItemList,                       "描画項目の一覧が無効のため、ModelRenderSystemの作成に失敗しました。",         false);
+            FWK_ASSERT_RETURN_VALUE_IF(!l_drawItemList->Create(a_frameCount), "描画項目の一覧の作成に失敗したため、ModelRenderSystemの作成に失敗しました。", false);
+        }
+    }
+
     // オブジェクトとメッシュのテーブルは、すべてのモデルの描画で使う
     // CONFIGに書き忘れていたら、毎フレームの描画で気づくのではなく、起動時に作成を失敗にする
     FWK_ASSERT_RETURN_VALUE_IF(FindVALTable<ModelObjectGPUData>().expired(), "GraphicsCONFIG.jsonにModelObjectGPUDataが無いため、ModelRenderSystemの作成に失敗しました。", false);
@@ -59,6 +70,32 @@ void FWK::Graphics::ModelRenderSystem::RecordUpload(const DirectCommandList& a_d
         if (!l_table) { continue; }
 
         l_table->RecordUpload(a_directCommandList, a_frameIndex);
+    }
+}
+
+void FWK::Graphics::ModelRenderSystem::RecordDrawWithoutMaterial(const RootSignature&      a_rootSignature,
+                                                                 const DirectCommandList&  a_directCommandList,
+                                                                 const std::size_t&        a_frameIndex,
+                                                                 const Enum::ModelMeshType a_meshType) const
+{
+    // メッシュの種類の、マテリアルごとの一覧のmapを探す(範囲外の種類ならnullptr)
+    const auto* l_drawItemListMap = FindPTRDrawItemListMap(a_meshType);
+
+    FWK_ASSERT_RETURN_IF(!l_drawItemListMap, "メッシュの種類が範囲外のため、モデルの描画に失敗しました。");
+
+    // オブジェクトとメッシュのテーブルのSRVの番号を、パスの最初に1回だけ送る
+    const auto& l_rcModelTable = FetchVALRCModelTable();
+
+    a_directCommandList.SetupRoot32BitConstants(l_rcModelTable, a_rootSignature, Enum::RootParameterType::RCModelTable);
+
+    // 影のパスのように、マテリアルを使わないパスは、このメッシュの種類の一覧を全部描く
+    // 例 : Staticの影なら、Static × StandardLit と Static × StandardUnLit の両方を描く
+    // マテリアルのテーブルの番号(RCModelMaterialTable)は送らない(影のルートシグネチャには無い)
+    for (const auto& [l_materialTableStaticTypeID, l_drawItemList] : *l_drawItemListMap)
+    {
+        if (!l_drawItemList) { continue; }
+
+        l_drawItemList->RecordDraw(a_rootSignature, a_directCommandList, a_frameIndex);
     }
 }
 
@@ -85,6 +122,21 @@ void FWK::Graphics::ModelRenderSystem::AddTable(const Struct::ModelRenderTableIN
     l_table->SetElementByteStride(a_tableINFO.k_elementByteStride);
 
     m_tableMap.try_emplace(l_tableStaticTypeID, std::move(l_table));
+
+    // マテリアルのテーブル(FWK_DEFINE_MODEL_MATERIAL_RENDER_TABLE_INFOを書いた型)なら、
+    // メッシュの種類(Static / Skeletal)ごとに、描画項目の一覧を入れる
+    // 例 : CONFIGにStandardLitとStandardUnLitが書かれていれば、
+    //      Static × StandardLit / Static × StandardUnLit / Skeletal × StandardLit / Skeletal × StandardUnLit の4つ
+    // テーブルと同じく、CONFIGに書いたマテリアルの分だけ入る(パスの種類のenumは要らない)
+    // ここでは入れるだけで、一覧の中身(フレームの数だけの入れ物)はCreateで作る(テーブルと同じ流れ)
+    if (!a_tableINFO.k_isMaterial) { return; }
+
+    // 配列の添字がメッシュの種類(0 = Static / 1 = Skeletal)なので、配列を回せば全部の種類へ入れられる
+    // それぞれのmapへ、マテリアルのテーブルのStaticTypeIDをキーにして一覧を入れる
+    for (auto& l_drawItemListMap : m_meshTypeDrawItemListMapList)
+    {
+        l_drawItemListMap.try_emplace(l_tableStaticTypeID, std::make_shared<ModelDrawItemList>());
+    }
 }
 
 FWK::Struct::RCModelTable FWK::Graphics::ModelRenderSystem::FetchVALRCModelTable() const
@@ -120,4 +172,57 @@ std::weak_ptr<FWK::Graphics::GPUElementTable> FWK::Graphics::ModelRenderSystem::
     if (l_tableITR == m_tableMap.end()) { return {}; }
 
     return l_tableITR->second;
+}
+
+std::weak_ptr<FWK::Graphics::ModelDrawItemList> FWK::Graphics::ModelRenderSystem::FindVALDrawItemList(const Enum::ModelMeshType a_meshType, const TypeAlias::StaticTypeID a_materialTableStaticTypeID) const
+{
+    // 1. メッシュの種類(Static / Skeletal)で、マテリアルごとの一覧のmapを探す
+    const auto* l_drawItemListMap = FindPTRDrawItemListMap(a_meshType);
+
+    if (!l_drawItemListMap) { return {}; }
+
+    // 2. そのmapの中で、マテリアルのテーブル(GPUデータの型のStaticTypeID)の一覧を探す
+    const auto& l_drawItemListITR = l_drawItemListMap->find(a_materialTableStaticTypeID);
+
+    if (l_drawItemListITR == l_drawItemListMap->end()) { return {}; }
+
+    return l_drawItemListITR->second;
+}
+
+void FWK::Graphics::ModelRenderSystem::RecordMaterialDraw(const RootSignature&          a_rootSignature,
+                                                          const DirectCommandList&      a_directCommandList,
+                                                          const std::size_t&            a_frameIndex,
+                                                          const Enum::ModelMeshType     a_meshType,
+                                                          const TypeAlias::StaticTypeID a_materialTableStaticTypeID) const
+{
+    const auto& l_drawItemList = FindVALDrawItemList(a_meshType, a_materialTableStaticTypeID).lock();
+
+    FWK_ASSERT_RETURN_IF(!l_drawItemList, "メッシュの種類とマテリアルに対応する描画項目の一覧が無いため、モデルの描画に失敗しました。");
+
+    // オブジェクトとメッシュのテーブルのSRVの番号を、パスの最初に1回だけ送る
+    // 描画ごとに変わらないので、描画項目のループの外で送る
+    const auto& l_rcModelTable = FetchVALRCModelTable();
+
+    a_directCommandList.SetupRoot32BitConstants(l_rcModelTable, a_rootSignature, Enum::RootParameterType::RCModelTable);
+
+    // このパスが描くマテリアルのテーブルのSRVの番号も送る
+    // PSは、描画ごとのマテリアルの番号(RCModelDrawItemのg_materialIndex)で、このテーブルを引く
+    Struct::RCModelMaterialTable l_rcModelMaterialTable = {};
+
+    l_rcModelMaterialTable.m_materialTableSRVDescriptorIndex = FetchVALTableSRVDescriptorIndex(a_materialTableStaticTypeID);
+
+    a_directCommandList.SetupRoot32BitConstants(l_rcModelMaterialTable, a_rootSignature, Enum::RootParameterType::RCModelMaterialTable);
+
+    l_drawItemList->RecordDraw(a_rootSignature, a_directCommandList, a_frameIndex);
+}
+
+const std::unordered_map<FWK::TypeAlias::StaticTypeID, std::shared_ptr<FWK::Graphics::ModelDrawItemList>>* FWK::Graphics::ModelRenderSystem::FindPTRDrawItemListMap(const Enum::ModelMeshType a_meshType) const
+{
+    // メッシュの種類(Static = 0 / Skeletal = 1)を、そのまま配列の添字に使う
+    // Countなどの範囲外の値が渡されたときは、配列の外を読まないようにnullptrを返す
+    const auto& l_meshTypeIndex = static_cast<std::size_t>(a_meshType);
+
+    if (l_meshTypeIndex >= m_meshTypeDrawItemListMapList.size()) { return nullptr; }
+
+    return &m_meshTypeDrawItemListMapList[l_meshTypeIndex];
 }

@@ -92,9 +92,9 @@ void FWK::Physics::PhysicsDebugTriangleBatch::CopyIndexedTriangleList(const JPH:
         const auto& l_baseIndex = l_triangleIndex * static_cast<std::size_t>(Constant::k_triangleVertexCount);
 
         // 各頂点に対応するインデックスを取得
-        const auto& l_vertexZeroIndex = a_indexList[l_baseIndex + k_vertexZeroOffset];
-        const auto& l_vertexOneIndex  = a_indexList[l_baseIndex + k_vertexOneOffset];
-        const auto& l_vertexTwoIndex  = a_indexList[l_baseIndex + k_vertexTwoOffset];
+        const auto l_vertexZeroIndex = a_indexList[l_baseIndex + k_vertexZeroOffset];
+        const auto l_vertexOneIndex  = a_indexList[l_baseIndex + k_vertexOneOffset];
+        const auto l_vertexTwoIndex  = a_indexList[l_baseIndex + k_vertexTwoOffset];
 
         // 取得したインデックスそのものがVertex数の範囲内かを確認する
         // 範囲外なら途中まで作成した三角形を残さないようクリアしてから中断する

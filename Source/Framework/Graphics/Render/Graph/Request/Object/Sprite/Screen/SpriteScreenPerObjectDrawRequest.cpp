@@ -24,7 +24,7 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
         Struct::CBSpritePerObject l_cbSpritePerObject = {};
 
         // TextureRecordからテクスチャのSRVIndexを取得
-        const auto& l_textureSRVIndex = FetchVALTextureSRVDescriptorIndex(l_drawRequest->m_textureRecord);
+        const auto l_textureSRVIndex = FetchVALTextureSRVDescriptorIndex(l_drawRequest->m_textureRecord);
 
         l_cbSpritePerObject.m_baseColorTextureSRVIndex = l_textureSRVIndex;
 

@@ -91,7 +91,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(c
     FWK_ASSERT_RETURN_VALUE_IF(!l_textureResource, "TextureResourceが作成されておらず、テクスチャサブリソースアップロード情報作成処理に失敗しました。", false);
 
     const auto& l_textureResourceDesc = l_textureResource->GetDesc();
-    const auto& l_subresourceCount    = static_cast<UINT>         (a_scratchImage.GetImageCount());
+    const auto  l_subresourceCount    = static_cast<UINT>         (a_scratchImage.GetImageCount());
           auto& l_textureUploadRecord = a_textureBatchUploadRecord.m_textureUploadRecord;
 
     // 各サブリソースをUploadBufferの何バイト目からどんな形で置けばいいかを覚えておくリスト
@@ -250,7 +250,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const Devi
     }
 
     // SRVストレージIDを格納
-    const auto& l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
+    const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "SRV用ストレージIDの確保に失敗したため、TextureSRV作成処理に失敗しました。", false);
 

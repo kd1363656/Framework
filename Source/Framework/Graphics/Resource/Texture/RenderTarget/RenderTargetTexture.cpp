@@ -106,7 +106,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateRTV(const Device& a_device, TypeA
     FWK_ASSERT_RETURN_VALUE_IF(!l_device,                 "デバイスが作成されておらず、RenderTargetTexture用のRTVの作成に失敗しました。",    false);
     FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource, "GPUResourceが作成されておらず、RenderTargetTexture用のRTVの作成に失敗しました。", false);
 
-    const auto& l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
+    const auto l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RTVDescriptorIndexの確保に失敗しました。", false);
 
@@ -136,7 +136,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
     FWK_ASSERT_RETURN_VALUE_IF(!l_device,                 "デバイスが作成されておらず、RenderTargetTexture用のSRVの作成に失敗しました。",    false);
     FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource, "GPUResourceが作成されておらず、RenderTargetTexture用のSRVの作成に失敗しました。", false);
 
-    const auto& l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
+    const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "SRVDescriptorIndexの確保に失敗しました。", false);
 

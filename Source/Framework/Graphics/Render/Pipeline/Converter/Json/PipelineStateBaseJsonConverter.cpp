@@ -4,8 +4,8 @@ void FWK::Converter::PipelineStateBaseJsonConverter::Deserialize(const nlohmann:
 {
     if (a_rootJson.is_null()) { return; }
 
-    const auto& l_useRootSignatureType = a_rootJson.value(k_useRootSignatureTypeJsonKey, Enum::RootSignatureType::Invalid);
-    const auto& l_pipelineStateFlags   = a_rootJson.value(k_pipelineStateFlagsJsonKey,   static_cast<UINT>(D3D12_PIPELINE_STATE_FLAG_NONE));
+    const auto l_useRootSignatureType = a_rootJson.value(k_useRootSignatureTypeJsonKey, Enum::RootSignatureType::Invalid);
+    const auto l_pipelineStateFlags   = a_rootJson.value(k_pipelineStateFlagsJsonKey,   static_cast<UINT>(D3D12_PIPELINE_STATE_FLAG_NONE));
 
     a_pipelineStateBase.SetUseRootSignatureType(l_useRootSignatureType);
     a_pipelineStateBase.SetPipelineStateFlags  (static_cast<D3D12_PIPELINE_STATE_FLAGS>(l_pipelineStateFlags));

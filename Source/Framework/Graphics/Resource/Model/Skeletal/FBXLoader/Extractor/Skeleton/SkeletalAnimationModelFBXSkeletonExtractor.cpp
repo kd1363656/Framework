@@ -37,7 +37,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::CreateBoneNodeIn
 
         FWK_ASSERT_RETURN_VALUE_IF(!l_fbxBoneNode, "BoneNodeIndexMapへ登録するufbx_nodeがnullptrです。", false);
 
-        const auto& l_modelBoneIndex = static_cast<std::uint32_t>    (l_boneNodeIndex);
+        const auto  l_modelBoneIndex = static_cast<std::uint32_t>    (l_boneNodeIndex);
         const auto& l_emplaceResult  = a_boneNodeIndexMap.try_emplace(l_fbxBoneNode, l_modelBoneIndex).second;
 
         FWK_ASSERT_RETURN_VALUE_IF(!l_emplaceResult, "同一BoneNodeがBoneNodeIndexMapへ重複登録されました。", false);
