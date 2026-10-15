@@ -1030,12 +1030,6 @@
     <Filter Include="Library\UFBX\INC">
       <UniqueIdentifier>{d09e5349-b5fc-4858-8931-ebab903ccc91}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Library\IMGUI">
-      <UniqueIdentifier>{d96b94e6-c4a2-4b48-bc10-aa5045002d80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\IMGUI\INC">
-      <UniqueIdentifier>{61ddca0c-6710-409b-a6c5-7d1f2f765110}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility\Storage">
       <UniqueIdentifier>{0d29ce88-656b-4105-b8d9-5c6432ffaf9a}</UniqueIdentifier>
     </Filter>
@@ -2535,12 +2529,6 @@
     <ClInclude Include="..\Library\UFBX\INC\ufbx.h">
       <Filter>Library\UFBX\INC</Filter>
     </ClInclude>
-    <ClInclude Include="..\Library\IMGUI\INC\imnodes.h">
-      <Filter>Library\IMGUI\INC</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Library\IMGUI\INC\imnodes_internal.h">
-      <Filter>Library\IMGUI\INC</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Storage\StorageIDAllocator.h">
       <Filter>Source\Framework\Utility\Storage</Filter>
     </ClInclude>
@@ -3478,9 +3466,6 @@
     </ClCompile>
     <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp">
       <Filter>Library\UFBX\INC</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp">
-      <Filter>Library\IMGUI\INC</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Storage\StorageIDAllocator.cpp">
       <Filter>Source\Framework\Utility\Storage</Filter>

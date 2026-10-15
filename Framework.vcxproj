@@ -333,8 +333,6 @@ if "$(Configuration)"=="Debug" (
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Library\IMGUI\INC\imnodes.h" />
-    <ClInclude Include="..\Library\IMGUI\INC\imnodes_internal.h" />
     <ClInclude Include="..\Library\UFBX\INC\ufbx.h" />
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Application\Converter\Json\ApplicationJsonConverter.h" />
@@ -826,7 +824,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\PCH.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp" />
     <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp" />
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Application\Converter\Json\ApplicationJsonConverter.cpp" />

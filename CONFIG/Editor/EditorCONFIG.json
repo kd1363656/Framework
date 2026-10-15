@@ -50,15 +50,7 @@
                             "IsOpen": true
                         },
                         {
-                            "FilePath": "Asset\\Model",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Texture",
+                            "FilePath": "Asset\\Data\\Sound",
                             "IsOpen": false
                         },
                         {
@@ -70,7 +62,15 @@
                             "IsOpen": true
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound",
+                            "FilePath": "Asset\\Texture",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
@@ -86,11 +86,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Run",
+                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\Run",
                             "IsOpen": false
                         },
                         {
@@ -106,11 +106,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
+                            "FilePath": "Asset\\Model\\Actor",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor",
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
                             "IsOpen": false
                         },
                         {
@@ -118,12 +118,12 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Map\\RoadSide",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Prefab",
                             "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Prefab\\Camera",
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\BGM",
@@ -131,6 +131,10 @@
                         },
                         {
                             "FilePath": "Asset\\Model\\Actor\\Player\\K02",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Player\\Antike.fbm",
                             "IsOpen": false
                         },
                         {
@@ -143,6 +147,10 @@
                         },
                         {
                             "FilePath": "Asset\\Model\\Weapon",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Sound\\SE\\Terrain",
                             "IsOpen": false
                         },
                         {
@@ -168,6 +176,46 @@
                         {
                             "FilePath": "Asset\\Data\\Prefab\\Player",
                             "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Sound\\SE",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Sound\\SE\\Terrain\\OnSand",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Enemy\\SandGolem",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Enemy",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Player",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Enemy\\SandGolem\\SnadGolem.fbm",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Enemy\\Anubis",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Enemy\\Anubis\\Anubis.fbm",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Map\\SkySphere",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Texture\\Title",
+                            "IsOpen": false
                         }
                     ],
                     "SelectionState": {
