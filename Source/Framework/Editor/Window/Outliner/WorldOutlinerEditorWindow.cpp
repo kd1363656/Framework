@@ -103,36 +103,42 @@ void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionUp(EditorManager& a_ed
 
     if (!l_scene) { return; }
 
+          auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState   ();
+    const auto& l_cursor                   = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
+
+    // GameObjectが選択されていない場合はシーンから選択を始める
+    // シーンは表示の一番上にあるため、既にシーンが選択されているならそれより上はない
+    if (!l_cursor)
+    {
+        if (!m_sceneSelectionState.GetVALIsSceneSelected())
+        {
+            SelectScene(l_gameObjectSelectionState);
+        }
+
+        return;
+    }
+
     // 表示中ノードリストを構築
     // 矢印キー押下時のみ構築するため毎フレームのオーバーヘッドなし
     std::vector<std::weak_ptr<GameObject>> l_displayedList = {};
 
     BuildDisplayedGameObjectList(l_displayedList, *l_scene);
 
-    if (l_displayedList.empty()) { return; }
-
-          auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState   ();
-    const auto& l_cursor                   = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
-
-    // 未選択の場合はシーンのGameObjectList先頭から始める
-    if (!l_cursor)
-    {
-        SelectGameObject(l_displayedList.front().lock(),
-                         *l_scene,
-                         l_gameObjectSelectionState,
-                         false, 
-                         false);
- 
-        return;
-    }
-
     // weak_ptr同士は直接比較できないためlock()したshared_ptrのアドレスで比較する
     const auto& l_cursorITR = FindDisplayedGameObjectITR(l_displayedList, l_cursor);
 
-    // リストに存在しないか既に先頭なら何もしない
-    if (l_cursorITR == l_displayedList.end() ||
-        l_cursorITR == l_displayedList.begin())
+    // 閉じたノードの中など、表示されていないGameObjectからは移動しない
+    if (l_cursorITR == l_displayedList.end()) { return; }
+
+    // 先頭のGameObjectから上へ移動したときはその上にあるシーンを選択する
+    // 範囲選択はGameObjectだけが対象のため、シーンまでは広げない
+    if (l_cursorITR == l_displayedList.begin())
     {
+        if (!a_isRangeSelection)
+        {
+            SelectScene(l_gameObjectSelectionState);
+        }
+
         return;
     }
 
@@ -140,12 +146,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionUp(EditorManager& a_ed
 
     if (!l_prev) { return; }
 
-    SelectGameObject(l_prev, 
-                    *l_scene,
-                    l_gameObjectSelectionState,
-                    a_isRangeSelection, 
-                    false);
-
+    SelectGameObject(l_prev,
+                     *l_scene,
+                     l_gameObjectSelectionState,
+                     a_isRangeSelection,
+                     false);
 }
 void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionDown(EditorManager& a_editorManager, const bool a_isRangeSelection)
 {
@@ -154,25 +159,34 @@ void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionDown(EditorManager& a_
     if (!l_scene) { return; }
  
     std::vector<std::weak_ptr<GameObject>> l_displayedList = {};
- 
+
     // 表示中ノードリストを構築
     // 矢印キー押下時のみ構築するため毎フレームのオーバーヘッドなし
     BuildDisplayedGameObjectList(l_displayedList, *l_scene);
- 
-    if (l_displayedList.empty()) { return; }
- 
+
           auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState   ();
     const auto& l_cursor                   = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
- 
-    // 未選択の場合はシーンのGameObjectList先頭から始める
+
+    // GameObjectが選択されていない場合
+    // 何も選択されていなければシーンから選択を始め、
+    // シーンが選択されていればその下にある先頭のGameObjectへ移動する
     if (!l_cursor)
     {
-        SelectGameObject(l_displayedList.front().lock(), 
-                         *l_scene, 
+        if (!m_sceneSelectionState.GetVALIsSceneSelected())
+        {
+            SelectScene(l_gameObjectSelectionState);
+
+            return;
+        }
+
+        if (l_displayedList.empty()) { return; }
+
+        SelectGameObject(l_displayedList.front().lock(),
+                         *l_scene,
                          l_gameObjectSelectionState,
-                         false, 
+                         false,
                          false);
- 
+
         return;
     }
  
