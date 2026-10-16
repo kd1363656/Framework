@@ -109,7 +109,7 @@ void FWK::Editor::GameObjectCommandRecord::Restore(Scene& a_scene) const
     l_gameObject->PostDeserialize();
 
     // 兄弟の並びを記録どおりに組み直す
-    Utility::ApplySiblingOrder(l_parent, m_placement.m_siblingUUIDList, a_scene);
+    Utility::ApplySiblingOrder(m_placement.m_siblingUUIDList, l_parent, a_scene);
 }
 
 bool FWK::Editor::GameObjectCommandRecord::IsInScene(const Scene& a_scene) const

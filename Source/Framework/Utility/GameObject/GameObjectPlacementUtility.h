@@ -69,7 +69,7 @@ namespace FWK::Utility
         return l_itr->second;
     }
 
-    inline void ApplySiblingOrder(const std::shared_ptr<GameObject>& a_parent, const std::vector<boost::uuids::uuid>& a_siblingUUIDList, Scene& a_scene)
+    inline void ApplySiblingOrder(const std::vector<boost::uuids::uuid>& a_siblingUUIDList, const std::shared_ptr<GameObject>& a_parent, Scene& a_scene)
     {
         // UUID → 記録した並びの順番 の表を作る
         // 例 : [A, B, C] → { A : 0, B : 1, C : 2 }
@@ -176,7 +176,7 @@ namespace FWK::Utility
             l_prefabRemovedChildUUIDSet.erase(l_gameObject->GetREFPrefabHierarchyNodeUUID());
         }
 
-        ApplySiblingOrder(l_parent, a_placement.m_siblingUUIDList, a_scene);
+        ApplySiblingOrder(a_placement.m_siblingUUIDList, l_parent, a_scene);
 
         // 階層の深さが変わり得るため実行レベルを作り直す
         a_scene.RebuildGameObjectExecutionLevelList();

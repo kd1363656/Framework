@@ -27,12 +27,8 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Player\\GameObject.json",
-                        "SelectedFilePathList": [
-                            {
-                                "SelectedFilePath": "Asset\\Data\\Prefab\\Player\\GameObject.json"
-                            }
-                        ]
+                        "RangeSelectionStartPath": "",
+                        "SelectedFilePathList": []
                     }
                 },
                 "CurrentSelectFolderPath": "Asset",
@@ -54,6 +50,18 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Model",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Actor\\Player",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Texture",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
                             "IsOpen": true
                         },
@@ -63,18 +71,6 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Font",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Texture",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
@@ -90,11 +86,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\Run",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Run",
+                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
                             "IsOpen": false
                         },
                         {
@@ -110,11 +106,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor",
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
+                            "FilePath": "Asset\\Model\\Actor",
                             "IsOpen": false
                         },
                         {
@@ -126,11 +122,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Prefab\\Camera",
+                            "FilePath": "Asset\\Data\\Sound\\BGM",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\BGM",
+                            "FilePath": "Asset\\Data\\Prefab\\Camera",
                             "IsOpen": false
                         },
                         {
@@ -138,15 +134,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Player\\Antike.fbm",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Texture\\UI",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Prefab\\ShakyoTest",
+                            "FilePath": "Asset\\Model\\Player\\Antike.fbm",
                             "IsOpen": false
                         },
                         {
@@ -154,15 +146,19 @@
                             "IsOpen": true
                         },
                         {
+                            "FilePath": "Asset\\Data\\Prefab\\ShakyoTest",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Model\\Weapon",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\SE\\Terrain",
+                            "FilePath": "Asset\\Model\\Weapon\\Player",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Weapon\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\SE\\Terrain",
                             "IsOpen": false
                         },
                         {
@@ -194,11 +190,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Enemy\\SandGolem",
+                            "FilePath": "Asset\\Model\\Enemy",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Enemy",
+                            "FilePath": "Asset\\Model\\Enemy\\SandGolem",
                             "IsOpen": false
                         },
                         {
