@@ -29,6 +29,8 @@ namespace FWK::Converter
         nlohmann::json Serialize     (const GameObject&     a_gameObject,       SceneGameObjectPrefabSystem& a_prefabSystem)                                            const;
         nlohmann::json SerializeScene(const GameObject&     a_gameObject,       SceneGameObjectPrefabSystem& a_prefabSystem)                                            const;
         nlohmann::json SerializeDIFF (const nlohmann::json& a_baseJson,   const GameObject&                  a_gameObject, SceneGameObjectPrefabSystem& a_prefabSystem) const;
+
+        static const nlohmann::json* FindPTRPrefabNodeJson(const nlohmann::json& a_prefabJson, const boost::uuids::uuid& a_nodeUUID);
  
     private:
 

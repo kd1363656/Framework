@@ -442,10 +442,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
                 l_gameObjectSelectionState.AddSelectedGameObject(l_created);
             }
 
-            auto& l_editorManager = EditorManager::GetInstance                  ();
-            auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+            auto& l_undoRedoSystem = a_editorManager.GetMutableREFUndoRedoSystem();
 
-            l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdList), boost::uuids::uuid{});
+            l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdList);
         }
     }
 
@@ -463,10 +462,15 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
  
     bool l_isFirstOrder = true;
 
+    // ノードの描画中にポップアップやドラッグ&ドロップでシーンのリストが書き換わることがあるため、
+    // コピーしたリストを回す
+    // 書き換わっているリストをそのまま回すと、要素の追加・削除でイテレーターが壊れる
+    const auto l_gameObjectList = a_scene.GetREFGameObjectList();
+
     // 親を持たないルートGameObjectをシーンの登録順に描画する
-    for (const auto& l_gameObject : a_scene.GetREFGameObjectList())
+    for (const auto& l_gameObject : l_gameObjectList)
     {
-        if (!l_gameObject) { return; }
+        if (!l_gameObject) { continue; }
 
         if (l_gameObject->GetVALIsDestroyed())
         {
@@ -720,10 +724,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     DrawGameObjectDropZone(a_gameObject, a_scene, true);
 
     // 子GameObjectを再帰的に描画
+    // シーンのリストと同じ理由で、子のリストもコピーしてから回す
     if (l_isNodeOpen &&
         l_hasChild)
     {
-        for (const auto& l_childData : l_childDataList)
+        const auto l_drawChildDataList = l_childDataList;
+
+        for (const auto& l_childData : l_drawChildDataList)
         {
             const auto& l_child = l_childData.m_type.lock();
  
@@ -861,45 +868,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
     if (std::weak_ptr<GameObject> l_droppedGameObject = {};
         l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
     {
-        const auto& l_dropped = l_droppedGameObject.lock();
- 
-        if (!l_dropped) { return; }
- 
-        // UndoRedo用に変更前の親UUIDを保存する
-        const auto&              l_beforeHierarchy  = l_dropped->GetREFHierarchy    ();
-        const auto&              l_beforeParent     = l_beforeHierarchy.GetREFParent().lock();
-              boost::uuids::uuid l_beforeParentUUID = {};
-        const auto&              l_gameObjectUUID   = l_dropped->GetREFSceneInstanceUUID();
- 
-        if (l_beforeParent)
-        {
-            l_beforeParentUUID = l_beforeParent->GetREFSceneInstanceUUID();
-        }
- 
         // ドロップ先ノードを親、ドロップしたGameObjectを子として親子関係を結ぶ
         // 自分自身・子孫への親付けはApplyParent側で弾かれる
-        // 実行レベルの再構築もReparentGameObject内で行われる
+        // 実行レベルの再構築とUndoRedo履歴への登録もReparentGameObject内で行われる
         m_gameObjectOperation.ReparentGameObject(a_targetGameObject, l_droppedGameObject, a_scene);
- 
-        const auto&               l_afterHierarchy  = l_dropped->GetREFHierarchy   ();
-        const auto&               l_afterParent     = l_afterHierarchy.GetREFParent().lock();
-              boost::uuids::uuid  l_afterParentUUID = {};
- 
-        if (l_afterParent)
-        {
-            l_afterParentUUID = l_afterParent->GetREFSceneInstanceUUID();
-        }
- 
-        // 親子関係が実際に変更された場合のみコマンドをPushする
-        if (l_beforeParentUUID != l_afterParentUUID)
-        {
-            // EditorManager経由でUndoRedoSystemへコマンドをPushする
-            auto& l_editorManager  = EditorManager::GetInstance                 ();
-            auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
- 
-            l_undoRedoSystem.PushUndoCommand<ReparentGameObjectCommand>(l_gameObjectUUID, l_beforeParentUUID, l_afterParentUUID);
-        }
- 
+
         // 子が追加されたのでドロップ先ノードを開いた状態にして結果を見せる
         if (const auto& l_targetGameObject = a_targetGameObject.lock();
             l_targetGameObject)
@@ -932,18 +905,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
     }
 
     // 生成をUndoRedo履歴へ登録する
-    // 親はドロップ先のGameObject
-    boost::uuids::uuid l_parentSceneInstanceUUID = {};
-
-    if (const auto& l_targetGameObject = a_targetGameObject.lock();
-        l_targetGameObject)
-    {
-        l_parentSceneInstanceUUID = l_targetGameObject->GetREFSceneInstanceUUID();
-    }
-
+    // 親(ドロップ先のGameObject)と並び順はコマンドが作成直後の状態から記録する
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdList), l_parentSceneInstanceUUID);
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdList);
 
     // 子が追加されたのでドロップ先ノードを開いた状態にして結果を見せる
     if (const auto& l_targetGameObject = a_targetGameObject.lock();
@@ -993,10 +958,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
     }
 
     // 生成をUndoRedo履歴へ登録する
-    // 空白へのドロップなので親はなし(NilUUID)
+    // 空白へのドロップなので親はなし
     auto& l_undoRedoSystem = a_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdList), boost::uuids::uuid{});
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdList);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const

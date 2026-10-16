@@ -15,7 +15,26 @@
 	14.コンストラクタの初期化子リストについて
 	15. .cppについて
 	16.ブレースとif文について
-	17.for文・switch文について
+	・一度しか使わないboolの変数は作らず、その式をif文の条件へ直接書く
+　(2回以上使うbool、名前を付けないと意味が分からない長い式は変数にしてよい)
+{
+	例↓
+	// ×
+	const bool l_isRangeSelection = l_io.KeyShift || l_io.KeyCtrl;
+
+	if (l_isRangeSelection)
+	{
+		...
+	}
+
+	// ○
+	if (l_io.KeyShift ||
+	    l_io.KeyCtrl)
+	{
+		...
+	}
+}
+17.for文・switch文について
 	18.return文について
 	19.コメントについて
 	20.エラー処理について

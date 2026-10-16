@@ -234,6 +234,40 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeDIFF(const nloh
     return l_rootJson;
 }
 
+const nlohmann::json* FWK::Converter::GameObjectJsonConverter::FindPTRPrefabNodeJson(const nlohmann::json& a_prefabJson, const boost::uuids::uuid& a_nodeUUID)
+{
+    if (a_nodeUUID.is_nil() ||
+        !a_prefabJson.is_object())
+    {
+        return nullptr;
+    }
+
+    // PrefabのルートからChildListを再帰的に辿り、PrefabHierarchyNodeUUIDが一致するノードを返す
+    // ノードのUUIDは1つのPrefabの中で重複しないため、最初に見つかった物でよい
+    // 例 : ルート(UUID = A) - 子(UUID = B) - 孫(UUID = C) で C を探す → ルート ≠ → 子 ≠ → 孫 = C を返す
+    if (Utility::DeserializeUUID(a_prefabJson, k_prefabHierarchyNodeUUIDJsonKey) == a_nodeUUID) { return &a_prefabJson; }
+
+    // valueはコピーを返すため、返すポインタが指す先として元のJsonをfindで参照する
+    const auto& l_childListItr = a_prefabJson.find(Constant::k_gameObjectHierarchyJsonConverterChildListJsonKey);
+
+    if (l_childListItr == a_prefabJson.end() ||
+        !l_childListItr->is_array())
+    {
+        return nullptr;
+    }
+
+    for (const auto& l_childJson : *l_childListItr)
+    {
+        if (const auto* l_nodeJson = FindPTRPrefabNodeJson(l_childJson, a_nodeUUID);
+            l_nodeJson)
+        {
+            return l_nodeJson;
+        }
+    }
+
+    return nullptr;
+}
+
 void FWK::Converter::GameObjectJsonConverter::DeserializeCommon(const nlohmann::json& a_rootJson, const nlohmann::json& a_baseJson, GameObject& a_gameObject) const
 {
     // フィールド解決用にJsonを優先順位でマージ

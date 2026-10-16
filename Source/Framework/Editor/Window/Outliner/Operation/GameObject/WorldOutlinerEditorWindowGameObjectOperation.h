@@ -31,7 +31,7 @@ namespace FWK::Editor
     
         static constexpr std::size_t k_rootPasteParentCount = 1ULL;
 
-        void DestroyGameObjectRecursive(const std::weak_ptr<GameObject>& a_gameObject) const;
+        void PushReparentCommand(const std::shared_ptr<GameObject>& a_moveGameObject, const Struct::GameObjectPlacement& a_beforePlacement, const Scene& a_scene) const;
 
         ChildGameObjectDataList::iterator FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const;
     };

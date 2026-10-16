@@ -16,12 +16,22 @@ namespace FWK::Editor
         template <Concept::IsDerivedICommandConcept CommandType, typename... Args>
         void PushUndoCommand(Args&&... a_args)
         {
-            // 新規操作が入った時点でRedo履歴は破棄する
-            m_redoList.clear();
-
+            // 操作を終えた後に呼ぶ
             // 派生クラスをunique_ptrで生成してUndoスタックへ積む
             // std::make_unique + std::forwardで完全転送
-            m_undoList.emplace_back(std::make_unique<CommandType>(std::forward<Args>(a_args)...));
+            AddUndoCommand(std::make_unique<CommandType>(std::forward<Args>(a_args)...));
+        }
+        template <Concept::IsDerivedICommandConcept CommandType, typename... Args>
+        void ExecuteUndoCommand(Args&&... a_args)
+        {
+            // 操作をする前に呼ぶ
+            // コマンドを作るときに操作前の状態を記録させ、最初のRedoで操作そのものを行う
+            // 例 : 削除は親と並び順を記録してから、Redoでシーンから外す
+            auto l_command = std::make_unique<CommandType>(std::forward<Args>(a_args)...);
+
+            l_command->Redo();
+
+            AddUndoCommand(std::move(l_command));
         }
 
         void Undo();
@@ -36,6 +46,8 @@ namespace FWK::Editor
         const auto& GetREFCapacity() const { return m_capacity; }
 
     private:
+
+        void AddUndoCommand(std::unique_ptr<ICommand>&& a_command);
 
         std::deque<std::unique_ptr<ICommand>> m_undoList = {};
         std::deque<std::unique_ptr<ICommand>> m_redoList = {};

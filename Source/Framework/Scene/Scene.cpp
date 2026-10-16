@@ -188,6 +188,28 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
     // 計算済みの階層へ直接追加する
     m_pendingAddGameObjectList.emplace_back(a_gameObject);
 }
+void FWK::Scene::AddPendingGameObjects()
+{
+    // GameObjectがGameObjectを生成するトリガーだった場合でも大丈夫なように
+    // 遅延追加方式を取る
+    // エディターのUndo/Redoはシーンの更新の外で呼ばれるため、
+    // 並び順をすぐに戻せるようにこの関数を直接呼んで反映する
+    for (const auto& l_gameObject : m_pendingAddGameObjectList)
+    {
+        m_gameObjectList.emplace_back(l_gameObject);
+
+        // 親GameObjectは、子GameObjectより先に
+        // Sceneへ登録されなければならない
+        const auto& l_executionLevel = CalculateGameObjectExecutionLevel(l_gameObject);
+
+        // 親子階層の深さによってレイヤーを分ける親が先に実行され子が後に実行されるべきという思想の元
+        // このような形の処理を取っている
+        AddGameObjectToExecutionLevelList(l_gameObject, l_executionLevel);
+    }
+
+    // すべて追加し終われば追加予約リストをクリア
+    m_pendingAddGameObjectList.clear();
+}
 
 void FWK::Scene::RemoveGameObject(const std::weak_ptr<GameObject>& a_gameObject)
 {
@@ -197,29 +219,24 @@ void FWK::Scene::RemoveGameObject(const std::weak_ptr<GameObject>& a_gameObject)
 
     // 破棄フラグを立てずにシーン管理から外す
     // 実体は呼び出し側が保持し続けるため再追加も可能
-    if (const auto& l_sceneInstanceUUID = l_gameObject->GetREFSceneInstanceUUID();
-        !l_sceneInstanceUUID.is_nil())
-    {
-        m_gameObjectUUIDRegistry.Erase(l_sceneInstanceUUID);
-    }
+    RemoveGameObjectFromList(l_gameObject);
 
-    std::erase(m_gameObjectList,           l_gameObject);
-    std::erase(m_pendingAddGameObjectList, l_gameObject);
- 
-    // 実行階層リストからも外す
-    for (auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
-    {
-        std::erase_if(l_gameObjectExecutionLevel,
-                      [&l_gameObject](const auto& a_gameObjectWeak)
-                      {
-                          return a_gameObjectWeak.lock() == l_gameObject;
-                      });
-    }
- 
     // 親がいるなら親子関係も解除する
     auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
 
     l_hierarchy.ClearParent();
+}
+void FWK::Scene::RemoveGameObjectTree(const std::weak_ptr<GameObject>& a_rootGameObject)
+{
+    const auto& l_rootGameObject = a_rootGameObject.lock();
+
+    if (!l_rootGameObject) { return; }
+
+    // ルートだけは親から外し、子孫は親子関係を保ったままシーン管理から外す
+    // 子孫の親子関係を残しておくことで、ルートを戻すだけで木の形がそのまま復元できる
+    // 例 : A - B - C の A を外す → シーンからは A,B,C が消え、B,C は A の子のまま
+    RemoveGameObject           (l_rootGameObject);
+    RemoveDescendantGameObjects(l_rootGameObject);
 }
 
 std::weak_ptr<FWK::GameObject> FWK::Scene::FindVALGameObject(const boost::uuids::uuid& a_sceneInstanceUUID) const
@@ -323,25 +340,43 @@ void FWK::Scene::RemoveDestroyedGameObjects()
         m_gameObjectExecutionLevelList.pop_back();
     }
 }
-void FWK::Scene::AddPendingGameObjects()
+void FWK::Scene::RemoveGameObjectFromList(const std::shared_ptr<GameObject>& a_gameObject)
 {
-    // GameObjectがGameObjectを生成するトリガーだった場合でも大丈夫なように
-    // 遅延追加方式を取る
-    for (const auto& l_gameObject : m_pendingAddGameObjectList)
+    // UUIDの登録を外して、FindVALGameObjectで見つからないようにする
+    if (const auto& l_sceneInstanceUUID = a_gameObject->GetREFSceneInstanceUUID();
+        !l_sceneInstanceUUID.is_nil())
     {
-        m_gameObjectList.emplace_back(l_gameObject);
-
-        // 親GameObjectは、子GameObjectより先に
-        // Sceneへ登録されなければならない
-        const auto& l_executionLevel = CalculateGameObjectExecutionLevel(l_gameObject);
-
-        // 親子階層の深さによってレイヤーを分ける親が先に実行され子が後に実行されるべきという思想の元
-        // このような形の処理を取っている
-        AddGameObjectToExecutionLevelList(l_gameObject, l_executionLevel);
+        m_gameObjectUUIDRegistry.Erase(l_sceneInstanceUUID);
     }
 
-    // すべて追加し終われば追加予約リストをクリア
-    m_pendingAddGameObjectList.clear();
+    std::erase(m_gameObjectList,           a_gameObject);
+    std::erase(m_pendingAddGameObjectList, a_gameObject);
+
+    // 実行階層リストからも外す
+    for (auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
+    {
+        std::erase_if(l_gameObjectExecutionLevel,
+                      [&a_gameObject](const auto& a_gameObjectWeak)
+                      {
+                          return a_gameObjectWeak.lock() == a_gameObject;
+                      });
+    }
+}
+void FWK::Scene::RemoveDescendantGameObjects(const std::shared_ptr<GameObject>& a_gameObject)
+{
+    const auto& l_hierarchy                   = a_gameObject->GetREFHierarchy                      ();
+    const auto& l_childSmartPointerVectorList = l_hierarchy.GetREFChildSmartPointerVectorList      ();
+    const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList();
+
+    for (const auto& l_childData : l_childDataList)
+    {
+        const auto& l_child = l_childData.m_type.lock();
+
+        if (!l_child) { continue; }
+
+        RemoveGameObjectFromList   (l_child);
+        RemoveDescendantGameObjects(l_child);
+    }
 }
 
 std::size_t FWK::Scene::CalculateGameObjectExecutionLevel(const std::weak_ptr<GameObject>& a_gameObject) const

@@ -11,7 +11,7 @@ namespace FWK::Editor
     {
     public:
 
-         CreateGameObjectCommand(std::vector<std::weak_ptr<GameObject>>&& a_createdGameObjectList, boost::uuids::uuid a_parentUUID);
+         CreateGameObjectCommand(const std::vector<std::weak_ptr<GameObject>>& a_createdGameObjectList);
         ~CreateGameObjectCommand() override;
 
         void Undo() override;
@@ -19,8 +19,6 @@ namespace FWK::Editor
 
     private:
 
-        std::vector<std::shared_ptr<GameObject>> m_createdGameObjectList = {};
-
-        boost::uuids::uuid m_parentUUID = {};
+        std::vector<GameObjectCommandRecord> m_recordList;
     };
 }

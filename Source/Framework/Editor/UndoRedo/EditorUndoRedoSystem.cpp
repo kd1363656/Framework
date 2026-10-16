@@ -71,3 +71,21 @@ nlohmann::json FWK::Editor::EditorUndoRedoSystem::Serialize() const
 {
     return m_jsonConverter.Serialize(*this);
 }
+
+void FWK::Editor::EditorUndoRedoSystem::AddUndoCommand(std::unique_ptr<ICommand>&& a_command)
+{
+    if (!a_command) { return; }
+
+    // 新規操作が入った時点でRedo履歴は破棄する
+    m_redoList.clear();
+
+    m_undoList.emplace_back(std::move(a_command));
+
+    // 上限を超えた分は古いものから捨てる
+    // 削除のコマンドは消したGameObjectのJsonを持っているため、捨てないとメモリが増え続ける
+    // 例 : 上限500で501個目を積む → 一番古い1個を捨てて500個に戻す
+    while (m_undoList.size() > m_capacity)
+    {
+        m_undoList.pop_front();
+    }
+}

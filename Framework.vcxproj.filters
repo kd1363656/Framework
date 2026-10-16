@@ -1465,15 +1465,6 @@
     <Filter Include="Source\Framework\Editor\Selection\Command">
       <UniqueIdentifier>{1d6a0dd7-3ad8-421f-a433-9ffad640caaf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Outliner\Command">
-      <UniqueIdentifier>{7cc8958f-6243-455b-bb70-8116e75ec30c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Command">
-      <UniqueIdentifier>{3f9a2e67-8b41-4d5c-9a2e-7c1f4b8d5e60}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Command\GameObject">
-      <UniqueIdentifier>{8d4b6f12-5c93-4a7e-b3d1-9f2e6a4c7b18}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility\Editor">
       <UniqueIdentifier>{22dd4cde-ce04-4c6d-b52e-417c87936af1}</UniqueIdentifier>
     </Filter>
@@ -1482,6 +1473,45 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Macros\GameObject">
       <UniqueIdentifier>{32307e8a-e037-4f3d-a17f-d17a075fd860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Editor\Command">
+      <UniqueIdentifier>{2ea860a8-1c2f-4c43-b17b-e01e82105290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command">
+      <UniqueIdentifier>{926ca329-c4cd-4379-bd2b-bfbba64c0767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject">
+      <UniqueIdentifier>{a49ee5b2-780a-45ed-9e0f-05d45499d0ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Component">
+      <UniqueIdentifier>{a68cac7f-f45a-4b95-9a45-cdc594a7c910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Component\Edit">
+      <UniqueIdentifier>{126dc5c3-f226-4a7d-a1ca-9cfdfd7be0ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Create">
+      <UniqueIdentifier>{5a55eb4d-1c6d-481a-8aab-18d3e1a5719e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Destroy">
+      <UniqueIdentifier>{76e5b4eb-9ff0-4416-88a2-2f5e4853faa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\PasteCut">
+      <UniqueIdentifier>{5cfd0d9e-3b1d-4d61-8858-05e8aa06f9a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Rename">
+      <UniqueIdentifier>{2fe37a18-0b81-4a77-84bc-23a158470b65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Reparent">
+      <UniqueIdentifier>{78f760bd-1c35-4039-b3a8-e44cbb5f6c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\Scene">
+      <UniqueIdentifier>{156d9b4f-c6e2-45c2-81e7-785d74b840c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\Scene\Rename">
+      <UniqueIdentifier>{7d9adf7c-0ee5-4e4c-9935-449eae78c0ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\GameObject">
+      <UniqueIdentifier>{f1076a3b-a4f8-4cbe-bb39-8d0e1f433b45}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2925,12 +2955,6 @@
     <ClInclude Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.h">
       <Filter>Source\Framework\Editor\Selection\Command</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.h">
-      <Filter>Source\Framework\Editor\Window\Command\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.h">
-      <Filter>Source\Framework\Editor\Window\Outliner\Command</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowAssetCreatorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
     </ClInclude>
@@ -2951,6 +2975,36 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Macros\GameObject\GameObjectComponentTaggedFactoryMacros.h">
       <Filter>Source\Framework\Definition\Macros\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\GameObjectPlacementStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectTransformComponentCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Edit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Create</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Destroy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\GameObjectCommandRecord.h">
+      <Filter>Source\Framework\Editor\Command\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\PasteCut</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Rename</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Reparent</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.h">
+      <Filter>Source\Framework\Editor\Command\Scene\Rename</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectPlacementUtility.h">
+      <Filter>Source\Framework\Utility\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3695,11 +3749,29 @@
     <ClCompile Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.cpp">
       <Filter>Source\Framework\Editor\Selection\Command</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.cpp">
-      <Filter>Source\Framework\Editor\Window\Command\GameObject</Filter>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectTransformComponentCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Edit</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.cpp">
-      <Filter>Source\Framework\Editor\Window\Outliner\Command</Filter>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Create</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Destroy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\GameObjectCommandRecord.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\PasteCut</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Rename</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Reparent</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\Scene\Rename</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

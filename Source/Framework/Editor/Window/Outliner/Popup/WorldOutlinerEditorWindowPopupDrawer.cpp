@@ -157,17 +157,10 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawCreateEmptyGameObjec
     l_sceneSelectionState.SetIsSceneSelected(false);
 
     // 生成をUndoRedoへ登録する
-    boost::uuids::uuid l_parentUUID = {};
-
-    if (const auto& l_parent = a_parent.lock();
-        l_parent)
-    {
-        l_parentUUID = l_parent->GetREFSceneInstanceUUID();
-    }
-
+    // 親と並び順はコマンドが作成直後の状態から記録する
     auto& l_undoRedoSystem = a_editorManager.GetMutableREFUndoRedoSystem();
 
-    std::vector<std::weak_ptr<GameObject>> l_createdGameObjectList = { l_createdGameObject };
+    const std::vector<std::weak_ptr<GameObject>> l_createdGameObjectList = { l_createdGameObject };
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdGameObjectList), l_parentUUID);
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdGameObjectList);
 }
