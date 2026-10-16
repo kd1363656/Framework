@@ -124,7 +124,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 
         // 生バッファーから1件の通知を安全に取り出したためそのファイルが
         // ADDED/REMOVED\REBAME_OLD_NAME/RENAME_NEW_NAME七日の判別を行う
-        l_requiresFolderTreeRefresh = ProcessNotification(l_filePath, l_notificationInformation) ||
+        l_requiresFolderTreeRefresh = ProcessNotification(l_notificationInformation, l_filePath) ||
                                       l_requiresFolderTreeRefresh;
 
         // 0なら現在Recordが最後に取得できるFILE_NOTIFY_EXTENDED_INFORMATION
@@ -288,7 +288,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Releas
     m_notificationBufferList.fill(std::byte{});
 }
 
-bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ProcessNotification(const std::filesystem::path& a_filePath, const FILE_NOTIFY_EXTENDED_INFORMATION& a_notificationInformation)
+bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ProcessNotification(const FILE_NOTIFY_EXTENDED_INFORMATION& a_notificationInformation, const std::filesystem::path& a_filePath)
 {
     // 通知対処Pathが空なら
     // Changeを生成するための対象を特定できないため処理しない

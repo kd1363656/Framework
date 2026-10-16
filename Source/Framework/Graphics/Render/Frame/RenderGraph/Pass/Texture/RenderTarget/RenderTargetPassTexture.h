@@ -29,9 +29,9 @@ namespace FWK::Graphics
                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                     const Window::ClientSize&                 a_clientSize,
                     const UINT64&                             a_retiredFenceValue,
+                          ResourceReleaseContext&             a_resourceReleaseContext,
                           TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
-                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-                          ResourceReleaseContext&             a_resourceReleaseContext);
+                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
         void SetClearColor(const TypeAlias::Math::Color& a_set) { m_clearColor = a_set; }
 
@@ -55,9 +55,9 @@ namespace FWK::Graphics
 
         Converter::RenderTargetPassTextureJsonConverter m_jsonConverter = {};
 
-        TypeAlias::Math::Color m_clearColor = DirectCommandList::k_defaultBackBufferClearColor;
+        TypeAlias::Math::Color m_clearColor = Constant::k_defaultBackBufferClearColor;
 
-        DXGI_FORMAT m_format = RenderTargetTexture::k_defaultRenderTargetTextureFormat;
+        DXGI_FORMAT m_format = Constant::k_defaultRenderTargetTextureFormat;
 
         Enum::RenderGraphRenderTargetType m_renderGraphRenderTargetType = Enum::RenderGraphRenderTargetType::Invalid;
     };

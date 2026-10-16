@@ -3,8 +3,8 @@
 bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::CreateSkeletalAnimationModelBatchUploadRecord(const Device&                                                   a_device,
                                                                                                                   const GPUMemoryAllocator&                                       a_gpuMemoryAllocator,
                                                                                                                         std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
-                                                                                                                        TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool,
-                                                                                                                        SkeletalAnimationModelRecord&                             a_skeletalAnimationModelRecord) const
+                                                                                                                        SkeletalAnimationModelRecord&                             a_skeletalAnimationModelRecord,
+                                                                                                                        TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool) const
 {
     auto& l_modelMeshList = a_skeletalAnimationModelRecord.GetMutableREFModelData().m_modelMeshList;
 
@@ -25,9 +25,9 @@ bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::CreateSkelet
         SkeletalAnimationModelRecord::ModelMeshRuntimeData l_modelMeshRuntimeData = {};
 
         // Vertex、Meshlet、MeshletBoundsの共通Bufferを作成する
-        if (!m_batchUploadRecordBuilder.CreateModelMeshBatchUploadRecord(a_device,
+        if (!m_batchUploadRecordBuilder.CreateModelMeshBatchUploadRecord(l_modelMesh,
+                                                                         a_device,
                                                                          a_gpuMemoryAllocator,
-                                                                         l_modelMesh,
                                                                          a_bufferUploadCommandList,
                                                                          a_cbvSRVUAVDescriptorPool,
                                                                          l_modelMeshRuntimeData))

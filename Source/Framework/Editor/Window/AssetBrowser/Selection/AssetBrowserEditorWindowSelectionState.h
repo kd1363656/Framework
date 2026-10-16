@@ -42,8 +42,8 @@ namespace FWK::Editor
     
         std::vector<std::filesystem::path> m_selectedFilePathList = {};
 
-        Converter::AssetBrowserEditorWindowSelectionStateJsonConverter m_jsonConverter = {};
-
         std::filesystem::path m_rangeSelectionStartPath = {};
+
+        Converter::AssetBrowserEditorWindowSelectionStateJsonConverter m_jsonConverter = {};
     };
 }

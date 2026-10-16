@@ -328,7 +328,7 @@ bool FWK::Converter::BinaryConverterBase::TryReadWStringBinaryData(const std::ui
     }
 
     // wchar_t単位で保存しているため、バイト数がwchar_tサイズで割り切れない場合は破損扱い。
-    if ((a_wStringBinaryFileSize % sizeof(wchar_t)) != 0ULL) { return false; }
+    if ((a_wStringBinaryFileSize % sizeof(wchar_t)) != k_divisibleRemainderSize) { return false; }
     
     // 読み込めるバイナリーデータかどうかを検証
     if (!CanReadBinaryData(a_memoryReadOffset, a_wStringBinaryFileSize)) { return false; }

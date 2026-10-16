@@ -7,7 +7,7 @@ void FWK::Graphics::DirectCommandList::Reset(const TypeAlias::DirectCommandAlloc
 
 void FWK::Graphics::DirectCommandList::SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex) const
 {
-    FWK_ASSERT_RETURN_IF(a_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "ディスクリプタヒープインデックスが無効な値のため、レンダーターゲットの設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "ディスクリプタヒープインデックスが無効な値のため、レンダーターゲットの設定に失敗しました。");
 
     const auto& l_directCommandList = GetREFCommandList();
 
@@ -27,7 +27,7 @@ void FWK::Graphics::DirectCommandList::SetupRenderTarget(const TypeAlias::RTVDes
 }
 void FWK::Graphics::DirectCommandList::ClearRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex, const TypeAlias::Math::Color& a_clearColor) const
 {
-    FWK_ASSERT_RETURN_IF(a_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "デスクリプタヒープインデックスが無効な値のため、レンダーターゲットのクリアに失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "デスクリプタヒープインデックスが無効な値のため、レンダーターゲットのクリアに失敗しました。");
 
     const auto& l_directCommandList = GetREFCommandList();
 
@@ -48,7 +48,7 @@ void FWK::Graphics::DirectCommandList::ClearRenderTarget(const TypeAlias::RTVDes
 
 void FWK::Graphics::DirectCommandList::SetupDepthStencil(const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool, const TypeAlias::DescriptorIndex a_dsvDescriptorIndex) const
 {
-    FWK_ASSERT_RETURN_IF(a_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、DepthStencilの設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、DepthStencilの設定に失敗しました。");
 
     const auto& l_directCommandList = GetREFCommandList();
 
@@ -71,8 +71,8 @@ void FWK::Graphics::DirectCommandList::SetupRenderTargetAndDepthStencil(const Ty
                                                                         const TypeAlias::DescriptorIndex    a_rtvDescriptorIndex,
                                                                         const TypeAlias::DescriptorIndex    a_dsvDescriptorIndex) const
 {
-    FWK_ASSERT_RETURN_IF(a_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RTVDescriptorIndexが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
-    FWK_ASSERT_RETURN_IF(a_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex,       "RTVDescriptorIndexが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex,       "DSVDescriptorIndexが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
 
     const auto& l_directCommandList = GetREFCommandList();
 
@@ -97,7 +97,7 @@ void FWK::Graphics::DirectCommandList::ClearDepthStencil(const TypeAlias::DSVDes
                                                          const TypeAlias::DescriptorIndex    a_dsvDescriptorIndex,
                                                          const UINT8                         a_stencilClearValue) const
 {
-    FWK_ASSERT_RETURN_IF(a_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、DepthStencilのClearに失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、DepthStencilのClearに失敗しました。");
 
     const auto& l_directCommandList = GetREFCommandList();
 
@@ -143,7 +143,7 @@ void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<G
     DirectAndComputeCommandListBase::SetupPipeline(a_pipelineState);
 }
 
-void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const
+void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const RootSignature& a_rootSignature, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const Enum::RootParameterType a_rootParameterType) const
 {
     const auto& l_directCommandList = GetREFCommandList();
 
@@ -151,7 +151,7 @@ void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_V
 
     const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
-    FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、定数バッファビュー設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Constant::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、定数バッファビュー設定に失敗しました。");
 
     // RootSignature側でD3D12_ROOT_PARAMETER_TYPE_CBVにした場所へ、
     // UploadBuffer上の定数バッファ位置を直接結びつける
@@ -176,7 +176,7 @@ void FWK::Graphics::DirectCommandList::SetupVertexBufferView(const D3D12_VERTEX_
     const auto& l_directCommandList = GetREFCommandList();
 
     FWK_ASSERT_RETURN_IF(!l_directCommandList,                                                                       "ダイレクトコマンドリストが作成されておらず、VertexBufferViewの設定に失敗しました。");
-    FWK_ASSERT_RETURN_IF(a_vertexBufferView.BufferLocation == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "VertexBufferViewのGPU仮想アドレスが無効のため、VertexBufferViewの設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_vertexBufferView.BufferLocation == Constant::k_invalidGPUVirtualAddress,                  "VertexBufferViewのGPU仮想アドレスが無効のため、VertexBufferViewの設定に失敗しました。");
     FWK_ASSERT_RETURN_IF(a_vertexBufferView.SizeInBytes    == k_invalidSizeInBytes,                                  "VertexBufferViewのSizeInBytes無効のため、VertexBufferViewの設定に失敗しました。");
 
     l_directCommandList->IASetVertexBuffers(k_vertexBufferViewStartSlot, k_vertexBufferViewCount, &a_vertexBufferView);

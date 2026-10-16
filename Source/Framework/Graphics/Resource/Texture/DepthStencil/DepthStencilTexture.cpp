@@ -67,9 +67,9 @@ bool FWK::Graphics::DepthStencilTexture::Resize(const Device&                   
                                                 const UINT64&                             a_retiredFenceValue,
                                                 const UINT                                a_width,
                                                 const UINT                                a_height,
+                                                      ResourceReleaseContext&             a_resourceReleaseContext,
                                                       TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
-                                                      TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-                                                      ResourceReleaseContext&             a_resourceReleaseContext)
+                                                      TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     // 同じサイズなら作り直す必要がない
     if (Utility::IsSameSize(m_width,
@@ -115,7 +115,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DepthStencilTexture::FetchVALDSVD
     if (a_arrayIndex >= m_depthStencilTextureSettings.m_arraySize ||
         a_mipSlice >= m_depthStencilTextureSettings.m_mipLevels)
     {
-        return DescriptorHeap::k_invalidDescriptorIndex;
+        return Constant::k_invalidDescriptorIndex;
     }
 
     // DSVの格納順は次のとおり。
@@ -127,7 +127,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DepthStencilTexture::FetchVALDSVD
     // その後へMip Sliceを加えることで一次元配列の位置を求める。
     const auto& l_descriptorIndex = a_arrayIndex * m_depthStencilTextureSettings.m_mipLevels + a_mipSlice;
 
-    if (l_descriptorIndex >= m_dsvDescriptorIndexList.size()) { return DescriptorHeap::k_invalidDescriptorIndex; }
+    if (l_descriptorIndex >= m_dsvDescriptorIndexList.size()) { return Constant::k_invalidDescriptorIndex; }
 
     return m_dsvDescriptorIndexList[l_descriptorIndex];
 }
@@ -315,14 +315,14 @@ bool FWK::Graphics::DepthStencilTexture::CreateDSVList(const Device& a_device, T
         {
             const auto l_dsvDescriptorIndex = a_dsvDescriptorPool.Allocate();
 
-            if (l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex)
+            if (l_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex)
             {
                 // GPUへCommandを提出する前に作成失敗なので
                 // ここまでに確保したDescriptorは即座にPoolへ返せる
                 ReleaseCreatedDSVDescriptorIndexList(a_dsvDescriptorPool);
             }
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DSVDescriptorIndexの確保に失敗しており、DepthStencilTexture用DSVListの作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DSVDescriptorIndexの確保に失敗しており、DepthStencilTexture用DSVListの作成に失敗しました。", false);
 
             const auto& l_dsvDesc   = CreateDSVDesc                                  (l_arrayIndex, l_mipSlice);
             const auto& l_dsvHandle = a_dsvDescriptorPool.FetchVALCPUDescriptorHandle(l_dsvDescriptorIndex);
@@ -351,7 +351,7 @@ bool FWK::Graphics::DepthStencilTexture::CreateSRV(const Device& a_device, TypeA
 
     const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DepthStencilTexture用SRVDescriptorIndexの確保に失敗しまた。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DepthStencilTexture用SRVDescriptorIndexの確保に失敗しまた。", false);
 
     const auto& l_srvDesc      = CreateSRVDesc                                        ();
     const auto& l_srvCPUHandle = a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(l_srvDescriptorIndex);
@@ -377,12 +377,12 @@ bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UIN
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource,                        "DepthStencilTextureのGPUResourceが無効のため、遅延解放登録に失敗しました。",          false);
     FWK_ASSERT_RETURN_VALUE_IF(m_dsvDescriptorIndexList.empty(),                 "DepthStencilTextureのDSVDescriptorIndexListが空のため、遅延解放登録に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue == Fence::k_unusedFenceValue, "FenceValueが無効のため、遅延解放登録に失敗しました。",                                false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue == Constant::k_unusedFenceValue, "FenceValueが無効のため、遅延解放登録に失敗しました。",                                false);
 
     const bool l_isSRVRequired = m_depthStencilTextureSettings.m_srvFormat != DXGI_FORMAT_UNKNOWN;
 
     FWK_ASSERT_RETURN_VALUE_IF(l_isSRVRequired &&
-                               m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex,
+                               m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex,
                                "SRVを使用するDepthStencilTextureのSRVDescriptorIndexが無効です。",
                                false);
 
@@ -421,7 +421,7 @@ bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UIN
     // 現在のTextureからDescriptorIndexの所有情報を外す
     m_dsvDescriptorIndexList.clear();
 
-    m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+    m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
 
     m_width  = Constant::k_invalidTextureWidth;
     m_height = Constant::k_invalidTextureHeight;
@@ -439,7 +439,7 @@ void FWK::Graphics::DepthStencilTexture::ReleaseCreatedDSVDescriptorIndexList(Ty
     // DescriptorPoolへ即座に返却できる。
     for (const auto l_dsvDescriptorIndex : m_dsvDescriptorIndexList)
     {
-        if (l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex) { continue; }
+        if (l_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex) { continue; }
 
         a_dsvDescriptorPool.Release(l_dsvDescriptorIndex);
     }
@@ -448,12 +448,12 @@ void FWK::Graphics::DepthStencilTexture::ReleaseCreatedDSVDescriptorIndexList(Ty
 }
 void FWK::Graphics::DepthStencilTexture::ReleaseCreatedSRVDescriptorIndex(TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
-    if (m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex) { return; }
+    if (m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex) { return; }
 
     // この関数を使用するのは、まだGPUへCommandを提出していない作成失敗時
     // そのためFenceを待たず、
     // CBV/SRV/UAV Descriptor Poolへ即座に返却できる
     a_cbvSRVUAVDescriptorPool.Release(m_srvDescriptorIndex);
 
-    m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+    m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
 }

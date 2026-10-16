@@ -150,8 +150,8 @@ nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::Serial
         nlohmann::json l_json = {};
  
         // Factory復元用の型名と照合用UUIDはComponentDataの外側へ
-        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_component, k_componentTypeJsonKey));
-        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_component->GetREFUUID(), k_componentUUIDJsonKey));
+        Utility::UpdateJson(Utility::SerializeInstanceType(l_component, k_componentTypeJsonKey), l_json);
+        Utility::UpdateJson(Utility::SerializeUUID(l_component->GetREFUUID(), k_componentUUIDJsonKey), l_json);
  
         // Component本体のSerialize結果(UUID, IsDisable, IsPrefabOrigin, 各種プロパティを含む)
         l_json[k_componentDataJsonKey] = l_component->Serialize();
@@ -229,7 +229,7 @@ nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::Detect
  
             nlohmann::json l_modifiedJson = {};
  
-            Utility::UpdateJson(l_modifiedJson, Utility::SerializeUUID(l_uuid, k_componentUUIDJsonKey));
+            Utility::UpdateJson(Utility::SerializeUUID(l_uuid, k_componentUUIDJsonKey), l_modifiedJson);
  
             l_modifiedJson[k_componentDataJsonKey] = l_dataDiffJson;
  

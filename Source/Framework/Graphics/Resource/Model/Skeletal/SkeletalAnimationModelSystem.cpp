@@ -14,9 +14,9 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::Create()
     return true;
 }
 
-FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationModelSystem::LoadSkeletalAnimationModelForBatchUpload(const Device&                             a_device,
+FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationModelSystem::LoadSkeletalAnimationModelForBatchUpload(const std::filesystem::path&              a_filePath,
+                                                                                                                                    const Device&                             a_device,
                                                                                                                                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                                                                                                    const std::filesystem::path&              a_filePath,
                                                                                                                                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     Struct::SkeletalAnimationModelLoadResult l_skeletalAnimationModelLoadResult = {};
@@ -35,7 +35,7 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
 
     l_skeletalAnimationModelRecord->SetFilePath      (a_filePath.wstring());
     l_skeletalAnimationModelRecord->SetStorageID     (l_allocateStorageID);
-    l_skeletalAnimationModelRecord->SetReferenceCount(AssetRecordBase::k_initialAssetReferenceCount);
+    l_skeletalAnimationModelRecord->SetReferenceCount(Constant::k_initialAssetReferenceCount);
 
     // 有効な.assetを読み込めなかった場合はFBXから作成する
     if (!m_binaryConverter.LoadAsset(a_filePath, *l_skeletalAnimationModelRecord))
@@ -57,9 +57,9 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
 
     // TextureとGPUBuffer用UploadCommandを作成する
     FWK_ASSERT_RETURN_VALUE_IF(!BuildSkeletalAnimationModelRuntimeData(l_skeletalAnimationModelRecord,
+                                                                       a_filePath,
                                                                        a_device,
                                                                        a_gpuMemoryAllocator,
-                                                                       a_filePath,
                                                                        l_allocateStorageID,
                                                                        a_cbvSRVUAVDescriptorPool),
                                                                        "SkeletalAnimationModelのRuntimeData構築に失敗しました。",
@@ -119,9 +119,9 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelAss
 }
 
 bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord,
+                                                                                         const std::filesystem::path&                         a_filePath,
                                                                                          const Device&                                        a_device,
                                                                                          const GPUMemoryAllocator&                            a_gpuMemoryAllocator,
-                                                                                         const std::filesystem::path&                         a_filePath,
                                                                                          const TypeAlias::StorageID                           a_storageID,
                                                                                                TypeAlias::CBVSRVUAVDescriptorPool&            a_cbvSRVUAVDescriptorPool)
 {
@@ -168,8 +168,8 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::CreateSkeletalAnimationModelBa
     FWK_ASSERT_RETURN_VALUE_IF(!m_batchUploadRecordBuilder.CreateSkeletalAnimationModelBatchUploadRecord(a_device,
                                                                                                          a_gpuMemoryAllocator,
                                                                                                          a_skeletalAnimationModelBatchUploadRecord.m_bufferUploadCommandList,
-                                                                                                         a_cbvSRVUAVDescriptorPool,
-                                                                                                         *a_skeletalAnimationModelRecord),
+                                                                                                         *a_skeletalAnimationModelRecord,
+                                                                                                         a_cbvSRVUAVDescriptorPool),
                                                                                                          "SkeletalAnimationModel用BufferUploadCommandの作成に失敗しました。",
                                                                                                          false);
 

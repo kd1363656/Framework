@@ -25,18 +25,10 @@ namespace FWK::Graphics
 
         const auto& GetREFUploadBuffer() const { return m_uploadBuffer; }
 
-        static constexpr UINT64 k_invalidBufferSize = 0ULL;
-
-        static constexpr UINT k_firstSubresourceIndex = 0U;
-
-        static constexpr UINT k_defaultGPUNodeMask = 0U;
-
     private:
 
         bool Map  ();
         void UnMap();
-
-        static constexpr D3D12_GPU_VIRTUAL_ADDRESS k_invalidGPUVirtualAddress = 0ULL;
 
         TypeAlias::ComPtr<ID3D12Resource2> m_uploadBuffer;
 

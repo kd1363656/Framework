@@ -91,7 +91,7 @@ nlohmann::json FWK::Converter::EditorManagerJsonConverter::SerializeWindow(const
 
         auto l_json = nlohmann::json{};
 
-        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_editorWindow, k_windowTypeNameJsonKey));
+        Utility::UpdateJson(Utility::SerializeInstanceType(l_editorWindow, k_windowTypeNameJsonKey), l_json);
         l_json[k_windowJsonKey] = l_editorWindow->Serialize();
 
         l_rootJsonArray.emplace_back(l_json);

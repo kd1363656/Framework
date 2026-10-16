@@ -1,10 +1,10 @@
 ﻿#include "ReparentGameObjectCommand.h"
 
-FWK::Editor::ReparentGameObjectCommand::ReparentGameObjectCommand(const Struct::GameObjectPlacement& a_beforePlacement, const Struct::GameObjectPlacement& a_afterPlacement, const boost::uuids::uuid& a_gameObjectUUID) :
-    m_beforePlacement(a_beforePlacement),
-    m_afterPlacement (a_afterPlacement),
+FWK::Editor::ReparentGameObjectCommand::ReparentGameObjectCommand(const boost::uuids::uuid& a_gameObjectUUID, const Struct::GameObjectPlacement& a_beforePlacement, const Struct::GameObjectPlacement& a_afterPlacement) :
+    m_gameObjectUUID(a_gameObjectUUID),
 
-    m_gameObjectUUID(a_gameObjectUUID)
+    m_beforePlacement(a_beforePlacement),
+    m_afterPlacement (a_afterPlacement)
 {}
 FWK::Editor::ReparentGameObjectCommand::~ReparentGameObjectCommand() = default;
 

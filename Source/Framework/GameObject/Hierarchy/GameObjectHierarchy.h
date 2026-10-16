@@ -76,10 +76,10 @@ namespace FWK
 
         std::unordered_set<boost::uuids::uuid> m_prefabRemovedChildUUIDSet = {};
 
+        Utility::SmartPointerVectorList<std::weak_ptr<GameObject>> m_childSmartPointerVectorList = {};
+
         std::weak_ptr<GameObject> m_owner  = {};
         std::weak_ptr<GameObject> m_parent = {};
-
-        Utility::SmartPointerVectorList<std::weak_ptr<GameObject>> m_childSmartPointerVectorList = {};
 
         UUIDRegistry<std::weak_ptr<GameObject>> m_childUUIDRegistry = {};
 

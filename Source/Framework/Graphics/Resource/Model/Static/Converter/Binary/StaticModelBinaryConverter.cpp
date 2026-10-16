@@ -87,7 +87,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
     return true;
 }
 
-bool FWK::Converter::StaticModelBinaryConverter::SaveAsset(const Graphics::StaticModelRecord& a_staticModelRecord, const std::filesystem::path& a_filePath)
+bool FWK::Converter::StaticModelBinaryConverter::SaveAsset(const std::filesystem::path& a_filePath, const Graphics::StaticModelRecord& a_staticModelRecord)
 {
     auto& l_staticModelData = a_staticModelRecord.GetREFModelData();
 

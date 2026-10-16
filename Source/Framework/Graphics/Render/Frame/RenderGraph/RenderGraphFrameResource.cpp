@@ -69,9 +69,9 @@ bool FWK::Graphics::RenderGraphFrameResource::Resize(const Device&              
                                                                       a_gpuMemoryAllocator,
                                                                       a_clientSize,
                                                                       a_retiredFenceValue,
+                                                                      l_resourceReleaseContext,
                                                                       l_rtvDescriptorPool,
-                                                                      l_cbvSRVUAVDescriptorPool,
-                                                                      l_resourceReleaseContext),
+                                                                      l_cbvSRVUAVDescriptorPool),
                                                                       "RenderTargetTextureのリサイズに失敗しました。",
                                                                       false);
     }
@@ -84,9 +84,9 @@ bool FWK::Graphics::RenderGraphFrameResource::Resize(const Device&              
                                                                       a_gpuMemoryAllocator,
                                                                       a_clientSize,
                                                                       a_retiredFenceValue,
+                                                                      l_resourceReleaseContext,
                                                                       l_dsvDescriptorPool,
-                                                                      l_cbvSRVUAVDescriptorPool,
-                                                                      l_resourceReleaseContext),
+                                                                      l_cbvSRVUAVDescriptorPool),
                                                                       "DepthStencilTextureのリサイズに失敗しました。",
                                                                       false);
     }

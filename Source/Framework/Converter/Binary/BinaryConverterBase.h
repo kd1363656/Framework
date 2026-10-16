@@ -154,6 +154,8 @@ namespace FWK::Converter
         static constexpr std::uint64_t k_emptyReadDataSize  = 0ULL;
         static constexpr std::uint64_t k_emptyWriteDataSize = 0ULL;
 
+        static constexpr std::uint64_t k_divisibleRemainderSize = 0ULL;
+
         static constexpr DWORD k_fileSizeHigh                  = 0UL;
         static constexpr DWORD k_mappingMaxSizeHighUseFileSize = 0UL;
         static constexpr DWORD k_mappingMaxSizeLowUseFileSize  = 0UL;

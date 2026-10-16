@@ -28,9 +28,9 @@ namespace FWK::Graphics
                     const UINT64&                             a_retiredFenceValue,
                     const UINT                                a_width,
                     const UINT                                a_height,
+                          ResourceReleaseContext&             a_resourceReleaseContext,
                           TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
-                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-                          ResourceReleaseContext&             a_resourceReleaseContext);
+                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
         void SetCurrentResourceState(const D3D12_RESOURCE_STATES a_set) { m_currentResourceState = a_set; }
 
@@ -78,17 +78,17 @@ namespace FWK::Graphics
         static constexpr UINT16 k_minTextureArraySize = 1U;
         static constexpr UINT16 k_minMIPLevelCount    = 1U;
 
+        std::vector<TypeAlias::DescriptorIndex> m_dsvDescriptorIndexList = {};
+
         Struct::GPUResource m_gpuResource = {};
 
         Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = {};
-
-        std::vector<TypeAlias::DescriptorIndex> m_dsvDescriptorIndexList = {};
 
         D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
 
         UINT m_width  = Constant::k_invalidTextureWidth;
         UINT m_height = Constant::k_invalidTextureHeight;
 
-        TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+        TypeAlias::DescriptorIndex m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
     };
 }

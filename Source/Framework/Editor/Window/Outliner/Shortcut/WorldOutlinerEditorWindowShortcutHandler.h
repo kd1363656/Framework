@@ -20,7 +20,7 @@ namespace FWK::Editor
     private:
  
         void HandleSelectAllGameObject(WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const;
-        void HandleArrowKey           (WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager, const bool a_isRangeSelection) const;
+        void HandleArrowKey           (const bool a_isRangeSelection, WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const;
         void HandleRename             (WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const;
         void HandleDeleteGameObject   (WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const;
 

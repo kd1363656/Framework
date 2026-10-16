@@ -232,7 +232,7 @@ nlohmann::json FWK::Converter::RendererJsonConverter::SerializePipelineStateMap(
         l_json[k_pipelineStateTypeJsonKey] = l_type;
 
         // 実体の派生クラスの名前を保存する
-        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_pipelineState, k_pipelineStateClassNameJsonKey));
+        Utility::UpdateJson(Utility::SerializeInstanceType(l_pipelineState, k_pipelineStateClassNameJsonKey), l_json);
 
         l_json[k_pipelineStateJsonKey] = l_pipelineState->Serialize();
 

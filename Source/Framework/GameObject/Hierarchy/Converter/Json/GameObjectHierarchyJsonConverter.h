@@ -42,9 +42,9 @@ namespace FWK::Converter
                                             GameObjectHierarchy&         a_gameObjectHierarchy,
                                             Scene&                       a_scene) const;
  
-        void DeserializeChild(const std::weak_ptr<GameObject>& a_parentGameObject,
-                              const nlohmann::json&              a_childJson,
+        void DeserializeChild(const nlohmann::json&              a_childJson,
                               const nlohmann::json&              a_baseJson,
+                              const std::weak_ptr<GameObject>& a_parentGameObject,
                               const SceneGameObjectPrefabSystem& a_prefabSystem,
                                     Scene&                       a_scene) const;
  

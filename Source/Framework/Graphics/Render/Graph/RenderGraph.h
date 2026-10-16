@@ -97,6 +97,8 @@ namespace FWK::Graphics
 
         void RemoveExpiredPassList();
 
+        static constexpr std::size_t k_firstPassIndex = 0ULL;
+
         DrawRequestPassMap         m_drawRequestPassMap         = {};
         ComputeRequestPerObjectMap m_computeRequestPerObjectMap = {};
         DrawRequestPerObjectMap    m_drawRequestPerObjectMap    = {};

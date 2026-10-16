@@ -22,8 +22,6 @@ namespace FWK::Graphics
 
         auto GetVALCapacity() const { return m_capacity; }
 
-        static constexpr TypeAlias::DescriptorIndex k_defaultCapacity = 10000U;
-
     private:
 
         bool IsInValidIndex(const TypeAlias::DescriptorIndex a_index) const;
@@ -36,7 +34,7 @@ namespace FWK::Graphics
 
         Converter::DescriptorHeapIndexAllocatorJsonConverter m_jsonConverter = {};
 
-        TypeAlias::DescriptorIndex m_capacity  = DescriptorHeap::k_invalidDescriptorIndex;
+        TypeAlias::DescriptorIndex m_capacity  = Constant::k_invalidDescriptorIndex;
         TypeAlias::DescriptorIndex m_nextIndex = k_initialNextIndex;
     };
 }

@@ -2,78 +2,78 @@
 
 void FWK::Graphics::RenderGraphPassBase::WriteBackBuffer(const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-    AddResourceAccess(k_isBackBuffer,
-                      Enum::RenderGraphRenderTargetType::None,
+    AddResourceAccess(Enum::RenderGraphRenderTargetType::None,
                       Enum::RenderGraphDepthStencilType::None,
                       Enum::RenderGraphShadowMapType::None,
                       Enum::RenderGraphAccessType::Write,
                       a_beforeUsage,
-                      a_afterUsage);
+                      a_afterUsage,
+                      k_isBackBuffer);
 }
 
 void FWK::Graphics::RenderGraphPassBase::ReadRenderTarget(const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-    AddResourceAccess(k_isNotBackBuffer,
-                      a_renderTargetType,
+    AddResourceAccess(a_renderTargetType,
                       Enum::RenderGraphDepthStencilType::None,
                       Enum::RenderGraphShadowMapType::None,
                       Enum::RenderGraphAccessType::Read,
                       a_beforeUsage,
-                      a_afterUsage);
+                      a_afterUsage,
+                      k_isNotBackBuffer);
 }
 void FWK::Graphics::RenderGraphPassBase::ReadDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-    AddResourceAccess(k_isNotBackBuffer,
-                      Enum::RenderGraphRenderTargetType::None,
+    AddResourceAccess(Enum::RenderGraphRenderTargetType::None,
                       a_depthStencilType,
                       Enum::RenderGraphShadowMapType::None,
                       Enum::RenderGraphAccessType::Read,
                       a_beforeUsage,
-                      a_afterUsage);
+                      a_afterUsage,
+                      k_isNotBackBuffer);
 }
 void FWK::Graphics::RenderGraphPassBase::ReadShadowMap(const Enum::RenderGraphShadowMapType a_shadowMapType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-    AddResourceAccess(k_isNotBackBuffer,
-                      Enum::RenderGraphRenderTargetType::None,
+    AddResourceAccess(Enum::RenderGraphRenderTargetType::None,
                       Enum::RenderGraphDepthStencilType::None,
                       a_shadowMapType,
                       Enum::RenderGraphAccessType::Read,
                       a_beforeUsage,
-                      a_afterUsage);
+                      a_afterUsage,
+                      k_isNotBackBuffer);
 }
 
 void FWK::Graphics::RenderGraphPassBase::WriteRenderTarget(const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-    AddResourceAccess(k_isNotBackBuffer,
-                      a_renderTargetType,
+    AddResourceAccess(a_renderTargetType,
                       Enum::RenderGraphDepthStencilType::None,
                       Enum::RenderGraphShadowMapType::None,
                       Enum::RenderGraphAccessType::Write,
                       a_beforeUsage,
-                      a_afterUsage);
+                      a_afterUsage,
+                      k_isNotBackBuffer);
 }
 void FWK::Graphics::RenderGraphPassBase::WriteDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-    AddResourceAccess(k_isNotBackBuffer,
-                      Enum::RenderGraphRenderTargetType::None,
+    AddResourceAccess(Enum::RenderGraphRenderTargetType::None,
                       a_depthStencilType,
                       Enum::RenderGraphShadowMapType::None,
                       Enum::RenderGraphAccessType::Write,
                       a_beforeUsage,
-                      a_afterUsage);
+                      a_afterUsage,
+                      k_isNotBackBuffer);
 }
 void FWK::Graphics::RenderGraphPassBase::WriteShadowMap(const Enum::RenderGraphShadowMapType a_shadowMapType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-    AddResourceAccess(k_isNotBackBuffer,
-                      Enum::RenderGraphRenderTargetType::None,
+    AddResourceAccess(Enum::RenderGraphRenderTargetType::None,
                       Enum::RenderGraphDepthStencilType::None,
                       a_shadowMapType,
                       Enum::RenderGraphAccessType::Write,
                       a_beforeUsage,
-                      a_afterUsage);
+                      a_afterUsage,
+                      k_isNotBackBuffer);
 }
 
-std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::SetupGraphicsRenderPipeline(Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const
+std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::SetupGraphicsRenderPipeline(const Enum::PipelineStateType a_pipelineStateType, Renderer& a_renderer) const
 {
     const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState<Graphics::GraphicsPipelineStateBase>(a_pipelineStateType);
     const auto& l_pipelineState     = l_pipelineStateWeak.lock                                            ();
@@ -88,7 +88,7 @@ std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::
     return l_pipelineState->GetREFUseRootSignature();
 }
 
-std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::SetupComputeRenderPipeline(Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const
+std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::SetupComputeRenderPipeline(const Enum::PipelineStateType a_pipelineStateType, Renderer& a_renderer) const
 {
     const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState<Graphics::ComputePipelineState>(a_pipelineStateType);
     const auto& l_pipelineState     = l_pipelineStateWeak.lock                                       ();
@@ -111,13 +111,13 @@ void FWK::Graphics::RenderGraphPassBase::SetupExecutionLayer(const Enum::RenderG
     m_executionLayer = a_executionLayer;
 }
 
-void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const bool                              a_isBackBuffer,
-                                                           const Enum::RenderGraphRenderTargetType a_renderTargetType,
+void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const Enum::RenderGraphRenderTargetType a_renderTargetType,
                                                            const Enum::RenderGraphDepthStencilType a_depthStencilType,
                                                            const Enum::RenderGraphShadowMapType    a_shadowMapType,
                                                            const Enum::RenderGraphAccessType       a_accessType,
                                                            const Enum::RenderGraphResourceUsage    a_beforeUsage,
-                                                           const Enum::RenderGraphResourceUsage    a_afterUsage)
+                                                           const Enum::RenderGraphResourceUsage    a_afterUsage,
+                                                           const bool                              a_isBackBuffer)
 {
     FWK_ASSERT_RETURN_IF(a_renderTargetType == Enum::RenderGraphRenderTargetType::Invalid ||
                          a_renderTargetType == Enum::RenderGraphRenderTargetType::Count,

@@ -21,7 +21,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::RenameGameObject
     auto& l_editorManager  = EditorManager::GetInstance                 ();
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<RenameGameObjectCommand>(l_gameObject->GetREFSceneInstanceUUID(), l_beforeName, a_newName);
+    l_undoRedoSystem.PushUndoCommand<RenameGameObjectCommand>(l_beforeName, a_newName, l_gameObject->GetREFSceneInstanceUUID());
 }
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroySelectedGameObjects(EditorGameObjectSelectionState& a_gameObjectSelectionState) const
 {
@@ -87,13 +87,13 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObje
     // 階層の深さが変わったため実行レベルを再構築する
     a_scene.RebuildGameObjectExecutionLevelList();
 
-    PushReparentCommand(l_moveGameObject, l_beforePlacement, a_scene);
+    PushReparentCommand(l_moveGameObject, a_scene, l_beforePlacement);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::MoveGameObjectSiblingOrder(const std::weak_ptr<GameObject>& a_targetGameObject,
                                                                                            const std::weak_ptr<GameObject>& a_moveGameObject,
-                                                                                                 Scene&                     a_scene,
-                                                                                           const bool                       a_isMoveAfter) const
+                                                                                                 const bool                       a_isMoveAfter,
+                                                                                           Scene&                     a_scene) const
 {
     const auto& l_targetGameObject = a_targetGameObject.lock();
     const auto& l_moveGameObject   = a_moveGameObject.lock  ();
@@ -182,7 +182,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::MoveGameObjectSi
     // 階層が変わり得るため実行レベルを再構築する
     a_scene.RebuildGameObjectExecutionLevelList();
 
-    PushReparentCommand(l_moveGameObject, l_beforePlacement, a_scene);
+    PushReparentCommand(l_moveGameObject, a_scene, l_beforePlacement);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CopySelectedGameObjects(const EditorGameObjectSelectionState& a_gameObjectSelectionState, WorldOutlinerEditorWindowClipboard& a_clipboard) const
@@ -387,7 +387,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects
     l_undoRedoSystem.ExecuteUndoCommand<PasteCutGameObjectCommand>(l_pastedList, l_cutList);
 }
 
-void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PushReparentCommand(const std::shared_ptr<GameObject>& a_moveGameObject, const Struct::GameObjectPlacement& a_beforePlacement, const Scene& a_scene) const
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PushReparentCommand(const std::shared_ptr<GameObject>& a_moveGameObject, const Scene& a_scene, const Struct::GameObjectPlacement& a_beforePlacement) const
 {
     // 変更後の親と兄弟の並び順を記録する
     const auto& l_afterPlacement = Utility::FetchVALGameObjectPlacement(a_moveGameObject, a_scene);
@@ -399,7 +399,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PushReparentComm
     auto& l_editorManager  = EditorManager::GetInstance                 ();
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<ReparentGameObjectCommand>(a_beforePlacement, l_afterPlacement, a_moveGameObject->GetREFSceneInstanceUUID());
+    l_undoRedoSystem.PushUndoCommand<ReparentGameObjectCommand>(a_moveGameObject->GetREFSceneInstanceUUID(), a_beforePlacement, l_afterPlacement);
 }
 
 FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ChildGameObjectDataList::iterator FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const

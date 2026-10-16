@@ -80,7 +80,7 @@ bool FWK::Graphics::RootSignature::Create(const Device& a_device)
     //                     受け取りたいCOMインターフェース型のID、
     //                     作成結果のポインタを書き込むアドレス);
 
-    l_hr = l_device->CreateRootSignature(UploadBuffer::k_defaultGPUNodeMask,
+    l_hr = l_device->CreateRootSignature(Constant::k_defaultGPUNodeMask,
                                          l_serializedBlob->GetBufferPointer(),
                                          l_serializedBlob->GetBufferSize(),
                                          IID_PPV_ARGS(m_rootSignature.ReleaseAndGetAddressOf()));
@@ -99,7 +99,7 @@ UINT FWK::Graphics::RootSignature::FindVALRootParameterIndex(const Enum::RootPar
 {
     const auto& l_itr = m_rootParameterIndexMap.find(a_rootParameterType);
 
-    if (l_itr == m_rootParameterIndexMap.end()) { return Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex; }
+    if (l_itr == m_rootParameterIndexMap.end()) { return Constant::k_invalidRootParameterIndex; }
 
     return l_itr->second;
 }

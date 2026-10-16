@@ -111,9 +111,9 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
     {
         SkeletalAnimationModelRecord::ModelMesh l_modelMesh = {};
 
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(k_invalidMaterialIndex,
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_boneNodeIndexMap,
+                                                               k_invalidMaterialIndex,
                                                                a_fbxNode,
-                                                               a_boneNodeIndexMap,
                                                                l_modelMesh),
                                                                "MaterialなしModelMeshの抽出に失敗しました。",
                                                                false);
@@ -133,7 +133,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
     {
         SkeletalAnimationModelRecord::ModelMesh l_modelMesh = {};
 
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(l_materialIndex, a_fbxNode, a_boneNodeIndexMap, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_boneNodeIndexMap, l_materialIndex, a_fbxNode, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
 
         if (l_modelMesh.m_modelVertexList.empty()) { continue; }
         if (l_modelMesh.m_indexList.empty())       { continue; }
@@ -178,10 +178,10 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
     FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinVertex.num_weights > l_remainingSkinWeightCount, "SkinWeight配列の参照範囲が不正です。", false);
 
     a_modelVertex.m_boneWeight            = {};
-    a_modelVertex.m_bonePaletteIndexZero  = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
-    a_modelVertex.m_bonePaletteIndexOne   = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
-    a_modelVertex.m_bonePaletteIndexTwo   = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
-    a_modelVertex.m_bonePaletteIndexThree = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
+    a_modelVertex.m_bonePaletteIndexZero  = Constant::k_invalidPaletteIndex;
+    a_modelVertex.m_bonePaletteIndexOne   = Constant::k_invalidPaletteIndex;
+    a_modelVertex.m_bonePaletteIndexTwo   = Constant::k_invalidPaletteIndex;
+    a_modelVertex.m_bonePaletteIndexThree = Constant::k_invalidPaletteIndex;
 
     std::uint32_t l_appliedBoneInfluenceCount = k_emptyBoneInfluenceCount;
 
@@ -209,7 +209,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 
         const auto l_modelBoneIndex = l_boneNodeIndexITR->second;
 
-        std::uint32_t l_bonePaletteIndex = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
+        std::uint32_t l_bonePaletteIndex = Constant::k_invalidPaletteIndex;
 
         // 既にPaletteへ登録しているBoneなら既存Indexを使用する
         if (const auto& l_bonePaletteIndexITR = a_boneIndexPaletteIndexMap.find(l_modelBoneIndex);
@@ -298,9 +298,9 @@ void FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
     }
 }
 
-bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(const std::size_t&                                         a_materialIndex,
+bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
+                                                                                const std::size_t&                                         a_materialIndex,
                                                                                 const ufbx_node*                                           a_fbxNode,
-                                                                                const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
                                                                                       SkeletalAnimationModelRecord::ModelMesh&             a_modelMesh) const
 {
     a_modelMesh.m_modelVertexList.clear();

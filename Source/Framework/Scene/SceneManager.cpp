@@ -21,6 +21,12 @@ bool FWK::SceneManager::Load(const std::filesystem::path& a_nextSceneLoadFilePat
         return false;
     }
 
+    // 読み込んだGameObjectは、AddGameObjectで追加予約リストへ入っただけでまだシーンに並んでいない
+    // (普段は次のフレームのEarlyUpdateで並ぶ遅延追加)
+    // このままPostDeserializeすると、ルートを探す実行レベルの一覧が空のため何もせずに終わり
+    // 子のTransformが親を見つけられない・カメラの準備がされないままになるので、先に並べておく
+    m_scene->AddPendingGameObjects();
+
     m_scene->PostDeserialize();
 
     return true;

@@ -81,7 +81,7 @@ void FWK::Converter::SceneChangerJsonConverter::DeserializeNextSceneMap(const nl
         // 名前と次の真のJsonをロード
         l_nextScene.Load(l_assetFilePath);
 
-        a_sceneChanger.AddNextScene(l_sceneUUID, l_nextScene);
+        a_sceneChanger.AddNextScene(l_nextScene, l_sceneUUID);
     }
 }
 
@@ -118,7 +118,7 @@ nlohmann::json FWK::Converter::SceneChangerJsonConverter::SerializeNextSceneMap(
 
         nlohmann::json l_json = {};
 
-        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_sceneUUID, k_uuidJsonKey));
+        Utility::UpdateJson(Utility::SerializeUUID(l_sceneUUID, k_uuidJsonKey), l_json);
         
         l_rootJsonArray.emplace_back(l_json);
     }

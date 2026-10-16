@@ -12,8 +12,8 @@ namespace FWK::Graphics
         bool CreateSkeletalAnimationModelBatchUploadRecord(const Device&                                                   a_device,
                                                            const GPUMemoryAllocator&                                       a_gpuMemoryAllocator,
                                                                  std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
-                                                                 TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool,
-                                                                 SkeletalAnimationModelRecord&                             a_skeletalAnimationModelRecord) const;
+                                                                 SkeletalAnimationModelRecord&                             a_skeletalAnimationModelRecord,
+                                                                 TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool) const;
 
     private:
 

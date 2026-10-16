@@ -52,6 +52,6 @@ namespace FWK::Graphics
 
         Struct::GPUResource m_bufferGPUResource = {};
 
-        TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+        TypeAlias::DescriptorIndex m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
     };
 }

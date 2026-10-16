@@ -10,7 +10,7 @@ namespace FWK
         // 型情報を扱う構造体
         struct TypeINFO final
         {
-            explicit TypeINFO(const TypeINFO* const a_baseINFO, const std::string_view& a_name, const TypeAlias::StaticTypeID a_staticTypeID) :
+            explicit TypeINFO(const std::string_view& a_name, const TypeINFO* const a_baseINFO, const TypeAlias::StaticTypeID a_staticTypeID) :
                 k_baseINFO    (a_baseINFO),
                 k_name        (a_name),
                 k_staticTypeID(a_staticTypeID)

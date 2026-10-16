@@ -6,11 +6,14 @@ void FWK::Editor::FileMainMenuEditor::Draw()
     UpdateShortCutKey();
 }
 
-void FWK::Editor::FileMainMenuEditor::DrawMenuFile() const
+void FWK::Editor::FileMainMenuEditor::DrawMenuFile()
 {
     if (!ImGui::BeginMenu(k_beginFileMenuTextString.data())) { return; }
 
-    if (ImGui::MenuItem(k_saveTextString.data(), k_saveShortCutString.data()))
+    // 上下キーとマウスで項目を選べるようにする
+    m_popupNavigator.Begin(Enum::EditorPopupNavigationAxis::Vertical);
+
+    if (m_popupNavigator.MenuItem(k_saveTextString.data(), k_saveShortCutString.data()))
     {
         // すべてのシーン情報をセーブ
         const auto& l_sceneManager = SceneManager::GetInstance();
@@ -19,6 +22,8 @@ void FWK::Editor::FileMainMenuEditor::DrawMenuFile() const
 
         FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "シーンのセーブが完了しました。");
     }
+
+    m_popupNavigator.End();
 
     ImGui::EndMenu();
 }

@@ -6,7 +6,7 @@ void FWK::Converter::RenderTargetPassTextureJsonConverter::Deserialize(const nlo
 
     const auto& l_clearColor = Utility::DeserializeColor(a_rootJson, k_clearColorJsonKey);
 
-    const auto l_format = a_rootJson.value(k_formatJsonKey, Graphics::RenderTargetTexture::k_defaultRenderTargetTextureFormat);
+    const auto l_format = a_rootJson.value(k_formatJsonKey, Constant::k_defaultRenderTargetTextureFormat);
 
     const auto l_renderGraphRenderTargetType = a_rootJson.value(k_renderGraphRenderTargetTypeJsonKey, Enum::RenderGraphRenderTargetType::Invalid);
 
@@ -31,7 +31,7 @@ nlohmann::json FWK::Converter::RenderTargetPassTextureJsonConverter::Serialize(c
 {
     nlohmann::json l_rootJson = {};
 
-    Utility::UpdateJson(l_rootJson, Utility::SerializeColor(a_renderTargetPassTexture.GetREFClearColor(), k_clearColorJsonKey));
+    Utility::UpdateJson(Utility::SerializeColor(k_clearColorJsonKey, a_renderTargetPassTexture.GetREFClearColor()), l_rootJson);
 
     l_rootJson[k_formatJsonKey]                      = a_renderTargetPassTexture.GetVALFormat                     ();
     l_rootJson[k_renderGraphRenderTargetTypeJsonKey] = a_renderTargetPassTexture.GetVALRenderGraphRenderTargetType();

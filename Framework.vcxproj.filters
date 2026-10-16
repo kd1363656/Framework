@@ -1513,6 +1513,27 @@
     <Filter Include="Source\Framework\Utility\GameObject">
       <UniqueIdentifier>{f1076a3b-a4f8-4cbe-bb39-8d0e1f433b45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Editor\Popup">
+      <UniqueIdentifier>{ab047240-b6dc-4565-b917-893a63728fb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Popup">
+      <UniqueIdentifier>{aa50cb4c-22cb-4c57-aa17-97250fdf7c19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Editor\Popup">
+      <UniqueIdentifier>{23fa0c8f-7818-41c2-b061-e3af3121d8e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\FPS">
+      <UniqueIdentifier>{1a52f8e4-0a7c-4c7a-95aa-12546549331b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\TypeINFO">
+      <UniqueIdentifier>{0f3d2857-a67a-40c7-a917-981ec2eca349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility\List">
+      <UniqueIdentifier>{a0ce6091-fe13-4dc6-bd8c-68332c3b4d61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Window">
+      <UniqueIdentifier>{ac37509e-fc18-4bf3-b3cc-b706fc20675b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2760,9 +2781,6 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Creator\AssetBrowserEditorWindowAssetCreator.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Creator</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowDeleteConfirmPopupEnum.h">
-      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Command\ICommand.h">
       <Filter>Source\Framework\Command</Filter>
     </ClInclude>
@@ -3005,6 +3023,108 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectPlacementUtility.h">
       <Filter>Source\Framework\Utility\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Popup\EditorPopupNavigatorEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Popup</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Popup\EditorPopupNavigator.h">
+      <Filter>Source\Framework\Editor\Popup</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowAssetCreatorStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowDeleteConfirmPopupStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowPopupDrawerStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\WorldOutlinerEditorWindowPopupDrawerStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DepthStencilTextureStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelCascadeShadowPassStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelCommonStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteRECTStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsCharacterVirtualStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsRayCastStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Popup\EditorPopupNavigatorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Popup</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\FPS\FPSControllerConstant.h">
+      <Filter>Source\Framework\Definition\Constant\FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RootSignatureJsonConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UploadBufferConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DynamicBufferUploaderBaseConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DescriptorHeapConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DescriptorHeapIndexAllocatorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelBinaryConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationPlayerConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationPoseEvaluatorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelRecordConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureSystemConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DefaultTextureJsonConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetTextureConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\TypeINFO\StaticTypeIDGeneratorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\TypeINFO</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\List\SmartPointerVectorListUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\List</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Window\WindowConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowDirectoryNotificationProcessorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CascadeShadowMapConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

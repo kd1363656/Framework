@@ -44,9 +44,6 @@ namespace FWK::Graphics
 
         auto GetVALSyncInterval() const { return m_syncInterval; }
 
-        static constexpr UINT k_defaultBackBufferNUM = 2U;
-        static constexpr UINT k_defaultSyncInterval  = 1U;
-
     private:
 
         bool CreateSwapChain     (const Window& a_window, const Factory&                    a_factory, const TypeAlias::DirectCommandQueue& a_directCommandQueue);
@@ -71,6 +68,6 @@ namespace FWK::Graphics
 
         Converter::SwapChainJsonConverter m_jsonConverter = {};
 
-        UINT m_syncInterval = k_defaultSyncInterval;
+        UINT m_syncInterval = Constant::k_defaultSyncInterval;
     };
 }

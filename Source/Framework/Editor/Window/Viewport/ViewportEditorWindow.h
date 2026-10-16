@@ -29,14 +29,14 @@ namespace FWK::Editor
         static constexpr std::string_view k_editorName                 = "ビューポート";
         static constexpr std::string_view k_thisWindowExplanationLabel = "現在のシーンの描画状態を見ることができるウィンドウ。";
 
+        static constexpr ImTextureID k_invalidViewportTextureID = {};
+
         static constexpr float k_minViewportSize = 1.0F;
 
         static constexpr float k_viewportUVMINX = 0.0F;
         static constexpr float k_viewportUVMINY = 0.0F;
         static constexpr float k_viewportUVMAXX = 1.0F;
         static constexpr float k_viewportUVMAXY = 1.0F;
-        
-        static constexpr ImTextureID k_invalidViewportTextureID = {};
 
         std::vector<TypeAlias::DescriptorIndex> m_imGuiSRVDescriptorIndexList = {};
 

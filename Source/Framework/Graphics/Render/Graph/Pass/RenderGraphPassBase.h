@@ -39,20 +39,20 @@ namespace FWK::Graphics
         void WriteDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
         void WriteShadowMap   (const Enum::RenderGraphShadowMapType    a_shadowMapType,    const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
 
-        std::weak_ptr<RootSignature> SetupGraphicsRenderPipeline(Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const;
-        std::weak_ptr<RootSignature> SetupComputeRenderPipeline (Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const;
+        std::weak_ptr<RootSignature> SetupGraphicsRenderPipeline(const Enum::PipelineStateType a_pipelineStateType, Renderer& a_renderer) const;
+        std::weak_ptr<RootSignature> SetupComputeRenderPipeline (const Enum::PipelineStateType a_pipelineStateType, Renderer& a_renderer) const;
 
         void SetupExecutionLayer(const Enum::RenderGraphPassExecutionLayer a_executionLayer);
 
     private:
 
-        void AddResourceAccess(const bool                              a_isBackBuffer,
-                               const Enum::RenderGraphRenderTargetType a_renderTargetType,
+        void AddResourceAccess(const Enum::RenderGraphRenderTargetType a_renderTargetType,
                                const Enum::RenderGraphDepthStencilType a_depthStencilType,
                                const Enum::RenderGraphShadowMapType    a_shadowMapType,
                                const Enum::RenderGraphAccessType       a_accessType,
                                const Enum::RenderGraphResourceUsage    a_beforeUsage,
-                               const Enum::RenderGraphResourceUsage    a_afterUsage);
+                               const Enum::RenderGraphResourceUsage    a_afterUsage,
+                               const bool                              a_isBackBuffer);
 
         static constexpr bool k_isBackBuffer    = true;
         static constexpr bool k_isNotBackBuffer = false;

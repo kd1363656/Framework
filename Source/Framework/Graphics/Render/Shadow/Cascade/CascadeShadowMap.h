@@ -8,11 +8,9 @@ namespace FWK::Graphics
 
         struct CascadeData final
         {
-            static constexpr float k_initialSplitDepth = 0.0F;
-
             Struct::CBModelCascadeShadowPass m_cbModelCascadeShadowPass = {};
 
-            float m_splitDepth = k_initialSplitDepth;
+            float m_splitDepth = Constant::k_initialSplitDepth;
         };
 
     public:

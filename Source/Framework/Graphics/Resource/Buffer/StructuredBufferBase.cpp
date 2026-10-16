@@ -16,11 +16,11 @@ FWK::Graphics::StructuredBufferBase& FWK::Graphics::StructuredBufferBase::operat
 
 void FWK::Graphics::StructuredBufferBase::ReleaseImmediatelySRVDescriptorIndex(TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
-    if (m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex) { return; }
+    if (m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex) { return; }
 
     a_cbvSRVUAVDescriptorPool.Release(m_srvDescriptorIndex);
 
-    m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+    m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
 }
 
 FWK::TypeAlias::DescriptorIndex FWK::Graphics::StructuredBufferBase::CreateSRV(const Device&                             a_device,
@@ -31,10 +31,10 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::StructuredBufferBase::CreateSRV(c
 {
     const auto& l_device = a_device.GetREFDevice();
 
-    FWK_ASSERT_RETURN_VALUE_IF(!l_device,                                              "デバイスが作成されておらず、StructuredBuffer用SRVの作成に失敗しました。",   DescriptorHeap::k_invalidDescriptorIndex);
-    FWK_ASSERT_RETURN_VALUE_IF(!a_bufferGPUResource.m_resource,                        "BufferResourceが無効のため、StructuredBuffer用SRVの作成に失敗しました。",   DescriptorHeap::k_invalidDescriptorIndex);
-    FWK_ASSERT_RETURN_VALUE_IF(a_elementCount == k_invalidElementCount,                "ElementCountが0のため、StructuredBuffer用SRVの作成に失敗しました。",        DescriptorHeap::k_invalidDescriptorIndex);
-    FWK_ASSERT_RETURN_VALUE_IF(a_structureByteStride == k_invalidStructuredByteStride, "StructureByteStrideが0のため、StructuredBuffer用SRVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
+    FWK_ASSERT_RETURN_VALUE_IF(!l_device,                                              "デバイスが作成されておらず、StructuredBuffer用SRVの作成に失敗しました。",   Constant::k_invalidDescriptorIndex);
+    FWK_ASSERT_RETURN_VALUE_IF(!a_bufferGPUResource.m_resource,                        "BufferResourceが無効のため、StructuredBuffer用SRVの作成に失敗しました。",   Constant::k_invalidDescriptorIndex);
+    FWK_ASSERT_RETURN_VALUE_IF(a_elementCount == k_invalidElementCount,                "ElementCountが0のため、StructuredBuffer用SRVの作成に失敗しました。",        Constant::k_invalidDescriptorIndex);
+    FWK_ASSERT_RETURN_VALUE_IF(a_structureByteStride == k_invalidStructuredByteStride, "StructureByteStrideが0のため、StructuredBuffer用SRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
 
     const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
@@ -69,7 +69,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::StructuredBufferBase::CreateSRV(c
     {
         a_cbvSRVUAVDescriptorPool.Release(l_srvDescriptorIndex);
 
-        FWK_ASSERT_RETURN_VALUE("CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、StructuredBuffer用SRVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
+        FWK_ASSERT_RETURN_VALUE("CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、StructuredBuffer用SRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
     }
 
     return l_srvDescriptorIndex;
@@ -79,14 +79,14 @@ bool FWK::Graphics::StructuredBufferBase::ReserveReleaseCurrentResource(const UI
 {
     // 既に解放するものがなければreturn
     if (!m_bufferGPUResource.m_resource &&
-        m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex)
+        m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex)
     {
         return true;
     }
 
     FWK_ASSERT_RETURN_VALUE_IF(!m_bufferGPUResource.m_resource,                                  "StructuredBufferのGPUResourceが無効のため、遅延解放登録に失敗しました。",        false);
-    FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "StructuredBufferのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Fence::k_unusedFenceValue,                "FenceValueが無効のため、StructuredBufferの遅延解放登録に失敗しました。",         false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex,       "StructuredBufferのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Constant::k_unusedFenceValue,             "FenceValueが無効のため、StructuredBufferの遅延解放登録に失敗しました。",         false);
 
     // GPUリソース、ディスクリプタインデックスの適切なタイミングでの解放を予約
     ResourceReleaseContext::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
@@ -104,7 +104,7 @@ bool FWK::Graphics::StructuredBufferBase::ReserveReleaseCurrentResource(const UI
 
     // もう一度処理が走らないように初期化
     m_bufferGPUResource = {};
-    m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+    m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
 
     return true;
 }
@@ -115,5 +115,5 @@ void FWK::Graphics::StructuredBufferBase::MoveFrom(StructuredBufferBase&& a_othe
     m_srvDescriptorIndex = a_other.m_srvDescriptorIndex;
 
     a_other.m_bufferGPUResource  = {};
-    a_other.m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+    a_other.m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
 }

@@ -13,9 +13,9 @@ bool FWK::Graphics::StaticModelSystem::Create()
     return true;
 }
 
-FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticModelForBatchUpload(const Device&                             a_device,
+FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticModelForBatchUpload(const std::filesystem::path&              a_filePath,
+                                                                                                   const Device&                             a_device,
                                                                                                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                                                                   const std::filesystem::path&              a_filePath,
                                                                                                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     Struct::StaticModelLoadResult l_staticModelLoadResult = {};
@@ -33,7 +33,7 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 
     l_staticModelRecord->SetFilePath      (a_filePath.wstring());
     l_staticModelRecord->SetStorageID     (l_allocateStorageID);
-    l_staticModelRecord->SetReferenceCount(AssetRecordBase::k_initialAssetReferenceCount);
+    l_staticModelRecord->SetReferenceCount(Constant::k_initialAssetReferenceCount);
 
     // .assetが存在していて、FBXより更新が古くなければ.assetを優先して読み込む
     // 失敗したらUFBXから読み込む
@@ -47,9 +47,9 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 
         // 実行時に決まる情報を作成
         BuildStaticModelRuntimeData(l_staticModelRecord,
+                                    a_filePath,
                                     a_device,
                                     a_gpuMemoryAllocator,
-                                    a_filePath,
                                     l_allocateStorageID,
                                     a_cbvSRVUAVDescriptorPool,
                                     l_staticModelLoadResult);
@@ -59,9 +59,9 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 
     // 実行時に決まる情報を作成
     BuildStaticModelRuntimeData(l_staticModelRecord,
+                                a_filePath,
                                 a_device,
                                 a_gpuMemoryAllocator,
-                                a_filePath,
                                 l_allocateStorageID,
                                 a_cbvSRVUAVDescriptorPool,
                                 l_staticModelLoadResult);
@@ -110,15 +110,15 @@ bool FWK::Graphics::StaticModelSystem::BuildStaticModelAssetData(const std::file
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshletBuilder.BuildModelRecordMeshletData(a_staticModelRecord), "StaticModelMeshletDataの作成に失敗しました。", false);
 
     // 読み込んだFBXモデルのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveAsset(a_staticModelRecord, a_filePath), "TextureAssetの保存に失敗しました", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveAsset(a_filePath, a_staticModelRecord), "TextureAssetの保存に失敗しました", false);
 
     return true;
 }
 
 void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>& a_staticModelRecord,
+                                                                   const std::filesystem::path&              a_filePath,
                                                                    const Device&                             a_device,
                                                                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                                   const std::filesystem::path&              a_filePath,
                                                                    const TypeAlias::StorageID                a_storageID,
                                                                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
                                                                          Struct::StaticModelLoadResult&      a_staticModelLoadResult)
@@ -132,9 +132,9 @@ void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::sh
     m_materialRuntimTextureBuilder.BuildMaterialRuntimeTextures(a_filePath, *a_staticModelRecord);
 
     // バッチアップロード用情報の作成
-    if (!CreateStaticBatchUploadRecord(a_staticModelRecord,
-                                       a_device,
+    if (!CreateStaticBatchUploadRecord(a_device,
                                        a_gpuMemoryAllocator,
+                                       a_staticModelRecord,
                                        a_cbvSRVUAVDescriptorPool,
                                        l_staticModelBatchUploadRecord))
     {
@@ -150,9 +150,9 @@ void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::sh
     m_pendingModelBatchUploadRecordMap.try_emplace(a_filePath.wstring(), std::move(l_staticModelBatchUploadRecord));
 }
 
-bool FWK::Graphics::StaticModelSystem::CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>    a_staticModelRecord,
-                                                                     const Device&                               a_device,
+bool FWK::Graphics::StaticModelSystem::CreateStaticBatchUploadRecord(const Device&                               a_device,
                                                                      const GPUMemoryAllocator&                   a_gpuMemoryAllocator,
+                                                                     const std::shared_ptr<StaticModelRecord>    a_staticModelRecord,
                                                                            TypeAlias::CBVSRVUAVDescriptorPool&   a_cbvSRVUAVDescriptorPool,
                                                                            Struct::StaticModelBatchUploadRecord& a_staticModelBatchUploadRecord) const
 {
@@ -164,8 +164,8 @@ bool FWK::Graphics::StaticModelSystem::CreateStaticBatchUploadRecord(const std::
     if (!m_batchUploadRecordBuilder.CreateStaticModelBatchUploadRecord(a_device,
                                                                        a_gpuMemoryAllocator,
                                                                        a_staticModelBatchUploadRecord.m_bufferUploadCommandList,
-                                                                       a_cbvSRVUAVDescriptorPool,
-                                                                       *a_staticModelRecord))
+                                                                       *a_staticModelRecord,
+                                                                       a_cbvSRVUAVDescriptorPool))
     {
         FWK_ASSERT_RETURN_VALUE("StaticModel用BufferUploadCommandの作成に失敗しました。", false);
     }

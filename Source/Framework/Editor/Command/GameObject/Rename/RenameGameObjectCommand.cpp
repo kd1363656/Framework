@@ -1,6 +1,6 @@
 ﻿#include "RenameGameObjectCommand.h"
 
-FWK::Editor::RenameGameObjectCommand::RenameGameObjectCommand(const boost::uuids::uuid& a_gameObjectUUID, const std::string& a_beforeName, const std::string& a_afterName) :
+FWK::Editor::RenameGameObjectCommand::RenameGameObjectCommand(const std::string& a_beforeName, const std::string& a_afterName, const boost::uuids::uuid& a_gameObjectUUID) :
     m_beforeName(a_beforeName),
     m_afterName (a_afterName),
 

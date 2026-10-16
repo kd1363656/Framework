@@ -109,9 +109,9 @@ namespace FWK::Utility
         // 直前アイテムではなく指定した矩形をドロップ先にする版
         // ペイン空白部分などアイテムが存在しない領域のドロップに使用する
         template <typename Type>
-        bool DragDropTargetCustom(const ImRect&           a_targetRect,
+        bool DragDropTargetCustom(const std::string_view& a_label,
+                                  const ImRect&           a_targetRect,
                                   const ImGuiID           a_targetID,
-                                  const std::string_view& a_label,
                                         Type&             a_outPayload)
         {
             using PayloadType = std::remove_cvref_t<Type>;

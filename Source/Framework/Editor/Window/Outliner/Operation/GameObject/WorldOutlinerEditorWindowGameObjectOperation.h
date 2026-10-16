@@ -19,8 +19,8 @@ namespace FWK::Editor
 
         void MoveGameObjectSiblingOrder(const std::weak_ptr<GameObject>& a_targetGameObject, 
                                         const std::weak_ptr<GameObject>& a_moveGameObject, 
-                                              Scene&                     a_scene,
-                                        const bool                       a_isMoveAfter) const;
+                                              const bool                       a_isMoveAfter,
+                                        Scene&                     a_scene) const;
 
         void CopySelectedGameObjects     (const EditorGameObjectSelectionState&     a_gameObjectSelectionState, WorldOutlinerEditorWindowClipboard& a_clipboard)                                const;
         void CutSelectedGameObjects      (      WorldOutlinerEditorWindowClipboard& a_clipboard,                EditorGameObjectSelectionState&     a_gameObjectSelectionState)                 const;
@@ -31,7 +31,7 @@ namespace FWK::Editor
     
         static constexpr std::size_t k_rootPasteParentCount = 1ULL;
 
-        void PushReparentCommand(const std::shared_ptr<GameObject>& a_moveGameObject, const Struct::GameObjectPlacement& a_beforePlacement, const Scene& a_scene) const;
+        void PushReparentCommand(const std::shared_ptr<GameObject>& a_moveGameObject, const Scene& a_scene, const Struct::GameObjectPlacement& a_beforePlacement) const;
 
         ChildGameObjectDataList::iterator FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const;
     };

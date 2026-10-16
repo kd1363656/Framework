@@ -15,8 +15,8 @@ namespace FWK::Converter
             std::uint64_t m_width            = Constant::k_invalidTextureWidth;
             std::uint64_t m_height           = Constant::k_invalidTextureHeight;
             std::uint64_t m_depth            = k_emptyTextureDepth;
-            std::uint64_t m_arraySize        = k_defaultTexture2DArraySize;
-            std::uint64_t m_mipLevels        = k_defaultTexture2DMIPLevels;
+            std::uint64_t m_arraySize        = Constant::k_defaultTexture2DArraySize;
+            std::uint64_t m_mipLevels        = Constant::k_defaultTexture2DMIPLevels;
             std::uint64_t m_subresourceCount = k_emptyTextureSubresourceCount;
 
             // フォーマットは本来ならEnumだがAPI側では絶対に変更できないEnumなので
@@ -48,10 +48,7 @@ namespace FWK::Converter
 
         bool LoadTextureAsset(const std::filesystem::path& a_filePath, DirectX::ScratchImage& a_scratchImage, DirectX::TexMetadata& a_texMetadata);
 
-        bool SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage);
-
-        static constexpr std::uint64_t k_defaultTexture2DArraySize = 1ULL;
-        static constexpr std::uint64_t k_defaultTexture2DMIPLevels = 1ULL;
+        bool SaveTextureAsset(const DirectX::ScratchImage& a_scratchImage, const std::filesystem::path& a_filePath);
 
     private:
 

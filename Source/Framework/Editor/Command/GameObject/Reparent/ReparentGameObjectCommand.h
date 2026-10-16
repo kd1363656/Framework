@@ -6,7 +6,7 @@ namespace FWK::Editor
     {
     public:
 
-         ReparentGameObjectCommand(const Struct::GameObjectPlacement& a_beforePlacement, const Struct::GameObjectPlacement& a_afterPlacement, const boost::uuids::uuid& a_gameObjectUUID);
+         ReparentGameObjectCommand(const boost::uuids::uuid& a_gameObjectUUID, const Struct::GameObjectPlacement& a_beforePlacement, const Struct::GameObjectPlacement& a_afterPlacement);
         ~ReparentGameObjectCommand() override;
 
         void Undo() override;
@@ -16,9 +16,9 @@ namespace FWK::Editor
 
         void ApplyPlacement(const Struct::GameObjectPlacement& a_placement) const;
 
+        boost::uuids::uuid m_gameObjectUUID;
+
         Struct::GameObjectPlacement m_beforePlacement;
         Struct::GameObjectPlacement m_afterPlacement;
-
-        boost::uuids::uuid m_gameObjectUUID;
     };
 }

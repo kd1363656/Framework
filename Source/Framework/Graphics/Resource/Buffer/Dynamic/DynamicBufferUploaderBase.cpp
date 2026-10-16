@@ -9,7 +9,7 @@ FWK::Graphics::DynamicBufferUploaderBase::DynamicBufferUploaderBase(const UINT64
 
     m_jsonConverter(),
 
-    m_createCount(k_invalidCreateCount),
+    m_createCount(Constant::k_invalidCreateCount),
 
     m_currentElementIndex(k_initialElementBufferIndex),
     m_elementStrideSize  (k_initialElementStrideSize)
@@ -33,7 +33,7 @@ FWK::Graphics::DynamicBufferUploaderBase::DynamicBufferUploaderBase(DynamicBuffe
     // UploadBufferの所有権は移動先へ渡っている。
     // 移動元が作成済み状態に見えないよう、
     // 可変状態を初期値へ戻す。
-    a_other.m_createCount = k_invalidCreateCount;
+    a_other.m_createCount = Constant::k_invalidCreateCount;
 
     a_other.m_currentElementIndex = k_initialElementBufferIndex;
 
@@ -59,7 +59,7 @@ nlohmann::json FWK::Graphics::DynamicBufferUploaderBase::Serialize() const
 
 bool FWK::Graphics::DynamicBufferUploaderBase::CreateUploadBuffer(const Device& a_device, const UINT64& a_alignment)
 {
-    FWK_ASSERT_RETURN_VALUE_IF(m_createCount == k_invalidCreateCount, "バッファの作成個数が0のため、作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_createCount == Constant::k_invalidCreateCount, "バッファの作成個数が0のため、作成処理に失敗しました。", false);
 
     // 送るバッファの型サイズを所定のバイト数にアライメントする
     const auto& l_alignedTypeSize = Utility::AlignUp(k_typeSize, a_alignment);
@@ -70,7 +70,7 @@ bool FWK::Graphics::DynamicBufferUploaderBase::CreateUploadBuffer(const Device& 
 
     const auto& l_totalSize = m_createCount * l_alignedTypeSize;
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_totalSize == UploadBuffer::k_invalidBufferSize, "作成バッファーサイズが0のためバッファの生成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_totalSize == Constant::k_invalidBufferSize,     "作成バッファーサイズが0のためバッファの生成処理に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(!m_uploadBuffer.Create(a_device, l_totalSize),    "バッファの生成処理に失敗しました。",                              false);
 
     return true;

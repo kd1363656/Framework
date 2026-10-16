@@ -64,8 +64,6 @@ namespace FWK::Physics
 
         bool GetIsEnhancedInternalEdgeRemovalDisabled() const { return m_isEnhancedInternalEdgeRemovalDisabled; }
 
-        static constexpr float k_characterVirtualMovingTowardsGroundTolerance = 0.1F;
-
     protected:
 
         virtual JPH::Vec3 CalculateLinearVelocity(const JPH::Vec3&                                 a_physicsGravity,

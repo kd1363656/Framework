@@ -18,8 +18,6 @@ namespace FWK::Converter
 
         nlohmann::json Serialize(const Graphics::RootSignature& a_rootSignature) const;
 
-        static constexpr UINT k_invalidRootParameterIndex = UINT_MAX;
-
     private:
 
         void DeserializeRootParameterIndexMap(const nlohmann::json& a_rootJson, Graphics::RootSignature& a_rootSignature) const;

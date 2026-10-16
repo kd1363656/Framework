@@ -15,6 +15,6 @@ namespace FWK::Struct
 
         TypeAlias::Math::Vector3 m_cameraWorldPosition = TypeAlias::Math::Vector3::Zero;
 
-        float m_padding = 0.0F;
+        float m_padding = {};
     };
 }

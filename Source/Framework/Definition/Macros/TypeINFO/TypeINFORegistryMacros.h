@@ -13,7 +13,7 @@ public:                                                                         
                                                                                                                                             \
     static const auto& GetREFTypeINFO()                                                                                                     \
     {                                                                                                                                       \
-        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ nullptr, #Type, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
+        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ #Type, nullptr, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
                                                                                                                                             \
         return l_typeINFO;                                                                                                                  \
     }                                                                                                                                       \
@@ -41,7 +41,7 @@ public:                                                                         
                                                                                                                                                                 \
     static const auto& GetREFTypeINFO()                                                                                                                         \
     {                                                                                                                                                           \
-        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ &BaseType::GetREFTypeINFO(), #Type, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
+        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ #Type, &BaseType::GetREFTypeINFO(), FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
                                                                                                                                                                 \
         return l_typeINFO;                                                                                                                                      \
     }                                                                                                                                                           \
@@ -68,7 +68,7 @@ public:                                                                         
                                                                                                                                                                 \
     static const auto& GetREFTypeINFO()                                                                                                                         \
     {                                                                                                                                                           \
-        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ nullptr, #Type, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
+        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ #Type, nullptr, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
                                                                                                                                                                 \
         return l_typeINFO;                                                                                                                                      \
     }                                                                                                                                                           \

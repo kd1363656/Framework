@@ -15,26 +15,7 @@
 	14.コンストラクタの初期化子リストについて
 	15. .cppについて
 	16.ブレースとif文について
-	・一度しか使わないboolの変数は作らず、その式をif文の条件へ直接書く
-　(2回以上使うbool、名前を付けないと意味が分からない長い式は変数にしてよい)
-{
-	例↓
-	// ×
-	const bool l_isRangeSelection = l_io.KeyShift || l_io.KeyCtrl;
-
-	if (l_isRangeSelection)
-	{
-		...
-	}
-
-	// ○
-	if (l_io.KeyShift ||
-	    l_io.KeyCtrl)
-	{
-		...
-	}
-}
-17.for文・switch文について
+	17.for文・switch文について
 	18.return文について
 	19.コメントについて
 	20.エラー処理について
@@ -441,7 +422,36 @@
 	static constexpr std::size_t k_initialIndex = 0ULL;
 	static constexpr UINT        k_bufferCount  = 2U;
 }
-・意味のある数値は直接書かずに定数にする(マジックナンバーを書かない)
+・数値は直接書かずに定数にする(マジックナンバーを書かない)
+{
+	数値をそのまま書いてよいのは定数の定義とfor文の初期化子だけ
+	if文・while文の条件、計算(+1、-1、%など)、変数やメンバの初期化に書く0や1もマジックナンバーとして定数にする
+	理 : 0や1でも「何の0なのか」「なぜ1つずらすのか」が名前で分かるようにするため
+
+	例↓
+	// ×
+	if (l_itemCount == 0ULL) { return; }
+
+	l_index = (l_index + 1ULL) % l_itemCount;
+
+	// ○
+	static constexpr std::size_t k_emptyItemCount   = 0ULL;
+	static constexpr std::size_t k_keySelectionStep = 1ULL;
+
+	if (l_itemCount == k_emptyItemCount) { return; }
+
+	l_index = (l_index + k_keySelectionStep) % l_itemCount;
+
+	// for文の初期化子だけはそのまま書いてよい
+	for (std::size_t l_index = 0ULL; l_index < l_count; ++l_index)
+	{
+	}
+}
+・値に意味がないもの(パディングなど)は数値を書かずに{}で初期化する
+{
+	例↓
+	float m_padding = {};
+}
 10.関数の引数について=========================================================================================================================================
 ・書き換えない引数にはconstをつける(値渡しの組み込み型も)
 {
@@ -458,7 +468,29 @@
 	void AddEffectInstance(const std::weak_ptr<SoundEffectInstanceBase>& a_soundEffectInstanceBase);
 }
 ・文字列はconst std::string&、ファイルパスはconst std::filesystem::path&
-・引数の並びは変数の書き順(13章)と同じ
+・引数の並びは変数の書き順(13章)と同じにする
+{
+	constの引数を先にまとめ、その後ろにconstでない引数を書く
+	const 配列 → const 参照 → const ポインタ → const 値 → 配列 → 参照 → ポインタ → 値
+
+	配列は渡し方に関係なく型で見る(const std::vector<T>&は配列)
+	スマートポインタは渡し方で見る(const std::weak_ptr<T>&は参照、値で渡すなら値ではなくポインタ)
+	参照と値の中は13章の型の順(class → classのTypeAlias → 構造体 → 構造体のTypeAlias → Enum → EnumのTypeAlias → char → double → float → unsigned long long → unsigned long → unsigned int → int → bool)
+	同じ順位の引数は意味の流れ(元 → 先、前 → 後など)で並べる
+
+	例↓
+	// ×
+	void DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene, const bool a_isDropAfter);
+
+	// ○
+	void DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, const bool a_isDropAfter, Scene& a_scene);
+}
+・デフォルト引数があるときは、デフォルト引数でない引数とデフォルト引数をそれぞれ別に上の順番で並べ、デフォルト引数は後ろにまとめる
+{
+	例↓
+	bool MenuItem(const char* a_label, const char* a_shortcut = nullptr, const bool a_isEnabled = true);
+}
+・外部APIが決めた引数(オーバーライド、コールバック)と可変長引数(Args&&...)は並べ替えない
 11.関数の宣言について=========================================================================================================================================
 ・隣接する関数で戻り値の後にスペーシングを挟んで関数名を書く場合は一番長い戻り値型に合わせる
 {
@@ -598,19 +630,55 @@
 ・構造体で継承は使わない(共通部分があるならクラスにする)
 ・構造体はクラスの中に入れ子で書かずにDefinition/Structに書く
 13.メンバ変数・定数の並び順について===========================================================================================================================
-・定数は記憶域指定子の順に書く
+・メンバ変数・定数はまず修飾子で分け、次の順に書く
 {
-	inline static const
+	inline static constexpr(名前空間ではinline constexpr)
 	static constexpr
+	inline static const(名前空間ではinline const)
+	static const
+	static
+	const
+	修飾子なし
 }
-・メンバ変数は種類ごとに1行開けて、次の順に書く
+・同じ修飾子の中は配列 → 参照 → ポインタ → 値の順に書く
 {
-	配列(std::vector、std::array、std::unordered_mapなど)
-	スマートポインタ
-	クラス・構造体
-	組み込み型(std::uint64_t → float → bool の順)
+	配列     : std::vector、std::array、std::unordered_map、ImVectorなど(配列のTypeAliasも配列)
+	参照     : Hoge&
+	ポインタ : std::unique_ptr、std::shared_ptr、std::weak_ptr、ComPtr、Hoge*、HWNDなど
+	値       : それ以外
+}
+・値の中は型で次の順に書く
+{
+	class(外部API → std → 自身作成)
+	classのTypeAlias(外部API → std → 自身作成)
+	構造体(外部API → std → 自身作成)
+	構造体のTypeAlias(外部API → std → 自身作成)
+	Enum(外部API → std → 自身作成)
+	EnumのTypeAlias(外部API → std → 自身作成)
+	char
+	double
+	float
+	unsigned long long(std::size_t、std::uint64_t、UINT64)
+	unsigned long(DWORD)
+	unsigned int(UINT、std::uint32_t、TypeAlias::DescriptorIndexなど)
+	int
+	bool
 
+	std::string、std::filesystem::path、std::function、std::mutexはstdのclass
+	nlohmann::jsonは外部APIのclass、boost::uuids::uuid、ImVec2、D3D12_～は外部APIの構造体
+	TypeAlias::Math::Vector3などは外部API構造体のTypeAlias
+	数値のTypeAlias(TypeAlias::DescriptorIndexなど)は元の数値の型で並べる
+	同じ順位のものは今の順番のまま並べる
+}
+・種類が変わるところで1行開ける
+{
 	例↓
+	static constexpr float k_itemFrameThickness = 2.0F;
+
+	static constexpr int k_pushStyleColorNUM = 4;
+
+	inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Audio/AudioCONFIG.json";
+
 	SoundEffectMap m_soundEffectMap;
 
 	std::vector<std::weak_ptr<SoundEffectInstanceBase>> m_soundEffectInstanceList;
@@ -623,14 +691,17 @@
 
 	float m_masterVolume;
 
+	std::size_t m_keySelectedIndex;
+
 	bool m_isAudioDeviceResetRequested;
 	bool m_wasAudioDeviceReset;
 }
-・参照、ポインタ、値の順に書く
+・置き順に意味があるものには適用しない
 {
-	int& 参照
-	int* ポインタ
-	int  値
+	GPUに送る構造体(定数バッファ・StructuredBuffer)、ファイルにそのまま書き出す構造体(バイナリのヘッダーなど)
+	破棄・初期化の順番に意味があるメンバ(GPUのリソース、コマンドキュー、デバイスなど)
+	前の定数を使って作る定数(配列の要素数など)は使われる定数を先に書く
+	理 : 並びを変えると見た目は同じでもメモリの並び・破棄の順番が変わり、動かなくなるから
 }
 14.コンストラクタの初期化子リストについて=====================================================================================================================
 ・:は)の後ろに書き、1メンバ1行で書く
@@ -718,6 +789,25 @@
 	    l_itr != m_soundEffectMap.end())
 	{
 		return l_itr->second;
+	}
+}
+・一度しか使わないboolの変数は作らず、その式をif文の条件へ直接書く
+　(2回以上使うbool、名前を付けないと意味が分からない長い式は変数にしてよい)
+{
+	例↓
+	// ×
+	const bool l_isRangeSelection = l_io.KeyShift || l_io.KeyCtrl;
+
+	if (l_isRangeSelection)
+	{
+		...
+	}
+
+	// ○
+	if (l_io.KeyShift ||
+	    l_io.KeyCtrl)
+	{
+		...
 	}
 }
 17.for文・switch文について===================================================================================================================================
@@ -817,6 +907,26 @@
 	inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Audio/AudioCONFIG.json";
 }
 ・そのクラスでしか使わない定数はクラスのprivateに、複数のクラスで使う定数はDefinition/Constantに書く
+・クラス・構造体のpublicに定数を書かない(入れ子の構造体の中も同じ)
+{
+	外から使う定数・構造体の初期値はDefinition/Constant/<機能>/<クラス名>Constant.hのnamespace FWK::Constantに書き、Constant::で使う
+	VisualStudioのConstantフィルターに登録し、Framework.hではそのクラスより前に読み込む
+	理 : publicに書くとHoge::k_〜、派生クラス::k_〜など呼び方がばらばらになり、どこで定義したか探しにくくなるから
+
+	例↓
+	namespace FWK::Constant
+	{
+		inline constexpr UINT64 k_unusedFenceValue = 0ULL;
+	}
+
+	if (a_fenceValue == Constant::k_unusedFenceValue) { return true; }
+}
+・Constantの中は全部同じ名前空間になるので、ぶつかる名前には持ち主の名前を入れる
+{
+	例↓
+	k_initialAssetBrowserRenameIsActive、k_initialWorldOutlinerRenameIsActive
+	同じ意味・同じ値の定数は1つにまとめる(Fence、CommandAllocatorのk_unusedFenceValueなど)
+}
 ・列挙子の値のためだけの定数は作らない
 22.Jsonについて===============================================================================================================================================
 ・Jsonの読み書きはXxxJsonConverterクラスに分け、Converter/Json/に置く

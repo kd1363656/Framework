@@ -66,7 +66,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
     }
 
     // Boneが0個のSkeletalAnimationModelは成立しない
-    if (l_modelBinaryHeader.m_boneCount == k_emptyBoneCount)
+    if (l_modelBinaryHeader.m_boneCount == Constant::k_emptyBoneCount)
     {
         FailLoadAsset(l_modelData);
 
@@ -111,7 +111,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 
         // InValidは親を持たないRootBoneを表す
         // Invalid以外なら、BoneList上の有効なIndexでなければならない
-        if (l_modelBoneBinaryHeader.m_parentBoneIndex != Graphics::SkeletalAnimationModelRecord::k_invalidBoneIndex &&
+        if (l_modelBoneBinaryHeader.m_parentBoneIndex != Constant::k_invalidBoneIndex &&
             l_modelBoneBinaryHeader.m_parentBoneIndex >= l_modelBinaryHeader.m_boneCount)
         {
             FailLoadAsset(l_modelData);
@@ -354,14 +354,14 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::TryReadModelMeshBina
     // ModelVertex,Index,Material,Meshletを、共通基底クラスの基底クラスの既存処理で読み込む
     if (!TryReadModelMeshBinaryDataCommon(a_modelMesh, a_memoryReadOffset)) { return false; }
 
-    std::uint64_t l_bonePaletteCount = k_emptyBonePaletteCount;
+    std::uint64_t l_bonePaletteCount = Constant::k_emptyBonePaletteCount;
 
     // BonePalette数は単一のuint64_tなので
     // 専用Header構造体を作らず直接読み込む
     if (!TryReadSingleBinaryData(l_bonePaletteCount, a_memoryReadOffset)) { return false; }
 
     // SkeletalAnimationModelのMeshには、少なくとも一つの使用Boneが必要
-    if (l_bonePaletteCount == k_emptyBonePaletteCount) { return false; }
+    if (l_bonePaletteCount == Constant::k_emptyBonePaletteCount) { return false; }
 
     // Paletteには重複しないGlobalBoneを格納するため
     // Skelton全体のBone数を超えることはない
@@ -431,7 +431,7 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
 
     for (const auto& l_modelBone : a_modelData.m_boneList)
     {
-        if (l_modelBone.m_parentBoneIndex !=Graphics::SkeletalAnimationModelRecord::k_invalidBoneIndex &&
+        if (l_modelBone.m_parentBoneIndex !=Constant::k_invalidBoneIndex &&
             l_modelBone.m_parentBoneIndex >= l_boneCount)
         {
             return k_emptyAssetFileSize;

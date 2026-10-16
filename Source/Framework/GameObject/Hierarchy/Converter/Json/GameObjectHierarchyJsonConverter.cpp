@@ -157,7 +157,7 @@ nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::SerializeDiff(c
         // SceneInstanceUUID等のメタ情報も含まれるため、変更ゼロでもエントリは必ず出す
         nlohmann::json l_modifiedJson = {};
  
-        Utility::UpdateJson(l_modifiedJson, Utility::SerializeUUID(l_nodeUUID, k_prefabHierarchyNodeUUIDJsonKey));
+        Utility::UpdateJson(Utility::SerializeUUID(l_nodeUUID, k_prefabHierarchyNodeUUIDJsonKey), l_modifiedJson);
  
         l_modifiedJson[k_gameObjectDataJsonKey] = l_child->SerializeDIFF(*l_itr->second, a_prefabSystem);
  
@@ -258,9 +258,9 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildList(cons
     for (const auto& l_json : a_childListJson)
     {
         // フル形式なのでPrefab基底は無し(NullJson)
-        DeserializeChild(l_parent,
-                         l_json,
+        DeserializeChild(l_json,
                          nlohmann::json{},
+                         l_parent,
                          a_prefabSystem,
                          a_scene);
     }
@@ -462,9 +462,9 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildListDiff(
                     l_modifiedGameObjectDataJson = nlohmann::json::object();
                 }
 
-                DeserializeChild(l_parent,
-                                 l_modifiedGameObjectDataJson,
+                DeserializeChild(l_modifiedGameObjectDataJson,
                                  *l_prefabItr->second,
+                                 l_parent,
                                  a_prefabSystem,
                                  a_scene);
             }
@@ -473,9 +473,9 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildListDiff(
                 // Modifiedエントリが無い = 差分なし(Prefabに完全追従)
                 // nullではなく空オブジェクトを渡す
                 // (nullだとDeserializeSceneが早期returnして未登録の子が残るため)
-                DeserializeChild(l_parent,
-                                 nlohmann::json::object(),
+                DeserializeChild(nlohmann::json::object(),
                                  *l_prefabItr->second,
+                                 l_parent,
                                  a_prefabSystem,
                                  a_scene);
             }
@@ -487,18 +487,18 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildListDiff(
         if (const auto& l_addedItr = l_addedMap.find(l_nodeUUID);
             l_addedItr != l_addedMap.end())
         {
-            DeserializeChild(l_parent,
-                             *l_addedItr->second,
+            DeserializeChild(*l_addedItr->second,
                              nlohmann::json{},
+                             l_parent,
                              a_prefabSystem,
                              a_scene);
         }
     }
 }
 
-void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChild(const std::weak_ptr<GameObject>&   a_parentGameObject, 
-                                                                        const nlohmann::json&              a_childJson, 
+void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChild(const nlohmann::json&              a_childJson, 
                                                                         const nlohmann::json&              a_baseJson, 
+                                                                        const std::weak_ptr<GameObject>&   a_parentGameObject, 
                                                                         const SceneGameObjectPrefabSystem& a_prefabSystem, 
                                                                               Scene&                       a_scene) const
 {

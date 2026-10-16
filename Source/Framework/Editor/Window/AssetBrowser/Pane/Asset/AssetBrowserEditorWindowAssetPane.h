@@ -124,12 +124,12 @@ namespace FWK::Editor
         static constexpr int k_keyboardFocusNextItem = 0;
         static constexpr int k_initialCardColumn     = 0;
 
+        std::filesystem::path m_currentCursorFilePath = {};
+
         AssetBrowserEditorWindowSelectionState      m_selectionState = {};
         AssetBrowserEditorWindowAssetPaneBreadcrumb m_breadcrumb     = {};
 
         Converter::AssetBrowserEditorWindowAssetPaneJsonConverter m_jsonConverter = {};
-
-        std::filesystem::path m_currentCursorFilePath = {};
 
         std::uint32_t m_lastCardsPerRow = k_minGuaranteeCardPerRowNUM;
     };

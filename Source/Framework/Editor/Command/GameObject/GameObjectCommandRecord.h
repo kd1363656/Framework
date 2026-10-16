@@ -30,8 +30,8 @@ namespace FWK::Editor
         nlohmann::json m_json           = {};
         nlohmann::json m_prefabNodeJson = {};
 
-        Struct::GameObjectPlacement m_placement = {};
-
         boost::uuids::uuid m_gameObjectUUID = {};
+
+        Struct::GameObjectPlacement m_placement = {};
     };
 }

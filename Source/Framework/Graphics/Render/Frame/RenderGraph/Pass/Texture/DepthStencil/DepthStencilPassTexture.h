@@ -29,9 +29,9 @@ namespace FWK::Graphics
                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                     const Window::ClientSize&                 a_clientSize,
                     const UINT64&                             a_retiredFenceValue,
+                          ResourceReleaseContext&             a_resourceReleaseContext,
                           TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
-                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-                          ResourceReleaseContext&             a_resourceReleaseContext);
+                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
         void SetDepthStencilTextureSettings(const Struct::DepthStencilTextureSettings& a_set) { m_depthStencilTextureSettings = a_set; }
 

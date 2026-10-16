@@ -13,11 +13,11 @@ namespace FWK::Graphics
 
     private:
 
-        SkeletalAnimationModelRecord::ModelKeyFrame CreateModelKeyFrame(const ufbx_baked_node* a_fbxBakedNode, const double& a_timeSecond) const;
+        SkeletalAnimationModelRecord::ModelKeyFrame CreateModelKeyFrame(const double& a_timeSecond, const ufbx_baked_node* a_fbxBakedNode) const;
 
-        bool CreateModelBoneMotionTrack(const ufbx_baked_node*                                    a_fbxBakedNode,
-                                        const double&                                             a_animationDurationSecond,
+        bool CreateModelBoneMotionTrack(const double&                                             a_animationDurationSecond,
                                         const double&                                             a_animationFrameRate,
+                                        const ufbx_baked_node*                                    a_fbxBakedNode,
                                         const std::uint32_t                                       a_boneIndex,
                                               SkeletalAnimationModelRecord::ModelBoneMotionTrack& a_modelBoneMotionTrack) const;
 

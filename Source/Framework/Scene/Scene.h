@@ -68,6 +68,8 @@ namespace FWK
         std::vector<std::shared_ptr<GameObject>>            m_pendingAddGameObjectList     = {};
         std::vector<std::vector<std::weak_ptr<GameObject>>> m_gameObjectExecutionLevelList = {};
 
+        std::string m_name = {};
+
         UUIDRegistry<std::weak_ptr<GameObject>> m_gameObjectUUIDRegistry = {};
 
         SceneChanger                m_sceneChanger           = {};
@@ -76,8 +78,6 @@ namespace FWK
         Converter::SceneJsonConverter m_jsonConverter = {};
 
         Graphics::LightSystem m_lightSystem = {};
-
-        std::string m_name = {};
 
         boost::uuids::uuid m_nextSceneUUID = {};
     };

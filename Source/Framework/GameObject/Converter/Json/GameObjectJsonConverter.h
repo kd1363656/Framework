@@ -14,15 +14,15 @@ namespace FWK::Converter
          GameObjectJsonConverter() = default;
         ~GameObjectJsonConverter() = default;
     
-        void DeserializeScene(const std::weak_ptr<GameObject>&   a_gameObject,
-                              const nlohmann::json&              a_rootJson,
-                              const nlohmann::json&              a_baseJson, 
+        void DeserializeScene(const nlohmann::json&              a_rootJson,
+                              const nlohmann::json&              a_baseJson,
+                              const std::weak_ptr<GameObject>&   a_gameObject, 
                               const SceneGameObjectPrefabSystem& a_prefabSystem,
                                     Scene&                       a_scene) const;
  
         // Prefabファイル内ノード用。常にフル形式
-        void DeserializePrefab(const std::weak_ptr<GameObject>& a_gameObject,
-                               const nlohmann::json&              a_rootJson,
+        void DeserializePrefab(const nlohmann::json&              a_rootJson,
+                               const std::weak_ptr<GameObject>& a_gameObject,
                                const SceneGameObjectPrefabSystem& a_prefabSystem,
                                      Scene&                       a_scene) const;
  

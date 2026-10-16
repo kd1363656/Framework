@@ -22,7 +22,7 @@ namespace FWK::Converter
 
         bool LoadAsset(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord);
 
-        bool SaveAsset(const Graphics::StaticModelRecord& a_staticModelRecord, const std::filesystem::path& a_filePath);
+        bool SaveAsset(const std::filesystem::path& a_filePath, const Graphics::StaticModelRecord& a_staticModelRecord);
 
     private:
 

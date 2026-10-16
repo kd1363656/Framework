@@ -8,12 +8,14 @@
 #include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
 #include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 #include "Definition/Macros/Assert/AssertReturnMacros.h"
+#include "Definition/Constant/Utility/List/SmartPointerVectorListUtilityConstant.h"
 #include "Utility/List/SmartPointerVectorListUtility.h"
 
 //===============================================================================
 // 型情報
 //===============================================================================
 #include "Definition/Type/Alias/StaticTypeIDTypeAlias.h"
+#include "Definition/Constant/TypeINFO/StaticTypeIDGeneratorConstant.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
 #include "Definition/Struct/String/StringHashStruct.h"
 #include "TypeINFO/Registry/TypeINFORegistry.h"
@@ -30,6 +32,7 @@
 #include "Utility/File/CanLoadFileUtility.h"
 #include "Definition/Constant/Utility/File/Json/JsonLoadAndSaveFileUtilityConstant.h"
 #include "Utility/File/Json/JsonLoadAndSaveFileUtility.h"
+#include "Definition/Constant/Window/WindowConstant.h"
 #include "Window/Window.h"
 
 //===============================================================================
@@ -39,8 +42,10 @@
 #include "Graphics/Hardware/Factory/Factory.h"
 #include "Graphics/Hardware/Device/Device.h"
 #include "Definition/Type/Alias/DescriptorIndexTypeAlias.h"
+#include "Definition/Constant/Graphics/DescriptorHeapConstant.h"
 #include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
 #include "Graphics/Resource/Descriptor/Heap/Allocator/Converter/Json/DescriptorHeapIndexAllocatorJsonConverter.h"
+#include "Definition/Constant/Graphics/DescriptorHeapIndexAllocatorConstant.h"
 #include "Graphics/Resource/Descriptor/Heap/Allocator/DescriptorHeapIndexAllocator.h"
 #include "Graphics/Resource/Descriptor/Converter/Json/DescriptorPoolJsonConverter.h"
 #include "Graphics/Resource/Descriptor/DescriptorPool.h"
@@ -64,6 +69,9 @@
 // エディター
 //===============================================================================
 #include "Definition/Constant/Editor/Style/EditorStyleConstant.h"
+#include "Definition/Enum/Editor/Popup/EditorPopupNavigatorEnum.h"
+#include "Definition/Constant/Editor/Popup/EditorPopupNavigatorConstant.h"
+#include "Editor/Popup/EditorPopupNavigator.h"
 #include "Editor/Style/EditorStyle.h"
 #include "Definition/Type/Alias/NodeEditorTypeAlias.h"
 #include "Definition/Constant/Utility/File/SaveFileDialogUtilityConstant.h"
@@ -127,6 +135,7 @@
 // FPS管理クラス
 //===============================================================================
 #include "FPS/Converter/Json/FPSControllerJsonConverter.h"
+#include "Definition/Constant/FPS/FPSControllerConstant.h"
 #include "FPS/FPSController.h"
 
 //===============================================================================
@@ -143,6 +152,7 @@
 #include "Definition/Enum/Graphics/RootParameterEnum.h"
 #include "Definition/Macros/Json/RootSignatureJsonConverterMacros.h"
 #include "Definition/Struct/Graphics/RootSignatureStruct.h"
+#include "Definition/Constant/Graphics/RootSignatureJsonConverterConstant.h"
 #include "Graphics/Render/Pipeline/Converter/Json/RootSignatureJsonConverter.h"
 #include "Graphics/Render/Pipeline/RootSignature.h"
 
@@ -164,11 +174,13 @@
 #include "Graphics/Render/Pipeline/Compute/Converter/Json/ComputePipelineStateJsonConverter.h"
 #include "Graphics/Render/Pipeline/Compute/ComputePipelineState.h"
 
+#include "Definition/Constant/Graphics/UploadBufferConstant.h"
 // アップロードバッファークラス
 #include "Graphics/Resource/Buffer/UploadBuffer.h"
 
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
 #include "Definition/Constant/Graphics/CommandAllocatorConstant.h"
+#include "Definition/Constant/Graphics/FenceConstant.h"
 #include "Graphics/Command/Queue/Fence/Fence.h"
 #include "Graphics/Command/Allocator/CommandAllocator.h"
 #include "Definition/Type/Alias/CommandAllocatorTypeAlias.h"
@@ -194,6 +206,7 @@
 // スワップチェイン
 #include "Definition/Constant/Graphics/SwapChainJsonConverterConstasnt.h"
 #include "Graphics/Render/SwapChain/Converter/Json/SwapChainJsonConverter.h"
+#include "Definition/Constant/Graphics/SwapChainConstant.h"
 #include "Graphics/Render/SwapChain/SwapChain.h"
 
 // レンダーエリア
@@ -201,6 +214,7 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSpritePassStruct.h"
 #include "Graphics/Render/Rasterizer/RenderArea.h"
 
+#include "Definition/Constant/Graphics/DirectCommandListConstant.h"
 // ダイレクトコマンドリスト
 #include "Graphics/Command/List/Direct/DirectCommandList.h"
 
@@ -239,17 +253,22 @@
 #include "Definition/Enum/Graphics/DefaultTextureEnum.h"
 #include "Definition/Constant/Utility/String/WStringUtilityConstant.h"
 #include "Utility/String/WStringUtility.h"
+#include "Definition/Constant/Graphics/DefaultTextureJsonConverterConstant.h"
 #include "Graphics/Resource/Texture/Default/Converter/Json/DefaultTextureJsonConverter.h"
 #include "Graphics/Resource/Texture/Default/DefaultTexture.h"
 #include "Utility/Graphics/IsSameTextureSizeUtility.h"
 #include "Utility/Graphics/IsValidTextureUtility.h"
+#include "Definition/Constant/Graphics/RenderTargetTextureConstant.h"
 #include "Graphics/Resource/Texture/RenderTarget/RenderTargetTexture.h"
+#include "Definition/Constant/Graphics/DepthStencilTextureStructConstant.h"
 #include "Definition/Struct/Graphics/DepthStencilTextureStruct.h"
 #include "Graphics/Resource/Texture/DepthStencil/DepthStencilTexture.h"
 #include "Definition/Struct/String/WStringHashStruct.h"
+#include "Definition/Constant/Graphics/TextureSystemConstant.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 #include "Graphics/Resource/Texture/Texture.h"
 
+#include "Definition/Constant/Graphics/ModelCommonStructConstant.h"
 // モデル(Static)
 #include "Definition/Struct/Graphics/ModelCommonStruct.h"
 #include "Definition/Constant/Graphics/FBXModelLoaderBaseConstant.h"
@@ -275,7 +294,9 @@
 
 // モデル(SkeletalAnimation)
 #include "Graphics/Resource/Buffer/Dynamic/Structured/DynamicRWStructuredBuffer.h"
+#include "Definition/Constant/Graphics/SkeletalAnimationModelRecordConstant.h"
 #include "Graphics/Resource/Model/Skeletal/Record/SkeletalAnimationModelRecord.h"
+#include "Definition/Constant/Graphics/SkeletalAnimationModelBinaryConverterConstant.h"
 #include "Graphics/Resource/Model/Skeletal/Converter/Binary/SkeletalAnimationModelBinaryConverter.h"
 #include "Definition/Constant/Graphics/SkeletalAnimationModelFBXMotionExtractorConstant.h"
 #include "Graphics/Resource/Model/Skeletal/FBXLoader/Extractor/Skeleton/SkeletalAnimationModelFBXSkeletonExtractor.h"
@@ -296,11 +317,14 @@
 #include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"
 #include "Graphics/Resource/ResourceContext.h"
 #include "Graphics/Resource/Buffer/Dynamic/Converter/Json/DynamicBufferUploaderJsonConverter.h"
+#include "Definition/Constant/Graphics/DynamicBufferUploaderBaseConstant.h"
 #include "Graphics/Resource/Buffer/Dynamic/DynamicBufferUploaderBase.h"
 
+#include "Definition/Constant/Graphics/SkeletalAnimationPoseEvaluatorConstant.h"
 // モデルのアニメーション管理クラス
 #include "Graphics/Resource/Model/Skeletal/Player/Evaluator/SkeletalAnimationPoseEvaluator.h"
 #include "Graphics/Resource/Model/Skeletal/Player/Buffer/SkeletalAnimationBoneMatrixBufferUploader.h"
+#include "Definition/Constant/Graphics/SkeletalAnimationPlayerConstant.h"
 #include "Graphics/Resource/Model/Skeletal/Player/SkeletalAnimationPlayer.h"
 
 // 定数バッファークラス
@@ -347,6 +371,7 @@
 #include "Graphics/Render/Shadow/Cascade/Converter/Json/CascadeShadowMapJsonConverter.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBModelCascadeShadowPassStruct.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBCascadeShadowMapPassStruct.h"
+#include "Definition/Constant/Graphics/CascadeShadowMapConstant.h"
 #include "Graphics/Render/Shadow/Cascade/CascadeShadowMap.h"
 #include "Graphics/Render/Shadow/Converter/Json/ShadowContextJsonConverter.h"
 #include "Graphics/Render/Shadow/ShadowContext.h"
@@ -397,6 +422,7 @@
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedDrawRequestPerObjectBaseConcept.h"
 #include "Definition/Type/Alias/Factory/Shared/DrawRequestPerObjectSharedFactory.h"
 #include "Definition/Constant/Graphics/SpriteScreenConstant.h"
+#include "Definition/Constant/Graphics/SpriteRECTStructConstant.h"
 #include "Definition/Struct/Graphics/SpriteRECTStruct.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSpritePerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Constant/SpriteScreenPerObjectDynamicConstantBufferUploader.h"
@@ -406,6 +432,7 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBModelPerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Buffer/Constant/ModelPerObjectDynamicConstantBufferUploader.h"
 #include "Utility/Math/MathMatrixUtility.h"
+#include "Definition/Constant/Graphics/ModelCascadeShadowPassStructConstant.h"
 #include "Definition/Struct/Graphics/ModelCascadeShadowPassStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/StaticModelPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
@@ -472,12 +499,14 @@
 #include "Physics/DebugRenderer/Queue/PhysicsDebugRendererQueue.h"
 #include "Physics/DebugRenderer/Batch/PhysicsDebugTriangleBatch.h"
 #include "Physics/DebugRenderer/PhysicsDebugRenderer.h"
+#include "Definition/Constant/Physics/PhysicsCharacterVirtualStructConstant.h"
 #include "Definition/Struct/Physics/PhysicsCharacterVirtualStruct.h"
 #include "Definition/Constant/Physics/PhysicsCharacterVirtualBaseConstant.h"
 #include "Physics/CharacterVirtual/Converter/Json/PhysicsCharacterVirtualJsonConverter.h"
 #include "Physics/CharacterVirtual/PhysicsCharacterVirtualBase.h"
 #include "Physics/CharacterVirtual/Gravity/Affected/PhysicsCharacterVirtualAffectedByGravity.h"
 #include "Physics/CharacterVirtual/Gravity/Unaffected/PhysicsCharacterVirtualUnaffectedByGravity.h"
+#include "Definition/Constant/Physics/PhysicsRayCastStructConstant.h"
 #include "Definition/Struct/Physics/PhysicsRayCastStruct.h"
 #include "Physics/RayCast/PhysicsRayCast.h"
 #include "Definition/Constant/Physics/PhysicaManagerJsonConverterConstant.h"
@@ -611,6 +640,7 @@
 #include "Editor/Window/AssetBrowser/Watcher/Change/Add/AssetBrowserEditorWindowDirectoryAddChange.h"
 #include "Editor/Window/AssetBrowser/Watcher/Change/FilePath/AssetBrowserEditorWindowDirectoryFilePathChange.h"
 #include "Editor/Window/AssetBrowser/Watcher/Change/Delete/AssetBrowserEditorWindowDirectoryDeleteChange.h"
+#include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowDirectoryNotificationProcessorConstant.h"
 #include "Editor/Window/AssetBrowser/Watcher/Notification/AssetBrowserEditorWindowDirectoryNotificationProcessor.h"
 #include "Editor/Window/AssetBrowser/Watcher/AssetBrowserEditorWindowDirectoryWatcher.h"
 #include "Editor/Window/AssetBrowser/Converter/Json/AssetBrowserEditorWindowJsonConverter.h"
@@ -622,6 +652,7 @@
 #include "Utility/File/ResolveFilePathConflictByNumberSuffixUtility.h"
 #include "Editor/Window/AssetBrowser/FileOperation/AssetBrowserEditorWindowFileOperation.h"
 #include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowAssetCreatorConstant.h"
+#include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowAssetCreatorStructConstant.h"
 #include "Definition/Struct/Editor/Window/AssetBrowserEditorWindowAssetCreatorStruct.h"
 #include "Utility/Editor/AssetBrowserEditorWindowAssetCreatorUtility.h"
 #include "Utility/GameObject/GameObjectPlacementUtility.h"
@@ -629,6 +660,7 @@
 #include "Definition/Enum/Editor/Window/AssetBrowserEditorWindowShortcutHandlerEnum.h"
 #include "Definition/Enum/Editor/Window/AssetBrowserEditorWindowPopupDrawerEnum.h"
 #include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowPopupDrawerConstant.h"
+#include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowPopupDrawerStructConstant.h"
 #include "Definition/Struct/Editor/Window/AssetBrowserEditorWindowPopupDrawerStruct.h"
 #include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowShortcutHandlerConstant.h"
 #include "Editor/Window/AssetBrowser/Shortcut/AssetBrowserEditorWindowShortcutHandler.h"
@@ -641,7 +673,7 @@
 #include "Editor/Window/AssetBrowser/Selection/Converter/Json/AssetBrowserEditorWindowSelectionStateJsonConverter.h"
 #include "Editor/Window/AssetBrowser/Selection/AssetBrowserEditorWindowSelectionState.h"
 #include "Editor/Window/AssetBrowser/Pane/Folder/Converter/Json/AssetBrowserEditorWindowFolderPaneJsonConverter.h"
-#include "Definition/Enum/Editor/Window/AssetBrowserEditorWindowDeleteConfirmPopupEnum.h"
+#include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowDeleteConfirmPopupStructConstant.h"
 #include "Definition/Struct/Editor/Window/AssetBrowserEditorWindowDeleteConfirmPopupStruct.h"
 #include "Editor/Window/AssetBrowser/DeleteConfirm/AssetBrowserEditorWindowDeleteConfirmPopup.h"
 #include "Editor/Window/AssetBrowser/Pane/Folder/AssetBrowserEditorWindowFolderPane.h"
@@ -658,6 +690,7 @@
 #include "Editor/Window/Outliner/Operation/Scene/WorldOutlinerEditorWindowSceneOperation.h"
 #include "Definition/Enum/Editor/Window/WorldOutlinerEditorWindowOperationEnum.h"
 #include "Editor/Window/Outliner/Creator/WorldOutlinerEditorWindowAssetCreator.h"
+#include "Definition/Constant/Editor/Window/WorldOutlinerEditorWindowPopupDrawerStructConstant.h"
 #include "Definition/Struct/Editor/Window/WorldOutlinerEditorWindowPopupDrawerStruct.h"
 #include "Editor/Window/Outliner/Popup/WorldOutlinerEditorWindowPopupDrawer.h"
 #include "Editor/Window/Outliner/Shortcut/WorldOutlinerEditorWindowShortcutHandler.h"

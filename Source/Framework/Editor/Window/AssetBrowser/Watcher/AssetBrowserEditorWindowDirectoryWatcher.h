@@ -31,14 +31,14 @@ namespace FWK::Editor
         static constexpr DWORD k_noWaitMilliseconds     = 0UL;
         static constexpr DWORD k_initialWrittenByteSize = 0UL;
 
-        OVERLAPPED m_overlapped;
-
         HANDLE m_directoryHandle;
         HANDLE m_notificationEventHandle;
 
-        AssetBrowserEditorWindowDirectoryNotificationProcessor m_notificationProcessor;
+        OVERLAPPED m_overlapped;
 
         std::filesystem::path m_directoryPath;
+
+        AssetBrowserEditorWindowDirectoryNotificationProcessor m_notificationProcessor;
 
         bool m_isNotificationReadPending;
     };

@@ -16,7 +16,7 @@ void FWK::FPSController::PostLoadCONFIG()
     m_previousTime   = l_currentTime;
     m_frameBeginTime = l_currentTime;
 
-    m_deltaTime       = k_initialDeltaTime;
+    m_deltaTime       = Constant::k_initialDeltaTime;
     m_scaledDeltaTime = k_initialScaledDeltaTime;
 }
 
@@ -42,7 +42,7 @@ void FWK::FPSController::EndFrame()
     // もしデルタタイムが0.0以下の値を取る場合それは前回の時間と今回計測した時間の差分が
     // ないためm_targetFPSに現在のFPSが達している、0.0よりもデルタタイム大きければ
     // 計算を行い現在のFPSを算出する
-    m_currentFPS = m_deltaTime > k_minDeltaTime ? k_second / m_deltaTime : m_targetFPS;
+    m_currentFPS = m_deltaTime > Constant::k_minDeltaTime ? k_second / m_deltaTime : m_targetFPS;
 
     // 過去の経過時間として現在の時刻を入れる
     m_previousTime = m_frameBeginTime;

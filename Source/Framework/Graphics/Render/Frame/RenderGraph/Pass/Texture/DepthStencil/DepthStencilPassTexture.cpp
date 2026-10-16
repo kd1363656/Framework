@@ -42,9 +42,9 @@ bool FWK::Graphics::DepthStencilPassTexture::Resize(const Device&               
                                                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                                                     const Window::ClientSize&                 a_clientSize,
                                                     const UINT64&                             a_retiredFenceValue,
+                                                          ResourceReleaseContext&             a_resourceReleaseContext,
                                                           TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
-                                                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-                                                          ResourceReleaseContext&             a_resourceReleaseContext)
+                                                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     const auto l_width  = FetchVALPassTextureWidth (a_clientSize.m_width);
     const auto l_height = FetchVALPassTextureHeight(a_clientSize.m_height);
@@ -56,9 +56,9 @@ bool FWK::Graphics::DepthStencilPassTexture::Resize(const Device&               
                                                              a_retiredFenceValue,
                                                              l_width,
                                                              l_height,
+                                                             a_resourceReleaseContext,
                                                              a_dsvDescriptorPool,
-                                                             a_cbvSRVUAVDescriptorPool,
-                                                             a_resourceReleaseContext),
+                                                             a_cbvSRVUAVDescriptorPool),
                                                              "DepthStencilPassTexture内部のDepthStencilTextureリサイズに失敗しました。",
                                                              false);
 

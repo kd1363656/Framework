@@ -20,10 +20,10 @@ namespace FWK::Graphics
 
             // 子の頂点に影響するBoneを
             // ModelMesh::m_bonePaletteListの何番から取得するかを表す
-            std::uint32_t m_bonePaletteIndexZero  = k_invalidPaletteIndex;
-            std::uint32_t m_bonePaletteIndexOne   = k_invalidPaletteIndex;
-            std::uint32_t m_bonePaletteIndexTwo   = k_invalidPaletteIndex;
-            std::uint32_t m_bonePaletteIndexThree = k_invalidPaletteIndex;
+            std::uint32_t m_bonePaletteIndexZero  = Constant::k_invalidPaletteIndex;
+            std::uint32_t m_bonePaletteIndexOne   = Constant::k_invalidPaletteIndex;
+            std::uint32_t m_bonePaletteIndexTwo   = Constant::k_invalidPaletteIndex;
+            std::uint32_t m_bonePaletteIndexThree = Constant::k_invalidPaletteIndex;
         };
 
         struct ModelBonePaletteElement final
@@ -33,7 +33,7 @@ namespace FWK::Graphics
             // Skinning時にCurrentGlobalBoneMatrixと組み合わせて使用する
             TypeAlias::Math::Matrix m_inverseBindPoseMatrix = TypeAlias::Math::Matrix::Identity;
 
-            std::uint32_t m_boneIndex = k_invalidBoneIndex;
+            std::uint32_t m_boneIndex = Constant::k_invalidBoneIndex;
         };
 
         struct ModelMeshRuntimeData final : public Struct::ModelMeshRuntimeDataBase
@@ -71,7 +71,7 @@ namespace FWK::Graphics
 
             TypeAlias::Math::Matrix m_bindPoseLocalMatrix = TypeAlias::Math::Matrix::Identity;
 
-            std::uint32_t m_parentBoneIndex = k_invalidBoneIndex;
+            std::uint32_t m_parentBoneIndex = Constant::k_invalidBoneIndex;
         };
 
         struct ModelKeyFrame final
@@ -80,14 +80,14 @@ namespace FWK::Graphics
             TypeAlias::Math::Quaternion m_rotation    = TypeAlias::Math::Quaternion::Identity;
             TypeAlias::Math::Vector3    m_translation = TypeAlias::Math::Vector3::Zero;
 
-            float m_timeSecond = k_initialAnimationTimeSecond;
+            float m_timeSecond = Constant::k_initialAnimationTimeSecond;
         };
 
         struct ModelBoneMotionTrack final
         {
             std::vector<ModelKeyFrame> m_keyFrameList = {};
 
-            std::uint32_t m_boneIndex = k_invalidBoneIndex;
+            std::uint32_t m_boneIndex = Constant::k_invalidBoneIndex;
         };
 
         struct ModelMotionSequence final
@@ -96,9 +96,9 @@ namespace FWK::Graphics
 
             std::wstring m_motionName = {};
 
-            float m_durationSecond = k_initialAnimationDurationSecond;
+            float m_durationSecond = Constant::k_initialAnimationDurationSecond;
 
-            float m_frameRate = k_defaultAnimationFrameRate;
+            float m_frameRate = Constant::k_defaultAnimationFrameRate;
         };
 
         struct ModelData final
@@ -131,13 +131,6 @@ namespace FWK::Graphics
         const auto& GetREFModelData() const { return m_modelData; }
 
         auto& GetMutableREFModelData() { return m_modelData; }
-
-        static constexpr float k_initialAnimationTimeSecond     = 0.0F;
-        static constexpr float k_initialAnimationDurationSecond = 0.0F;
-        static constexpr float k_defaultAnimationFrameRate      = 30.0F;
-
-        static constexpr std::uint32_t k_invalidBoneIndex    = std::numeric_limits<std::uint32_t>::max();
-        static constexpr std::uint32_t k_invalidPaletteIndex = std::numeric_limits<std::uint32_t>::max();
 
     private:
 

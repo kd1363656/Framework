@@ -17,15 +17,13 @@ namespace FWK::Editor
 
         struct PendingFilePathChangeData final
         {
-            static constexpr std::int64_t k_initialCreationTime = 0LL;
-
-            PendingFilePathChangeType m_type = PendingFilePathChangeType::Invalid;
-
             std::filesystem::path m_oldFilePath = {};
 
             std::chrono::steady_clock::time_point m_registeredTime = {};
 
-            std::int64_t m_creationTime = k_initialCreationTime;
+            PendingFilePathChangeType m_type = PendingFilePathChangeType::Invalid;
+
+            std::int64_t m_creationTime = Constant::k_initialCreationTime;
 
             bool m_isDirectory = false;
         };
@@ -55,7 +53,7 @@ namespace FWK::Editor
 
     private:
 
-        bool ProcessNotification(const std::filesystem::path& a_filePath, const FILE_NOTIFY_EXTENDED_INFORMATION& a_notificationInformation);
+        bool ProcessNotification(const FILE_NOTIFY_EXTENDED_INFORMATION& a_notificationInformation, const std::filesystem::path& a_filePath);
 
         void StoreAddChange     (const std::filesystem::path& a_filePath,    const bool                   a_isDirectory);
         void StoreDeleteChange  (const std::filesystem::path& a_filePath,    const bool                   a_isDirectory);

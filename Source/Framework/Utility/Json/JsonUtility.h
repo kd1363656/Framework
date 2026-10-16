@@ -19,7 +19,7 @@ namespace FWK::Utility
     }
 
     // 第1引数のjsonに第2引数のjsonの内容をコピーする
-    inline void UpdateJson(nlohmann::json& a_targetJson, const nlohmann::json& a_patchJson)
+    inline void UpdateJson(const nlohmann::json& a_patchJson, nlohmann::json& a_targetJson)
     {
         if (a_patchJson.is_null()) { return; }
 
@@ -185,7 +185,7 @@ namespace FWK::Utility
         return Utility::StringToUUID(a_json.value(l_key, std::string{}));
     }
 
-    inline nlohmann::json SerializeColor(const TypeAlias::Math::Color& a_color , const std::string_view& a_key)
+    inline nlohmann::json SerializeColor(const std::string_view& a_key, const TypeAlias::Math::Color& a_color)
     {
         // キーとなる文字列がなければ空の"json"を返す
         if (a_key.empty()) { return {}; }

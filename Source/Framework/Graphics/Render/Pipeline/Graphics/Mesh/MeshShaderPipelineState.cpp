@@ -119,7 +119,7 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
     l_pipelineStateDesc.BlendState = GetREFBlendDesc();
 
     // 対象となるGPUのノードマスク
-    l_pipelineStateDesc.NodeMask = UploadBuffer::k_defaultGPUNodeMask;
+    l_pipelineStateDesc.NodeMask = Constant::k_defaultGPUNodeMask;
 
     l_pipelineStateDesc.Flags = GetVALPipelineStateFlags();
 
@@ -189,7 +189,7 @@ nlohmann::json FWK::Graphics::MeshShaderPipelineState::Serialize() const
 {
     auto l_rootJson = GraphicsPipelineStateBase::Serialize();
 
-    Utility::UpdateJson(l_rootJson, m_jsonConverter.Serialize(*this));
+    Utility::UpdateJson(m_jsonConverter.Serialize(*this), l_rootJson);
 
     return l_rootJson;
 }

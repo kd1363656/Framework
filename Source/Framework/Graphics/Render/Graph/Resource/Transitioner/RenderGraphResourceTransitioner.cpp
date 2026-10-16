@@ -7,8 +7,8 @@ void FWK::Graphics::RenderGraphResourceTransitioner::TransitionPassResourceBefor
         const auto l_beforeUsage = l_resourceAccess.m_beforeUsage;
 
         if (TransitionBackBufferResource(l_resourceAccess, l_beforeUsage,  a_renderer))             { continue; }
-        if (TransitionRenderTargetPassTextureResource(l_resourceAccess, l_beforeUsage, a_renderer)) { continue; }
-        if (TransitionDepthStencilPassTextureResource(l_resourceAccess, l_beforeUsage, a_renderer)) { continue; }
+        if (TransitionRenderTargetPassTextureResource(a_renderer, l_resourceAccess, l_beforeUsage)) { continue; }
+        if (TransitionDepthStencilPassTextureResource(a_renderer, l_resourceAccess, l_beforeUsage)) { continue; }
         if (TransitionShadowMapResource(l_resourceAccess, l_beforeUsage, a_renderer))               { continue; }
 
         FWK_ASSERT_RETURN("RenderGraphResourceAccessに対応するリソースが存在しないため、Pass実行前の自動リソース遷移に失敗しました。");
@@ -24,14 +24,14 @@ void FWK::Graphics::RenderGraphResourceTransitioner::TransitionPassResourceAfter
         if (l_afterUsage == Enum::RenderGraphResourceUsage::None) { continue; }
 
         if (TransitionBackBufferResource(l_resourceAccess, l_afterUsage,  a_renderer))             { continue; }
-        if (TransitionRenderTargetPassTextureResource(l_resourceAccess, l_afterUsage, a_renderer)) { continue; }
-        if (TransitionDepthStencilPassTextureResource(l_resourceAccess, l_afterUsage, a_renderer)) { continue; }
+        if (TransitionRenderTargetPassTextureResource(a_renderer, l_resourceAccess, l_afterUsage)) { continue; }
+        if (TransitionDepthStencilPassTextureResource(a_renderer, l_resourceAccess, l_afterUsage)) { continue; }
         if (TransitionShadowMapResource(l_resourceAccess, l_afterUsage, a_renderer))               { continue; }
 
         FWK_ASSERT_RETURN("RenderGraphResourceAccessに対応するリソースが存在しないため、Pass実行後の自動リソース遷移に失敗しました。");
     }
 }
-void FWK::Graphics::RenderGraphResourceTransitioner::TransitionBackBufferResource(const DirectCommandList& a_directCommandList, D3D12_RESOURCE_STATES a_afterState, Converter::SwapChainJsonConverter::BackBuffer& a_backBuffer) const
+void FWK::Graphics::RenderGraphResourceTransitioner::TransitionBackBufferResource(const DirectCommandList& a_directCommandList, Converter::SwapChainJsonConverter::BackBuffer& a_backBuffer, D3D12_RESOURCE_STATES a_afterState) const
 {
     FWK_ASSERT_RETURN_IF(!a_backBuffer.m_backBufferResource, "バックバッファリソースが無効になっており、バックバッファリソースの状態遷移に失敗しました。");
 
@@ -61,11 +61,11 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionBackBufferResourc
     auto& l_backBuffer = l_backBufferList[l_backBufferIndex];
 
     // バックバッファのリソース状態の遷移
-    TransitionBackBufferResource(l_directCommandList, l_afterState, l_backBuffer);
+    TransitionBackBufferResource(l_directCommandList, l_backBuffer, l_afterState);
 
     return true;
 }
-bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionRenderTargetPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage, const Renderer& a_renderer) const
+bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionRenderTargetPassTextureResource(const Renderer& a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage) const
 {
     if (a_resourceAccess.m_renderTargetType == Enum::RenderGraphRenderTargetType::None) { return false; }
 
@@ -102,7 +102,7 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionRenderTargetPassT
 
     return true;
 }
-bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionDepthStencilPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage, const Renderer& a_renderer) const
+bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionDepthStencilPassTextureResource(const Renderer& a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage) const
 {
     if (a_resourceAccess.m_depthStencilType == Enum::RenderGraphDepthStencilType::None) { return false; }
 

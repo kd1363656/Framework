@@ -13,11 +13,9 @@ namespace FWK::Utility
 
         struct ArrayElementData final
         {
-            static constexpr std::uintptr_t k_initialTypeAddress = 0ULL;
-
             Type m_type = {};
 
-            std::uintptr_t m_typeAddress = k_initialTypeAddress;
+            std::uintptr_t m_typeAddress = Constant::k_initialTypeAddress;
         };
 
     private:

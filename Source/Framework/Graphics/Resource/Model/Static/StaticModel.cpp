@@ -67,9 +67,9 @@ bool FWK::Graphics::StaticModel::Load(const std::filesystem::path& a_filePath)
     const auto& l_gpuMemoryAllocator      = l_resourceContext.GetREFGPUMemoryAllocator            ();
           auto& l_cbvSRVUAVDescriptorPool = l_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
 
-    const auto& l_staticModelLoadResult = l_staticModelSystem.LoadStaticModelForBatchUpload(l_device,
+    const auto& l_staticModelLoadResult = l_staticModelSystem.LoadStaticModelForBatchUpload(a_filePath,
+                                                                                            l_device,
                                                                                             l_gpuMemoryAllocator,
-                                                                                            a_filePath,
                                                                                             l_cbvSRVUAVDescriptorPool);
 
     FWK_ASSERT_RETURN_VALUE_IF(l_staticModelLoadResult.m_storageID == Constant::k_invalidStorageID, "StaticModelの読み込みに失敗しました。",                                false);

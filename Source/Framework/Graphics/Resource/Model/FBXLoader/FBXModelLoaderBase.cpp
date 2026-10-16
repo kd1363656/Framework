@@ -51,11 +51,11 @@ void FWK::Graphics::FBXModelLoaderBase::ExtractModelMaterial(const ufbx_material
 
     // Roughnessは表面の粗さ。
     // 0に近いほど鏡のように鋭く反射し、1に近いほどぼやけた反射になる。
-    a_modelMaterialAssetData.m_roughnessFactor = FetchMaterialFactor(a_fbxMaterial->pbr.roughness, Struct::ModelMaterialAssetData::k_defaultModelMaterialRoughnessFactor);
+    a_modelMaterialAssetData.m_roughnessFactor = FetchMaterialFactor(a_fbxMaterial->pbr.roughness, Constant::k_defaultModelMaterialRoughnessFactor);
 
     // Metallicは金属度
     // 0なら非金属、1なら金属としてPBR計算する
-    a_modelMaterialAssetData.m_metallicFactor = FetchMaterialFactor(a_fbxMaterial->pbr.metalness, Struct::ModelMaterialAssetData::k_defaultModelMaterialMetallicFactor);
+    a_modelMaterialAssetData.m_metallicFactor = FetchMaterialFactor(a_fbxMaterial->pbr.metalness, Constant::k_defaultModelMaterialMetallicFactor);
 
     // ベースカラー
     {
@@ -218,7 +218,7 @@ std::wstring FWK::Graphics::FBXModelLoaderBase::FetchMaterialTextureFilePath(con
 
 FWK::TypeAlias::Math::Color FWK::Graphics::FBXModelLoaderBase::FetchBaseColorFactor(const ufbx_material_map& a_materialMap) const
 {
-    if (!a_materialMap.has_value) { return Struct::ModelMaterialAssetData::k_defaultModelMaterialBaseColorFactor; }
+    if (!a_materialMap.has_value) { return Constant::k_defaultModelMaterialBaseColorFactor; }
 
     return TypeAlias::Math::Color
     {

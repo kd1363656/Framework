@@ -34,9 +34,9 @@ void FWK::GameObject::DeserializeScene(const nlohmann::json&              a_root
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.DeserializeScene(weak_from_this(), 
-                                     a_rootJson,
-                                     a_baseJson, 
+    m_jsonConverter.DeserializeScene(a_rootJson, 
+                                     a_baseJson,
+                                     weak_from_this(), 
                                      a_prefabSystem, 
                                      a_scene);
 }
@@ -44,8 +44,8 @@ void FWK::GameObject::DeserializePrefab(const nlohmann::json& a_rootJson, const 
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.DeserializePrefab(weak_from_this(),
-                                      a_rootJson,
+    m_jsonConverter.DeserializePrefab(a_rootJson,
+                                      weak_from_this(),
                                       a_prefabSystem,
                                       a_scene);
 }

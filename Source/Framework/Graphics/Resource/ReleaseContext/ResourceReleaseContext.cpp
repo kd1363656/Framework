@@ -50,7 +50,7 @@ void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableDeferredResources(co
 FWK::TypeAlias::DescriptorIndex FWK::Graphics::ResourceReleaseContext::ReleaseRenderTargetResourceImmediately(const TypeAlias::DescriptorIndex a_rtvDescriptorIndex, TypeAlias::ComPtr<ID3D12Resource2>& a_renderTargetResource, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool) const
 {
     // 二重開放をしない
-    if (a_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex) { return DescriptorHeap::k_invalidDescriptorIndex; }
+    if (a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex) { return Constant::k_invalidDescriptorIndex; }
 
     // SwapChain::ResizeBackBuffer()の前は、BackBufferへの参照が残っていると失敗する
     // そのため、ComPtrを明示的にResetして、CPU側の参照を外す
@@ -60,27 +60,27 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::ResourceReleaseContext::ReleaseRe
     a_rtvDescriptorPool.Release(a_rtvDescriptorIndex);
 
     // 戻り値として無効な値を渡して二重開放を防ぐようにする
-    return DescriptorHeap::k_invalidDescriptorIndex;
+    return Constant::k_invalidDescriptorIndex;
 }
 
 bool FWK::Graphics::ResourceReleaseContext::IsValidGPUResourceReleaseRecord(const GPUResourceReleaseRecord& a_releaseRecord) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_releaseRecord.m_gpuResource.m_resource,                        "無効なリソースを解放しようとしています。",                                                   false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Fence::k_unusedFenceValue, "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Constant::k_unusedFenceValue, "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
 
     return true;
 }
 bool FWK::Graphics::ResourceReleaseContext::IsValidDescriptorIndexReleaseRecord(const DescriptorIndexReleaseRecord& a_releaseRecord) const
 {
-    FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_descriptorIndex   == DescriptorHeap::k_invalidDescriptorIndex, "無効なディスクリプタインデックスを解放しようとしています。",                                 false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Fence::k_unusedFenceValue,                "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_descriptorIndex   == Constant::k_invalidDescriptorIndex,       "無効なディスクリプタインデックスを解放しようとしています。",                                 false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Constant::k_unusedFenceValue,             "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
 
     return true;
 }
 
 void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableGPUResources(const UINT64& a_completedFenceValue)
 {
-    std::size_t l_index = 0ULL;
+    std::size_t l_index = k_firstReleaseRecordIndex;
 
     while (l_index < m_gpuResourceReleaseRecordList.size())
     {

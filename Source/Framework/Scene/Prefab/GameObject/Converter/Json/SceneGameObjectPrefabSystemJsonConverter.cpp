@@ -63,7 +63,7 @@ void FWK::Converter::ScenePrefabSystemJsonConverter::Deserialize(const nlohmann:
             continue;
         }
 
-        a_sceneGameObjectPrefabSystem.AddPrefab(l_prefabUUID, l_gameObjectPrefab);
+        a_sceneGameObjectPrefabSystem.AddPrefab(l_gameObjectPrefab, l_prefabUUID);
     }
 }
 
@@ -102,7 +102,7 @@ nlohmann::json FWK::Converter::ScenePrefabSystemJsonConverter::Serialize(const A
 
         nlohmann::json l_json = {};
 
-        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_prefabUUID, k_uuidJsonKey));
+        Utility::UpdateJson(Utility::SerializeUUID(l_prefabUUID, k_uuidJsonKey), l_json);
         
         l_jsonArray.emplace_back(l_json);
     }

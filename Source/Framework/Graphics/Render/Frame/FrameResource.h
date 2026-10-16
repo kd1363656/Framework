@@ -62,6 +62,8 @@ namespace FWK::Graphics
         void RemoveExpiredConstantBufferUploaderList();
         void RemoveExpiredConstantBufferUploaderMap ();
 
+        static constexpr std::size_t k_firstDynamicBufferUploaderIndex = 0ULL;
+
         DynamicBufferUploaderMap m_dynamicBufferUploaderMap = {};
 
         std::vector<std::shared_ptr<DynamicBufferUploaderBase>> m_dynamicBufferUploaderList = {};

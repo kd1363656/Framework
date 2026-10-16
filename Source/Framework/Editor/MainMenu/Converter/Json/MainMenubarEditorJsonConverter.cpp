@@ -53,7 +53,7 @@ nlohmann::json FWK::Converter::MainMenuBarEditorJsonConverter::SerializeEditorMa
 
         nlohmann::json l_json = {};
 
-        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_editorMainMenu, k_mainMenuTypeName));
+        Utility::UpdateJson(Utility::SerializeInstanceType(l_editorMainMenu, k_mainMenuTypeName), l_json);
 
         l_rootJsonArray.emplace_back(l_json);
     }

@@ -46,7 +46,7 @@ namespace FWK::Editor
                                 const bool                       a_isFirstOrder = false);
 
         void DrawRenameInputText   (      Scene&                     a_scene);
-        void DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene, const bool a_isDropAfter) const;
+        void DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, const bool a_isDropAfter, Scene& a_scene) const;
         
         void HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene&         a_scene);
         void HandlePrefabFileDropTarget(      Scene&                     a_scene,            EditorManager& a_editorManager);
@@ -63,10 +63,10 @@ namespace FWK::Editor
         void FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const;
 
         void SelectGameObject(const std::weak_ptr<GameObject>&      a_gameObject,
-                                    Scene&                          a_scene,
-                                    EditorGameObjectSelectionState& a_gameObjectSelectionState,
-                              const bool                            a_isRangeSelection,
-                              const bool                            a_isToggleSelection);
+                                    const bool                            a_isRangeSelection,
+                                    const bool                            a_isToggleSelection,
+                              Scene&                          a_scene,
+                              EditorGameObjectSelectionState& a_gameObjectSelectionState);
  
         void BuildDisplayedGameObjectList(std::vector<std::weak_ptr<GameObject>>& a_displayedList, Scene& a_scene) const;
 
@@ -78,15 +78,13 @@ namespace FWK::Editor
         
         std::vector<std::weak_ptr<GameObject>>::const_iterator FindDisplayedGameObjectITR(const std::vector<std::weak_ptr<GameObject>>& a_displayedList, const std::shared_ptr<GameObject>& a_target) const;
          
-        static constexpr ImVec4 k_prefabGameObjectTextColor = { 0.40F, 0.70F, 1.00F, 1.00F };
-        
         static constexpr std::string_view k_editorName                        = "アウトライナー";
         static constexpr std::string_view k_emptySceneLabel                   = "Untitled";
         static constexpr std::string_view k_thisWindowExplanationLabel        = "アウトライナーでは現在読み込んでいるシーン、シーンに含まれるゲームオブジェクトを見ることができ\n親子関係を結ぶ、名前を変える、シーンからゲームオブジェクトを削除することができるウィンドウ。";
         static constexpr std::string_view k_noCurrentSceneLabel               = "現在読み込まれているシーンはありません。";
         static constexpr std::string_view k_gameObjectDragDropZoneBeforeLabel = "Before";
         static constexpr std::string_view k_gameObjectDragDropZoneAfterLabel  = "After";
- 
+
         static constexpr std::string_view k_sceneContextMenuLabel       = "##WorldOutlinerSceneContextMenu";
         static constexpr std::string_view k_gameObjectContextMenuLabel  = "##WorldOutlinerGameObjectContextMenu";
         static constexpr std::string_view k_emptySpaceContextMenuLabel  = "##WorldOutlinerEmptySpaceContextMenu";
@@ -94,19 +92,18 @@ namespace FWK::Editor
         static constexpr std::string_view k_gameObjectDragDropZoneLabel = "##WorldOutlinerGameObjectDropZone";
         static constexpr std::string_view k_prefabFileDropTargetLabel   = "##WorldOutlinerPrefabFileDropTarget";
 
+        static constexpr ImVec4 k_prefabGameObjectTextColor = { 0.40F, 0.70F, 1.00F, 1.00F };
+
         static constexpr float k_nodeFramePaddingHeight  = 3.0F;
         static constexpr float k_dropZoneHeight          = 3.0F;
         static constexpr float k_dropZoneHighlightHeight = 2.0F;
-        
+
         static constexpr int k_keyboardFocusNextItem = 0;
         static constexpr int k_nodePopStyleNUM       = 2;
- 
+
         static constexpr bool k_initialIsSceneNodeOpenValue = true;
 
         std::unordered_map<boost::uuids::uuid, bool> m_gameObjectOpenStateMap = {};
- 
-        bool m_isSceneNodeOpen  = k_initialIsSceneNodeOpenValue;
-        bool m_wasSceneHasChild = false;
 
         WorldOutlinerEditorWindowSelectionState      m_sceneSelectionState = {};
         WorldOutlinerEditorWindowGameObjectOperation m_gameObjectOperation = {};
@@ -115,8 +112,11 @@ namespace FWK::Editor
         WorldOutlinerEditorWindowAssetCreator        m_assetCreator        = {};
         WorldOutlinerEditorWindowPopupDrawer         m_popupDrawer         = {};
         WorldOutlinerEditorWindowShortcutHandler     m_shortcutHandler     = {};
- 
+
         Struct::WorldOutlinerEditorWindowRenameState m_renameState = {};
+
+        bool m_isSceneNodeOpen  = k_initialIsSceneNodeOpenValue;
+        bool m_wasSceneHasChild = false;
         
         FWK_DEFINE_TYPE_INFO(WorldOutlinerEditorWindow, EditorWindowBase)
     };

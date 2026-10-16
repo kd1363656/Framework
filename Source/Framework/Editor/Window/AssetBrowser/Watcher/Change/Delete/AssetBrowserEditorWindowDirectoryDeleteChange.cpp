@@ -39,8 +39,8 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyFileDelete
             case Enum::AssetFilePathRegistryType::Prefab:
             {
                 ApplyPrefabDelete(a_deleteFilePath,
-                                  l_copiedAssetUUID,
                                   a_sceneManager,
+                                  l_copiedAssetUUID,
                                   a_assetFilePathRegistry);
 
                 return;
@@ -74,8 +74,8 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyFileDelete
     }
 }
 void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyPrefabDelete(const std::filesystem::path& a_deleteFilePath,
-                                                                                   const boost::uuids::uuid&    a_prefabUUID,
                                                                                    const SceneManager&          a_sceneManager,
+                                                                                   const boost::uuids::uuid&    a_prefabUUID,
                                                                                          AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
     if (a_prefabUUID.is_nil()) { return; }

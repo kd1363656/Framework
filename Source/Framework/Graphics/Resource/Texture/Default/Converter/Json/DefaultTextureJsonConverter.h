@@ -18,10 +18,6 @@ namespace FWK::Converter
 
         nlohmann::json Serialize(const Graphics::DefaultTexture& a_defaultTexture) const;
 
-        static constexpr std::size_t k_defaultTextureColorChannelCount = static_cast<std::size_t>(Enum::DefaultTextureColorChannel::Count);
-
-        static constexpr std::uint8_t k_maxDefaultTextureColorChannelValue = 255U;
-
     private:
 
         std::uint8_t DeserializeColorChannel(const nlohmann::json& a_json, const std::string_view a_key, const std::uint8_t a_defaultValue) const;

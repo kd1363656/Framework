@@ -13,12 +13,14 @@ namespace FWK::Editor
 
     private:
 
-        void DrawMenuFile     () const;
+        void DrawMenuFile     ();
         void UpdateShortCutKey() const;
 
         static constexpr std::string_view k_beginFileMenuTextString = "ファイル";
         static constexpr std::string_view k_saveTextString          = "保存";
         static constexpr std::string_view k_saveShortCutString      = "Ctrl+S";
+
+        EditorPopupNavigator m_popupNavigator = {};
 
         FWK_DEFINE_TYPE_INFO(FileMainMenuEditor, EditorMainMenuBase)
     };

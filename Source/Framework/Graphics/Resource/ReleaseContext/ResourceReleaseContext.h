@@ -8,12 +8,12 @@ namespace FWK::Graphics
 
         struct DeferredResourceReleaseRecordBase
         {
-            UINT64 m_retiredFenceValue = Fence::k_unusedFenceValue;
+            UINT64 m_retiredFenceValue = Constant::k_unusedFenceValue;
         };
 
         struct DescriptorIndexReleaseRecord final : public DeferredResourceReleaseRecordBase
         {
-            TypeAlias::DescriptorIndex m_descriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+            TypeAlias::DescriptorIndex m_descriptorIndex = Constant::k_invalidDescriptorIndex;
         };
 
         struct GPUResourceReleaseRecord final : public DeferredResourceReleaseRecordBase
@@ -47,7 +47,7 @@ namespace FWK::Graphics
         template <D3D12_DESCRIPTOR_HEAP_TYPE HeapType>
         void ReleaseAvailableDescriptorIndices(const UINT64& a_completedFenceValue, std::vector<DescriptorIndexReleaseRecord>& a_releaseRecordList, DescriptorPool<HeapType>& a_descriptorPool)
         {
-            std::size_t l_index = 0ULL;
+            std::size_t l_index = k_firstReleaseRecordIndex;
 
             while (l_index < a_releaseRecordList.size())
             {
@@ -60,7 +60,7 @@ namespace FWK::Graphics
                 }
 
                 // 該当するディスクリプタヒープから解放する
-                if (a_releaseRecordList[l_index].m_descriptorIndex != DescriptorHeap::k_invalidDescriptorIndex)
+                if (a_releaseRecordList[l_index].m_descriptorIndex != Constant::k_invalidDescriptorIndex)
                 {
                     a_descriptorPool.Release(a_releaseRecordList[l_index].m_descriptorIndex);
                 }
@@ -71,6 +71,8 @@ namespace FWK::Graphics
                 a_releaseRecordList.pop_back();
             }
         }
+
+        static constexpr std::size_t k_firstReleaseRecordIndex = 0ULL;
 
         std::vector<GPUResourceReleaseRecord> m_gpuResourceReleaseRecordList = {};
 

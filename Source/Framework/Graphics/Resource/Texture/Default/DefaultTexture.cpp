@@ -32,11 +32,11 @@ bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&
 
     // ScratchImageからGPUTextureResource,UploadBuffer、SRVを作る
     // ここではまだCopyCommandQueueへ送らず、TextureSystemのPendingMapへ登録するためのRecordを作るだけ
-    FWK_ASSERT_RETURN_VALUE_IF(!a_textureBatchUploadRecordBuilder.CreateTextureBatchUploadRecord(a_device,
-                                                                                                 a_gpuMemoryAllocator,
-                                                                                                 m_textureName,
-                                                                                                 l_scratchImage,
+    FWK_ASSERT_RETURN_VALUE_IF(!a_textureBatchUploadRecordBuilder.CreateTextureBatchUploadRecord(l_scratchImage,
                                                                                                  l_texMetadata,
+                                                                                                 m_textureName,
+                                                                                                 a_device,
+                                                                                                 a_gpuMemoryAllocator,
                                                                                                  a_storageID,
                                                                                                  a_cbvSRVUAVDescriptorPool,
                                                                                                  a_textureBatchUploadRecord),
@@ -63,7 +63,7 @@ std::uint8_t FWK::Graphics::DefaultTexture::FetchVALColorChannel(const Enum::Def
 {
     const auto l_colorChannelIndex = static_cast<std::size_t>(a_colorChannel);
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。", Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue);
+    FWK_ASSERT_RETURN_VALUE_IF(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。", Constant::k_maxDefaultTextureColorChannelValue);
 
     return m_color[l_colorChannelIndex];
 }
@@ -79,8 +79,8 @@ bool FWK::Graphics::DefaultTexture::CreateScratchImage(DirectX::ScratchImage& a_
     const auto l_hr = a_scratchImage.Initialize2D(m_format,
                                                   k_defaultTextureWidth,
                                                   k_defaultTextureHeight,
-                                                  Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
-                                                  Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels);
+                                                  Constant::k_defaultTexture2DArraySize,
+                                                  Constant::k_defaultTexture2DMIPLevels);
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "DefaultTexture用ScratchImageの初期化に失敗しました。", false);
 

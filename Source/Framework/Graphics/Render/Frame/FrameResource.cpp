@@ -96,7 +96,7 @@ void FWK::Graphics::FrameResource::AddDynamicBufferUploader(const std::shared_pt
 
 void FWK::Graphics::FrameResource::RemoveExpiredConstantBufferUploaderList()
 {
-    std::size_t l_index = 0ULL;
+    std::size_t l_index = k_firstDynamicBufferUploaderIndex;
 
     while (l_index < m_dynamicBufferUploaderList.size())
     {

@@ -53,7 +53,7 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
     {
         const auto l_dsvDescriptorIndex = l_cascadeShadowMap.FetchVALCascadeDSVDescriptorIndex(l_cascadeIndex);
 
-        FWK_ASSERT_RETURN_IF(l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "Cascadeに知王するDSVDescriptorIndexが無効なため、ModelCascadeShadowPassを実行できませんでした。");
+        FWK_ASSERT_RETURN_IF(l_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "Cascadeに知王するDSVDescriptorIndexが無効なため、ModelCascadeShadowPassを実行できませんでした。");
 
         // 現在Cascadeに対応するTexture2DArraySliceを、Depth出力先として設定する
         l_directCommandList.SetupDepthStencil(l_dsvDescriptorPool, l_dsvDescriptorIndex);
@@ -73,17 +73,17 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
         // Uploader::Write内部でUploadBufferへmemcpyされる
         const auto& l_gpuVirtualAddress = l_modelCascadeShadowPassDynamicConstantBufferUploader->Write(*l_cbModelCascadeShadowPass);
 
-        FWK_ASSERT_RETURN_IF(l_gpuVirtualAddress == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "CBModelCascadeShadowPassをUploadBufferへ書き込めないため、ModelCascadeShadowPassを実行できません。");
+        FWK_ASSERT_RETURN_IF(l_gpuVirtualAddress == Constant::k_invalidGPUVirtualAddress, "CBModelCascadeShadowPassをUploadBufferへ書き込めないため、ModelCascadeShadowPassを実行できません。");
 
-        const auto& l_staticModelRootSignature = SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::StaticModelCascadeShadow).lock();
+        const auto& l_staticModelRootSignature = SetupGraphicsRenderPipeline(Enum::PipelineStateType::StaticModelCascadeShadow, a_renderer).lock();
 
         FWK_ASSERT_RETURN_IF(!l_staticModelRootSignature, "StaticModelCascadeShadow用RootSignatureを取得できないため、ModelCascadeShadowPassを実行できません。");
 
         // StaticModelShadowの定数バッファを書き込む
-        l_directCommandList.SetupConstantBufferView                                 (l_gpuVirtualAddress, *l_staticModelRootSignature, Enum::RootParameterType::CBModelCascadeShadowPass);
+        l_directCommandList.SetupConstantBufferView                                 (*l_staticModelRootSignature, l_gpuVirtualAddress, Enum::RootParameterType::CBModelCascadeShadowPass);
         l_staticModelCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,          *l_staticModelRootSignature, *l_currentFrameResource);
 
-        const auto& l_skeletalAnimationModelRootSignature = SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::SkeletalAnimationModelCascadeShadow).lock();
+        const auto& l_skeletalAnimationModelRootSignature = SetupGraphicsRenderPipeline(Enum::PipelineStateType::SkeletalAnimationModelCascadeShadow, a_renderer).lock();
 
         FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelRootSignature, "SkeletalAnimationModelCascadeShadow用RootSignatureを取得できないため、ModelCascadeShadowPassを実行できません。");
 
@@ -92,7 +92,7 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
         FWK_ASSERT_RETURN_IF(l_staticModelRootSignature != l_skeletalAnimationModelRootSignature, "StaticとSkeletalのCascade Shadow Pipeline Stateが異なるRootSignatureを使用しています。");
 
         // SkeletalAnimationShadowの定数バッファを書き込む
-        l_directCommandList.SetupConstantBufferView                                            (l_gpuVirtualAddress, *l_skeletalAnimationModelRootSignature, Enum::RootParameterType::CBModelCascadeShadowPass);
+        l_directCommandList.SetupConstantBufferView                                            (*l_skeletalAnimationModelRootSignature, l_gpuVirtualAddress, Enum::RootParameterType::CBModelCascadeShadowPass);
         l_skeletalAnimationModelCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,          *l_skeletalAnimationModelRootSignature, *l_currentFrameResource);
     }
 }

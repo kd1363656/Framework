@@ -29,8 +29,8 @@ namespace FWK::Graphics
             FWK_ASSERT_RETURN_VALUE_IF(a_elementCount > k_maxStructuredBufferElementCount,                     "DynamicRWStructuredBufferの要素数がUINTの最大値を超えたため、作成に失敗しました。",       false);
             FWK_ASSERT_RETURN_VALUE_IF(sizeof(Type) > std::numeric_limits<UINT>::max(),                        "DynamicRWStructuredBufferの1要素サイズがUINTの最大値を超えたため、作成に失敗しました。",  false);
             FWK_ASSERT_RETURN_VALUE_IF(GetREFBufferGPUResource().m_resource,                                   "DynamicRWStructuredBufferは既にGPUResourceを保持しているため、再作成できません。",        false);
-            FWK_ASSERT_RETURN_VALUE_IF(GetVALSRVDescriptorIndex() != DescriptorHeap::k_invalidDescriptorIndex, "DynamicRWStructuredBufferは既にSRVDescriptorIndexを保持しているため、再作成できません。", false);
-            FWK_ASSERT_RETURN_VALUE_IF(m_uavDescriptorIndex != DescriptorHeap::k_invalidDescriptorIndex,       "DynamicRWStructuredBufferは既にUAVDescriptorIndexを保持しているため、再作成できません。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(GetVALSRVDescriptorIndex() != Constant::k_invalidDescriptorIndex,       "DynamicRWStructuredBufferは既にSRVDescriptorIndexを保持しているため、再作成できません。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(m_uavDescriptorIndex != Constant::k_invalidDescriptorIndex,             "DynamicRWStructuredBufferは既にUAVDescriptorIndexを保持しているため、再作成できません。", false);
 
             const auto& l_elementCount         = a_elementCount;
             const auto& l_structuredByteStride = sizeof(Type);
@@ -39,7 +39,7 @@ namespace FWK::Graphics
             // TypeがMatrixで64bte、要素数が100個なら、64 * 100 = 6400byteのGPUBufferを作る
             const auto& l_bufferSize = l_structuredByteStride * l_elementCount;
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_bufferSize == UploadBuffer::k_invalidBufferSize, "DynamicRWStructuredBufferの作成サイズが0のため、作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_bufferSize == Constant::k_invalidBufferSize, "DynamicRWStructuredBufferの作成サイズが0のため、作成に失敗しました。", false);
 
             // 失敗したときに、このクラスが中途半端な状態にならないように、
             // まずはローカル変数でGPUResourceを作る
@@ -61,7 +61,7 @@ namespace FWK::Graphics
                                                         static_cast<UINT>(l_structuredByteStride),
                                                         a_cbvSRVUAVDescriptorPool);
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DynamicRWStructuredBuffer用SRVの作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DynamicRWStructuredBuffer用SRVの作成に失敗しました。", false);
 
             // ComputeShaderなどから書き込むためのUAVを作る
             const auto l_uavDescriptorIndex = CreateUAV(a_device,
@@ -70,7 +70,7 @@ namespace FWK::Graphics
                                                        static_cast<UINT>(l_structuredByteStride),
                                                        a_cbvSRVUAVDescriptorPool);
 
-            if (l_uavDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex)
+            if (l_uavDescriptorIndex == Constant::k_invalidDescriptorIndex)
             {
                 // SRV作成後にUAV作成で失敗した場合、
                 // 既に確保したSRVDescriptorIndexを返却する
@@ -119,9 +119,9 @@ namespace FWK::Graphics
 
         static constexpr UINT64 k_counterOffsetInBytes = 0ULL;
 
-        TypeAlias::DescriptorIndex m_uavDescriptorIndex;
-
         D3D12_RESOURCE_STATES m_currentResourceState;
+
+        TypeAlias::DescriptorIndex m_uavDescriptorIndex;
 
         UINT m_elementCount;
 

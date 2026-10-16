@@ -31,7 +31,7 @@ void FWK::Graphics::StaticStructuredBuffer::Release()
 {
     // 既に解放するものがなければreturn;
     if (!GetREFBufferGPUResource().m_resource &&
-        GetVALSRVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex)
+        GetVALSRVDescriptorIndex() == Constant::k_invalidDescriptorIndex)
     {
         return;
     }

@@ -60,7 +60,7 @@ namespace FWK::Editor
                                                             l_message);
 
             // 呼びだし元情報をつけてログ本文を記述
-            m_logEditorWindow.AddLog(a_textColor, l_formattedLog);
+            m_logEditorWindow.AddLog(l_formattedLog, a_textColor);
         }
 
         void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);

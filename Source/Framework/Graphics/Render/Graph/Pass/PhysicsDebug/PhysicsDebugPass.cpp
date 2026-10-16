@@ -36,7 +36,7 @@ void FWK::Graphics::PhysicsDebugPass::Execute(const ResourceContext&, Renderer& 
     FWK_ASSERT_RETURN_IF(l_lineVertexList.size() > static_cast<std::size_t>(std::numeric_limits<UINT>::max()), "PhysicsDebugのLineVertex数がDrawInstancedで描画できる上限を超えており、PhysicsDebugPassの実行に失敗しました。");
 
     // パイプラインステートをセット
-    const auto& l_rootSignature = SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::PhysicsDebug).lock();
+    const auto& l_rootSignature = SetupGraphicsRenderPipeline(Enum::PipelineStateType::PhysicsDebug, a_renderer).lock();
 
     FWK_ASSERT_RETURN_IF(!l_rootSignature, "PhysicsDebugPass用RootSignatureが無効のため、PhysicsDebugPassの実行に失敗しました。");
 
@@ -64,7 +64,7 @@ void FWK::Graphics::PhysicsDebugPass::Execute(const ResourceContext&, Renderer& 
     // バッファービューを取得
     const auto l_vertexBufferView = l_physicsDebugVertexBufferUploader->WriteVertexList(l_lineVertexList);
 
-    FWK_ASSERT_RETURN_IF(l_vertexBufferView.BufferLocation == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "PhysicsDebug用VertexBufferViewの作成に失敗しました。");
+    FWK_ASSERT_RETURN_IF(l_vertexBufferView.BufferLocation == Constant::k_invalidGPUVirtualAddress, "PhysicsDebug用VertexBufferViewの作成に失敗しました。");
 
     // プリミティブと頂点バッファービューを設定
     l_directCommandList.SetupPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);

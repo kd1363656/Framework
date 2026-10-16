@@ -37,11 +37,9 @@ namespace FWK::Graphics
 
         const auto& GetREFBindPoseGlobalBoneMatrixList() const { return m_bindPoseGlobalBoneMatrixList; }
 
-        static constexpr std::uint32_t k_invalidMotionIndex = std::numeric_limits<std::uint32_t>::max();
-
     private:
 
-        bool                    CreateAnimationLookupData(      SkeletalAnimationModelRecord::ModelData& a_modelData, std::vector<LocalTransform>& a_bindPoseLocalTransformList, std::vector<std::vector<std::uint32_t>>& a_boneMotionTrackIndexList) const;
+        bool                    CreateAnimationLookupData(      std::vector<LocalTransform>& a_bindPoseLocalTransformList, std::vector<std::vector<std::uint32_t>>& a_boneMotionTrackIndexList, SkeletalAnimationModelRecord::ModelData& a_modelData) const;
         TypeAlias::Math::Matrix CreateLocalMatrix        (const LocalTransform&                          a_localTransform)                                                                                                                            const;
 
         LocalTransform SampleLocalTransform(const SkeletalAnimationModelRecord::ModelMotionSequence& a_motionSequence,

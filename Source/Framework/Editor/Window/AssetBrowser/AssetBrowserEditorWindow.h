@@ -61,6 +61,8 @@ namespace FWK::Editor
 
         std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>> m_folderHierarchyMap = {};
 
+        std::filesystem::path m_currentSelectFolderPath = {};
+
         AssetBrowserEditorWindowDirectoryWatcher m_directoryWatcher = {};
 
         AssetBrowserEditorWindowFolderPane m_folderPane   = {};
@@ -73,8 +75,6 @@ namespace FWK::Editor
         AssetBrowserEditorWindowPopupDrawer        m_popupDrawer        = {};
         AssetBrowserEditorWindowAssetCreator       m_assetCreator       = {};
         AssetBrowserEditorWindowDeleteConfirmPopup m_deleteConfirmPopup = {};
-
-        std::filesystem::path m_currentSelectFolderPath = {};
 
         Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
 

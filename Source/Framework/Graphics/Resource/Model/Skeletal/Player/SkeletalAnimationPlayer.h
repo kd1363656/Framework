@@ -19,16 +19,13 @@ namespace FWK::Graphics
 
         struct Animation final
         {
-            static constexpr float k_defaultPlaybackSpeed       = 1.0F;
-            static constexpr float k_initialBlendDurationSecond = 0.0F;
+            float m_startTimeSecond = Constant::k_initialAnimationTimeSecond;
 
-            float m_startTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+            float m_playbackSpeed = Constant::k_defaultPlaybackSpeed;
 
-            float m_playbackSpeed = k_defaultPlaybackSpeed;
+            float m_blendDurationSecond = Constant::k_initialBlendDurationSecond;
 
-            float m_blendDurationSecond = k_initialBlendDurationSecond;
-
-            std::uint32_t m_motionIndex = SkeletalAnimationPoseEvaluator::k_invalidMotionIndex;
+            std::uint32_t m_motionIndex = Constant::k_invalidMotionIndex;
 
             bool m_isLoop = false;
         };
@@ -67,7 +64,7 @@ namespace FWK::Graphics
 
         bool Create(const SkeletalAnimationModel& a_skeletalAnimationModel);
 
-        bool PlayMotion(const std::uint32_t a_motionIndex, const bool a_isLoop, const float a_playbackSpeed);
+        bool PlayMotion(const float a_playbackSpeed, const std::uint32_t a_motionIndex, const bool a_isLoop);
 
         void AdvanceTime(const float a_deltaTime);
 
@@ -95,8 +92,6 @@ namespace FWK::Graphics
 
         bool GetVALIsBlending() const { return m_isBlending; }
 
-        static constexpr float k_initialBlendWeight = 0.0F;
-
     private:
 
         bool EvaluateCurrentPose();
@@ -122,8 +117,8 @@ namespace FWK::Graphics
         Animation m_animation            = {};
         Animation m_blendTargetAnimation = {};
 
-        float m_animationTimeSecond            = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
-        float m_blendTargetAnimationTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+        float m_animationTimeSecond            = Constant::k_initialAnimationTimeSecond;
+        float m_blendTargetAnimationTimeSecond = Constant::k_initialAnimationTimeSecond;
 
         float m_blendElapsedSecond = k_initialBlendElapsedSecond;
 

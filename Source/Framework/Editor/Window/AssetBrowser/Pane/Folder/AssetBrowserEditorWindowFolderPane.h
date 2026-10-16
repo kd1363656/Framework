@@ -58,16 +58,16 @@ namespace FWK::Editor
 
         void ToggleFolderOpen(const std::filesystem::path& a_folderPath);
 
-        static constexpr ImVec2 k_banIconOffset = { 4.0F, 4.0F };
-
         static constexpr std::string_view k_childLabel                     = "##AssetBrowserEditorWindowFolderPane";
         static constexpr std::string_view k_paneTitleLabel                 = "ファイル";
         static constexpr std::string_view k_contextMenuOpenPopupLabel      = "##FolderContextMnuOpenPopup";
         static constexpr std::string_view k_emptySpaceContextMenuOpenLabel = "##FolderPaneEmptyContextMenu";
         static constexpr std::string_view k_renameInputTextLabel           = "##RenameInputText";
 
+        static constexpr ImVec2 k_banIconOffset = { 4.0F, 4.0F };
+
         static constexpr float k_banIconSizeOffset = 2.0F;
-        
+
         static constexpr int k_keyboardFocusNextItem = 0;
 
         std::unordered_map<std::filesystem::path, bool> m_folderOpenStateMap = {};

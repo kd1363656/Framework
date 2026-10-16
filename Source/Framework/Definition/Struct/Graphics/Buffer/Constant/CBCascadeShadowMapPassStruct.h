@@ -8,8 +8,8 @@ namespace FWK::Struct
         std::array<float,                   Constant::k_cascadeShadowMapDefaultMAXCascadeCount> m_splitDepthList           = {};
 
         float m_sampleDepthBias                                  = Constant::k_cascadeShadowMapDefaultSampleDepthBias;
-        float m_padding                                          = 0.0F;
-        TypeAlias::DescriptorIndex m_shadowMapSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+        float m_padding                                          = {};
+        TypeAlias::DescriptorIndex m_shadowMapSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
         UINT                       m_cascadeCount                = {};
     };
 }

@@ -26,6 +26,9 @@ namespace FWK::Physics
         static constexpr std::size_t k_invalidTotalVertexCount = 0ULL;
         static constexpr std::size_t k_invalidTotalIndexCount  = 0ULL;
 
+        static constexpr std::size_t k_initialTotalVertexCount = 0ULL;
+        static constexpr std::size_t k_initialTotalIndexCount  = 0ULL;
+
         static constexpr std::size_t k_triangleIndexZeroOffset = 0ULL;
         static constexpr std::size_t k_triangleIndexOneOffset  = 1ULL;
         static constexpr std::size_t k_triangleIndexTwoOffset  = 2ULL;

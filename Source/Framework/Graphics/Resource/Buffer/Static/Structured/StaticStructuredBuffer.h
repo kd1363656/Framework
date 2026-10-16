@@ -12,17 +12,17 @@ namespace FWK::Graphics
             Graphics::UploadBuffer m_uploadBuffer = {};
 
             // コピーするバッファサイズ
-            UINT64 m_bufferSize = Graphics::UploadBuffer::k_invalidBufferSize;
+            UINT64 m_bufferSize = Constant::k_invalidBufferSize;
         };
 
         struct BufferUploadCommand final
         {
-            // バッファーへコピーするためのUpload情報
-            BufferUploadRecord m_bufferUploadRecord = {};
-
             // Upload先のDEFAULTヒープ上
             // CopyBufferRegionではAllocationを使用しないため、GPUResource全体ではなくD3D12Resource2のみを保存する
             TypeAlias::ComPtr<ID3D12Resource2> m_destinationBufferResource = nullptr;
+
+            // バッファーへコピーするためのUpload情報
+            BufferUploadRecord m_bufferUploadRecord = {};
         };
 
     public:
@@ -48,12 +48,12 @@ namespace FWK::Graphics
             FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.size() > k_maxStructuredBufferElementCount,                "StaticStructuredBufferの要素数がUINTの最大値を超えたため、StaticStructuredBufferの作成に失敗しました。",      false);
             FWK_ASSERT_RETURN_VALUE_IF(sizeof(Type) > std::numeric_limits<UINT>::max(),                        "StaticStructuredBufferの1要素サイズがUINTの最大値を超えたため、StaticStructuredBufferの作成に失敗しました。", false);
             FWK_ASSERT_RETURN_VALUE_IF(GetREFBufferGPUResource().m_resource,                                   "StaticStructuredBufferは既にGPUResourceを保持しているため、再作成できません。",                               false);
-            FWK_ASSERT_RETURN_VALUE_IF(GetVALSRVDescriptorIndex() != DescriptorHeap::k_invalidDescriptorIndex, "StaticStructuredBufferは既にSRVDescriptorIndexを保持しているため、再作成できません。",                        false);
+            FWK_ASSERT_RETURN_VALUE_IF(GetVALSRVDescriptorIndex() != Constant::k_invalidDescriptorIndex,       "StaticStructuredBufferは既にSRVDescriptorIndexを保持しているため、再作成できません。",                        false);
 
             const auto& l_bufferSize = static_cast<UINT64>(sizeof(Type)) * static_cast<UINT64>(a_bufferList.size());
 
             // バッファーサイズがUINTが保持できる上限値を超えているかどうかを確認する
-            FWK_ASSERT_RETURN_VALUE_IF(l_bufferSize == UploadBuffer::k_invalidBufferSize, "StaticStructuredBufferの作成サイズが0のため、StaticStructuredBufferの作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_bufferSize == Constant::k_invalidBufferSize, "StaticStructuredBufferの作成サイズが0のため、StaticStructuredBufferの作成に失敗しました。", false);
 
             // 失敗しても、このStaticStructuredBufferが中途半端な状態にならないように、まずはローカル変数で作る
             Struct::GPUResource l_bufferGPUResource = {};
@@ -84,7 +84,7 @@ namespace FWK::Graphics
                                                         static_cast<UINT>(sizeof(Type)),
                                                         a_cbvSRVUAVDescriptorPool);
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "StaticStructuredBuffer用SRVの作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "StaticStructuredBuffer用SRVの作成に失敗しました。", false);
 
             // 作成内容をメンバに反映
             SetBufferGPUResource (std::move(l_bufferGPUResource));
@@ -109,7 +109,7 @@ namespace FWK::Graphics
         {
             FWK_ASSERT_RETURN_VALUE_IF(!a_bufferGPUResource.m_resource,                   "StaticStructuredBuffer用GPUResourceが無効のため、UploadCommandの作成に失敗しました。", false);
             FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),                              "BufferListが空のため、UploadCommandの作成に失敗しました。",                           false);
-            FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == UploadBuffer::k_invalidBufferSize, "BufferSizeが0のため、UploadCommandの作成に失敗しました。",                             false);
+            FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == Constant::k_invalidBufferSize,     "BufferSizeが0のため、UploadCommandの作成に失敗しました。",                             false);
 
             // 作成し終わったデフォルトヒープ上にあるリソースをコピー先として扱う
             a_bufferUploadCommand.m_destinationBufferResource = a_bufferGPUResource.m_resource;

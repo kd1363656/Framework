@@ -74,9 +74,9 @@ namespace FWK
 
         Converter::GameObjectTransformComponentJsonConverter m_jsonConverter = {};
 
-        TypeAlias::Math::Matrix m_matrix = TypeAlias::Math::Matrix::Identity;
-
         Struct::Transform m_transform = {};
+
+        TypeAlias::Math::Matrix m_matrix = TypeAlias::Math::Matrix::Identity;
 
         bool m_shouldUpdateMatrixDirty = false;
 

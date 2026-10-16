@@ -22,7 +22,7 @@ FWK::Graphics::SkeletalAnimationModelStandardLitPass::~SkeletalAnimationModelSta
 void FWK::Graphics::SkeletalAnimationModelStandardLitPass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
     const auto& l_directCommandList    = a_renderer.GetREFDirectCommandList   ();
-    const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (a_renderer, Enum::PipelineStateType::SkeletalAnimationModelLit).lock();
+    const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (Enum::PipelineStateType::SkeletalAnimationModelLit, a_renderer).lock();
     const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock                                                              ();
 
     FWK_ASSERT_RETURN_IF(!l_rootSignature,        "SkeletalAnimationModelLit用RootSignatureを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。" );

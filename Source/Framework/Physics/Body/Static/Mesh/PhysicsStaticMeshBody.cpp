@@ -99,8 +99,8 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 {
     FWK_ASSERT_RETURN_VALUE_IF(a_modelData.m_modelMeshList.empty(), "StaticModelDataのModelMeshリストが空のため、MeshShapeの作成に失敗しました。", {});
 
-    std::size_t l_totalVertexCount = 0ULL;
-    std::size_t l_totalIndexCount  = 0ULL;
+    std::size_t l_totalVertexCount = k_initialTotalVertexCount;
+    std::size_t l_totalIndexCount  = k_initialTotalIndexCount;
 
     // Material単位などで分割されている複数Meshを、
     // 1つのJoltMeshShapeへまとめる

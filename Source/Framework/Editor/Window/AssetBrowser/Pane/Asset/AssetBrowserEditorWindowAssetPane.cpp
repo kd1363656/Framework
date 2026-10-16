@@ -1002,9 +1002,9 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandlePaneBackgroundDragDro
     // GetCurrentWindow()->Rect()はスクリーン座標系のウィンドウ全体矩形
     // フォルダカード上ではカード側(小さい矩形)が優先されるため
     // ここに届くのは空白部分へのドロップのみになる
-    if (l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
+    if (l_imguiDragDropPayloadStorage.DragDropTargetCustom(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
+                                                           l_currentWindow->Rect(),
                                                            ImGui::GetID(k_paneDropTargetLabel.data()),
-                                                           Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
                                                            l_droppedFilePathList))
     {
         const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
@@ -1019,9 +1019,9 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandlePaneBackgroundDragDro
     // フォルダカード上ではカード側が優先されるためここに届くのは空白部分へのドロップのみ
     std::weak_ptr<GameObject> l_droppedGameObject = {};
  
-    if (!l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
+    if (!l_imguiDragDropPayloadStorage.DragDropTargetCustom(Constant::k_gameObjectDragDropPayloadLabel,
+                                                            l_currentWindow->Rect(),
                                                             ImGui::GetID(k_paneGameObjectDropTargetLabel.data()),
-                                                            Constant::k_gameObjectDragDropPayloadLabel,
                                                             l_droppedGameObject))
     {
         return;

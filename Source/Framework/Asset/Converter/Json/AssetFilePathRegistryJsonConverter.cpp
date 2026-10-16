@@ -61,7 +61,7 @@ nlohmann::json FWK::Converter::AssetFilePathRegistryJsonConverter::SerializeFile
         auto l_json = nlohmann::json{};
 
         l_json[k_filePathJsonKey]  = l_filePath;
-        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_assetUUID, k_uuidJsonKey));
+        Utility::UpdateJson(Utility::SerializeUUID(l_assetUUID, k_uuidJsonKey), l_json);
 
         const auto* l_assetFilePathData = a_assetFilePathRegistry.FindPTRAssetFilePathData(l_assetUUID);
 

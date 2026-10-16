@@ -27,9 +27,9 @@ namespace FWK::Graphics
         void Deserialize(const nlohmann::json& a_rootJson);
         bool Create     (const Device&         a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-        TextureLoadResult LoadTextureForBatchUpload(const Device&                             a_device,
+        TextureLoadResult LoadTextureForBatchUpload(const std::filesystem::path&              a_filePath,
+                                                    const Device&                             a_device,
                                                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                    const std::filesystem::path&              a_filePath,
                                                     const Enum::TextureLoadColorSpace         a_textureLoadColorSpace,
                                                     const Enum::DefaultTextureType            a_defaultTextureType,
                                                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
@@ -43,11 +43,9 @@ namespace FWK::Graphics
         bool AddTextureReferenceCount     (const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord);
         bool SubtractTextureReferenceCount(const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
 
-        void ApplyDefaultTexture(const Enum::DefaultTextureType a_defaultTextureType, const std::shared_ptr<DefaultTexture>& a_defaultTexture);
+        void ApplyDefaultTexture(const std::shared_ptr<DefaultTexture>& a_defaultTexture, const Enum::DefaultTextureType a_defaultTextureType);
 
         std::weak_ptr<Graphics::TextureRecord> FetchVALDefaultTextureRecord(const Enum::DefaultTextureType a_defaultTextureType) const;
-
-        static constexpr std::size_t k_defaultTextureTypeCount = static_cast<std::size_t>(Enum::DefaultTextureType::Count);
 
         const auto& GetREFPendingTextureBatchUploadRecordMap() const { return m_pendingTextureBatchUploadRecordMap; }
 
@@ -61,11 +59,11 @@ namespace FWK::Graphics
 
         bool CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-        void CreateAndRegisterPendingTextureForBachUpload(const Device&                             a_device,
-                                                          const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                          const std::filesystem::path&              a_filePath,
-                                                          const DirectX::ScratchImage&              a_scratchImage,
+        void CreateAndRegisterPendingTextureForBachUpload(const DirectX::ScratchImage&              a_scratchImage,
                                                           const DirectX::TexMetadata&               a_texMetadata,
+                                                          const std::filesystem::path&              a_filePath,
+                                                          const Device&                             a_device,
+                                                          const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                                                                 TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
                                                                 TextureLoadResult&                  a_textureLoadResult);
 
@@ -75,7 +73,7 @@ namespace FWK::Graphics
 
         PendingTextureBatchUploadRecordMap m_pendingTextureBatchUploadRecordMap = {};
 
-        std::array<std::shared_ptr<DefaultTexture>, k_defaultTextureTypeCount> m_defaultTextureList = {};
+        std::array<std::shared_ptr<DefaultTexture>, Constant::k_defaultTextureTypeCount> m_defaultTextureList = {};
 
         AssetStorage<Graphics::TextureRecord> m_textureStorage = {};
 

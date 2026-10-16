@@ -17,7 +17,7 @@ namespace FWK::Graphics
 
         void SetupComputePipeline(const std::weak_ptr<ComputePipelineState>& a_pipelineState);
 
-        void SetupConstantBufferView(const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const override;
+        void SetupConstantBufferView(const RootSignature& a_rootSignature, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const Enum::RootParameterType a_rootParameterType) const override;
 
         template <typename RootConstantType>
         void SetupRoot32BitConstants(const RootConstantType& a_rootConstantData, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const

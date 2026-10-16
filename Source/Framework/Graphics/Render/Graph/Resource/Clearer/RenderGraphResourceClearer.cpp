@@ -36,7 +36,7 @@ bool FWK::Graphics::RenderGraphResourceClearer::ClearRenderTargetPassTexture(con
     const auto& l_gpuResource         = l_renderTargetTexture.GetREFGPUResource            ();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_gpuResource.m_resource,                                                                    "RenderTargetPassTextureのGPUResourceが無効のため、Clear処理に失敗しました。",    false);
-    FWK_ASSERT_RETURN_VALUE_IF(l_renderTargetTexture.GetVALRTVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex, "RenderTargetPassTextureのRTVDescriptorIndexが無効のため、Clearに失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_renderTargetTexture.GetVALRTVDescriptorIndex() == Constant::k_invalidDescriptorIndex,       "RenderTargetPassTextureのRTVDescriptorIndexが無効のため、Clearに失敗しました。", false);
 
     // RenderGraph側でリソースの遷移漏れがあればassert
     FWK_ASSERT_RETURN_VALUE_IF(l_renderTargetTexture.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_RENDER_TARGET, "RenderTargetPassTextureがD3D12_RESOURCE_STATE_RENDER_TARGETではない状態でClearしようとしています。beforUsage/afterUsageの指定、またはRenderGraphの自動遷移を確認してください。", false);
@@ -55,7 +55,7 @@ bool FWK::Graphics::RenderGraphResourceClearer::ClearDepthStencilPassTexture(con
     const auto& l_gpuResource         = l_depthStencilTexture.GetREFGPUResource            ();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_gpuResource.m_resource,                                                                                     "DepthStencilPassTextureのGPUResourceが無効のため、Clear処理に失敗しました。",    false);
-    FWK_ASSERT_RETURN_VALUE_IF(l_depthStencilTexture.FetchVALBaseSubresourceDSVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex, "DepthStencilPassTextureのDSVDescriptorIndexが無効のため、Clearに失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_depthStencilTexture.FetchVALBaseSubresourceDSVDescriptorIndex() == Constant::k_invalidDescriptorIndex,       "DepthStencilPassTextureのDSVDescriptorIndexが無効のため、Clearに失敗しました。", false);
 
     // RenderGraph側でリソースの遷移漏れがあればassert
     FWK_ASSERT_RETURN_VALUE_IF(l_depthStencilTexture.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_DEPTH_WRITE, "DepthStencilPassTextureがD3D12_RESOURCE_STATE_DEPTH_WRITEではない状態でClearしようとしています。beforUsage/afterUsageの指定、またはRenderGraphの自動遷移を確認してください。", false);

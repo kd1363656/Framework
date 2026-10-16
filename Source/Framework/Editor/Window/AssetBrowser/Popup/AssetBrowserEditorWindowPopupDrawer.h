@@ -29,14 +29,14 @@ namespace FWK::Editor
                                   const bool                               a_canCreate,
                                         AssetBrowserEditorWindow&          a_assetBrowserEditorWindow) const;
 
-        void DrawCreatePrefabMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                                  const std::filesystem::path&                       a_targetFolderPath,
+        void DrawCreatePrefabMenu(const std::filesystem::path&                       a_targetFolderPath,
+                                  const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
                                   const bool                                         a_canCreate,
                                         AssetFilePathRegistry&                       a_assetFilePathRegistry,
                                         Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
 
-        void DrawCreateSceneMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                                 const std::filesystem::path&                       a_targetFolderPath,
+        void DrawCreateSceneMenu(const std::filesystem::path&                       a_targetFolderPath,
+                                 const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
                                  const bool                                         a_canCreate,
                                        AssetFilePathRegistry&                       a_assetFilePathRegistry,
                                        Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;

@@ -11,8 +11,8 @@ namespace FWK::Struct
 
     struct SkeletalAnimationModelBatchUploadRecord final
     {
-        std::shared_ptr<Graphics::SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = nullptr;
-
         std::vector<Graphics::StaticStructuredBuffer::BufferUploadCommand> m_bufferUploadCommandList = {};
+
+        std::shared_ptr<Graphics::SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = nullptr;
     };
 }

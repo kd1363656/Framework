@@ -12,8 +12,8 @@ namespace FWK::Graphics
         bool CreateStaticModelBatchUploadRecord(const Device&                                                   a_device,
                                                 const GPUMemoryAllocator&                                       a_gpuMemoryAllocator,
                                                       std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
-                                                      TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool,
-                                                      StaticModelRecord&                                        a_staticModelRecord) const;
+                                                      StaticModelRecord&                                        a_staticModelRecord,
+                                                      TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool) const;
 
     private:
 

@@ -28,9 +28,9 @@ bool FWK::Graphics::RenderTargetTexture::Resize(const Device&                   
                                                 const UINT64&                             a_retiredFenceValue,
                                                 const UINT                                a_width,
                                                 const UINT                                a_height,
+                                                      ResourceReleaseContext&             a_resourceReleaseContext,
                                                       TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
-                                                      TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-                                                      ResourceReleaseContext&             a_resourceReleaseContext)
+                                                      TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     // 同じサイズならリサイズ処理をする必要がないからreturn
     if (Utility::IsSameSize(a_width,
@@ -80,8 +80,8 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
     const auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_format,
                                                              a_width,
                                                              a_height,
-                                                             Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
-                                                             Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels,
+                                                             Constant::k_defaultTexture2DArraySize,
+                                                             Constant::k_defaultTexture2DMIPLevels,
                                                              Constant::k_defaultSampleCount,
                                                              Constant::k_defaultSampleQuality,
                                                              D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
@@ -107,7 +107,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateRTV(const Device& a_device, TypeA
 
     const auto l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RTVDescriptorIndexの確保に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RTVDescriptorIndexの確保に失敗しました。", false);
 
     // D3D12_RENDER_TARGET_VIEW_DESCについて
     // Format        : RTVとしてみるときのフォーマット
@@ -137,7 +137,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
 
     const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "SRVDescriptorIndexの確保に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRVDescriptorIndexの確保に失敗しました。", false);
 
     // D3D12_SHADER_RESOURCE_VIEW_DESCについて
     // Shader4ComponentMapping : Shader側でRGBA成分をどう読むか
@@ -155,7 +155,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
     // PlaneSlice          : 通常カラーTextureなので0
     // ResourceMINLODCLAMP : 最小LOD制限
     l_srvDesc.Texture2D.MostDetailedMip     = k_mostDetailedMIP;
-    l_srvDesc.Texture2D.MipLevels           = Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels;
+    l_srvDesc.Texture2D.MipLevels           = Constant::k_defaultTexture2DMIPLevels;
     l_srvDesc.Texture2D.PlaneSlice          = k_planeSlice;
     l_srvDesc.Texture2D.ResourceMinLODClamp = k_resourceMINLODClamp;
 
@@ -181,9 +181,9 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
 bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext)
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource,                                        "RenderTargetTextureのGPUResourceが無効のため、遅延解放登録に失敗しました。",        false);
-    FWK_ASSERT_RETURN_VALUE_IF(m_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RenderTargetTextureのRTVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RenderTargetTextureのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Fence::k_unusedFenceValue,                "FenceValueが無効のため、RenderTargetTextureの遅延解放登録に失敗しました。",         false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex,       "RenderTargetTextureのRTVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex,       "RenderTargetTextureのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Constant::k_unusedFenceValue,             "FenceValueが無効のため、RenderTargetTextureの遅延解放登録に失敗しました。",         false);
 
     ResourceReleaseContext::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
 
@@ -205,8 +205,8 @@ bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UIN
     FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseCBVSRVUAVDescriptorIndex(std::move(l_srvDescriptorIndexReleaseRecord)), "RenderTargetTextureのSRVDescriptorIndexの遅延解放登録に失敗しました。", false);
 
     // 二重開放を防ぐため、DescriptorIndexは無効化する
-    m_rtvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
-    m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+    m_rtvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+    m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
 
     m_width  = Constant::k_invalidTextureWidth;
     m_height = Constant::k_invalidTextureHeight;

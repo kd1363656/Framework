@@ -13,21 +13,21 @@ namespace FWK::Converter
             std::uint16_t m_assetTypeID = k_modelAssetTypeID;
 
             std::uint64_t m_modelMeshCount      = Constant::k_emptyModelMeshCount;
-            std::uint64_t m_boneCount           = k_emptyBoneCount;
-            std::uint64_t m_motionSequenceCount = k_emptyMotionSequenceCount;
+            std::uint64_t m_boneCount           = Constant::k_emptyBoneCount;
+            std::uint64_t m_motionSequenceCount = Constant::k_emptyMotionSequenceCount;
         };
 
         struct ModelBoneBinaryHeader final
         {
             std::uint64_t m_boneNameSize = k_emptyBoneNameSize;
 
-            std::uint32_t m_parentBoneIndex = Graphics::SkeletalAnimationModelRecord::k_invalidBoneIndex;
+            std::uint32_t m_parentBoneIndex = Constant::k_invalidBoneIndex;
         };
 
         struct ModelMotionSequenceBinaryHeader final
         {
-            float m_durationSecond = Graphics::SkeletalAnimationModelRecord::k_initialAnimationDurationSecond;
-            float m_frameRate      = Graphics::SkeletalAnimationModelRecord::k_defaultAnimationFrameRate;
+            float m_durationSecond = Constant::k_initialAnimationDurationSecond;
+            float m_frameRate      = Constant::k_defaultAnimationFrameRate;
 
             std::uint64_t m_motionNameSize = k_emptyMotionNameSize;
 
@@ -38,7 +38,7 @@ namespace FWK::Converter
         {
             std::uint64_t m_keyFrameCount = k_emptyKeyFrameCount;
 
-            std::uint32_t m_boneIndex = Graphics::SkeletalAnimationModelRecord::k_invalidBoneIndex;
+            std::uint32_t m_boneIndex = Constant::k_invalidBoneIndex;
         };
 
     public:
@@ -48,10 +48,6 @@ namespace FWK::Converter
 
         bool LoadAsset(const std::filesystem::path& a_filePath,       Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
         bool SaveAsset(const std::filesystem::path& a_filePath, const Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
-
-        static constexpr std::uint64_t k_emptyBonePaletteCount     = 0ULL;
-        static constexpr std::uint64_t k_emptyBoneCount            = 0ULL;
-        static constexpr std::uint64_t k_emptyMotionSequenceCount  = 0ULL;
 
     private:
 

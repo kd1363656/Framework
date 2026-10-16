@@ -45,9 +45,9 @@ bool FWK::Graphics::UploadBuffer::Create(const Device& a_device, const UINT64& a
     FWK_ASSERT_RETURN_VALUE_IF(!l_device, "デバイスが作成されておらず、UploadBufferの作成に失敗しました。", false);
 
     // サイズ0のバッファは作成する意味がないため失敗扱いにする
-    FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == k_invalidBufferSize, "UploadBufferの作成サイズが0のため、UploadBufferの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == Constant::k_invalidBufferSize, "UploadBufferの作成サイズが0のため、UploadBufferの作成に失敗しました。", false);
 
-    constexpr auto l_nodeMask = k_defaultGPUNodeMask;
+    constexpr auto l_nodeMask = Constant::k_defaultGPUNodeMask;
 
     // D3D12_HEAP_PROPERTIESについての説明
     // Type                 : どの種類のヒープにリソースを置くか
@@ -106,7 +106,7 @@ std::uint8_t* FWK::Graphics::UploadBuffer::FetchPTRMappedData() const
 
 D3D12_GPU_VIRTUAL_ADDRESS FWK::Graphics::UploadBuffer::FetchVALGPUVirtualAddress() const
 {
-    FWK_ASSERT_RETURN_VALUE_IF(!m_uploadBuffer, "UploadBufferが作成されておらず、GPU仮想アドレスの取得に失敗しました。", k_invalidGPUVirtualAddress);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_uploadBuffer, "UploadBufferが作成されておらず、GPU仮想アドレスの取得に失敗しました。", Constant::k_invalidGPUVirtualAddress);
 
     // SetGraphicsRootConstantBufferViewに渡すためのGPU仮想アドレスを取得する
     return m_uploadBuffer->GetGPUVirtualAddress();
@@ -128,7 +128,7 @@ bool FWK::Graphics::UploadBuffer::Map()
     //     マップした先頭アドレスの受取先);
     // Bufferリソースなのでサブリソースは0固定で扱う
     // UploadBufferはCPUから書き込みたい用途なのでMapして生ポインタを取得する
-    const auto l_hr = m_uploadBuffer->Map(k_firstSubresourceIndex, nullptr, &l_mappedData);
+    const auto l_hr = m_uploadBuffer->Map(Constant::k_firstSubresourceIndex, nullptr, &l_mappedData);
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "UploadBufferのMapに失敗しました。", false);
 
@@ -141,7 +141,7 @@ void FWK::Graphics::UploadBuffer::UnMap()
 {
     if (!m_uploadBuffer || !m_mappedData) { return; }
 
-    m_uploadBuffer->Unmap(k_firstSubresourceIndex, nullptr);
+    m_uploadBuffer->Unmap(Constant::k_firstSubresourceIndex, nullptr);
 
     m_mappedData = nullptr;
 }

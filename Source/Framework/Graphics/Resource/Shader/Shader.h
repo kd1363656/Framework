@@ -30,10 +30,10 @@ namespace FWK::Graphics
 
         TypeAlias::ComPtr<IDxcBlob> m_dxcBlob = nullptr;
 
-        Converter::ShaderJsonConverter m_shaderJsonConverter = {};
-
         std::filesystem::path m_filePath               = {};
         std::string           m_entryPointName         = {};
         std::string           m_shaderModelVersionName = {};
+
+        Converter::ShaderJsonConverter m_shaderJsonConverter = {};
     };
 }
