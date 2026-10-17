@@ -13,6 +13,7 @@ namespace FWK::Editor
                               const std::string_view&                           a_popupLabel,
                               const ImVec2&                                     a_popupPosition,
                               const Struct::EditorTagSearchPopupText&           a_popupText,
+                              const std::size_t&                                a_maxVisibleItemCount,
                               const float                                       a_popupWidth);
 
     private:
@@ -24,6 +25,7 @@ namespace FWK::Editor
 
         std::string_view DrawItemList(const std::vector<std::string_view>&    a_itemList,
                                       const Struct::EditorTagSearchPopupText& a_popupText,
+                                      const std::size_t&                      a_maxVisibleItemCount,
                                       const bool                              a_isTagList);
 
         void DrawSearchIcon  ()                                                          const;
@@ -52,16 +54,19 @@ namespace FWK::Editor
         static constexpr std::string_view k_itemListChildLabel                  = "##EditorTagSearchPopupItemList";
         static constexpr std::string_view k_searchResultText                    = "検索結果";
 
-        static constexpr ImVec2 k_itemListChildSize = { 0.0F, 240.0F };
+        static constexpr ImVec2 k_itemListChildSize = { 0.0F, 0.0F };
 
         static constexpr float k_autoFitPopupHeight = 0.0F;
         static constexpr float k_searchIconScale    = 1.3F;
         static constexpr float k_noWrapWidth        = 0.0F;
         static constexpr float k_unlimitedTextWidth = std::numeric_limits<float>::max();
+        static constexpr float k_minItemListWidth   = 0.0F;
+        static constexpr float k_maxItemListWidth   = std::numeric_limits<float>::max();
 
         static constexpr std::size_t k_searchBufferSize      = 256ULL;
         static constexpr std::size_t k_initialHighlightIndex = 0ULL;
         static constexpr std::size_t k_highlightStep         = 1ULL;
+        static constexpr std::size_t k_minVisibleItemCount   = 1ULL;
 
         std::array<char, k_searchBufferSize> m_searchBuffer = {};
 

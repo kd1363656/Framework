@@ -44,6 +44,10 @@ namespace FWK::Editor
         static constexpr Struct::EditorTagSearchPopupText k_addComponentPopupText = { .m_tagListHeaderText = "コンポーネントの種類",
                                                                                       .m_noItemText        = "追加できるコンポーネントがありません" };
 
+        static constexpr float k_addComponentPopupWidth = 260.0F;
+
+        static constexpr std::size_t k_addComponentPopupMaxVisibleItemCount = 8ULL;
+
         nlohmann::json m_editBeginTransformJson = {};
         nlohmann::json m_editBeginComponentJson = {};
 

@@ -105,7 +105,6 @@ void FWK::Editor::DetailsEditorGameObject::DrawAddComponentButton(const FWK::Gam
         ImGui::OpenPopup(k_addComponentPopupLabel.data());
     }
 
-    // ポップアップはボタンの真下に、ボタンと同じ幅で開く
     // GetItemRectMin / GetItemRectMaxは直前に描画した項目(ボタン)の左上と右下
     const auto& l_buttonMIN = ImGui::GetItemRectMin();
     const auto& l_buttonMAX = ImGui::GetItemRectMax();
@@ -116,13 +115,21 @@ void FWK::Editor::DetailsEditorGameObject::DrawAddComponentButton(const FWK::Gam
     // タグ(カテゴリー)と、その中の追加できるコンポーネントの一覧を渡し、決定したコンポーネントの型の名前を受け取る
     // 決定しなかったフレームは空が返る
     const auto& l_addableTagGroupList = FetchVALAddComponentTagGroupList(a_gameObject);
-    const auto& l_popupPosition       = ImVec2{ l_buttonMIN.x, l_buttonMAX.y };
-    const float l_popupWidth          = l_buttonMAX.x - l_buttonMIN.x;
+
+    // ポップアップはボタンの真下の真ん中に、決めた幅で開く(高さは並ぶ行の数に合わせ、最大8行で止まる)
+    // ボタンは詳細ウィンドウの幅いっぱいなので、ボタンと同じ幅にするとウィンドウが広いほどポップアップも大きくなりすぎる
+    // ただしウィンドウが決めた幅より狭いときは、はみ出さないようにボタンの幅に合わせる
+    // 例 : ボタンが x = 8〜392(幅384) → 幅260、左端は 8 + (384 - 260) × 0.5 = 70
+    //      ボタンが x = 8〜208(幅200) → 幅200、左端は 8 + (200 - 200) × 0.5 = 8
+    const float l_buttonWidth   = l_buttonMAX.x - l_buttonMIN.x;
+    const float l_popupWidth    = std::min(l_buttonWidth, k_addComponentPopupWidth);
+    const auto& l_popupPosition = ImVec2{ l_buttonMIN.x + (l_buttonWidth - l_popupWidth) * Constant::k_halfMagnification, l_buttonMAX.y };
 
     if (const auto& l_decidedTypeName = m_addComponentPopup.Draw(l_addableTagGroupList,
                                                                  k_addComponentPopupLabel,
                                                                  l_popupPosition,
                                                                  k_addComponentPopupText,
+                                                                 k_addComponentPopupMaxVisibleItemCount,
                                                                  l_popupWidth);
         !l_decidedTypeName.empty())
     {

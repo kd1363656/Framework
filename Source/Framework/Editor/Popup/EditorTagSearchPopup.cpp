@@ -10,10 +10,13 @@ std::string_view FWK::Editor::EditorTagSearchPopup::Draw(const std::vector<Struc
                                                          const std::string_view&                           a_popupLabel,
                                                          const ImVec2&                                     a_popupPosition,
                                                          const Struct::EditorTagSearchPopupText&           a_popupText,
+                                                         const std::size_t&                                a_maxVisibleItemCount,
                                                          const float                                       a_popupWidth)
 {
-    // 呼び出し側が決めた位置(例 : ボタンの真下)に、決めた幅で開く
-    // 高さは0.0Fを渡すと中身に合わせて自動で決まる
+    // 呼び出し側が決めた位置と幅で開く
+    // 使う場所ごとに大きさを変えられるようにするため、ポップアップの中では幅と最大の行数を決めない
+    // 例 : コンポーネントの追加 → ボタンの真下に幅260・最大8行、ノードの追加 → マウスの位置に幅220・最大12行 など
+    // 高さは0.0Fを渡して中身に合わせる(一覧の行が少なければ低くなり、多ければ最大の行数で止まる)
     ImGui::SetNextWindowPos (a_popupPosition);
     ImGui::SetNextWindowSize(ImVec2{ a_popupWidth, k_autoFitPopupHeight });
 
@@ -48,7 +51,11 @@ std::string_view FWK::Editor::EditorTagSearchPopup::Draw(const std::vector<Struc
     }
 
     const auto& l_shortcutDecidedItem = HandleShortcut(l_itemList, l_wasSearching);
-    const auto& l_clickDecidedItem    = DrawItemList  (l_itemList, a_popupText, l_isTagList);
+
+    const auto& l_clickDecidedItem = DrawItemList(l_itemList,
+                                                  a_popupText,
+                                                  a_maxVisibleItemCount,
+                                                  l_isTagList);
 
     ImGui::EndPopup();
 
@@ -165,11 +172,24 @@ void FWK::Editor::EditorTagSearchPopup::DrawHeader(const Struct::EditorTagSearch
 
 std::string_view FWK::Editor::EditorTagSearchPopup::DrawItemList(const std::vector<std::string_view>&    a_itemList,
                                                                  const Struct::EditorTagSearchPopupText& a_popupText,
+                                                                 const std::size_t&                      a_maxVisibleItemCount,
                                                                  const bool                              a_isTagList)
 {
-    // 一覧は高さを固定した子ウィンドウに並べ、項目が多いときはスクロールできるようにする
+    // 一覧の高さは並べる行の数に合わせ、最大の行数を超えたらそこで止めて、残りはスクロールで見せる
+    // 1行の高さはGetTextLineHeightWithSpacing(文字の高さ + 行の間隔)
+    // 「項目がありません」の1行は必ず見えるよう、最小は1行にする
+    // 例 : 1行の高さ21、最大8行 → 1行なら21、3行なら63、20行あっても168で止まる
+    const float l_itemHeight        = ImGui::GetTextLineHeightWithSpacing();
+    const float l_minItemListHeight = l_itemHeight * static_cast<float>(k_minVisibleItemCount);
+    const float l_maxItemListHeight = l_itemHeight * static_cast<float>(a_maxVisibleItemCount);
+
+    // SetNextWindowSizeConstraints(最小の大きさ、最大の大きさ) : 次に作るウィンドウ(ここでは一覧の子ウィンドウ)の大きさの範囲を決める
+    // ImGuiChildFlags_AutoResizeY : 子ウィンドウの高さを中身に合わせる(上の範囲の中に収まる)
+    // 幅に0.0Fを渡すと、ポップアップの幅いっぱいに広がる
     // ImGui::BeginChildはfalseを返した場合もEndChildを呼ぶ必要がある
-    if (!ImGui::BeginChild(k_itemListChildLabel.data(), k_itemListChildSize))
+    ImGui::SetNextWindowSizeConstraints(ImVec2{ k_minItemListWidth, l_minItemListHeight }, ImVec2{ k_maxItemListWidth, l_maxItemListHeight });
+
+    if (!ImGui::BeginChild(k_itemListChildLabel.data(), k_itemListChildSize, ImGuiChildFlags_AutoResizeY))
     {
         ImGui::EndChild();
 
