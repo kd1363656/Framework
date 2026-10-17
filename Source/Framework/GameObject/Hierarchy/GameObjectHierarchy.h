@@ -32,7 +32,7 @@ namespace FWK
 
         void Clone(GameObjectHierarchy& a_cloneHierarchy, Scene& a_scene) const;
 
-        void ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID) const;
+        void ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID, const boost::uuids::uuid& a_oldPrefabUUID) const;
 
         void DetachFromPrefab(const boost::uuids::uuid& a_oldPrefabUUID);
 

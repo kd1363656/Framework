@@ -120,7 +120,7 @@ void FWK::GameObjectHierarchy::Clone(GameObjectHierarchy& a_cloneHierarchy, Scen
     }
 }
 
-void FWK::GameObjectHierarchy::ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID) const
+void FWK::GameObjectHierarchy::ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID, const boost::uuids::uuid& a_oldPrefabUUID) const
 {
     const auto& l_childList = m_childSmartPointerVectorList.GetREFElementDataList();
 
@@ -134,9 +134,14 @@ void FWK::GameObjectHierarchy::ConvertToPrefab(const boost::uuids::uuid& a_prefa
         // その子は別のPrefabとして独自に更新伝播を受ける
         // PrefabUUIDに何かしら入っている場合はPrefab
         // なので処理を飛ばすこのゲームオブジェクトのプレハブの一部として扱わない
+        // ただし親と同じ元のPrefab(a_oldPrefabUUID)を持つ子は入れ子ではなく、元のPrefabの中身の一部なので
+        // 親と一緒に新しいPrefabへ移す
+        // 例 : Xのインスタンスの子(PrefabUUID = X)をYにする → 子もYになる
+        //      Xのインスタンスの中にあるZの入れ子(PrefabUUID = Z) → Zのまま
         if (const auto& l_childPrefabUUID = l_child->GetREFPrefabUUID();
-            !l_childPrefabUUID.is_nil() &&
-            l_childPrefabUUID != a_prefabUUID)
+            !l_childPrefabUUID.is_nil()       &&
+            l_childPrefabUUID != a_prefabUUID &&
+            l_childPrefabUUID != a_oldPrefabUUID)
         {
             continue;
         }

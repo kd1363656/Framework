@@ -215,6 +215,10 @@ std::shared_ptr<FWK::GameObject> FWK::GameObject::Clone(const std::weak_ptr<Game
 
 void FWK::GameObject::ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID)
 {
+    // 子への再帰判定で使うため、書き換える前に元のPrefabUUIDを保持する
+    // 例 : プレハブXのインスタンスを新しいプレハブYにする → 元はX(普通のGameObjectならnil)
+    const auto l_oldPrefabUUID = m_prefabUUID;
+
     // 自身のプレハブ情報を設定する
     m_prefabUUID     = a_prefabUUID;
     m_isPrefabOrigin = true;
@@ -232,7 +236,7 @@ void FWK::GameObject::ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID)
     m_componentContainer.ConvertToPrefab();
 
     // 子も再帰的にプレハブ化する
-    m_hierarchy.ConvertToPrefab(a_prefabUUID);
+    m_hierarchy.ConvertToPrefab(a_prefabUUID, l_oldPrefabUUID);
 }
 
 void FWK::GameObject::DetachFromPrefab()
