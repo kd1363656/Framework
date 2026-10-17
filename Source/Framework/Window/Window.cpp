@@ -215,10 +215,11 @@ LRESULT FWK::Window::WindowProcedure(const HWND   a_hwnd,
         break;
     }
 
-    if (ImGui::GetCurrentContext() && ImGui_ImplWin32_WndProcHandler(a_hwnd,
-                                                                     a_message,
-                                                                     a_wPARAM,
-                                                                     a_lPARAM))
+    if (ImGui::GetCurrentContext() &&
+        ImGui_ImplWin32_WndProcHandler(a_hwnd,
+                                       a_message,
+                                       a_wPARAM,
+                                       a_lPARAM))
     {
         return k_windowProcedureHandledResult;
     }
@@ -274,7 +275,7 @@ LRESULT FWK::Window::WindowProcedure(const HWND   a_hwnd,
 bool FWK::Window::CreateWindowInstance(const std::wstring& a_windowClassName, const std::string& a_titleName)
 {
     // ハンドル(.exe)を取得
-    const HINSTANCE& l_hInstance = FetchVALInstanceHandle();
+    const auto& l_hInstance = FetchVALInstanceHandle();
 
     // マルチバイト文字列に変換
     const auto& l_titleName = Utility::StringToWString(a_titleName);
@@ -325,7 +326,7 @@ bool FWK::Window::CreateWindowInstance(const std::wstring& a_windowClassName, co
     if (!RegisterClassEx(&l_wc)) { return false; }
 
     // 現在の設定から、実際に使うウィンドウスタイルを取得
-    const DWORD l_style = FetchVALWindowStyle();
+    const auto l_style = FetchVALWindowStyle();
 
     // 登録したウィンドウクラスをもとに、実際のウィンドウを作成する関数
     // 戻り値として、このウィンドウを識別するためのHWNDを受け取る
@@ -506,7 +507,7 @@ void FWK::Window::ApplyBorderlessFullScreenWindowStyle()
     SetWindowLongPtr(m_hwnd, GWL_STYLE, k_borderlessFullScreenWindowStyle);
 
     // 現在のウィンドウに一番近いモニターを取得する
-    const HMONITOR l_monitor = MonitorFromWindow(m_hwnd, MONITOR_DEFAULTTONEAREST);
+    const auto l_monitor = MonitorFromWindow(m_hwnd, MONITOR_DEFAULTTONEAREST);
 
     MONITORINFO l_monitorINFO = {};
 
@@ -514,7 +515,7 @@ void FWK::Window::ApplyBorderlessFullScreenWindowStyle()
 
     FWK_ASSERT_RETURN_IF(!GetMonitorInfo(l_monitor, &l_monitorINFO), "モニター情報の取得に失敗しました。");
 
-    const RECT& l_monitorRECT = l_monitorINFO.rcMonitor;
+    const auto& l_monitorRECT = l_monitorINFO.rcMonitor;
 
     const auto l_monitorWidth  = static_cast<int>(l_monitorRECT.right  - l_monitorRECT.left);
     const auto l_monitorHeight = static_cast<int>(l_monitorRECT.bottom - l_monitorRECT.top);

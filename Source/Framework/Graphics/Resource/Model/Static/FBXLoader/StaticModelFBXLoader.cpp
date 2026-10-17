@@ -129,7 +129,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
 {
     // モデルメッシュの初期化
     a_modelMesh.m_modelVertexList.clear();
-    a_modelMesh.m_indexList.clear        ();
+    a_modelMesh.m_indexList.clear      ();
 
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode, "ufbx_nodeがnullptrのため、Material別ModelMeshの抽出に失敗しました。", false);
 
@@ -202,7 +202,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
                 // ufbx_load_opts側で、+XRight/+YForward/+Z Upとcm->m変換を行っている。
                 // ここではさらにNodeTransformをgeometry_to_worldで反映する。
                 l_modelVertex.m_position = FetchWorldVertexPosition(a_fbxNode, l_fbxMesh, l_fbxVertexIndex);
-                l_modelVertex.m_uv     = FetchVertexUV           (l_fbxMesh, l_fbxVertexIndex);
+                l_modelVertex.m_uv     = FetchVertexUV             (l_fbxMesh, l_fbxVertexIndex);
                 l_modelVertex.m_normal   = FetchWorldVertexNormal  (a_fbxNode, l_fbxMesh, l_fbxVertexIndex);
                 l_modelVertex.m_tangent  = FetchWorldVertexTangent (a_fbxNode, l_fbxMesh, l_fbxVertexIndex);
 

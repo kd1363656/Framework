@@ -66,8 +66,14 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
 
     // HullShaderとDomainShaderは基本的にセットで使う。
     // 片方だけ設定されている場合は、テッセレーションPipelineとして不完全。
-    FWK_ASSERT_RETURN_VALUE_IF( m_hullShader && !m_domainShader, "HullShaderが設定されていますがDomainShaderが無いため、StandardPipelineStateの作成処理に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(!m_hullShader &&  m_domainShader, "DomainShaderが設定されていますがHullShaderが無いため、StandardPipelineStateの作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_hullShader &&
+                               !m_domainShader,
+                               "HullShaderが設定されていますがDomainShaderが無いため、StandardPipelineStateの作成処理に失敗しました。",
+                               false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_hullShader &&
+                               m_domainShader,
+                               "DomainShaderが設定されていますがHullShaderが無いため、StandardPipelineStateの作成処理に失敗しました。",
+                               false);
 
     D3D12_GRAPHICS_PIPELINE_STATE_DESC l_pipelineStateDesc = {};
 

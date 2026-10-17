@@ -31,7 +31,7 @@
                         "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset",
+                "CurrentSelectFolderPath": "Asset\\Texture",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 241.0
                 },
@@ -50,18 +50,6 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Texture",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
                             "IsOpen": true
                         },
@@ -71,6 +59,14 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Font",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Texture",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
@@ -86,11 +82,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Run",
+                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\Run",
                             "IsOpen": false
                         },
                         {
@@ -106,23 +102,7 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Actor",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Map",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Data\\Sound\\BGM",
                             "IsOpen": false
                         },
                         {
@@ -130,7 +110,7 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02",
+                            "FilePath": "Asset\\Data\\Sound\\BGM",
                             "IsOpen": false
                         },
                         {
@@ -138,7 +118,7 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Player\\Antike.fbm",
+                            "FilePath": "Asset\\Data\\Prefab\\ShakyoTest",
                             "IsOpen": false
                         },
                         {
@@ -146,27 +126,7 @@
                             "IsOpen": true
                         },
                         {
-                            "FilePath": "Asset\\Data\\Prefab\\ShakyoTest",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Weapon",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Weapon\\Player",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Sound\\SE\\Terrain",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Weapon\\Player\\K02",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Weapon\\Player\\K02\\K02Sword.fbm",
                             "IsOpen": false
                         },
                         {
@@ -190,31 +150,7 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Enemy",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Enemy\\SandGolem",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Model\\Player",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Enemy\\SandGolem\\SnadGolem.fbm",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Enemy\\Anubis",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Enemy\\Anubis\\Anubis.fbm",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Map\\SkySphere",
                             "IsOpen": false
                         },
                         {
@@ -223,10 +159,10 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset",
+                        "RangeSelectionStartPath": "Asset\\Texture",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset"
+                                "SelectedFilePath": "Asset\\Texture"
                             }
                         ]
                     }

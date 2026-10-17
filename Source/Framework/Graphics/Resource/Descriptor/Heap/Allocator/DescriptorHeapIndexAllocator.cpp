@@ -51,7 +51,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DescriptorHeapIndexAllocator::All
     // 解放済みスロットがあればそれを優先再利用する
     if (!m_reusableIndexQueue.empty())
     {
-        const TypeAlias::DescriptorIndex l_reusableIndex = m_reusableIndexQueue.front();
+        const auto l_reusableIndex = m_reusableIndexQueue.front();
 
         m_reusableIndexQueue.pop();
 

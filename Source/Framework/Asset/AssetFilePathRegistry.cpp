@@ -94,7 +94,7 @@ bool FWK::AssetFilePathRegistry::ReplaceFilePath(const std::filesystem::path& a_
 
     // UUID -> AssetFilePathData側も同じUUIDを使って検索する
     const auto& l_assetUUID            = l_filePathNode.mapped         ();
-    const auto  l_assetFilePathDataITR = m_uuidToAssetFilePathData.find(l_assetUUID);
+    const auto& l_assetFilePathDataITR = m_uuidToAssetFilePathData.find(l_assetUUID);
 
     if (l_assetFilePathDataITR == m_uuidToAssetFilePathData.end()) 
     {
@@ -134,7 +134,7 @@ bool FWK::AssetFilePathRegistry::Erase(const std::filesystem::path& a_assetFileP
     }
 
     // UUID重複確認用Setから削除予定のマップのUUIDを削除
-    auto l_uuid = l_itr->second;
+    const auto& l_uuid = l_itr->second;
 
     m_uuidToAssetFilePathData.erase(l_uuid);
     m_assetFilePathToUUIDMap.erase (l_itr);

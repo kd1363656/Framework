@@ -50,8 +50,8 @@ nlohmann::json FWK::Converter::CascadeShadowMapJsonConverter::Serialize(const Gr
     l_rootJson[k_sampleCountJsonKey]   = l_depthStencilTextureSettings.m_sampleCount;
     l_rootJson[k_sampleQualityJsonKey] = l_depthStencilTextureSettings.m_sampleQuality;
 
-    l_rootJson[k_resolutionJsonKey]        = a_cascadeShadowMap.GetVALResolution     ();
-    l_rootJson[k_sampleDepthBiasJsonKey]   = a_cascadeShadowMap.GetVALSampleDepthBias();
+    l_rootJson[k_resolutionJsonKey]        = a_cascadeShadowMap.GetVALResolution       ();
+    l_rootJson[k_sampleDepthBiasJsonKey]   = a_cascadeShadowMap.GetVALSampleDepthBias  ();
     l_rootJson[k_maxShadowDistanceJsonKey] = a_cascadeShadowMap.GetVALMAXShadowDistance();
 
     return l_rootJson;

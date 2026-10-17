@@ -66,7 +66,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObje
     const auto& l_moveGameObject   = a_moveGameObject.lock  ();
 
     // 無効な対象、自分自身への親付けは行わない
-    if (!l_targetGameObject || 
+    if (!l_targetGameObject ||
         !l_moveGameObject   ||
         l_targetGameObject == l_moveGameObject)
     {
@@ -89,7 +89,6 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObje
 
     PushReparentCommand(l_moveGameObject, a_scene, l_beforePlacement);
 }
-
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::MoveGameObjectSiblingOrder(const std::weak_ptr<GameObject>& a_targetGameObject,
                                                                                            const std::weak_ptr<GameObject>& a_moveGameObject,
                                                                                                  const bool                       a_isMoveAfter,

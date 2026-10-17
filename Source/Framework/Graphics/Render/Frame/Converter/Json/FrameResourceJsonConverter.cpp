@@ -25,7 +25,7 @@ nlohmann::json FWK::Converter::FrameResourceJsonConverter::Serialize(const Graph
 {
     nlohmann::json l_rootJson = {};
 
-    auto& l_renderGraphFrameResource = a_frameResource.GetREFRenderGraphFrameResource();
+    const auto& l_renderGraphFrameResource = a_frameResource.GetREFRenderGraphFrameResource();
 
     // 定数バッファのシリアライズ
     l_rootJson[k_dynamicBufferUploaderListJsonKey] = SerializeDynamicBuffer(a_frameResource);

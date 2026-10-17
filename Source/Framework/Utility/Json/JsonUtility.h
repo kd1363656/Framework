@@ -72,7 +72,7 @@ namespace FWK::Utility
         if (a_baseJson.is_object() &&
             a_diffJson.is_object())
         {
-            nlohmann::json l_mergedJson = a_baseJson;
+            auto l_mergedJson = a_baseJson;
      
             // 第二引数trueでobject同士を再帰マージする
             l_mergedJson.update(a_diffJson, true);
@@ -173,7 +173,7 @@ namespace FWK::Utility
         if (a_json.is_null()) { return; }
 
         const auto& l_factory    = FactoryType::GetInstance();
-        const auto& l_createName = a_json.value(a_key, std::string());
+        const auto& l_createName = a_json.value            (a_key, std::string());
 
         a_instance = l_factory.Create(l_createName);
     }

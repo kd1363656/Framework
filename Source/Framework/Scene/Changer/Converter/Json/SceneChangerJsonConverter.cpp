@@ -89,7 +89,7 @@ nlohmann::json FWK::Converter::SceneChangerJsonConverter::SerializeNextSceneMap(
 {
     auto l_rootJsonArray = nlohmann::json::array();
 
-    auto& l_nextSceneMap = a_sceneChanger.GetREFNextSceneMap();
+    const auto& l_nextSceneMap = a_sceneChanger.GetREFNextSceneMap();
 
     for (auto& [l_sceneUUID, l_nextScene] : l_nextSceneMap)
     {

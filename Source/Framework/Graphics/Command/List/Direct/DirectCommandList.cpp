@@ -65,7 +65,6 @@ void FWK::Graphics::DirectCommandList::SetupDepthStencil(const TypeAlias::DSVDes
                                             FALSE,
                                             &l_dsvHandle);
 }
-
 void FWK::Graphics::DirectCommandList::SetupRenderTargetAndDepthStencil(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
                                                                         const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool,
                                                                         const TypeAlias::DescriptorIndex    a_rtvDescriptorIndex,
@@ -78,8 +77,8 @@ void FWK::Graphics::DirectCommandList::SetupRenderTargetAndDepthStencil(const Ty
 
     FWK_ASSERT_RETURN_IF(!l_directCommandList, "DirectCommandListが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
 
-    const auto l_rtvHandle = a_rtvDescriptorPool.FetchVALCPUDescriptorHandle(a_rtvDescriptorIndex);
-    const auto l_dsvHandle = a_dsvDescriptorPool.FetchVALCPUDescriptorHandle(a_dsvDescriptorIndex);
+    const auto& l_rtvHandle = a_rtvDescriptorPool.FetchVALCPUDescriptorHandle(a_rtvDescriptorIndex);
+    const auto& l_dsvHandle = a_dsvDescriptorPool.FetchVALCPUDescriptorHandle(a_dsvDescriptorIndex);
 
     // OMステージにレンダーターゲットを設定する関数
     // OMSetRenderTargets(設定するレンダーターゲット数、
@@ -200,7 +199,6 @@ void FWK::Graphics::DirectCommandList::DrawIndexedInstanced(const UINT a_indexCo
                                               a_baseVertexLocation,
                                               a_startInstanceLocation);
 }
-
 void FWK::Graphics::DirectCommandList::DrawInstanced(const UINT a_vertexCount,
                                                      const UINT a_instanceCount,
                                                      const UINT a_startVertexLocation,

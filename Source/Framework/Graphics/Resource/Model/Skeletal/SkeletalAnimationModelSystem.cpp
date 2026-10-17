@@ -31,7 +31,7 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
 
     FWK_ASSERT_RETURN_VALUE_IF(l_allocateStorageID == Constant::k_invalidStorageID, "StorageIDの割り当てに失敗したため、SkeletalAnimationModel読み込み処理に失敗しました。", l_skeletalAnimationModelLoadResult);
 
-    auto l_skeletalAnimationModelRecord = std::make_shared<SkeletalAnimationModelRecord>();
+    const auto& l_skeletalAnimationModelRecord = std::make_shared<SkeletalAnimationModelRecord>();
 
     l_skeletalAnimationModelRecord->SetFilePath      (a_filePath.wstring());
     l_skeletalAnimationModelRecord->SetStorageID     (l_allocateStorageID);
@@ -117,7 +117,6 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelAss
 
     return true;
 }
-
 bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord,
                                                                                          const std::filesystem::path&                         a_filePath,
                                                                                          const Device&                                        a_device,

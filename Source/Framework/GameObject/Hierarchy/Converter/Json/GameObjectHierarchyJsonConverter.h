@@ -14,11 +14,11 @@ namespace FWK::Converter
          GameObjectHierarchyJsonConverter() = default;
         ~GameObjectHierarchyJsonConverter() = default;
     
-        void DeserializeScene (const nlohmann::json&              a_rootJson,
-                               const nlohmann::json&              a_prefabJson,
-                               const SceneGameObjectPrefabSystem& a_prefabSystem,
-                                     GameObjectHierarchy&         a_gameObjectHierarchy,
-                                     Scene&                       a_scene) const;
+        void DeserializeScene(const nlohmann::json&              a_rootJson,
+                              const nlohmann::json&              a_prefabJson,
+                              const SceneGameObjectPrefabSystem& a_prefabSystem,
+                                    GameObjectHierarchy&         a_gameObjectHierarchy,
+                                    Scene&                       a_scene) const;
  
         void DeserializePrefab(const nlohmann::json&              a_rootJson,
                                const SceneGameObjectPrefabSystem& a_prefabSystem,

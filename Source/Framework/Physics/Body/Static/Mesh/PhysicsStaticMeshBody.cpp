@@ -2,9 +2,9 @@
 
 bool FWK::Physics::PhysicsStaticMeshBody::CreateBody(const Graphics::StaticModelRecord::ModelData& a_modelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix)
 {
-    TypeAlias::Math::Vector3    l_worldScale    = TypeAlias::Math::Vector3::Zero;
-    TypeAlias::Math::Quaternion l_worldRotation = TypeAlias::Math::Quaternion::Identity;
-    TypeAlias::Math::Vector3    l_worldPosition = TypeAlias::Math::Vector3::Zero;
+    auto l_worldScale    = TypeAlias::Math::Vector3::Zero;
+    auto l_worldRotation = TypeAlias::Math::Quaternion::Identity;
+    auto l_worldPosition = TypeAlias::Math::Vector3::Zero;
 
     // ワールド行列から拡大率、回転、座標を取得
     FWK_ASSERT_RETURN_VALUE_IF(!a_worldMatrix.Decompose(l_worldScale, l_worldRotation, l_worldPosition), "StaticMeshBodyのWorldMatrixを分解できないため、Bodyの作成に失敗しました。", false);
@@ -45,9 +45,9 @@ bool FWK::Physics::PhysicsStaticMeshBody::ApplyWorldTransform(TypeAlias::Math::M
 {
     FWK_ASSERT_RETURN_VALUE_IF(GetREFBodyID().IsInvalid(), "StaticMeshBodyが作成されていないため、WorldTransformの反映に失敗しました。", false);
 
-    TypeAlias::Math::Vector3    l_worldScale    = TypeAlias::Math::Vector3::Zero;
-    TypeAlias::Math::Quaternion l_worldRotation = TypeAlias::Math::Quaternion::Identity;
-    TypeAlias::Math::Vector3    l_worldPosition = TypeAlias::Math::Vector3::Zero;
+    auto l_worldScale    = TypeAlias::Math::Vector3::Zero;
+    auto l_worldRotation = TypeAlias::Math::Quaternion::Identity;
+    auto l_worldPosition = TypeAlias::Math::Vector3::Zero;
 
     // ワールド行列から拡大率、回転、座標を取得
     FWK_ASSERT_RETURN_VALUE_IF(!a_worldMatrix.Decompose(l_worldScale, l_worldRotation, l_worldPosition), "StaticMeshBodyのWorldMatrixを分解できないため、WorldTransformの反映に失敗しました。", false);
@@ -99,8 +99,8 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 {
     FWK_ASSERT_RETURN_VALUE_IF(a_modelData.m_modelMeshList.empty(), "StaticModelDataのModelMeshリストが空のため、MeshShapeの作成に失敗しました。", {});
 
-    std::size_t l_totalVertexCount = k_initialTotalVertexCount;
-    std::size_t l_totalIndexCount  = k_initialTotalIndexCount;
+    auto l_totalVertexCount = k_initialTotalVertexCount;
+    auto l_totalIndexCount  = k_initialTotalIndexCount;
 
     // Material単位などで分割されている複数Meshを、
     // 1つのJoltMeshShapeへまとめる
@@ -183,7 +183,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 
     const JPH::MeshShapeSettings l_meshShapeSettings = { std::move(l_triangleVertexList), std::move(l_indexedTriangleList) };
 
-    const auto l_shapeResult = l_meshShapeSettings.Create();
+    const auto& l_shapeResult = l_meshShapeSettings.Create();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_shapeResult.HasError(), "StaticModelDataからMeshShapeを作成できておらず、MeshShapeの作成に失敗しました。", {});
 

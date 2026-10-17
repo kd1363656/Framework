@@ -75,7 +75,7 @@ bool FWK::Graphics::GPUMemoryAllocator::CreateBufferResource(const UINT64&      
     // D3D12_RESOURCE_DESCについて
     // Buffer(作成するバッファサイズ)
     // VertexBuffer / IndexBuffer / MeshletBufferなどの線形バッファとして扱う
-    const auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(a_bufferSize, a_resourceFlags);
+    const auto& l_resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(a_bufferSize, a_resourceFlags);
 
     // D3D12MA::Allocator::CreateResource(割り当て設定、
     //                                    作成するリソース設定、

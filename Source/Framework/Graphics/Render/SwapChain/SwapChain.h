@@ -30,7 +30,7 @@ namespace FWK::Graphics
                     const Window::ClientSize&           a_clientSize,
                           TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 
-        void ResizeBackBufferList(const std::size_t a_backBufferNUM);
+        void ResizeBackBufferList(const std::size_t& a_backBufferNUM);
 
         void SetSyncInterval(const UINT a_set) { m_syncInterval = a_set; }
 

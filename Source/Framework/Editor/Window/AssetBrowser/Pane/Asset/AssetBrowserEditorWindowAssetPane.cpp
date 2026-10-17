@@ -22,8 +22,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(AssetBrowserEditorWind
     // ImGui::IsWindowHovered : このChildWindow上にマウスがあるか
     // ImGui::IsMouseClicked  : このフレームでクリックされたか
     // 左クリック・右クリックどちらもアクティブPaneを切り替える
-    if (ImGui::IsWindowHovered() &&
-        (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || 
+    if (ImGui::IsWindowHovered()                      &&
+        (ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
          ImGui::IsMouseClicked(ImGuiMouseButton_Right)))
     {
         a_editorWindow.SetActivePane(Enum::AssetBrowserActivePaneType::AssetPane);
@@ -54,8 +54,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(AssetBrowserEditorWind
 
     // カードをグリッド描画
     // 左 -> 右に並べ、1行の枚数に達したら改行
-    const auto& l_popupDrawer = a_editorWindow.GetREFPopupDrawer();
-          int   l_column      = k_initialCardColumn;
+    auto& l_popupDrawer = a_editorWindow.GetMutableREFPopupDrawer();
+    int   l_column      = k_initialCardColumn;
 
     for (const auto& l_filePath : l_displayedFilePathList)
     {
@@ -157,7 +157,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionUp(const Asset
     const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
 
     // カーソル位置をリストから検索
-    auto l_cursorITR = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+    const auto& l_cursorITR = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
 
     if (l_cursorITR == l_displayedList.end())
     {
@@ -231,7 +231,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionDown(const Ass
 
 
     const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
-          auto  l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+    const auto& l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
 
     if (l_cursorITR == l_displayedList.end())
     {
@@ -295,7 +295,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionLeft(const Ass
     }
 
     const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
-          auto  l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+    const auto& l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
 
     if (l_cursorITR == l_displayedList.end())
     {
@@ -312,7 +312,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionLeft(const Ass
     // 既に先頭なら何もしない
     if (l_cursorITR == l_displayedList.begin()) { return; }
 
-          auto  l_prevITR  = std::prev(l_cursorITR);
+    const auto& l_prevITR  = std::prev(l_cursorITR);
     const auto& l_prevPath = *l_prevITR;
 
     if (a_isRangeSelection)
@@ -353,7 +353,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionRight(const As
     }
 
     const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
-          auto  l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+    const auto& l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
 
     // 既に末尾なら何もしない
     if (l_cursorITR == l_displayedList.end()) 
@@ -446,9 +446,9 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchVALOp
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<std::filesystem::path>& a_displayedFilePathList, const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow)
 {
-    const auto& l_popupDrawer          = a_editorWindow.GetREFPopupDrawer();
-    const auto& l_clipboard            = a_editorWindow.GetREFClipboard  ();
-    const auto& l_renameState          = a_editorWindow.GetREFRenameState();
+          auto& l_popupDrawer          = a_editorWindow.GetMutableREFPopupDrawer    ();
+    const auto& l_clipboard            = a_editorWindow.GetREFClipboard             ();
+    const auto& l_renameState          = a_editorWindow.GetREFRenameState           ();
     const auto& l_selectedFilePathList = m_selectionState.GetREFSelectedFilePathList();
 
     // 選択状態判定
@@ -481,7 +481,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
     // InvisibleButtonでインタラクティブな霊異記を確保
     // 実際の描画はDrawListで行うため、ボタンは透明
     // ラベルは一意になるようにファイルパスを付加
-    const auto l_label = std::string{ k_cardPrefixLabel } + a_filePath.generic_string();
+    const auto& l_label = std::string{ k_cardPrefixLabel } + a_filePath.generic_string();
 
     ImGui::InvisibleButton(l_label.c_str(), l_cardSize);
 
@@ -533,7 +533,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
         !l_isRenaming)
     {
         // ファイルパスをgeneric_stringで表示(スラッシュ区切り)
-        const auto l_tooltipText = a_filePath.generic_string();
+        const auto& l_tooltipText = a_filePath.generic_string();
 
         Utility::IMGUIDelayedTooltip(l_tooltipText);
     }
@@ -552,8 +552,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
     // ポップアップDrawは毎フレーム呼ぶ(OpenPopupされていなければ内部でreturn)
     std::error_code l_errorCode = {};
 
-    const auto l_contextType      = std::filesystem::is_directory(a_filePath, l_errorCode) ? Enum::AssetBrowserPopupContextType::AssetPane_OnFolder : Enum::AssetBrowserPopupContextType::AssetPane_OnFile;
-    const auto l_contextMenuLabel = std::string{ k_cardContextMenuPrefixLabel } + a_filePath.generic_string();
+    const auto  l_contextType      = std::filesystem::is_directory(a_filePath, l_errorCode) ? Enum::AssetBrowserPopupContextType::AssetPane_OnFolder : Enum::AssetBrowserPopupContextType::AssetPane_OnFile;
+    const auto& l_contextMenuLabel = std::string{ k_cardContextMenuPrefixLabel } + a_filePath.generic_string();
 
     l_popupDrawer.Draw(l_selectedFilePathList,
                        a_filePath,
@@ -817,7 +817,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
     // 初回フレーム(フォーカス前)のクリックで
     // デフォルト名のまま確定してしまう
     if (l_isEnterPressed          ||
-       (l_renameState.m_isFocused && 
+       (l_renameState.m_isFocused &&
        (!ImGui::IsItemFocused()   ||
         l_isEmptySpaceClick)))
     {
@@ -1236,7 +1236,7 @@ std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::TruncateText(const s
 
     std::string l_result = {};
 
-    for (char l_char : a_text)
+    for (const auto l_char : a_text)
     {
         l_result += l_char;
 

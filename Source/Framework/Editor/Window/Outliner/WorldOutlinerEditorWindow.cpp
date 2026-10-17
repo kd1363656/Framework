@@ -38,10 +38,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
     // ショートカットキー処理
     // このWindowがアクティブでフォーカス中の時のみ有効にする
     // WantTextInput中(リネームInputText編集中)は無効にする
+    // ポップアップが開いている間も無効にする
+    // 矢印キーやEnterはポップアップの項目選択に使うため、ノードの選択まで動かないようにする
     if (const auto& l_io = ImGui::GetIO();
         a_editorManager.GetVALCurrentActiveWindowStaticTpeID() == WorldOutlinerEditorWindow::GetREFTypeINFO().k_staticTypeID &&
         ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)                                                               &&
-        !l_io.WantTextInput)
+        !l_io.WantTextInput                                                                                                  &&
+        !ImGui::IsPopupOpen(nullptr, ImGuiPopupFlags_AnyPopup))
     {
         m_shortcutHandler.Handle(*this, a_editorManager);
     }
@@ -87,7 +90,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
 
     // 空スペース用ポップアップ描画
     // ポップアップが開いていない場合はDraw内部でreturnする
-    m_popupDrawer.DrawEmptySpacePopup(k_emptySpaceContextMenuLabel, *l_scene, *this, a_editorManager);
+    m_popupDrawer.DrawEmptySpacePopup(k_emptySpaceContextMenuLabel,
+                                      *l_scene,
+                                      *this,
+                                      a_editorManager);
  
     // アセットブラウザーからのPrefabファイルのドロップ先
     // Window内の空白へドロップされたPrefabはルートGameObjectとして生成する
@@ -204,7 +210,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionDown(EditorManager& a_
  
     if (!l_next) { return; }
  
-    SelectGameObject(l_next, a_isRangeSelection, false, *l_scene, l_gameObjectSelectionState);
+    SelectGameObject(l_next,
+                     a_isRangeSelection,
+                     false,
+                     *l_scene,
+                     l_gameObjectSelectionState);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::SelectAllGameObjects(EditorManager& a_editorManager)
@@ -263,7 +273,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartSceneRename(const Scene& a_sce
  
     // 現在の名前を入力バッファへ入れておく
     const auto& l_name     = a_scene.GetREFName();
-    const auto  l_copySize = std::min          (l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
+    const auto& l_copySize = std::min          (l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
  
     std::memcpy(m_renameState.m_inputBuffer.data(), l_name.data(), l_copySize);
  
@@ -281,7 +291,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartGameObjectRename(const std::we
     m_renameState.m_targetGameObject = l_gameObject;
  
     const auto& l_name     = l_gameObject->GetREFName();
-    const auto  l_copySize = std::min                (l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
+    const auto& l_copySize = std::min                (l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
  
     std::memcpy(m_renameState.m_inputBuffer.data(), l_name.data(), l_copySize);
  
@@ -430,7 +440,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
         l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList))
     {
         // Prefabとして登録されているファイルのみ生成対象になる
-        auto l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
+        const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
  
         // 生成したGameObjectを選択状態にする
         if (!l_createdList.empty())
@@ -608,7 +618,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     // 後からPushした順に戻す
     // Header系3色分(IMGUIPushItemHighlightColors) → テキスト色の順でPopする
     Utility::IMGUIPopItemHighlightColors();
-    ImGui::PopStyleColor               ();
+    ImGui::PopStyleColor                ();
 
     const auto& l_sceneInstanceUUID = l_gameObject->GetREFSceneInstanceUUID();
 
@@ -656,7 +666,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
         // 複数選択を維持したままドラッグ&ドロップできるようにする
         // Shift + Click(範囲選択)・Ctrl + Click(トグル)は従来通り選択を更新する
         if (!l_gameObjectSelectionState.FindVALIsSelected(a_gameObject) ||
-            l_io.KeyShift ||
+            l_io.KeyShift                                               ||
             l_io.KeyCtrl)
         {
             SelectGameObject(a_gameObject,
@@ -764,7 +774,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRenameInputText(Scene& a_scene)
     const auto& l_style = ImGui::GetStyle();
 
     // InputTextのフレームパディングを小さくしてTreeNodeExのテキスト高さに近づける
-    ImGui::PushStyleVar   (ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, Constant::k_imguiInputTextHightPaddingAlignHight));
+    ImGui::PushStyleVar    (ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, Constant::k_imguiInputTextHightPaddingAlignHight));
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 
     const bool l_isEnterPressed = ImGui::InputText(k_renameInputTextLabel.data(),
@@ -787,7 +797,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRenameInputText(Scene& a_scene)
  
     // 確定条件 : Enter押下かフォーカス取得後にフォーカス消失かフォーカス取得後の空白クリック
     if (l_isEnterPressed          ||
-       (m_renameState.m_isFocused && 
+       (m_renameState.m_isFocused &&
        (!ImGui::IsItemFocused()   ||
         l_isEmptySpaceClick)))
     {
@@ -889,7 +899,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
 
     if (!l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList)) { return; }
 
-    auto l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, a_targetGameObject, a_scene);
+    const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, a_targetGameObject, a_scene);
 
     if (l_createdList.empty()) { return; }
 
@@ -943,7 +953,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
     }
 
     // Prefabとして登録されているファイルのみ生成対象になる
-    auto l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
+    const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
  
     if (l_createdList.empty()) { return; }
  

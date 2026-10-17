@@ -214,7 +214,7 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const DirectX::Scr
         FWK_ASSERT_RETURN_VALUE("TextureAssetへ保存するImage配列が無効となっており、バイナリーファイルの保存に失敗しました。", false);
     }
 
-    const auto l_imageCount = a_scratchImage.GetImageCount();
+    const auto& l_imageCount = a_scratchImage.GetImageCount();
 
     for (std::uint64_t l_imageIndex = 0ULL; l_imageIndex < l_imageCount; ++l_imageIndex)
     {
@@ -306,7 +306,7 @@ DirectX::TexMetadata FWK::Converter::TextureBinaryConverter::CreateTexMetadata(c
     l_texMetadata.depth      = a_textureBinaryHeader.m_depth;
     l_texMetadata.arraySize  = a_textureBinaryHeader.m_arraySize;
     l_texMetadata.mipLevels  = a_textureBinaryHeader.m_mipLevels;
-    l_texMetadata.format     = static_cast<DXGI_FORMAT>(a_textureBinaryHeader.m_format);
+    l_texMetadata.format     = static_cast<DXGI_FORMAT>           (a_textureBinaryHeader.m_format);
     l_texMetadata.dimension  = static_cast<DirectX::TEX_DIMENSION>(a_textureBinaryHeader.m_dimension);
     l_texMetadata.miscFlags  = a_textureBinaryHeader.m_miscFlags;
     l_texMetadata.miscFlags2 = a_textureBinaryHeader.m_miscFlags2;

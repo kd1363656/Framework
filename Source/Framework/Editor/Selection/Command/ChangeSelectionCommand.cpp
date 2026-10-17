@@ -37,7 +37,7 @@ void FWK::Editor::ChangeSelectionCommand::Undo()
 void FWK::Editor::ChangeSelectionCommand::Redo()
 {
     // 変更後の選択状態へ進める
-    auto& l_editorManager  = EditorManager::GetInstance();
+    auto& l_editorManager  = EditorManager::GetInstance                           ();
     auto& l_selectionState = l_editorManager.GetMutableREFGameObjectSelectionState();
 
     l_selectionState.RestoreState(m_afterUUIDList, m_afterAnchorUUID);

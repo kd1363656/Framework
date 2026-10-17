@@ -172,7 +172,7 @@ void FWK::GameObjectComponentContainer::ConvertToPrefab() const
     // RemoveComponentがm_prefabRemovedComponentUUIDSetへ記録できるようにするため
     const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
 
-    for (auto& l_componentData : l_componentDataList)
+    for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
 
@@ -302,12 +302,12 @@ void FWK::GameObjectComponentContainer::RemoveComponent(const std::weak_ptr<Game
 
     if (!l_component->IsAllowMultiple())
     {
-        auto l_itr = m_uniqueComponentMap.find(l_staticTypeID);
+        const auto& l_itr = m_uniqueComponentMap.find(l_staticTypeID);
 
         // イテレータらから探索して、もしなければreturn
         if (l_itr == m_uniqueComponentMap.end()) { return; }
 
-        auto l_registeredComponent = l_itr->second.lock();
+        const auto& l_registeredComponent = l_itr->second.lock();
 
         if (!l_registeredComponent)
         {
@@ -325,7 +325,7 @@ void FWK::GameObjectComponentContainer::RemoveComponent(const std::weak_ptr<Game
     }
     else
     {
-        auto l_componentListITR = m_multiComponentMap.find(l_staticTypeID);
+        const auto& l_componentListITR = m_multiComponentMap.find(l_staticTypeID);
 
         if (l_componentListITR == m_multiComponentMap.end()) { return; }
 
@@ -336,7 +336,7 @@ void FWK::GameObjectComponentContainer::RemoveComponent(const std::weak_ptr<Game
         // リストから同じアドレスのコンポーネントを見つけ削除する
         while (l_componentITR != l_componentList.end())
         {
-            auto l_registeredComponent = l_componentITR->lock();
+            const auto& l_registeredComponent = l_componentITR->lock();
 
             if (!l_registeredComponent)
             {

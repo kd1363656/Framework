@@ -7,7 +7,7 @@ bool FWK::Graphics::Device::Create(const Factory& a_factory)
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_factory, "ファクトリーの作成ができておらず、デバイスの作成に失敗しました。", false);
 
-    const auto l_preferredFeatureLevelList = std::to_array<D3D_FEATURE_LEVEL>
+    const auto& l_preferredFeatureLevelList = std::to_array<D3D_FEATURE_LEVEL>
     ({
             D3D_FEATURE_LEVEL_12_2,
             D3D_FEATURE_LEVEL_12_1,

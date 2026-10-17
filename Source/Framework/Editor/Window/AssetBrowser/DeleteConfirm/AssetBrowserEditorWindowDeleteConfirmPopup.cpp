@@ -26,12 +26,8 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::Request(const std:
     }
 
     // 確認ダイアログをアクティブにする
+    // キーで選ぶボタンは、ダイアログが開いた最初のフレームにEditorPopupNavigatorが削除へ戻す
     l_deleteConfirmState.m_isActive = true;
-
-    // 選択中ボタンをDeleteにリセット
-    // 毎回ダイアログを開いた時にDeleteが選択された状態から始まる
-    l_deleteConfirmState.m_keySelectedButton  = Enum::AssetBrowserDeleteConfirmSelectedButton::Delete;
-    l_deleteConfirmState.m_mouseHoveredButton = Enum::AssetBrowserDeleteConfirmSelectedButton::None;
 
     // OpenPopup要求フラグを立てる
     // Requestは別ポップアップ内から呼ばれる可能性があるため
@@ -104,6 +100,12 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::Draw(AssetBrowserE
         return;
     }
 
+    // 左右キーとマウスでボタンを選べるようにする
+    // 開いた直後は削除(左のボタン)がキーで選ばれた状態から始める
+    auto& l_popupNavigator = l_deleteConfirmState.m_popupNavigator;
+
+    l_popupNavigator.Begin(Enum::EditorPopupNavigationAxis::Horizontal, k_initialKeySelectedButtonIndex);
+
     // 削除確認メッセージを表示
     ImGui::TextUnformatted(k_messageLabel.data());
     ImGui::Spacing        ();
@@ -113,12 +115,11 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::Draw(AssetBrowserE
 
     ImGui::Spacing();
 
-    // 左右キーでキー選択ボタンを切り替え
-    HandleKeySelection(l_deleteConfirmState);
-
-    // 削除/キャンセルボタン描画 + ホバー状態更新
+    // 削除/キャンセルボタン描画
     // DrawButtonsは描画結果をButtonDrawResult構造体で値返しする
     const auto l_buttonDrawResult = DrawButtons(l_cancelButtonWidth, l_deleteConfirmState);
+
+    l_popupNavigator.End();
 
     // Enter/クリックで確定
     HandleConfirm(l_buttonDrawResult, a_editorWindow, l_deleteConfirmState);
@@ -147,7 +148,7 @@ FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::ButtonDrawResult FWK::E
     ButtonDrawResult l_result = {};
 
     // ボタン行を描画し始める地点のX座標を保持する
-    //この位置はPopupのコンテンツ領域左端になる
+    // この位置はPopupのコンテンツ領域左端になる
     const float l_buttonRowStartX = ImGui::GetCursorPosX();
 
     // 現在位置から使用可能なコンテンツ領域横幅を取得する
@@ -157,148 +158,38 @@ FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::ButtonDrawResult FWK::E
     // この領域の右端とChildWindowの右端は一致する
     const float l_contentRegionWidth = ImGui::GetContentRegionAvail().x;
 
-    // キー選択中ボタン判定
-    const bool l_isDeleteSelected = a_deleteConfirmState.m_keySelectedButton == Enum::AssetBrowserDeleteConfirmSelectedButton::Delete;
-    const bool l_isCancelSelected = a_deleteConfirmState.m_keySelectedButton == Enum::AssetBrowserDeleteConfirmSelectedButton::Cancel;
+    // ホバー中は中身を薄く塗って枠を濃く、キーで選んでいるだけなら枠だけを濃くする
+    // 見た目とEnterでの決定はEditorPopupNavigatorがまとめて行い、
+    // クリックとEnterのどちらで押されてもtrueが返る
+    auto& l_popupNavigator = a_deleteConfirmState.m_popupNavigator;
 
-    // マウスホバー中ボタン判定(前フレームの描画結果を使用)
-    // ボタン描画前にホバー判定は取れないため
-    // 前フレームのIsItemHovered結果(m_mouseHoveredButton)を使用する
-    // 1フレーム遅れたが実用上問題ない
-    const bool l_isDeleteHovered = a_deleteConfirmState.m_mouseHoveredButton == Enum::AssetBrowserDeleteConfirmSelectedButton::Delete;
-    const bool l_isCancelHovered = a_deleteConfirmState.m_mouseHoveredButton == Enum::AssetBrowserDeleteConfirmSelectedButton::Cancel;
-
-    // 削除ボタン
-    // ホバー中                      : 内部をStrongBlueTranslucentで着色 + 縁をStrongBlueで着色
-    // 選択中(非ホバー)              : 縁をStrongBlueで着色のみ
-    // どちらでもない                : デフォルト
-    // ImGuiCol_Button               : ボタン内部色
-    // ImGuiCol_Border               : ボタン枠線色
-    // ImGuiStyleVar_FrameBorderSize : 枠線太さ(デフォルト0.0Fで批評委のため1.0F)
-    if (l_isDeleteHovered)
-    {
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered,        Constant::k_imguiAccentTranslucentColor);
-        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiAccentColor);
-        ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);
-    }
-    else if (l_isDeleteSelected)
-    {
-        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiAccentColor);
-        ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);   
-    }
-
-    l_result.m_isDeleteClicked = ImGui::Button(k_deleteLabel.data());
-
-    // 削除ボタンのホバー判定を取得
-    // Button描画直後にIsItemHoveredで判定
-    const bool l_isDeleteItemHovered = ImGui::IsItemHovered();
-
-    if (l_isDeleteHovered)
-    {
-        ImGui::PopStyleVar  ();
-        ImGui::PopStyleColor(k_hoveredPopStyleColorNUM);
-    }
-    else if (l_isDeleteSelected)
-    {
-        ImGui::PopStyleVar  ();
-        ImGui::PopStyleColor();
-    }
+    l_result.m_isDeleteClicked = l_popupNavigator.Button(k_deleteLabel.data());
 
     // キャンセルボタン(削除ボタンと同じ行に描画)
     ImGui::SameLine();
 
     // ChildWindowの右端とキャンセルボタンの右端が完全に一致するようにX座標を指定する
     // コンテンツ領域右端         = ボタン行開始X + コンテンツ領域幅
-    // キャンセルボタン左幅       = コンテンツ領域右幅 + キャンセルボタン幅
+    // キャンセルボタン左端       = コンテンツ領域右端 - キャンセルボタン幅
     // 従ってキャンセルボタン右端 = ChildWindow右端となる
-    const float l_cancelButtonnPositionX = l_buttonRowStartX + l_contentRegionWidth - a_cancelButtonWidth;
+    const float l_cancelButtonPositionX = l_buttonRowStartX + l_contentRegionWidth - a_cancelButtonWidth;
 
-    ImGui::SetCursorPosX(l_cancelButtonnPositionX);
+    ImGui::SetCursorPosX(l_cancelButtonPositionX);
 
-    // キャンセルボタン
-    // ホバー中         : 内部をStrongBlueTranslucentで着色 + 縁をStrongBlueで着色
-    // 選択中(非ホバー) : 縁をStrongBlueで着色のみ
-    // どちらでもない   : デフォルト
-    if (l_isCancelHovered)
-    {
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered,        Constant::k_imguiAccentTranslucentColor);
-        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiAccentColor);
-        ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);      
-    }
-    else if (l_isCancelSelected)
-    {
-        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiAccentColor);
-        ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);  
-    }
-
-    l_result.m_isCancelClicked = ImGui::Button(k_cancelLabel.data());
-
-    // キャンセルボタンのホバー判定を取得
-    const bool l_isCancelItermHovered = ImGui::IsItemHovered();
-
-    if (l_isCancelHovered)
-    {
-        ImGui::PopStyleVar  ();
-        ImGui::PopStyleColor(k_hoveredPopStyleColorNUM);
-    }
-    else if (l_isCancelSelected)
-    {
-        ImGui::PopStyleVar  ();
-        ImGui::PopStyleColor();
-    }
-
-    // ホバー状態を更新(次フレームの描画で使用)
-    // 両方ともホバーでなければNoneにする
-    // 削除ボタンとキャンセルボタンが重ならないため
-    // 両方同時にホバーすることはない
-    if (l_isDeleteItemHovered)
-    {
-        a_deleteConfirmState.m_mouseHoveredButton = Enum::AssetBrowserDeleteConfirmSelectedButton::Delete;
-    }
-    else if (l_isCancelItermHovered)
-    {
-        a_deleteConfirmState.m_mouseHoveredButton = Enum::AssetBrowserDeleteConfirmSelectedButton::Cancel;
-    }
-    else
-    {
-        a_deleteConfirmState.m_mouseHoveredButton = Enum::AssetBrowserDeleteConfirmSelectedButton::None;
-    }
+    l_result.m_isCancelClicked = l_popupNavigator.Button(k_cancelLabel.data());
 
     return l_result;
 }
 
-void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::HandleKeySelection(Struct::AssetBrowserEditorWindowDeleteConfirmState& a_deleteConfirmState) const
-{
-    // 左右キーでキー選択ボタン切り替え
-    // LeftArrow  : Delete選択
-    // RightArrow : Cancel選択
-    // (Deleteが左、Cancelが右のため直感的な方向)
-    // ホバーとは独立して維持される(ホバーで上書きしない)
-    if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow))
-    {
-        a_deleteConfirmState.m_keySelectedButton = Enum::AssetBrowserDeleteConfirmSelectedButton::Delete;
-    }
-    else if (ImGui::IsKeyPressed(ImGuiKey_RightArrow))
-    {
-        a_deleteConfirmState.m_keySelectedButton = Enum::AssetBrowserDeleteConfirmSelectedButton::Cancel;
-    }
-}
 void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::HandleConfirm(const ButtonDrawResult& a_buttonDrawResult, AssetBrowserEditorWindow& a_editorWindow, Struct::AssetBrowserEditorWindowDeleteConfirmState& a_deleteConfirmState) const
 {
-    // Enterキーで選択中ボタンを確定
-    // マウスクリックでも確定可能
-    // ホバーは確定に影響しない(キー選択のみが確定対象)
-    const bool l_isEnterPressed   = ImGui::IsKeyPressed(ImGuiKey_Enter);
-    const bool l_isDeleteSelected = a_deleteConfirmState.m_keySelectedButton == Enum::AssetBrowserDeleteConfirmSelectedButton::Delete;
-    const bool l_isCancelSelected = a_deleteConfirmState.m_keySelectedButton == Enum::AssetBrowserDeleteConfirmSelectedButton::Cancel;
-
-    if (a_buttonDrawResult.m_isDeleteClicked ||
-        (l_isEnterPressed                    &&
-         l_isDeleteSelected))
+    // クリック、またはキーで選んだボタンでのEnterで確定する
+    // どちらもEditorPopupNavigator::Buttonの戻り値に入っている
+    if (a_buttonDrawResult.m_isDeleteClicked)
     {
         // fileOperationはEditorWindowが所有しているため
         // コピーせず参照として取得する
-        auto l_fileOperation = a_editorWindow.GetMutableREFFileOperation();
+        const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
 
         // 確認対象となっているファイル・フォルダを削除する
         l_fileOperation.Delete(a_deleteConfirmState.m_filePathList);
@@ -310,12 +201,10 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::HandleConfirm(cons
         // 現在表示中のモーダルPopupを閉じる
         ImGui::CloseCurrentPopup();
     }
-    else if (a_buttonDrawResult.m_isCancelClicked ||
-             (l_isEnterPressed                    &&
-              l_isCancelSelected))
+    else if (a_buttonDrawResult.m_isCancelClicked)
     {
         // キャンセルされたため
-        // 削除対象として保持しえ知多パス一覧を破棄する
+        // 削除対象として保持していたパス一覧を破棄する
         a_deleteConfirmState.m_filePathList.clear();
         a_deleteConfirmState.m_isActive = false;
 

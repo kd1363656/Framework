@@ -133,7 +133,12 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
     {
         SkeletalAnimationModelRecord::ModelMesh l_modelMesh = {};
 
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_boneNodeIndexMap, l_materialIndex, a_fbxNode, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_boneNodeIndexMap,
+                                                               l_materialIndex,
+                                                               a_fbxNode,
+                                                               l_modelMesh),
+                                                               "Material別ModelMeshの抽出に失敗しました。",
+                                                               false);
 
         if (l_modelMesh.m_modelVertexList.empty()) { continue; }
         if (l_modelMesh.m_indexList.empty())       { continue; }
@@ -173,7 +178,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
     // 加算によるOverflowを避けるため、まず開始Indexだけを確認する
     FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinVertex.weight_begin > a_fbxSkinDeformer->weights.count, "SkinWeightの開始Indexが範囲外です。", false);
 
-    const auto l_remainingSkinWeightCount = a_fbxSkinDeformer->weights.count - l_fbxSkinVertex.weight_begin;
+    const auto& l_remainingSkinWeightCount = a_fbxSkinDeformer->weights.count - l_fbxSkinVertex.weight_begin;
 
     FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinVertex.num_weights > l_remainingSkinWeightCount, "SkinWeight配列の参照範囲が不正です。", false);
 
@@ -183,7 +188,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
     a_modelVertex.m_bonePaletteIndexTwo   = Constant::k_invalidPaletteIndex;
     a_modelVertex.m_bonePaletteIndexThree = Constant::k_invalidPaletteIndex;
 
-    std::uint32_t l_appliedBoneInfluenceCount = k_emptyBoneInfluenceCount;
+    auto l_appliedBoneInfluenceCount = k_emptyBoneInfluenceCount;
 
     for (auto l_skinWeightOffset = 0U; l_skinWeightOffset < l_fbxSkinVertex.num_weights; ++l_skinWeightOffset)
     {
@@ -209,7 +214,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 
         const auto l_modelBoneIndex = l_boneNodeIndexITR->second;
 
-        std::uint32_t l_bonePaletteIndex = Constant::k_invalidPaletteIndex;
+        auto l_bonePaletteIndex = Constant::k_invalidPaletteIndex;
 
         // 既にPaletteへ登録しているBoneなら既存Indexを使用する
         if (const auto& l_bonePaletteIndexITR = a_boneIndexPaletteIndexMap.find(l_modelBoneIndex);

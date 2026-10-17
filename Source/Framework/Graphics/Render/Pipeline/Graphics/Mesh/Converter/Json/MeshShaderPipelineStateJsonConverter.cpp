@@ -37,18 +37,18 @@ nlohmann::json FWK::Converter::MeshShaderPipelineStateJsonConverter::Serialize(c
     nlohmann::json l_rootJson = {};
 
     // アンプリフィケーションシェーダーのシリアライズ
-    if (auto& l_amplificationShader = a_meshShaderPipelineState.GetREFAmplificationShader())
+    if (const auto& l_amplificationShader = a_meshShaderPipelineState.GetREFAmplificationShader())
     {
         l_rootJson[k_amplificationShaderJsonKey] = l_amplificationShader->Serialize();
     }
 
-    auto& l_meshShader = a_meshShaderPipelineState.GetREFMeshShader();
+    const auto& l_meshShader = a_meshShaderPipelineState.GetREFMeshShader();
 
     // メッシュシェーダーのシリアライズ
     l_rootJson[k_meshShaderJsonKey] = l_meshShader.Serialize();
 
     // ピクセルシェーダーのシリアライズ
-    if (auto& l_pixelShader = a_meshShaderPipelineState.GetREFPixelShader())
+    if (const auto& l_pixelShader = a_meshShaderPipelineState.GetREFPixelShader())
     {
         l_rootJson[k_pixelShaderJsonKey] = l_pixelShader->Serialize();
     }

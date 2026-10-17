@@ -4,7 +4,7 @@ void FWK::Converter::AssetFilePathJsonConverter::Deserialize(const nlohmann::jso
 {
     if (a_rootJson.is_null()) { return; }
 
-    const boost::uuids::uuid& l_assetFilePathUUID = Utility::DeserializeUUID(a_rootJson, k_assetFilePathUUIDJsonKey);
+    const auto& l_assetFilePathUUID = Utility::DeserializeUUID(a_rootJson, k_assetFilePathUUIDJsonKey);
 
     a_assetFilePath.SetAssetFilePathUUID(l_assetFilePathUUID);
 }

@@ -33,7 +33,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticCapsuleBody::CreateShape() 
 
 bool FWK::Physics::PhysicsStaticCapsuleBody::ApplyShapeChange()
 {
-    const auto l_shape = CreateShape();
+    const auto& l_shape = CreateShape();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_shape, "StaticCapsuleBody用Shapeが無効なため、Shapeの変更に失敗しました。", false);
 

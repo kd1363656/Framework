@@ -4,7 +4,7 @@ void FWK::Converter::WindowJsonConverter::Deserialize(const nlohmann::json& a_ro
 {
     if (a_rootJson.is_null()) { return; }
 
-    const Enum::WindowStyle l_windowStyle = a_rootJson.value(k_styleTagJsonKey, Enum::WindowStyle::Normal);
+    const auto l_windowStyle = a_rootJson.value(k_styleTagJsonKey, Enum::WindowStyle::Normal);
 
     a_window.SetStyle(l_windowStyle);
 }

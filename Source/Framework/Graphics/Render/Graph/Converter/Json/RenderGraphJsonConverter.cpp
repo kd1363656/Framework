@@ -142,7 +142,7 @@ void FWK::Converter::RenderGraphJsonConverter::DeserializeDrawRequestPerObjectLi
 
 nlohmann::json FWK::Converter::RenderGraphJsonConverter::SerializePassList(const Graphics::RenderGraph& a_renderGraph) const
 {
-    nlohmann::json l_rootJsonArray = nlohmann::json::array();
+    auto l_rootJsonArray = nlohmann::json::array();
 
     const auto& l_passList = a_renderGraph.GetREFPassList();
 

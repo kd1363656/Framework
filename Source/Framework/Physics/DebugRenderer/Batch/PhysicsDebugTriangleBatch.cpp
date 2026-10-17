@@ -14,7 +14,6 @@ JPH::DebugRenderer::Batch FWK::Physics::PhysicsDebugTriangleBatch::Create(const 
 
     return l_batch;
 }
-
 JPH::DebugRenderer::Batch FWK::Physics::PhysicsDebugTriangleBatch::Create(const JPH::DebugRenderer::Vertex* a_vertexList,
                                                                           const int                         a_vertexCount,
                                                                           const JPH::uint32*                a_indexList,
@@ -63,7 +62,6 @@ void FWK::Physics::PhysicsDebugTriangleBatch::CopyTriangleList(const JPH::DebugR
     // 三角形情報をコピー
     m_triangleList.assign(a_triangleList, a_triangleList + a_triangleCount);
 }
-
 void FWK::Physics::PhysicsDebugTriangleBatch::CopyIndexedTriangleList(const JPH::DebugRenderer::Vertex* a_vertexList,
                                                                       const int                         a_vertexCount,
                                                                       const JPH::uint32*                a_indexList,
@@ -82,14 +80,14 @@ void FWK::Physics::PhysicsDebugTriangleBatch::CopyIndexedTriangleList(const JPH:
     // 3で割った時に余りが0出ないと三角形を構成できるインデックス数ではないためassert
     FWK_ASSERT_RETURN_IF(a_indexCount % Constant::k_triangleVertexCount != static_cast<int>(Constant::k_noRemainder), "PhysicsDebug用Index数が三角形を構成できない値です。");
 
-    const auto l_triangleCount = static_cast<std::size_t>(a_indexCount) / static_cast<std::size_t>(Constant::k_triangleVertexCount);
+    const auto& l_triangleCount = static_cast<std::size_t>(a_indexCount) / static_cast<std::size_t>(Constant::k_triangleVertexCount);
 
     // 必要な三角形数を一度だけ作成する
     m_triangleList.resize(l_triangleCount);
 
     for (std::size_t l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
     {
-        const auto l_baseIndex = l_triangleIndex * static_cast<std::size_t>(Constant::k_triangleVertexCount);
+        const auto& l_baseIndex = l_triangleIndex * static_cast<std::size_t>(Constant::k_triangleVertexCount);
 
         FWK_ASSERT_RETURN_IF(a_indexList[l_baseIndex] + k_vertexZeroOffset >= static_cast<JPH::uint32>(a_vertexCount), "PhysicsDebug用IndexがVertex数の範囲を超えています。");
         FWK_ASSERT_RETURN_IF(a_indexList[l_baseIndex] + k_vertexOneOffset  >= static_cast<JPH::uint32>(a_vertexCount), "PhysicsDebug用IndexがVertex数の範囲を超えています。");

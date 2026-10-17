@@ -41,7 +41,7 @@ namespace FWK::Converter
 
             // 頂点・Index数。
             l_modelMeshBinaryHeader.m_vertexCount = a_modelMesh.m_modelVertexList.size();
-            l_modelMeshBinaryHeader.m_indexCount  = a_modelMesh.m_indexList.size();
+            l_modelMeshBinaryHeader.m_indexCount  = a_modelMesh.m_indexList.size      ();
 
             // Materialが参照しているTexturePathのバイナリ保存サイズ。
             // std::wstringは可変長なので、Headerに保存サイズを持たせておく
@@ -51,10 +51,10 @@ namespace FWK::Converter
             l_modelMeshBinaryHeader.m_metallicTextureFilePathSize  = CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_metallicTextureFilePath);
 
             // Meshlet関連データ数。
-            l_modelMeshBinaryHeader.m_meshletCount           = l_modelMeshletData.m_meshletList.size();
+            l_modelMeshBinaryHeader.m_meshletCount           = l_modelMeshletData.m_meshletList.size          ();
             l_modelMeshBinaryHeader.m_uniqueVertexIndexCount = l_modelMeshletData.m_uniqueVertexIndexList.size();
-            l_modelMeshBinaryHeader.m_primitiveIndexCount    = l_modelMeshletData.m_primitiveIndexList.size();
-            l_modelMeshBinaryHeader.m_meshletBoundsCount     = l_modelMeshletData.m_meshletBoundsList.size();
+            l_modelMeshBinaryHeader.m_primitiveIndexCount    = l_modelMeshletData.m_primitiveIndexList.size   ();
+            l_modelMeshBinaryHeader.m_meshletBoundsCount     = l_modelMeshletData.m_meshletBoundsList.size    ();
 
             return l_modelMeshBinaryHeader;
         }

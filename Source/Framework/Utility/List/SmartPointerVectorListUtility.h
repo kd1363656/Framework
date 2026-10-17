@@ -4,7 +4,7 @@ namespace FWK::Utility
 {
     // ポインターを格納する際に重複するアドレスを持つポインタを格納しないようにするためのクラス
     template <typename Type>
-        requires Concept::IsSmartPTRConcept<Type> &&
+        requires Concept::IsSmartPTRConcept<Type>                         &&
                  (TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak ||
                   TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Shared)
     class SmartPointerVectorList final
@@ -202,7 +202,8 @@ namespace FWK::Utility
 
         bool IsEmpty() const
         {
-            return m_registeredAddressSet.empty() && m_elementDataList.empty();
+            return m_registeredAddressSet.empty() &&
+                   m_elementDataList.empty();
         }
 
         const auto& GetREFElementDataList() const { return m_elementDataList; }

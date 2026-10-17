@@ -62,7 +62,7 @@ void FWK::Graphics::PhysicsDebugPass::Execute(const ResourceContext&, Renderer& 
     FWK_ASSERT_RETURN_IF(l_lineVertexList.size() > static_cast<std::size_t>(l_physicsDebugVertexBufferUploader->GetREFCreateCount()), "PhysicsDebugの頂点数がPhysicsDebugDynamicVertexBufferUploaderの容量を超えています。");
 
     // バッファービューを取得
-    const auto l_vertexBufferView = l_physicsDebugVertexBufferUploader->WriteVertexList(l_lineVertexList);
+    const auto& l_vertexBufferView = l_physicsDebugVertexBufferUploader->WriteVertexList(l_lineVertexList);
 
     FWK_ASSERT_RETURN_IF(l_vertexBufferView.BufferLocation == Constant::k_invalidGPUVirtualAddress, "PhysicsDebug用VertexBufferViewの作成に失敗しました。");
 

@@ -53,7 +53,6 @@ FWK::Graphics::SkeletalAnimationModelRecord::ModelKeyFrame FWK::Graphics::Skelet
 
     return l_modelKeyFrame;
 }
-
 bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelBoneMotionTrack(const double&                                             a_animationDurationSecond,
                                                                                          const double&                                             a_animationFrameRate,
                                                                                          const ufbx_baked_node*                                    a_fbxBakedNode,
@@ -80,7 +79,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelBoneMot
 
     for (auto l_keyFrameIndex = 0ULL; l_keyFrameIndex < l_keyFrameCount; ++l_keyFrameIndex)
     {
-        double l_keyFrameTimeSecond = static_cast<double>(l_keyFrameIndex) / a_animationFrameRate;
+        auto l_keyFrameTimeSecond = static_cast<double>(l_keyFrameIndex) / a_animationFrameRate;
 
         // 最後のSampleがAnimation終了時間を超える場合は終了時間へ固定する
         if (l_keyFrameTimeSecond > a_animationDurationSecond)
@@ -88,14 +87,13 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelBoneMot
             l_keyFrameTimeSecond = a_animationDurationSecond;
         }
 
-        auto l_modelKeyFrame = CreateModelKeyFrame(l_keyFrameTimeSecond, a_fbxBakedNode);
+        const auto& l_modelKeyFrame = CreateModelKeyFrame(l_keyFrameTimeSecond, a_fbxBakedNode);
 
         a_modelBoneMotionTrack.m_keyFrameList.emplace_back(l_modelKeyFrame);
     }
 
     return true;
 }
-
 bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionSequenceFromBakedAnimation(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
                                                                                                           const ufbx_scene*                                          a_fbxScene,
                                                                                                           const ufbx_baked_anim*                                     a_fbxBakedAnimation,
@@ -145,7 +143,6 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionS
 
     return true;
 }
-
 bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionSequence(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
                                                                                         const ufbx_scene*                                          a_fbxScene,
                                                                                         const ufbx_anim_stack*                                     a_fbxAnimationStack,
@@ -157,7 +154,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionS
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxAnimationStack,       "ModelMotionSequenceへ変換するufbx_anim_stackがnullptrです。", false);
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxAnimationStack->anim, "AnimationStackにufbx_animが存在しません。",                   false);
 
-    double l_animationFrameRate = a_fbxScene->settings.frames_per_second;
+    auto l_animationFrameRate = a_fbxScene->settings.frames_per_second;
 
     // FBXにFrameRateが設定されていない場合はFrameworkの基底値を使用する
     if (l_animationFrameRate <= k_invalidAnimationFrameRate)

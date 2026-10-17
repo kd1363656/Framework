@@ -29,7 +29,7 @@ namespace FWK::Utility
             return false;
         }
 
-        auto& l_factory = FactoryType::GetInstance();
+        const auto& l_factory = FactoryType::GetInstance();
 
         for (const auto& [l_key, l_value] : l_factory.GetREFFactoryMap())
         {
@@ -71,7 +71,7 @@ namespace FWK::Utility
         }
 
         const auto& l_typeINFORegistry = TypeINFORegistry::GetInstance();
-              auto& l_factory          = FactoryType::GetInstance     ();
+        const auto& l_factory          = FactoryType::GetInstance     ();
               bool  l_isChanged        = false;
 
         ImGui::PushID    (std::addressof(a_selectedMap));

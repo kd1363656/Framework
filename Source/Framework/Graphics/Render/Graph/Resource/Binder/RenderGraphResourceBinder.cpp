@@ -82,8 +82,8 @@ bool FWK::Graphics::RenderGraphResourceBinder::SetupPassRenderTargetAndDepthSten
     bool l_hasRenderTarget = false;
     bool l_hasDepthStencil = false;
 
-    Enum::RenderGraphRenderTargetType l_renderTargetType = Enum::RenderGraphRenderTargetType::None;
-    Enum::RenderGraphDepthStencilType l_depthStencilType = Enum::RenderGraphDepthStencilType::None;
+    auto l_renderTargetType = Enum::RenderGraphRenderTargetType::None;
+    auto l_depthStencilType = Enum::RenderGraphDepthStencilType::None;
 
     // レンダーターゲットパステクスチャ、デプスステンシルパステクスチャの双方が書き込むかどうかを確認する
     for (const auto& l_resourceAccess : a_pass.GetREFResourceAccessList())
@@ -119,7 +119,7 @@ bool FWK::Graphics::RenderGraphResourceBinder::SetupPassRenderTargetAndDepthSten
     FWK_ASSERT_RETURN_VALUE_IF(l_renderTargetType == Enum::RenderGraphRenderTargetType::Invalid, "RenderTargetResourceTypeが無効のため、RenderTarget + DepthStencilの描画先設定に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(l_depthStencilType == Enum::RenderGraphDepthStencilType::Invalid, "DepthStencilResourceTypeが無効のため、RenderTarget + DepthStencilの描画先設定に失敗しました。", false);
 
-    const auto l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
+    const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_currentFrameResource, "現在のCurrentFrameResourceが無効のため、RenderTarget + DepthStencilの描画先設定に失敗しました。", false);
 
@@ -179,8 +179,8 @@ bool FWK::Graphics::RenderGraphResourceBinder::IsWriteRenderTargetPassTextureAcc
 }
 bool FWK::Graphics::RenderGraphResourceBinder::IsWriteDepthStencilPassTextureAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const
 {
-    if (a_resourceAccess.m_depthStencilType == Enum::RenderGraphDepthStencilType::None  ||
-        a_resourceAccess.m_accessType       != Enum::RenderGraphAccessType::Write       ||
+    if (a_resourceAccess.m_depthStencilType == Enum::RenderGraphDepthStencilType::None ||
+        a_resourceAccess.m_accessType       != Enum::RenderGraphAccessType::Write      ||
         a_resourceAccess.m_beforeUsage      != Enum::RenderGraphResourceUsage::DepthWrite)
     {
         return false;

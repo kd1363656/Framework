@@ -134,11 +134,13 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw(EditorManager& a_editorManager)
     // ImGui::GetIO().WantTextInputはInputTextがアクティブな間trueになる
     // ImGui::IsWindowFocused : AssetBrowserウィンドウがフォーカスされているか
     // 別のエディタウィンドウにフォーカスがあるときの誤発火を防ぐ
+    // ポップアップが開いている間は、矢印キーやEnterをポップアップの項目選択に使うため無効にする
     if (const auto& l_io = ImGui::GetIO();
         a_editorManager.GetVALCurrentActiveWindowStaticTpeID() == AssetBrowserEditorWindow::GetREFTypeINFO().k_staticTypeID &&
         ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)                                                              &&
         !l_io.WantTextInput                                                                                                 &&
-        !m_deleteConfirmState.m_isActive)
+        !m_deleteConfirmState.m_isActive                                                                                    &&
+        !ImGui::IsPopupOpen(nullptr, ImGuiPopupFlags_AnyPopup))
     {
         switch (m_activePane)
         {
@@ -153,10 +155,11 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw(EditorManager& a_editorManager)
                 const auto& l_selectedFilePathList      = l_selectionState.GetREFSelectedFilePathList   ();
 
                 m_shortcutHandler.HandleFolderPane(*this);
-                m_shortcutHandler.Handle          (l_selectedFilePathList,
-                                                   l_operationTargetFolderPath,
-                                                   l_operationTargetFolderPath,
-                                                   *this);
+
+                m_shortcutHandler.Handle(l_selectedFilePathList,
+                                         l_operationTargetFolderPath,
+                                         l_operationTargetFolderPath,
+                                         *this);
             }
             break;
 
@@ -195,10 +198,11 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw(EditorManager& a_editorManager)
                 const auto& l_selectedFilePath = l_operationTargetFilePath;
 
                 m_shortcutHandler.HandleAssetPane(*this);
-                m_shortcutHandler.Handle         (l_selectedFilePathList, 
-                                                  l_selectedFilePath,
-                                                  l_operationTargetFolderPath, 
-                                                  *this);
+
+                m_shortcutHandler.Handle(l_selectedFilePathList, 
+                                         l_selectedFilePath,
+                                         l_operationTargetFolderPath, 
+                                         *this);
             }
             break;
 

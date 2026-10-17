@@ -29,7 +29,7 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 
     FWK_ASSERT_RETURN_VALUE_IF(l_allocateStorageID == Constant::k_invalidStorageID, "StorageIDの割り当てに失敗したため、StaticModel読み込み処理に失敗しました。", l_staticModelLoadResult);
 
-    auto l_staticModelRecord = std::make_shared<StaticModelRecord>();
+    const auto& l_staticModelRecord = std::make_shared<StaticModelRecord>();
 
     l_staticModelRecord->SetFilePath      (a_filePath.wstring());
     l_staticModelRecord->SetStorageID     (l_allocateStorageID);
@@ -78,7 +78,7 @@ void FWK::Graphics::StaticModelSystem::RegisterPendingStaticModels()
 {
     for (const auto& [l_filePath, l_pendingStaticModelBatchUploadRecord] : m_pendingModelBatchUploadRecordMap)
     {
-        auto& l_staticModelRecord = l_pendingStaticModelBatchUploadRecord.m_staticModelRecord;
+        const auto& l_staticModelRecord = l_pendingStaticModelBatchUploadRecord.m_staticModelRecord;
 
         FWK_ASSERT_RETURN_IF(!l_staticModelRecord,                                            "TextureRecordが無効のため、バッチスタティックモデル登録に失敗しました。");
         FWK_ASSERT_RETURN_IF(!m_modelStorage.RegisterRecord(l_staticModelRecord, l_filePath), "TextureRecordの登録に失敗したため、バッチスタティックモデル登録に失敗しました。");
@@ -114,7 +114,6 @@ bool FWK::Graphics::StaticModelSystem::BuildStaticModelAssetData(const std::file
 
     return true;
 }
-
 void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>& a_staticModelRecord,
                                                                    const std::filesystem::path&              a_filePath,
                                                                    const Device&                             a_device,

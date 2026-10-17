@@ -16,7 +16,10 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::Handle(WorldOutliner
 
     // ShiftかCtrlを押しながらの上下キーは範囲選択
     // そうでないなら選択位置の移動
-    HandleArrowKey(l_io.KeyShift && l_io.KeyCtrl, a_editorWindow, a_editorManager);
+    HandleArrowKey(l_io.KeyShift &&
+                   l_io.KeyCtrl,
+                   a_editorWindow,
+                   a_editorManager);
 
     // F2で選択中のGameObject、またはSceneの名前変更を開始する
     if (ImGui::IsKeyPressed(ImGuiKey_F2)) 
@@ -94,7 +97,7 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleDeleteGameObje
 void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleCopy(WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const
 {
     const auto& l_gameObjectSelectionState = a_editorManager.GetREFGameObjectSelectionState();
-    const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation     ();
+    const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation      ();
  
     l_gameObjectOperation.CopySelectedGameObjects(l_gameObjectSelectionState, a_editorWindow.GetMutableREFClipboard());
 }

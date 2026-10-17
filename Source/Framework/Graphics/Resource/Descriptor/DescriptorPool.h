@@ -94,8 +94,8 @@ namespace FWK::Graphics
 
             FWK_ASSERT_RETURN_VALUE_IF(!l_device, "Deviceが作成されておらず、Descriptorのコピーに失敗しました。", false);
 
-            const auto l_sourceCPUDescriptorHandle      = m_cpuDescriptorHeap.FetchVALCPUDescriptorHandle           (a_index);
-            const auto l_destinationCPUDescriptorHandle = m_shaderVisibleDescriptorHeap->FetchVALCPUDescriptorHandle(a_index);
+            const auto& l_sourceCPUDescriptorHandle      = m_cpuDescriptorHeap.FetchVALCPUDescriptorHandle           (a_index);
+            const auto& l_destinationCPUDescriptorHandle = m_shaderVisibleDescriptorHeap->FetchVALCPUDescriptorHandle(a_index);
 
             // CPUOnly側に作成したディスクリプタをShaderVisible側へコピーする
             // CopyDescriptorsSimple(コピーするディスクリプタ数、

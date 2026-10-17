@@ -77,7 +77,7 @@ namespace FWK::Utility
          
             // DearImGuiには実際のC++オブジェクトではなく
             // Framework側Payloadを識別するIDだけを渡す
-            const auto l_payloadID = m_payloadID;
+            const auto& l_payloadID = m_payloadID;
          
             const bool l_isPayloadSet = ImGui::SetDragDropPayload(a_label.data(),
                                                                   &l_payloadID,

@@ -3893,6 +3893,9 @@
     <ClCompile Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.cpp">
       <Filter>Source\Framework\Editor\Command\Scene\Rename</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Popup\EditorPopupNavigator.cpp">
+      <Filter>Source\Framework\Editor\Popup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">

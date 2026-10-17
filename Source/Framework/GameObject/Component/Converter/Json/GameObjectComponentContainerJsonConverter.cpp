@@ -366,7 +366,7 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::ApplyComponentLi
             continue;
         }
  
-        nlohmann::json l_mergedComponentJson = l_json;
+        auto l_mergedComponentJson = l_json;
  
         if (const auto& l_itr = l_modifiedMap.find(l_uuid);
             l_itr != l_modifiedMap.end())

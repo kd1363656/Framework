@@ -51,7 +51,7 @@ void FWK::Converter::TextureSystemJsonConverter::DeserializeDefaultTextureList(c
         // デフォルトテクスチャタイプの値がDefaultTextureTypeのCountを超えていればreturn;
         if (static_cast<std::size_t>(l_defaultTextureType) >= Constant::k_defaultTextureTypeCount) { continue; }
 
-        auto l_defaultTexture = std::make_shared<Graphics::DefaultTexture>();
+        const auto& l_defaultTexture = std::make_shared<Graphics::DefaultTexture>();
 
         l_defaultTexture->Deserialize(l_defaultTextureJson);
 
@@ -62,7 +62,7 @@ void FWK::Converter::TextureSystemJsonConverter::DeserializeDefaultTextureList(c
 
 nlohmann::json FWK::Converter::TextureSystemJsonConverter::SerializeDefaultTextureList(const Graphics::TextureSystem& a_textureSystem) const
 {
-    nlohmann::json l_rootJsonArray = nlohmann::json::array();
+    auto l_rootJsonArray = nlohmann::json::array();
 
     const auto& l_defaultTextureList = a_textureSystem.GetREFDefaultTextureList();
 

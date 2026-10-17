@@ -21,7 +21,7 @@ namespace FWK::Graphics
                                  const FrameResource&          a_frameResource,
                                  const Enum::RootParameterType a_rootParameterType)
         {
-            auto l_constantBufferUploader = a_frameResource.FindPTRDynamicBufferUploader<ConstantBufferUploaderType>().lock();
+            const auto& l_constantBufferUploader = a_frameResource.FindPTRDynamicBufferUploader<ConstantBufferUploaderType>().lock();
 
             FWK_ASSERT_RETURN_IF(!l_constantBufferUploader,                                                "共通パス定数バッファアップローダーが取得できないため、定数バッファのセットに失敗しました。");
             FWK_ASSERT_RETURN_IF(l_constantBufferUploader->GetREFTypeSize() != sizeof(ConstantBufferType), "取得した定数バッファアップローダーの型サイズとGPU転送予定の定数バッファが一致しないため、定数バッファのセットに失敗しました。");

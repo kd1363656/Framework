@@ -354,7 +354,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::TryReadModelMeshBina
     // ModelVertex,Index,Material,Meshletを、共通基底クラスの基底クラスの既存処理で読み込む
     if (!TryReadModelMeshBinaryDataCommon(a_modelMesh, a_memoryReadOffset)) { return false; }
 
-    std::uint64_t l_bonePaletteCount = Constant::k_emptyBonePaletteCount;
+    auto l_bonePaletteCount = Constant::k_emptyBonePaletteCount;
 
     // BonePalette数は単一のuint64_tなので
     // 専用Header構造体を作らず直接読み込む

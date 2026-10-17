@@ -135,8 +135,8 @@ void FWK::Graphics::RenderGraph::AddDrawRequestPerObject(const std::shared_ptr<D
 
 void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const
 {
-          auto& l_swapChain         = a_renderer.GetMutableREFSwapChain ();
-    const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
+          auto& l_swapChain         = a_renderer.GetMutableREFSwapChain        ();
+    const auto& l_directCommandList = a_renderer.GetREFDirectCommandList       ();
     const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
 
     const auto  l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
@@ -161,7 +161,7 @@ void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resour
 
 void FWK::Graphics::RenderGraph::RemoveExpiredPassList()
 {
-    std::size_t l_index = k_firstPassIndex;
+    auto l_index = k_firstPassIndex;
 
     while (l_index < m_passList.size())
     {

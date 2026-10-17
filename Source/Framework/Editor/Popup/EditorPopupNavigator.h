@@ -9,7 +9,7 @@ namespace FWK::Editor
          EditorPopupNavigator() = default;
         ~EditorPopupNavigator() = default;
 
-        void Begin(const Enum::EditorPopupNavigationAxis a_axis, const std::size_t a_initialKeySelectedIndex = Constant::k_noKeySelectedIndex);
+        void Begin(const Enum::EditorPopupNavigationAxis a_axis, const std::size_t& a_initialKeySelectedIndex = Constant::k_noKeySelectedIndex);
         void End  ();
 
         bool MenuItem(const char* a_label, const char*   a_shortcut = nullptr, const bool a_isEnabled = true);

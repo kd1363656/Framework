@@ -38,7 +38,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticBoxBody::CreateShape() cons
 
 bool FWK::Physics::PhysicsStaticBoxBody::ApplyShapeChange()
 {
-    const auto l_shape = CreateShape();
+    const auto& l_shape = CreateShape();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_shape, "StaticBoxBody用Shapeが無効なため、Shapeの変更に失敗しました。", false);
 

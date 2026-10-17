@@ -125,7 +125,6 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplySceneDelet
     // Registryから削除
     a_assetFilePathRegistry.Erase(a_deleteFilePath);
 }
-
 void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyDirectoryDelete(const std::filesystem::path& a_deleteFilePath, AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager) const
 {
     // Folder配下に存在していたPrefabやSceneJsonを集め

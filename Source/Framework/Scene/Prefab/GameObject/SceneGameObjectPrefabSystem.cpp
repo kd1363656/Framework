@@ -36,7 +36,7 @@ void FWK::SceneGameObjectPrefabSystem::RemovePrefab(const boost::uuids::uuid& a_
         return; 
     }
 
-    auto l_itr = m_prefabMap.find(a_prefabUUID);
+    const auto& l_itr = m_prefabMap.find(a_prefabUUID);
 
     if (l_itr == m_prefabMap.end()) { return; }
 
@@ -55,7 +55,7 @@ const FWK::GameObjectPrefab* FWK::SceneGameObjectPrefabSystem::FindPTRPrefab(con
     // NilUUIDからPrefabを検索することはできない
     if (a_prefabUUID.is_nil()) { return nullptr; }
 
-    auto l_itr = m_prefabMap.find(a_prefabUUID);
+    const auto& l_itr = m_prefabMap.find(a_prefabUUID);
 
     if (l_itr == m_prefabMap.end()) { return nullptr; }
 
@@ -67,7 +67,7 @@ FWK::GameObjectPrefab* FWK::SceneGameObjectPrefabSystem::FindMutablePTRPrefab(co
     // NilUUIDからPrefabを検索することはできない
     if (a_prefabUUID.is_nil()) { return nullptr; }
 
-    auto l_itr = m_prefabMap.find(a_prefabUUID);
+    const auto& l_itr = m_prefabMap.find(a_prefabUUID);
 
     if (l_itr == m_prefabMap.end()) { return nullptr; }
 

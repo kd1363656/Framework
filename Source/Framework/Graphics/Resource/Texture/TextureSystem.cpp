@@ -90,7 +90,7 @@ void FWK::Graphics::TextureSystem::RegisterPendingTextures()
 {
     for (const auto& [l_filePath, l_pendingTextureBatchUploadRecord] : m_pendingTextureBatchUploadRecordMap)
     {
-        auto& l_textureRecord = l_pendingTextureBatchUploadRecord.m_textureRecord;
+        const auto& l_textureRecord = l_pendingTextureBatchUploadRecord.m_textureRecord;
 
         FWK_ASSERT_RETURN_IF(!l_textureRecord,                                              "TextureRecordが無効のため、バッチテクスチャ登録に失敗しました。");
         FWK_ASSERT_RETURN_IF(!m_textureStorage.RegisterRecord(l_textureRecord, l_filePath), "TextureRecordの登録に失敗したため、バッチテクスチャ登録に失敗しました。");
@@ -115,7 +115,7 @@ bool FWK::Graphics::TextureSystem::SubtractTextureReferenceCount(const std::weak
 
 void FWK::Graphics::TextureSystem::ApplyDefaultTexture(const std::shared_ptr<DefaultTexture>& a_defaultTexture, const Enum::DefaultTextureType a_defaultTextureType)
 {
-    const auto l_index = static_cast<std::size_t>(a_defaultTextureType);
+    const auto& l_index = static_cast<std::size_t>(a_defaultTextureType);
 
     FWK_ASSERT_RETURN_IF(!a_defaultTexture, "インスタンス化されておらず、無効なデフォルトテクスチャです。デフォルトテクスチャの反映に失敗しました。");
 
@@ -128,7 +128,7 @@ void FWK::Graphics::TextureSystem::ApplyDefaultTexture(const std::shared_ptr<Def
 
 std::weak_ptr<FWK::Graphics::TextureRecord> FWK::Graphics::TextureSystem::FetchVALDefaultTextureRecord(const Enum::DefaultTextureType a_defaultTextureType) const
 {
-    const auto l_defaultTextureRecordIndex = static_cast<std::size_t>(a_defaultTextureType);
+    const auto& l_defaultTextureRecordIndex = static_cast<std::size_t>(a_defaultTextureType);
 
     FWK_ASSERT_RETURN_VALUE_IF(l_defaultTextureRecordIndex >= m_defaultTextureList.size(), "DefaultTextureListの範囲外となっており、TextureRecordの取得に失敗しました。", {});
 
@@ -182,7 +182,6 @@ bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Dev
 
     return true;
 }
-
 void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(const DirectX::ScratchImage&              a_scratchImage,
                                                                                 const DirectX::TexMetadata&               a_texMetadata,
                                                                                 const std::filesystem::path&              a_filePath,
@@ -273,7 +272,7 @@ bool FWK::Graphics::TextureSystem::TryResolveCachedTextureResult(const std::file
 void FWK::Graphics::TextureSystem::ApplyDefaultTextureToLoadResult(const Enum::DefaultTextureType a_defaultTextureType, TextureLoadResult& a_textureLoadResult) const
 {
     const auto& l_defaultRecordTextureWeak = FetchVALDefaultTextureRecord   (a_defaultTextureType);
-    const auto& l_defaultRecordTexture     = l_defaultRecordTextureWeak.lock    ();
+    const auto& l_defaultRecordTexture     = l_defaultRecordTextureWeak.lock();
 
     FWK_ASSERT_RETURN_IF(!l_defaultRecordTexture, "デフォルトテクスチャが作成されていなかったため、バッチテクスチャ登録に失敗しました。");
 

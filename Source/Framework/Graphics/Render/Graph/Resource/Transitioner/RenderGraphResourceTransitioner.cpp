@@ -89,7 +89,7 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionRenderTargetPassT
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
     const auto l_beforeState = l_renderTargetTexture.GetVALCurrentResourceState();
-    const auto l_afterState  = ConvertVALD3D12ResourceState                   (a_usage);
+    const auto l_afterState  = ConvertVALD3D12ResourceState                    (a_usage);
 
     // 既に必要な状態ならResourceBarrierは不要
     if (l_beforeState == l_afterState) { return true; }
@@ -106,7 +106,7 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionDepthStencilPassT
 {
     if (a_resourceAccess.m_depthStencilType == Enum::RenderGraphDepthStencilType::None) { return false; }
 
-    const auto l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
+    const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_currentFrameResource, "現在のFrameResourceが無効のため、DepthStencilPassTextureの自動リソース遷移に失敗しました。", false);
 

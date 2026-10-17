@@ -45,7 +45,7 @@ FWK::Graphics::DynamicRWStructuredBuffer& FWK::Graphics::DynamicRWStructuredBuff
 bool FWK::Graphics::DynamicRWStructuredBuffer::ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext)
 {
     // 既に解放するものがなければreturn
-    if (!GetREFBufferGPUResource().m_resource &&
+    if (!GetREFBufferGPUResource().m_resource                            &&
         GetVALSRVDescriptorIndex() == Constant::k_invalidDescriptorIndex &&
         m_uavDescriptorIndex       == Constant::k_invalidDescriptorIndex)
     {
@@ -80,7 +80,7 @@ bool FWK::Graphics::DynamicRWStructuredBuffer::ReserveRelease(const UINT64& a_re
 void FWK::Graphics::DynamicRWStructuredBuffer::Release()
 {
     // 既に解放するものがなければreturn
-    if (!GetREFBufferGPUResource().m_resource &&
+    if (!GetREFBufferGPUResource().m_resource                            &&
         GetVALSRVDescriptorIndex() == Constant::k_invalidDescriptorIndex &&
         m_uavDescriptorIndex       == Constant::k_invalidDescriptorIndex)
     {
@@ -157,7 +157,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DynamicRWStructuredBuffer::Create
     l_uavDesc.Buffer.CounterOffsetInBytes = k_counterOffsetInBytes;
     l_uavDesc.Buffer.Flags                = D3D12_BUFFER_UAV_FLAG_NONE;
 
-    const auto l_cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(l_uavDescriptorIndex));
+    const auto& l_cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(l_uavDescriptorIndex));
 
     // CreateUnorderedAccessView(UAVとして見せたいGPUResource,
     //                           CounterResource(Append/Consume系統でなければnullptr),

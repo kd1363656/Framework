@@ -149,7 +149,7 @@ bool FWK::Graphics::DepthStencilTexture::CreateGPUResource(const GPUMemoryAlloca
     l_clearValue.DepthStencil.Depth   =m_depthStencilTextureSettings.m_depthClearValue;
     l_clearValue.DepthStencil.Stencil =m_depthStencilTextureSettings.m_stencilClearValue;
 
-    D3D12_RESOURCE_FLAGS l_resourceFlags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+    auto l_resourceFlags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
     // SRVFormatがUNKNOWNなら、
     // このTextureはShaderから読み取らないDepth専用Resourceになる。
@@ -170,7 +170,7 @@ bool FWK::Graphics::DepthStencilTexture::CreateGPUResource(const GPUMemoryAlloca
     //       サンプル数、
     //       サンプル品質、
     //       リソースフラグ);
-    const auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_depthStencilTextureSettings.m_resourceFormat,
+    const auto& l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_depthStencilTextureSettings.m_resourceFormat,
                                                              a_width,
                                                              a_height,
                                                              m_depthStencilTextureSettings.m_arraySize,
@@ -225,7 +225,8 @@ D3D12_DEPTH_STENCIL_VIEW_DESC FWK::Graphics::DepthStencilTexture::CreateDSVDesc(
     }
 
     // MSAAを使用する配列ではないTexture2D
-    if (!l_isTextureArray && l_isMultisample)
+    if (!l_isTextureArray &&
+        l_isMultisample)
     {
         l_dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2DMS;
 
@@ -311,7 +312,7 @@ bool FWK::Graphics::DepthStencilTexture::CreateDSVList(const Device& a_device, T
 
     for (UINT l_arrayIndex = 0ULL; l_arrayIndex < m_depthStencilTextureSettings.m_arraySize; ++l_arrayIndex)
     {
-        for (UINT l_mipSlice = k_firstMIPSlice; l_mipSlice < m_depthStencilTextureSettings.m_mipLevels; ++l_mipSlice)
+        for (auto l_mipSlice = k_firstMIPSlice; l_mipSlice < m_depthStencilTextureSettings.m_mipLevels; ++l_mipSlice)
         {
             const auto l_dsvDescriptorIndex = a_dsvDescriptorPool.Allocate();
 

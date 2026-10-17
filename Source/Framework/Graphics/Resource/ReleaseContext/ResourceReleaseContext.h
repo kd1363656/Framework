@@ -47,7 +47,7 @@ namespace FWK::Graphics
         template <D3D12_DESCRIPTOR_HEAP_TYPE HeapType>
         void ReleaseAvailableDescriptorIndices(const UINT64& a_completedFenceValue, std::vector<DescriptorIndexReleaseRecord>& a_releaseRecordList, DescriptorPool<HeapType>& a_descriptorPool)
         {
-            std::size_t l_index = k_firstReleaseRecordIndex;
+            auto l_index = k_firstReleaseRecordIndex;
 
             while (l_index < a_releaseRecordList.size())
             {

@@ -105,7 +105,7 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::EvaluatePose(const SkeletalA
 
         // Motionが存在しない場合や、
         // BoneMotionTrackが存在しない場合に使用する初期値。
-        LocalTransform l_localTransform = m_bindPoseLocalTransformList[l_boneIndex];
+        auto l_localTransform = m_bindPoseLocalTransformList[l_boneIndex];
 
         // Motionが存在しない場合や、
         // BoneMotionTrackが存在しない場合に使用する初期値。
@@ -262,7 +262,7 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::CreateAnimationLookupData(st
             // KeyFrameListが時刻の昇順で並んでいるか検証する。
             for (auto l_keyFrameIndex = k_firstKeyFrameIndex + k_nextKeyFrameOffset; l_keyFrameIndex < l_keyFrameList.size(); ++l_keyFrameIndex)
             {
-                const auto l_previousKeyFrameIndex = l_keyFrameIndex - k_nextKeyFrameOffset;
+                const auto& l_previousKeyFrameIndex = l_keyFrameIndex - k_nextKeyFrameOffset;
 
                 FWK_ASSERT_RETURN_VALUE_IF(l_keyFrameList[l_keyFrameIndex].m_timeSecond < l_keyFrameList[l_previousKeyFrameIndex].m_timeSecond, "KeyFrameListが時刻順に並んでいません。", false);
             }

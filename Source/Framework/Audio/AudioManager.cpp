@@ -201,7 +201,7 @@ void FWK::AudioManager::RemoveSoundEffectInstanceIfStopped()
 {
     // 破棄済み、または再生が停止したインスタンスは
     // 末尾要素と入れ替えてから削除する
-    std::size_t l_index = k_initialRemoveSoundEffectInstanceIndex;
+    auto l_index = k_initialRemoveSoundEffectInstanceIndex;
 
     while (l_index < m_soundEffectInstanceList.size())
     {

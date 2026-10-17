@@ -265,7 +265,6 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildList(cons
                          a_scene);
     }
 }
-
 void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildListDiff(const nlohmann::json&              a_prefabChildListJson, 
                                                                                 const nlohmann::json&              a_childListDiffJson, 
                                                                                 const SceneGameObjectPrefabSystem& a_prefabSystem, 
@@ -495,7 +494,6 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildListDiff(
         }
     }
 }
-
 void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChild(const nlohmann::json&              a_childJson, 
                                                                         const nlohmann::json&              a_baseJson, 
                                                                         const std::weak_ptr<GameObject>&   a_parentGameObject, 
@@ -512,7 +510,7 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChild(const nl
     }
  
     // Owner設定等の初期化が必要なのでmake_sharedで生成してINITを呼ぶ
-    auto l_child = std::make_shared<GameObject>();
+    const auto& l_child = std::make_shared<GameObject>();
  
     l_child->INIT();
  

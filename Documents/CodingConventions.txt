@@ -305,17 +305,73 @@
 	bool CanLoadFilePath() const;
 }
 8.変数の書き方について=======================================================================================================================================
-・ローカル変数は型が右辺で分かるならautoで書く
+・ローカル変数は型を明示する必要がないならautoで書く
 {
-	基本はconst auto&、書き換えるならauto&
-	組み込み型(float、boolなど)をリテラルや計算で初期化するときは型名を書く
+	型名を書くのはbool、int、floatだけで、それ以外(std::size_t、UINT、DWORD、double、Enum、
+	自身のクラス・構造体、外部APIの型など)は右辺で型が決まるならautoにする
+	基本はconst auto&、書き換えるならauto&、ポインタはauto*(for文の初期化子・範囲for文も同じ)
+
+	bool、int、float以外でも型名を書くもの↓
+	リテラルで初期化する(0ULL、0Uなど型がサフィックスでしか決まらない)
+	{}やnullptrで初期化する
+	右辺と違う型で受け取る(const char*からstd::stringを作る、std::wstringからstd::filesystem::pathを作るなど)
+	ImGuiWindowFlags、ImGuiColなどintの別名(右辺のEnumと型が変わるため)
 
 	例↓
 	const auto& l_rootJson = Utility::LoadJsonFile(k_configFileIOPath);
 
+	const auto& l_itemCount = m_itemEnabledList.size();
+
+	const auto l_nextKey = l_isVertical ? ImGuiKey_DownArrow : ImGuiKey_RightArrow;
+
+	auto l_index = m_keySelectedIndex;
+
 	const float l_masterVolume = a_rootJson.value(k_masterVolumeJsonKey, Constant::k_defaultVolume);
+
+	std::size_t l_count = 0ULL;
 }
 ・書き換えないローカル変数にはconstをつける
+・8バイト以上のローカル変数は書き換えないなら必ずconst参照で受け取る
+{
+	すべてのファイルに適用し、コンパイルできないなどの理由がなければ積極的にconst参照を使う
+	(if文・switch文の初期化文、範囲for文のループ変数、ラムダの中のローカル変数も同じ)
+	理 : コピーを作らずに済み、書き換えないことも型を見ただけで分かるから
+	8バイト以上 : クラス、構造体、std::string、std::filesystem::path、std::size_t、std::uint64_t、double、イテレータ、スマートポインタ、
+	              boost::uuids::uuid、D3D12_CPU_DESCRIPTOR_HANDLEなど
+	8バイト未満(bool、int、float、UINT、DWORD、Enum、DescriptorIndexなど)は参照にせずconst autoで受け取る
+	関数の戻り値(一時オブジェクト)をconst参照で受けても、変数の寿命が尽きるまで一時オブジェクトは消えない
+	型名を書く変数も同じ(const std::filesystem::path& l_filePath = l_selectedFilePath;)
+
+	参照にしないもの↓
+	後から書き換える変数
+	元の値が後で変わる・消えるため、取っておく変数(変更前の名前、eraseする要素、popするfront()など)
+	std::moveする変数、returnする変数(参照だとmoveできずコピーになる)
+	{}で作る変数(参照する元がなく、作った物をそのまま持つため)
+	生ポインタ、HANDLE、HWND、HMONITORなど(ポインタは値で持つ)
+
+	例↓
+	const auto& l_itemCount = m_itemEnabledList.size();
+	const auto& l_label     = std::string{ k_cardPrefixLabel } + a_filePath.generic_string();
+	const auto  l_nextKey   = l_isVertical ? ImGuiKey_DownArrow : ImGuiKey_RightArrow;
+
+	// 変更前の名前はSetNameで変わるため、参照にせずコピーを取っておく
+	const auto l_beforeName = l_gameObject->GetREFName();
+
+	l_gameObject->SetName(a_newName);
+}
+・参照で受け取ったローカル変数も書き換えないなら必ずconst参照にする
+{
+	auto&で受け取っていても、その変数を書き換えない(constの関数を呼ぶ・constの引数に渡すだけ)ならconst auto&にする
+	ゲッターもGetMutableREF〜ではなくGetREF〜を使う
+	範囲for文のループ変数、if文・switch文の初期化文も同じ
+	理 : 書き換えない物を書き換えられる形で持つと、型を見ただけでは書き換えるのか分からないから
+	const auto&にしてコンパイルが通らないもの(書き換える関数・参照の引数に渡すもの)だけauto&のままにする
+
+	例↓
+	// DrawCopyMenuなどはconst AssetBrowserEditorWindowFileOperation&で受け取るため、書き換えない
+	const auto& l_fileOperation = a_editorWindow.GetREFFileOperation      ();
+	      auto& l_clipboard     = a_editorWindow.GetMutableREFClipboard   ();
+}
 ・クラスや構造体の初期化には波括弧初期化を使う
 {
 	例↓
@@ -347,6 +403,10 @@
 {
 	理 : ()の位置が揃うことで関数呼び出しの境界が一目で分かるから
 	基本ルール : 関数名が長い方の()の位置に合わせる
+	上下に隣接する行はif文以外すべて揃える(1文字でもずれていたら直す)
+	変数の宣言(const auto& / auto& / 代入)の右辺の呼び出しも同じ
+	ゲッターの名前が変わって長さが変わったときも、隣接する行の()の位置を揃え直す
+	1引数1行で改行した関数は揃えずに1行開ける(11章「1引数1行で改行した関数は〜」)
 
 	例↓
 	auto& l_physicsManager  = FWK::Physics::PhysicsManager::GetInstance  ();
@@ -363,11 +423,39 @@
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateCommandQueue(a_device), "コマンドキューの作成に失敗しました。", false);
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateFence(a_device),       "フェンスの作成に失敗しました。",         false);
 }
-・論理演算子を使う場合は改行する
+・論理演算子(&&、||)を使う場合は演算子ごとに改行し、演算子は行末に書く(EditorPopupNavigator::ApplyItemStateの書き方)
 {
+	2つ目以降の項は1つ目の項の先頭に揃える(()の中の項は(の次の文字に揃える)
+	演算子の位置は、()の中も含めた式全体で演算子のある一番長い行に揃える(演算子のない最後の行は含めない)
+	項が2つだけでも、短くても1行に書かない
+	returnかcontinueだけのif文でも、論理演算子があるならブロックにする
+	関数の引数の中で改行したら、その関数の引数はすべて1引数1行にする
+	理 : 演算子が縦に並ぶことで条件の数と、&&と||のどちらでつないでいるかが一目で分かるから
+
 	例↓
-	const bool l_result = l_isB &&
-	                      l_isC;
+	const bool l_isHovered = a_isEnabled &&
+	                         ImGui::IsItemHovered();
+
+	if (l_isHovered ||
+	    l_isKeySelected)
+	{
+		DrawItemFrame();
+	}
+
+	return a_isClicked      ||
+	       (l_isKeySelected &&
+	        a_isEnabled     &&
+	        m_isConfirmRequested);
+
+	// ×
+	if (!m_uploadBuffer || !m_mappedData) { return; }
+
+	// ○
+	if (!m_uploadBuffer ||
+	    !m_mappedData)
+	{
+		return;
+	}
 }
 ・ビット演算子を使う場合
 {
@@ -458,7 +546,14 @@
 	例↓
 	void ApplyMasterVolume(const float a_volume);
 }
-・8バイトより大きいもの(クラス、構造体、std::stringなど)はconst参照で渡す
+・8バイト以上のもの(クラス、構造体、std::string、std::size_t、std::uint64_t、doubleなど)はすべてconst参照で渡す(書き換えるなら参照)
+{
+	8バイト未満(bool、int、float、UINT、Enumなど)と生ポインタ・HANDLEはconstの値で渡す
+	外部APIが決めた形の関数(WNDPROC、ImGuiのコールバック、overrideなど)は変えない
+
+	例↓
+	void ResizeBackBufferList(const std::size_t& a_backBufferNUM);
+}
 ・スマートポインタ
 {
 	基本はconst std::weak_ptr<T>&
@@ -518,11 +613,69 @@
 }
 ・関数の引数が4個以上なら1引数1行で改行する(3個以下なら長くても改行しない)
 {
+	宣言・定義・呼び出しのすべてに適用する(コンストラクタ、テンプレート関数、マクロ、外部APIの呼び出しも含む)
+	if文の()の中に書く関数も同じで、3個以下は改行しない(16章「if文の()の中に書く関数は〜」)
+	1つ目の引数は ( と同じ行に書き、2つ目以降は1つ目の引数の先頭に揃える
+	宣言・定義では型と引数名の列も揃える
+	理 : 引数の数と並びが縦に一目で分かり、引数を足す・消すときの差分が1行で済むから
+
 	例↓
+	// 宣言
 	void RequestSpriteDraw(const Math::Vector2&      a_pos,
 	                       const Math::Vector2&      a_scale,
 	                       const Texture&            a_texture,
 	                       const Struct::SpriteRect* a_sourceRect);
+
+	// 呼び出し
+	// ×
+	SelectGameObject(l_next, a_isRangeSelection, false, *l_scene);
+
+	// ○
+	SelectGameObject(l_next,
+	                 a_isRangeSelection,
+	                 false,
+	                 *l_scene);
+
+	// 入れ子の呼び出しも内側の(に揃える
+	ImGui::PushStyleColor(ImGuiCol_Text,
+	                      IM_COL32(l_color.x,
+	                               l_color.y,
+	                               l_color.z,
+	                               l_color.w));
+}
+・1引数1行で改行した関数は、続く関数と()の位置を揃えずに1行開けて書く(すべてのファイルに適用)
+{
+	()の位置を揃える(上の「関数の呼び出しが続くときは()の位置を揃える」)のは1行で書いた関数どうしだけにする
+	宣言・定義・呼び出しのすべてに適用する
+	ただし.cppの関数定義どうしは、似た処理なら1行開けずにくっつける(15章「.hで1引数1行に改行したために〜」)
+	参考 : AssetBrowserEditorWindowPopupDrawer.h / .cpp の DrawCopyMenu 〜 DrawDeleteMenu
+	理 : 改行した関数は縦に長く、()の位置を揃えても境界は分からず、関数名と(の間の空白で引数の列が右へずれるだけだから
+
+	例↓
+	// ×
+	DrawDuplicateMenu(a_selectedFilePathList,
+	                  l_fileOperation,
+	                  l_hasSelection &&
+	                  !l_containsRoot);
+	DrawDeleteMenu   (a_selectedFilePathList,
+	                  l_hasSelection &&
+	                  !l_containsRoot,
+	                  a_editorWindow);
+
+	// ○
+	DrawDuplicateMenu(a_selectedFilePathList,
+	                  l_fileOperation,
+	                  l_hasSelection &&
+	                  !l_containsRoot);
+
+	DrawDeleteMenu(a_selectedFilePathList,
+	               l_hasSelection &&
+	               !l_containsRoot,
+	               a_editorWindow);
+
+	// 1行で書いた関数は今まで通り()の位置を揃える
+	void DrawDuplicateMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, const bool               a_hasSelection);
+	void DrawDeleteMenu   (const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool                                   a_hasSelection, AssetBrowserEditorWindow& a_editorWindow);
 }
 ・関数の書く順番
 {
@@ -747,6 +900,42 @@
 		～処理～
 	}
 }
+・.hで1引数1行に改行したために1行開けた関数でも、似た処理なら.cppではくっつける(関数の間に空行を入れない)
+{
+	.hでは11章「1引数1行で改行した関数は〜」の通り1行開けるが、.cppの定義は}で区切りが分かるので処理のまとまりで決める
+	違う処理の関数や、処理フローの両端に位置する関数(Load/Save、Deserialize/Create等)は今まで通り1行開ける
+	参考 : AssetBrowserEditorWindowPopupDrawer.cpp の DrawCopyMenu 〜 DrawDeleteMenu、PhysicsShapeOverlap.cpp の CollideSphere 〜 CollideShape
+	理 : 似た処理が.cppで続けて読め、どこからどこまでが同じまとまりかが一目で分かるから
+
+	例↓ .h
+	void DrawIndexedInstanced(const UINT a_indexCount,
+	                          const UINT a_instanceCount,
+	                          const UINT a_startIndexLocation,
+	                          const UINT a_startInstanceLocation,
+	                          const INT  a_baseVertexLocation);
+
+	void DrawInstanced(const UINT a_vertexCount,
+	                   const UINT a_instanceCount,
+	                   const UINT a_startVertexLocation,
+	                   const UINT a_startInstanceLocation) const;
+
+	例↓ .cpp
+	void FWK::Graphics::DirectCommandList::DrawIndexedInstanced(const UINT a_indexCount,
+	                                                            const UINT a_instanceCount,
+	                                                            const UINT a_startIndexLocation,
+	                                                            const UINT a_startInstanceLocation,
+	                                                            const INT  a_baseVertexLocation)
+	{
+		～処理～
+	}
+	void FWK::Graphics::DirectCommandList::DrawInstanced(const UINT a_vertexCount,
+	                                                     const UINT a_instanceCount,
+	                                                     const UINT a_startVertexLocation,
+	                                                     const UINT a_startInstanceLocation) const
+	{
+		～処理～
+	}
+}
 ・コンストラクタとデストラクタは隣接させる
 ・.cppの関数定義は()の位置を合わせない
 ・処理のまとまりごとに1行開ける
@@ -773,13 +962,59 @@
 	if      (m_isA)  { return false; }
 	else if (m_isAB) { return false; }
 }
-・論理演算子をif文で使うなら改行し、符号の位置を揃える
+・論理演算子をif文で使うときも8章と同じく改行し、演算子の位置を揃える(!の分はずらさない)
 {
 	例↓
-	if (!m_audioEngine->Update() &&
-	     m_audioEngine->IsCriticalError())
+	if (!m_audioEngine->Update()         &&
+	    m_audioEngine->IsCriticalError() &&
+	    m_isAudioDeviceResetRequested)
 	{
 		...
+	}
+}
+・if文の()の中に書く関数は、引数が3個以下なら改行せず1行で書き、改行してよいのは引数4個以上のときだけ(すべてのファイルに適用)
+{
+	引数4個以上なら11章の通り1引数1行で改行する
+	else if、if文の初期化文に書く関数も同じ
+	論理演算子の改行(上の決まり)は今まで通りで、引数が3個以下の関数の中では改行しない
+	1行に書けないもの(ラムダを渡す呼び出し)だけは改行する
+	理 : 引数が少ない関数まで縦に並ぶと、条件がいくつあり、どこで終わるのかが分かりにくくなるから
+
+	例↓
+	// ×
+	if (m_popupNavigator.MenuItem(l_label.c_str(),
+	                              k_copyShortcutLabel.data(),
+	                              a_hasSelection))
+	{
+		...
+	}
+
+	if (!std::filesystem::is_directory(l_initialDirectoryPath,
+	                                   l_errorCode) ||
+	    l_errorCode)
+	{
+		return false;
+	}
+
+	// ○
+	if (m_popupNavigator.MenuItem(l_label.c_str(), k_copyShortcutLabel.data(), a_hasSelection))
+	{
+		...
+	}
+
+	if (!std::filesystem::is_directory(l_initialDirectoryPath, l_errorCode) ||
+	    l_errorCode)
+	{
+		return false;
+	}
+
+	// 引数4個以上は今まで通り1引数1行
+	if (Utility::IsSameSize(m_width,
+	                        m_height,
+	                        a_width,
+	                        a_height))
+	{
+		return true;
 	}
 }
 ・if文の条件と中でしか使わない変数はif文の初期化文で宣言する
@@ -819,9 +1054,14 @@
 	}
 }
 ・添字が必要なときはstd::size_tとULL、インクリメントは前置き
+・初期値が定数や変数(リテラル以外)ならautoにする
 {
 	例↓
 	for (std::size_t l_index = 0ULL; l_index < l_count; ++l_index)
+	{
+	}
+
+	for (auto l_mipSlice = k_firstMIPSlice; l_mipSlice < l_mipLevels; ++l_mipSlice)
 	{
 	}
 }

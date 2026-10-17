@@ -25,8 +25,8 @@ namespace FWK::Utility
         // 例 : "Player1" -> baseName = "Player", StartNumber = 2
         // 例 : "Player"  -> baseName = "Player", StartNumber = 1
         // これにより複数の複製で"Player1"にならず"Player2"になる
-        std::string l_baseName    = l_stem;
-        auto        l_startNumber = Constant::k_initialNumberSuffixForFilePathConflict;
+        auto l_baseName    = l_stem;
+        auto l_startNumber = Constant::k_initialNumberSuffixForFilePathConflict;
 
         // Stemの末尾から数字部分を探す
         // 末尾が数字でない場合はbaseName = stem,startNumber = 1のまま

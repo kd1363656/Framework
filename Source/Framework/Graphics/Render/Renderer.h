@@ -44,7 +44,7 @@ namespace FWK::Graphics
 
             if (l_itr == m_pipelineStateMap.end()) { return {}; }
 
-            auto& l_pipelineState = l_itr->second;
+            const auto& l_pipelineState = l_itr->second;
 
             if (!l_pipelineState) { return {}; }
 

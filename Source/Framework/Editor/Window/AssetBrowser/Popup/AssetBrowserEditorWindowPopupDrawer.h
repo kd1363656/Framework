@@ -20,46 +20,46 @@ namespace FWK::Editor
                   const std::filesystem::path&              a_targetFilePath,
                   const std::string_view&                   a_openPopupLabel,
                   const Enum::AssetBrowserPopupContextType  a_contextType,
-                        AssetBrowserEditorWindow&           a_editorWindow) const;
+                        AssetBrowserEditorWindow&           a_editorWindow);
 
     private:
 
         void DrawCreateFolderMenu(const std::filesystem::path&             a_targetFolderPath,
                                   const Enum::AssetBrowserPopupContextType a_contextPopup, 
                                   const bool                               a_canCreate,
-                                        AssetBrowserEditorWindow&          a_assetBrowserEditorWindow) const;
+                                        AssetBrowserEditorWindow&          a_assetBrowserEditorWindow);
 
         void DrawCreatePrefabMenu(const std::filesystem::path&                       a_targetFolderPath,
                                   const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
                                   const bool                                         a_canCreate,
                                         AssetFilePathRegistry&                       a_assetFilePathRegistry,
-                                        Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
+                                        Struct::AssetBrowserEditorWindowRenameState& a_renameState);
 
         void DrawCreateSceneMenu(const std::filesystem::path&                       a_targetFolderPath,
                                  const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
                                  const bool                                         a_canCreate,
                                        AssetFilePathRegistry&                       a_assetFilePathRegistry,
-                                       Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
+                                       Struct::AssetBrowserEditorWindowRenameState& a_renameState);
 
-        void DrawRenameMenu(const std::filesystem::path& a_targetFilePath, const bool a_canRename, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
+        void DrawRenameMenu(const std::filesystem::path& a_targetFilePath, const bool a_canRename, Struct::AssetBrowserEditorWindowRenameState& a_renameState);
 
         void DrawCopyMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
                           const AssetBrowserEditorWindowFileOperation& a_fileOperation,
                           const bool                                   a_hasSelection, 
-                                AssetBrowserEditorWindowClipboard&     a_clipboard) const;
+                                AssetBrowserEditorWindowClipboard&     a_clipboard);
 
         void DrawCutMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
                          const AssetBrowserEditorWindowFileOperation& a_fileOperation,
                          const bool                                   a_hasSelection,
-                               AssetBrowserEditorWindowClipboard&     a_clipboard) const;
+                               AssetBrowserEditorWindowClipboard&     a_clipboard);
 
         void DrawPasteMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
                            const AssetBrowserEditorWindowFileOperation& a_fileOperation,
                            const bool                                   a_canPaste,
-                                 AssetBrowserEditorWindowClipboard&     a_clipboard) const;
+                                 AssetBrowserEditorWindowClipboard&     a_clipboard);
 
-        void DrawDuplicateMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, const bool               a_hasSelection) const;
-        void DrawDeleteMenu   (const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool                                   a_hasSelection, AssetBrowserEditorWindow& a_editorWindow) const;
+        void DrawDuplicateMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, const bool               a_hasSelection);
+        void DrawDeleteMenu   (const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool                                   a_hasSelection, AssetBrowserEditorWindow& a_editorWindow);
 
         void StartRename(const std::filesystem::path& a_targetFilePath, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
 
@@ -90,5 +90,7 @@ namespace FWK::Editor
         static constexpr std::string_view k_pasteShortcutLabel     = "Ctrl + V";
         static constexpr std::string_view k_duplicateShortcutLabel = "Ctrl + D";
         static constexpr std::string_view k_deleteShortcutLabel    = "Del";
+
+        EditorPopupNavigator m_popupNavigator = {};
     };
 }

@@ -1141,6 +1141,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Popup\EditorPopupNavigator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt" />

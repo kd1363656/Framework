@@ -253,8 +253,8 @@ bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Animation& a_a
     FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond > l_motionDurationSecond,                                         "AnimationのStartTimeSecondがMotionの再生時間を超えているため、Animationを適用できません。", false);
     FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_blendDurationSecond < Constant::k_initialAnimationTimeSecond,                     "AnimationのBlendDurationSecondが0未満のため、Animationを適用できません。",                  false);
 
-    if (m_animation.m_motionIndex == Constant::k_invalidMotionIndex                       ||
-        m_animation.m_motionIndex >= l_motionSequenceList.size()                          ||
+    if (m_animation.m_motionIndex == Constant::k_invalidMotionIndex ||
+        m_animation.m_motionIndex >= l_motionSequenceList.size()    ||
         a_animation.m_blendDurationSecond == Constant::k_initialBlendDurationSecond)
     {
         m_animation = a_animation;

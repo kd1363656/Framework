@@ -388,7 +388,7 @@ std::size_t FWK::Scene::CalculateGameObjectExecutionLevel(const std::weak_ptr<Ga
     // 親を辿って階層の深さを実行レベルとする
     // AddGameObjectは親→子の順に呼ばれるため、
     // この時点の親鎖はすべて登録済み
-    std::size_t l_executionLevel = k_initialExecutionLevel;
+    auto l_executionLevel = k_initialExecutionLevel;
 
     const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
           auto  l_parent    = l_hierarchy.GetREFParent     ().lock();

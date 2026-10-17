@@ -7,9 +7,9 @@ namespace FWK::Utility
                                              const bool a_isCutTarget = false)
     {
         // デフォルトは未選択アイテムのニュートラルなグレー系
-        ImVec4 l_headerColor  = Constant::k_imguiItemColor;
-        ImVec4 l_hoveredColor = Constant::k_imguiItemHoveredColor;
-        ImVec4 l_activeColor  = Constant::k_imguiItemActiveColor;
+        auto l_headerColor  = Constant::k_imguiItemColor;
+        auto l_hoveredColor = Constant::k_imguiItemHoveredColor;
+        auto l_activeColor  = Constant::k_imguiItemActiveColor;
 
         if (a_isCutTarget)
         {

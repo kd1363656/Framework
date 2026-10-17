@@ -200,7 +200,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeStaticSamplerDescLis
 
 nlohmann::json FWK::Converter::RootSignatureJsonConverter::SerializeRootParameterIndexMap(const Graphics::RootSignature& a_rootSignature) const
 {
-    nlohmann::json l_rootJsonArray = nlohmann::json::array();
+    auto l_rootJsonArray = nlohmann::json::array();
 
     const auto& l_rootParameterIndexMap = a_rootSignature.GetREFRootParameterIndexMap();
 
@@ -398,7 +398,7 @@ nlohmann::json FWK::Converter::RootSignatureJsonConverter::SerializeDescriptorRa
     // ディスクリプタレンジリストが存在しなければreturn
     if (!a_rootParameterRecord.m_descriptorRangeList) { return {}; }
 
-    nlohmann::json l_rootJsonArray = nlohmann::json::array();
+    auto l_rootJsonArray = nlohmann::json::array();
 
     // ディスクリプタレンジの内容をjsonに保存
     for (const auto& l_descriptorRange : *a_rootParameterRecord.m_descriptorRangeList)

@@ -51,7 +51,6 @@ void FWK::Graphics::ComputeCommandList::SetupRootSignature(ID3D12GraphicsCommand
 {
     a_commandList.SetComputeRootSignature(&a_rootSignature);
 }
-
 void FWK::Graphics::ComputeCommandList::SetupRoot32BitConstants(const RootSignature&          a_rootSignature,
                                                                 const void*                   a_rootConstantData,
                                                                 const Enum::RootParameterType a_rootParameterType,

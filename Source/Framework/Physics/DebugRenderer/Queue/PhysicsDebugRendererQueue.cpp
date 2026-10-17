@@ -15,7 +15,6 @@ void FWK::Physics::PhysicsDebugRendererQueue::AddLine(const TypeAlias::Math::Vec
     AddLineVertex(a_startPosition, a_color);
     AddLineVertex(a_endPosition,   a_color);
 }
-
 void FWK::Physics::PhysicsDebugRendererQueue::AddTriangleWire(const TypeAlias::Math::Vector3& a_vertexZero,
                                                               const TypeAlias::Math::Vector3& a_vertexOne,
                                                               const TypeAlias::Math::Vector3& a_vertexTwo,
@@ -25,7 +24,6 @@ void FWK::Physics::PhysicsDebugRendererQueue::AddTriangleWire(const TypeAlias::M
     AddLine(a_vertexOne,  a_vertexTwo,  a_color);
     AddLine(a_vertexTwo,  a_vertexZero, a_color);
 }
-
 void FWK::Physics::PhysicsDebugRendererQueue::AddAABB(const TypeAlias::Math::Vector3& a_minPosition, const TypeAlias::Math::Vector3& a_maxPosition, const TypeAlias::Math::Color& a_color)
 {
     std::array<TypeAlias::Math::Vector3, k_aabbCornerCount> l_cornerList = {};

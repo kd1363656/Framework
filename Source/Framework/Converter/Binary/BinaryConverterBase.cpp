@@ -23,8 +23,8 @@ bool FWK::Converter::BinaryConverterBase::IsUpdatedSourceFile(const std::filesys
     std::error_code l_binaryErrorCode = {};
 
     // 元ファイルとバイナリーファイルの最終更新時刻を取得する。
-    const auto l_sourceLastWriteTime = std::filesystem::last_write_time(a_sourceFilePath, l_sourceErrorCode);
-    const auto l_binaryLastWriteTime = std::filesystem::last_write_time(a_binaryFilePath, l_binaryErrorCode);
+    const auto& l_sourceLastWriteTime = std::filesystem::last_write_time(a_sourceFilePath, l_sourceErrorCode);
+    const auto& l_binaryLastWriteTime = std::filesystem::last_write_time(a_binaryFilePath, l_binaryErrorCode);
 
     if (l_sourceErrorCode)  { return false; }
     if (l_binaryErrorCode)  { return false; }

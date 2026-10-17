@@ -43,7 +43,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
 
     // 保存されているCapsuleの高さと半径から、
     // CharacterVirtualが衝突判定に使用するShapeを作成する
-    const auto l_shape = CreateShape();
+    const auto& l_shape = CreateShape();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_shape, "CharacterVirtual用CapsuleShapeが無効なため、作成に失敗しました。", false);
 
@@ -121,7 +121,7 @@ void FWK::Physics::PhysicsCharacterVirtualBase::Update(const Struct::PhysicsChar
     const auto l_characterObjectLayer = l_physicsLayerSetting->FetchVALObjectLayer(Enum::PhysicsObjectLayerType::CharacterObject);
 
     // BroadPhaseのどの領域をCharacterVirtualが探索するかを決めるFilter
-    const auto l_broadPhaseLayerFilter = l_physicsSystem.GetDefaultBroadPhaseLayerFilter(l_characterObjectLayer);
+    const auto& l_broadPhaseLayerFilter = l_physicsSystem.GetDefaultBroadPhaseLayerFilter(l_characterObjectLayer);
 
     // どのObjectLayerと衝突できるか決めるFilter
     const auto& l_objectLayerFilter = l_physicsSystem.GetDefaultLayerFilter(l_characterObjectLayer);
@@ -132,7 +132,7 @@ void FWK::Physics::PhysicsCharacterVirtualBase::Update(const Struct::PhysicsChar
     // 特定SubShapeを除外したい場合に使用するフィルター
     const JPH::ShapeFilter l_shapeFilter = {};
 
-    const auto l_physicsGravity = l_physicsSystem.GetGravity();
+    const auto& l_physicsGravity = l_physicsSystem.GetGravity();
 
     // 実際にSetLinerVelocityへ渡す次の速度を、派生クラスで計算する
     const auto& l_nextLinearVelocity = CalculateLinearVelocity(l_physicsGravity,
@@ -167,7 +167,7 @@ void FWK::Physics::PhysicsCharacterVirtualBase::DrawDebug(const JPH::ColorArg a_
 
     if (l_physicsManager.GetVALIsDisableDebugDraw()) { return; }
 
-    const auto l_debugRenderer = l_physicsManager.GetVALDebugRenderer().lock();
+    const auto& l_debugRenderer = l_physicsManager.GetVALDebugRenderer().lock();
 
     FWK_ASSERT_RETURN_IF(!l_debugRenderer, "PhysicsDebugRendererが無効なため、CharacterVirtualのデバッグ描画に失敗しました。");
 
@@ -280,7 +280,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyShapeChange()
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "CharacterVirtualが作成されていないため、Shape変更に失敗しました。", false);
 
-    const auto l_shape = CreateShape();
+    const auto& l_shape = CreateShape();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_shape, "変更後のCharacterVirtual用CapsuleShapeが無効です。", false);
 

@@ -52,7 +52,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // AssetPane + 未選択       : AssetPane_OnEmpty
     // AssetPane + フォルダ選択 : AssetPane_OnFolder
     // AssetPane + ファイル選択 : AssetPane_OnfFile(作成不可)
-    Enum::AssetBrowserPopupContextType l_createFolderContext = Enum::AssetBrowserPopupContextType::FolderPane_OnFolder;
+    auto l_createFolderContext = Enum::AssetBrowserPopupContextType::FolderPane_OnFolder;
 
     if (a_editorWindow.GetVALActivePane() == Enum::AssetBrowserActivePaneType::AssetPane)
     {
@@ -98,7 +98,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // 選択中のファイルがある場合のみ
     if (l_hasSelection  &&
         !l_containsRoot &&
-        l_io.KeyCtrl    && 
+        l_io.KeyCtrl    &&
         ImGui::IsKeyPressed(ImGuiKey_C, false))
     {
         HandleCopy(a_selectedFilePathList, l_fileOperation, l_clipboard);
@@ -321,7 +321,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(co
     l_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
 
     // ファイルっ名をバッファへコピー
-    const auto l_copySize = std::min(l_stem.size(), l_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
+    const auto& l_copySize = std::min(l_stem.size(), l_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
 
     std::copy_n(l_stem.begin(), l_copySize, l_renameState.m_inputBuffer.begin());
 
@@ -344,7 +344,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleRename(const st
     a_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
 
     // ファイル名をバッファへコピー
-    const auto l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
+    const auto& l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
 
     std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());
 }

@@ -125,7 +125,7 @@ void FWK::Graphics::UploadSystem::BeforSubmitResourceProcess(const TypeAlias::Co
 {
     // 命令を格納できるようにするためリセット
     a_copyCommandAllocator.Reset();
-    m_copyCommandList.Reset(a_copyCommandAllocator);
+    m_copyCommandList.Reset     (a_copyCommandAllocator);
 }
 void FWK::Graphics::UploadSystem::AfterSubmitResourceProcess(TypeAlias::CopyCommandAllocator& a_copyCommandAllocator)
 {

@@ -12,8 +12,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
     // std::filesystem::pathのイテレータは絶対パスの場合
     // ルート名(C:)の次にルートディレクトリ(/)をから文字列の要素として返す
     // proximateで"C:/.../Asset/" -> "Asset/"に変換する
-          std::error_code       l_errorCode   = {};
-    const std::filesystem::path l_displayPath = std::filesystem::proximate(l_breadcrumbPath, std::filesystem::current_path(), l_errorCode);
+          std::error_code l_errorCode   = {};
+    const auto&           l_displayPath = std::filesystem::proximate(l_breadcrumbPath, std::filesystem::current_path(), l_errorCode);
 
     ImGui::PushStyleColor(ImGuiCol_ChildBg, Constant::k_imguiDeepDarkColor);
 
@@ -69,7 +69,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
         // セグメント名を取得
         // l_pathElementはpathの要素一つ分(フォルダ名)
         // generic_string()でstd::stringへ変換
-        const auto& l_segmentName     = l_pathElement.generic_string();
+        const auto& l_segmentName     = l_pathElement.generic_string                           ();
         const auto& l_selectableLabel = l_segmentName + "##" + l_accumulatedPath.generic_string();
 
         // テキストサイズを取得

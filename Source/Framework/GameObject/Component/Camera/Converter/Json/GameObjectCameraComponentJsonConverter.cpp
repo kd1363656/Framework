@@ -15,7 +15,7 @@ void FWK::Converter::GameObjectCameraComponentJsonConverter::Deserialize(const n
 
 nlohmann::json FWK::Converter::GameObjectCameraComponentJsonConverter::Serialize(const GameObjectCameraComponent& a_gameObjectCameraComponent) const
 {
-    nlohmann::json l_rootJson = a_gameObjectCameraComponent.GameObjectComponentBase::Serialize();
+    auto l_rootJson = a_gameObjectCameraComponent.GameObjectComponentBase::Serialize();
 
     const auto& l_camera = a_gameObjectCameraComponent.GetREFCamera();
 

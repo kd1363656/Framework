@@ -151,7 +151,7 @@ FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVerte
 
     // 法線は通常の位置変換行列をそのまま使わない。
     // ufbx_matrix_for_normals()で法線用行列を作る
-    const auto l_normalMatrix = ufbx_matrix_for_normals(&a_fbxNode->geometry_to_world);
+    const auto& l_normalMatrix = ufbx_matrix_for_normals(&a_fbxNode->geometry_to_world);
 
     auto l_worldNormal = ufbx_transform_direction(&l_normalMatrix, l_localNormal);
 

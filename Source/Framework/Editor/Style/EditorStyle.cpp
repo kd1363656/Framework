@@ -2,7 +2,7 @@
 
 void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
 {
-    ImGuiStyle& l_style = ImGui::GetStyle();
+    auto& l_style = ImGui::GetStyle();
 
     // ImGui::Begin()で作られる通常ウィンドウ内部の余白。
     // Hierarchy、Inspector、Consoleなどのパネル内の詰まり具合に影響する。
@@ -226,7 +226,7 @@ void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
 }
 void FWK::Editor::EditorStyle::ApplyFont()
 {
-    auto& l_io = ImGui::GetIO();
+    const auto& l_io = ImGui::GetIO();
 
     FWK_ASSERT_RETURN_IF(!l_io.Fonts, "フォントが無効です、フォントの適用に失敗しました。");
 

@@ -231,12 +231,14 @@ void main(const uint3 a_groupID          : SV_GroupID,
     float l_meshletConeMINDot = k_meshletConeMAXNormalDot;
     
     // Cone Axisとの内積を取得する。
-    if (l_hasValidMeshletConeAxis && l_isFirstTriangleNormalValid)
+    if (l_hasValidMeshletConeAxis &&
+        l_isFirstTriangleNormalValid)
     {
         l_meshletConeMINDot = min(l_meshletConeMINDot, dot(l_meshletConeAxis, l_firstTriangleNormal) );
     }
     
-    if (l_hasValidMeshletConeAxis && l_isSecondTriangleNormalValid)
+    if (l_hasValidMeshletConeAxis &&
+        l_isSecondTriangleNormalValid)
     {
         l_meshletConeMINDot = min(l_meshletConeMINDot, dot(l_meshletConeAxis, l_secondTriangleNormal));
     }

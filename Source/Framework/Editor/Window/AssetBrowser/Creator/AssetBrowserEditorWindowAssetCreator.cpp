@@ -157,7 +157,6 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
 
     return l_result;
 }
-
 std::vector<FWK::Struct::AssetBrowserEditorWindowAssetCreationResult> FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreatePrefabFromGameObjectDrop(const std::weak_ptr<GameObject>&         a_droppedGameObject, 
                                                                                                                                                         const std::filesystem::path&             a_parentFolderPath, 
                                                                                                                                                                           Scene&                 a_scene,
@@ -203,7 +202,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenameScene(const std::f
 
     l_scene.INIT();
 
-    auto l_deserializedJson = Utility::LoadJsonFile(a_oldFilePath);
+    const auto& l_deserializedJson = Utility::LoadJsonFile(a_oldFilePath);
 
     if (l_deserializedJson.is_null()) { return; }
 
@@ -233,7 +232,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenameScene(const std::f
 std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetCreator::ResolveDefaultFilePath(const std::filesystem::path& a_parentFolderPath, const std::filesystem::path& a_extension, const std::string_view& a_defaultName)
 {
     // デフォルト名 + 拡張子を統合した希望パスを作る
-    const auto l_desiredFilePath = a_parentFolderPath / (std::string{ a_defaultName } + a_extension.string());
+    const auto& l_desiredFilePath = a_parentFolderPath / (std::string{ a_defaultName } + a_extension.string());
 
     return Utility::ResolveFilePathConflictByNumberSuffix(l_desiredFilePath);
 }

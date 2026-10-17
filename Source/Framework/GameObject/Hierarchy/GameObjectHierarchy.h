@@ -16,10 +16,10 @@ namespace FWK
     
         void INIT();
 
-        void DeserializeScene (const nlohmann::json&              a_rootJson,
-                               const nlohmann::json&              a_prefabJson,
-                               const SceneGameObjectPrefabSystem& a_prefabSystem,
-                                     Scene&                       a_scene);
+        void DeserializeScene(const nlohmann::json&              a_rootJson,
+                              const nlohmann::json&              a_prefabJson,
+                              const SceneGameObjectPrefabSystem& a_prefabSystem,
+                                    Scene&                       a_scene);
  
         void DeserializePrefab(const nlohmann::json& a_rootJson, const SceneGameObjectPrefabSystem& a_prefabSystem, Scene& a_scene);
 

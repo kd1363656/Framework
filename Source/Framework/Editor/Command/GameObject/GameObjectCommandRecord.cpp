@@ -11,8 +11,8 @@ void FWK::Editor::GameObjectCommandRecord::Capture(const std::weak_ptr<GameObjec
 
     if (!l_gameObject) { return; }
 
-    m_gameObjectUUID = l_gameObject->GetREFSceneInstanceUUID        ();
-    m_placement      = Utility::FetchVALGameObjectPlacement(l_gameObject, a_scene);
+    m_gameObjectUUID = l_gameObject->GetREFSceneInstanceUUID();
+    m_placement      = Utility::FetchVALGameObjectPlacement (l_gameObject, a_scene);
 
     auto& l_prefabSystem = a_scene.GetMutableREFGameObjectPrefabSystem();
 
@@ -81,7 +81,10 @@ void FWK::Editor::GameObjectCommandRecord::Restore(Scene& a_scene) const
     // 子孫はChildListから再帰的に作られ、シーンへの登録(保留リスト)もこの中で行われる
     const auto& l_prefabSystem = a_scene.GetREFGameObjectPrefabSystem();
 
-    l_gameObject->DeserializeScene(m_json, m_prefabNodeJson, l_prefabSystem, a_scene);
+    l_gameObject->DeserializeScene(m_json,
+                                   m_prefabNodeJson,
+                                   l_prefabSystem,
+                                   a_scene);
 
     if (l_parent)
     {

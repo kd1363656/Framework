@@ -22,7 +22,7 @@ JPH::Vec3 FWK::Physics::PhysicsCharacterVirtualAffectedByGravity::CalculateLinea
     const float l_verticalVelocityRelativeToGround = (l_currentVerticalVelocity - l_groundVelocity).Dot(l_up);
     const bool  l_isMovigTowardsGround             = l_verticalVelocityRelativeToGround < Constant::k_characterVirtualMovingTowardsGroundTolerance;
 
-    JPH::Vec3 l_nextLinearVelocity = l_currentVerticalVelocity;
+    auto l_nextLinearVelocity = l_currentVerticalVelocity;
 
     if (a_characterVirtual.GetGroundState() == JPH::CharacterBase::EGroundState::OnGround &&
         l_isMovigTowardsGround)

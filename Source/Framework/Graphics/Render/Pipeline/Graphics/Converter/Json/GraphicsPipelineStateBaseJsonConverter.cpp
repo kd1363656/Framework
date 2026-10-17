@@ -429,7 +429,7 @@ nlohmann::json FWK::Converter::GraphicsPipelineStateBaseJsonConverter::Serialize
 }
 nlohmann::json FWK::Converter::GraphicsPipelineStateBaseJsonConverter::SerializeRTVFormatList(const Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const
 {
-          auto  l_rootJsonArray = nlohmann::json::array                  ();
+          auto  l_rootJsonArray = nlohmann::json::array                          ();
     const auto& l_rtvFormatList = a_graphicsPipelineStateBase.GetREFRTVFormatList();
 
     for (const auto& l_rtvFormat : l_rtvFormatList)

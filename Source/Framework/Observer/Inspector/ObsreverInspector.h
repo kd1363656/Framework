@@ -22,7 +22,7 @@ namespace FWK
         {
                   bool  l_isChanged                        = false;
             const auto& l_stringValueBidirectionalRegistry = Utility::StringValueBidirectionalRegistry<Type>::GetInstance();
-                  auto& l_eventMap                         = a_observer.GetMutableREFEventMap();
+            const auto& l_eventMap                         = a_observer.GetREFEventMap                                   ();
 
             ImGui::PushID    (std::addressof(l_eventMap));
             ImGui::BeginGroup();

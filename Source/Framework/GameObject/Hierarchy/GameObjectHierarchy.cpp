@@ -309,7 +309,7 @@ void FWK::GameObjectHierarchy::RemoveChild(const std::weak_ptr<GameObject>& a_ch
  
     if (!l_child) { return; }
 
-    auto l_uuid = l_child->GetREFPrefabHierarchyNodeUUID();
+    const auto& l_uuid = l_child->GetREFPrefabHierarchyNodeUUID();
     
     if (l_uuid.is_nil()) { return; }
 

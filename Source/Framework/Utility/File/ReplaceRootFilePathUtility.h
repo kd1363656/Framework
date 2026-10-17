@@ -39,7 +39,7 @@ namespace FWK::Utility
         }
 
         // Old部分をNewRootへ置き換える
-        std::filesystem::path l_result = a_newRootDirectoryPath;
+        auto l_result = a_newRootDirectoryPath;
 
         // この時点でFilePathITRは
         // OldRootより後ろのComponentを指している

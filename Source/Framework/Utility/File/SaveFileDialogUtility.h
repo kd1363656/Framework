@@ -63,9 +63,8 @@ namespace FWK::Utility
 
             // 初期Folderとして指定されたPathが、
             // 実際に存在するFolderか確認する
-            if (!std::filesystem::is_directory(l_initialDirectoryPath,
-                                               l_errorCode) ||
-                                               l_errorCode)
+            if (!std::filesystem::is_directory(l_initialDirectoryPath, l_errorCode) ||
+                l_errorCode)
             {
                 return false;
             }
@@ -98,7 +97,7 @@ namespace FWK::Utility
         // Windows側が確保したメモリなので、
         // 最後にCoTaskMemFree()で解放する必要がある
         // ただし解放する前にstd::filesystem::pathへコピーする
-        std::filesystem::path l_filePath = l_selectedFilePath;
+        const std::filesystem::path& l_filePath = l_selectedFilePath;
 
         CoTaskMemFree(l_selectedFilePath);
 

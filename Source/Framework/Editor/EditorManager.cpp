@@ -151,7 +151,8 @@ void FWK::Editor::EditorManager::DrawEditor()
 
     l_imguiDragDropPayloadStorage.BeginFrame();
 
-    if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_P, false))
+    if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) &&
+        ImGui::IsKeyPressed(ImGuiKey_P, false))
     {
         m_isDisableDrawEditor = m_isDisableDrawEditor ? false : true;
 
@@ -222,13 +223,13 @@ bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::CBVS
 
     const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
     const auto& l_deviceWrapper   = l_graphicsManager.GetREFDevice        ();
-    const auto& l_device          = l_deviceWrapper.GetREFDevice              ();
+    const auto& l_device          = l_deviceWrapper.GetREFDevice          ();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_device, "Deviceが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
 
     // コピー元のディスクリプタヒープハンドルとコピー先のディスクリプタヒープハンドルを取得
-    const auto l_sourceCPUDescriptorHandle      = a_sourceCBVSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(a_sourceSRVDescriptorIndex);
-    const auto l_destinationCPUDescriptorHandle = m_imGuiCBVSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle (a_imGuiSRVDescriptorIndex);
+    const auto& l_sourceCPUDescriptorHandle      = a_sourceCBVSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(a_sourceSRVDescriptorIndex);
+    const auto& l_destinationCPUDescriptorHandle = m_imGuiCBVSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle (a_imGuiSRVDescriptorIndex);
 
     // SRVDescriptorだけをコピー
     l_device->CopyDescriptorsSimple(k_copySRVDescriptorCount,
@@ -268,7 +269,7 @@ ImTextureID FWK::Editor::EditorManager::FetchVALImGuiTextureID(const TypeAlias::
 {
     if (a_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex) { return {}; }
 
-    const auto l_gpuDescriptorHandle = m_imGuiCBVSRVUAVDescriptorPool.FetchVALGPUDescriptorHandle(a_imGuiSRVDescriptorIndex);
+    const auto& l_gpuDescriptorHandle = m_imGuiCBVSRVUAVDescriptorPool.FetchVALGPUDescriptorHandle(a_imGuiSRVDescriptorIndex);
 
     return l_gpuDescriptorHandle.ptr;
 }
@@ -345,7 +346,7 @@ void FWK::Editor::EditorManager::DrawDockingSpace() const
     // DockSpace全体を包むルートウィンドウ(親ウィンドウ)を画面サイズで作成
     ImGuiWindowFlags l_windowFlag = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
-    const ImGuiViewport* l_viewPort = ImGui::GetMainViewport();
+    const auto* l_viewPort = ImGui::GetMainViewport();
 
     // メインウィンドウを取得してサイズ、描画位置を現在のウィンドウサイズに合わせる
     ImGui::SetNextWindowPos     (l_viewPort->WorkPos);
@@ -373,8 +374,8 @@ void FWK::Editor::EditorManager::DrawDockingSpace() const
     ImGui::PopStyleVar(k_dockingStyleVarPopCount);
 
     // "DockSpace"の作成
-    ImGuiID l_dockSpaceID = ImGui::GetID(k_dockingSpaceName);
-    ImVec2  l_size        = {};
+    auto   l_dockSpaceID = ImGui::GetID(k_dockingSpaceName);
+    ImVec2 l_size        = {};
 
     ImGui::DockSpace(l_dockSpaceID, l_size, ImGuiDockNodeFlags_None);
     ImGui::End      ();

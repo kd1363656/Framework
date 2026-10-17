@@ -63,7 +63,7 @@ namespace FWK
         {
             if (a_uuid.is_nil()) { return {}; }
 
-            const auto l_itr = m_uuidMap.find(a_uuid);
+            const auto& l_itr = m_uuidMap.find(a_uuid);
 
             if (l_itr == m_uuidMap.end()) { return {}; }
 

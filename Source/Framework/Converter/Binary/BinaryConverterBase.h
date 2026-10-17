@@ -81,7 +81,7 @@ namespace FWK::Converter
         void WriteBinaryData(const std::uint64_t& a_writeDataCount, const Type* a_sourceData, std::uint64_t& a_memoryWriteOffset) const
         {
             // 書き込みデータの型サイズと個数から、実際にコピーするバイト数を計算する
-            const auto l_writeDataSize = CalculateBinaryDataSize<Type>(a_writeDataCount);
+            const auto& l_writeDataSize = CalculateBinaryDataSize<Type>(a_writeDataCount);
 
             // 書き込むバイト数が0の場合は、何もせずに終了する
             if (l_writeDataSize == k_emptyWriteDataSize) { return; }
@@ -126,7 +126,7 @@ namespace FWK::Converter
         void ReadBinaryData(const std::uint64_t& a_readDataCount, std::uint64_t& a_memoryReadOffset, Type* a_destinationData) const
         {
             // 読み込むデータの型サイズと個数から、実際にコピーするバイト数を計算する
-            const auto l_readDataSize = CalculateBinaryDataSize<Type>(a_readDataCount);
+            const auto& l_readDataSize = CalculateBinaryDataSize<Type>(a_readDataCount);
 
             // 読み込むバイト数が0の場合は、何もせずに終了する
             if (l_readDataSize == k_emptyReadDataSize) { return; }

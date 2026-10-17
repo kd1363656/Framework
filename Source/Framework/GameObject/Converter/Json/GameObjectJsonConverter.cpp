@@ -129,8 +129,8 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::Serialize(const GameObje
  
     // ComponentList / ChildListのデシリアライズ
     // 各Serialize()が {ComponentList:[...]} / {ChildList:[...]} を返すのでそのままマージする
-    auto& l_componentContainer = a_gameObject.GetREFComponentContainer();
-    auto& l_hierarchy          = a_gameObject.GetREFHierarchy         ();
+    const auto& l_componentContainer = a_gameObject.GetREFComponentContainer();
+    const auto& l_hierarchy          = a_gameObject.GetREFHierarchy         ();
 
     Utility::UpdateJson(l_componentContainer.Serialize(), l_rootJson);
     Utility::UpdateJson(l_hierarchy.Serialize(a_prefabSystem), l_rootJson);
@@ -208,8 +208,8 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeDIFF(const nloh
  
     // ComponentList / ChildList の差分
     // 基底Jsonを丸ごと渡し、各Converterが自分のキーを読んで差分を検出する
-    auto& l_componentContainer = a_gameObject.GetREFComponentContainer();
-    auto& l_hierarchy          = a_gameObject.GetREFHierarchy         ();
+    const auto& l_componentContainer = a_gameObject.GetREFComponentContainer();
+    const auto& l_hierarchy          = a_gameObject.GetREFHierarchy         ();
 
     l_diffJson[Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey] = l_componentContainer.SerializeDiff(a_baseJson); 
     l_diffJson[Constant::k_gameObjectHierarchyJsonConverterChildListJsonKey]              = l_hierarchy.SerializeDiff         (a_baseJson, a_prefabSystem);
@@ -273,7 +273,7 @@ void FWK::Converter::GameObjectJsonConverter::DeserializeCommon(const nlohmann::
     // フィールド解決用にJsonを優先順位でマージ
     // 優先順位: Diff(シーン差分) > rootJson直下(フル形式/メタ情報) > baseJson(Prefab基底)
     // 先に低い優先度を入れて後から高い優先度で上書きする
-    nlohmann::json l_mergedJson = a_baseJson.is_object() ? a_baseJson : nlohmann::json{};
+    auto l_mergedJson = a_baseJson.is_object() ? a_baseJson : nlohmann::json{};
  
     if (a_rootJson.is_object())
     {

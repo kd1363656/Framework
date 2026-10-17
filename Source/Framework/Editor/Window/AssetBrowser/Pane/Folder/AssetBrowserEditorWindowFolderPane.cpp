@@ -10,9 +10,9 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Deserialize(const nlohmann
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWindow& a_editorWindow)
 {
-    const auto& l_paneSplitter = a_editorWindow.GetREFPaneSplitter   ();
-    const auto& l_popupDrawer  = a_editorWindow.GetREFPopupDrawer    ();
-    const auto  l_paneWidth    = l_paneSplitter.GetVALPrimaryPaneSize();
+    const auto& l_paneSplitter = a_editorWindow.GetREFPaneSplitter       ();
+          auto& l_popupDrawer  = a_editorWindow.GetMutableREFPopupDrawer ();
+    const auto  l_paneWidth    = l_paneSplitter.GetVALPrimaryPaneSize    ();
 
     // ImGui::BeginChild()は
     // 現在のWindowの内部にもう一つの描画領域を作成するAPI
@@ -31,8 +31,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWin
     // ImGui::IsWindowHovered : このChildWindow上にマウスがあるか
     // ImGui::IsMouseClicked  : このフレームでクリックされたか
     // 左クリック・右クリックどちらも出アクティブPaneを切り替える
-    if (ImGui::IsWindowHovered()                      &&
-        (ImGui::IsMouseClicked(ImGuiMouseButton_Left, false) || 
+    if (ImGui::IsWindowHovered()                             &&
+        (ImGui::IsMouseClicked(ImGuiMouseButton_Left, false) ||
         ImGui::IsMouseClicked(ImGuiMouseButton_Right, false)))
     {
         a_editorWindow.SetActivePane(Enum::AssetBrowserActivePaneType::FolderPane);
@@ -100,7 +100,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionUp(AssetBrows
     const auto& l_cursorPath              = l_currentSelectFolderPath.empty() ? l_displayedFolderList.front() : l_currentSelectFolderPath;
 
     // カーソル位置をリストから検索
-    auto l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
+    const auto& l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
 
     // リストに現在選択中のパスが見つからない場合は
     // 先頭を現在選択中のパスとして扱う
@@ -119,7 +119,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionUp(AssetBrows
     if (l_cursorITR == l_displayedFolderList.begin()) { return; }
 
     // 前のノードを取得
-          auto  l_prevITR  = std::prev(l_cursorITR);
+    const auto& l_prevITR  = std::prev(l_cursorITR);
     const auto& l_prevPath = *l_prevITR;
 
     // 範囲選択モード(Ctrl / Shift + 矢印)
@@ -179,7 +179,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionDown(AssetBro
     const auto& l_cursorPath              = l_currentSelectFolderPath.empty() ? l_displayedFolderList.front() : l_currentSelectFolderPath;
 
     // カーソル位置をリストから検索
-    auto l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
+    const auto& l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
 
     // リストに現在選択中のパスが見つからない場合は
     // 先頭を現在選択中のパスとして扱う
@@ -195,7 +195,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionDown(AssetBro
     }
 
     // 次のノードを取得
-    auto l_nextITR = std::next(l_cursorITR);
+    const auto& l_nextITR = std::next(l_cursorITR);
 
     // 既に末尾なら何もしない
     if (l_nextITR == l_displayedFolderList.end()) { return; }
@@ -375,7 +375,7 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFolderPane::FetchVALO
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::filesystem::path& a_currentFolderPath, AssetBrowserEditorWindow& a_editorWindow)
 {
     const auto& l_folderHierarchyMap = a_editorWindow.GetREFFolderHierarchyMap();
-    const auto& l_folderHierarchyITR = l_folderHierarchyMap.find(a_currentFolderPath);
+    const auto& l_folderHierarchyITR = l_folderHierarchyMap.find              (a_currentFolderPath);
 
     // 子フォルダが存在するかどうか
     // マップにエントリが存在しない、またはエントリのvectorが空の場合は子なし
@@ -556,7 +556,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
             // マウスカーソルに重ねないようにオフセットを掛ける
             const auto& l_mousePosition = ImGui::GetMousePos();
 
-            const ImVec2& l_iconPosition  = l_mousePosition + k_banIconOffset;
+            const auto& l_iconPosition = l_mousePosition + k_banIconOffset;
 
             const auto& l_redColor = Constant::k_imguiDangerColor * Constant::k_imguiImVec4ToImU32;
 
@@ -689,7 +689,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // 初回フレーム(フォーカス前)のクリックで
         // ドフォルト名のまま確定してしまう
         if (l_isEnterPressed          ||
-           (l_renameState.m_isFocused && 
+           (l_renameState.m_isFocused &&
            (!ImGui::IsItemFocused()   ||
             l_isEmptySpaceClick)))
         {
@@ -776,7 +776,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     }
 
     const auto& l_contextMenuOpenPopupLabel = std::string{ k_contextMenuOpenPopupLabel } + a_currentFolderPath.string();
-    const auto& l_popupDrawer               = a_editorWindow.GetREFPopupDrawer                                       ();
+          auto& l_popupDrawer               = a_editorWindow.GetMutableREFPopupDrawer                                ();
 
     // 右クリック : 選択 + ポップアップ
     // 仕様 : フォルダ上を右クリックで現在選択中のフォルダとして扱い

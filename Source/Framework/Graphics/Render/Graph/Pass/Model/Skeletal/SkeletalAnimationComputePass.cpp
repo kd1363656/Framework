@@ -151,7 +151,11 @@ bool FWK::Graphics::SkeletalAnimationComputePass::UploadBoneMatrix(const Compute
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const RootSignature& a_rootSignature, const ComputeCommandList& a_computeCommandList, const SkeletalAnimationModelRecord::ModelData& a_modelData, SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader& a_constantBufferUploader, SkeletalAnimationPlayer::FrameData& a_frameData)
+bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const RootSignature&                                                   a_rootSignature,
+                                                                         const ComputeCommandList&                                              a_computeCommandList,
+                                                                         const SkeletalAnimationModelRecord::ModelData&                         a_modelData,
+                                                                         SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader& a_constantBufferUploader,
+                                                                         SkeletalAnimationPlayer::FrameData&                                    a_frameData)
 {
     const auto& l_modelMeshList           = a_modelData.m_modelMeshList;
           auto& l_skinnedVertexBufferList = a_frameData.m_skinnedVertexBufferList;
@@ -243,7 +247,6 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const R
 
     return true;
 }
-
 bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(const RootSignature&                                                              a_rootSignature,
                                                                               const ComputeCommandList&                                                         a_computeCommandList,
                                                                               const SkeletalAnimationModelRecord::ModelData&                                    a_modelData,

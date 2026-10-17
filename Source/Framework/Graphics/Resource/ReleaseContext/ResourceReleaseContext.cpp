@@ -80,7 +80,7 @@ bool FWK::Graphics::ResourceReleaseContext::IsValidDescriptorIndexReleaseRecord(
 
 void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableGPUResources(const UINT64& a_completedFenceValue)
 {
-    std::size_t l_index = k_firstReleaseRecordIndex;
+    auto l_index = k_firstReleaseRecordIndex;
 
     while (l_index < m_gpuResourceReleaseRecordList.size())
     {

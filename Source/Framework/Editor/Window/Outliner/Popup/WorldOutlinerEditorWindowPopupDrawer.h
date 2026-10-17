@@ -19,25 +19,25 @@ namespace FWK::Editor
         void DrawScenePopup(const std::string_view&          a_popupLabel,
                                   Scene&                     a_scene,     
                                   WorldOutlinerEditorWindow& a_editorWindow, 
-                                  EditorManager&             a_editorManager) const;
+                                  EditorManager&             a_editorManager);
 
         void DrawGameObjectPopup(const std::weak_ptr<GameObject>& a_gameObject, 
                                  const std::string_view&          a_popupLabel,
                                        Scene&                     a_scene,
                                        WorldOutlinerEditorWindow& a_editorWindow,
-                                       EditorManager&             a_editorManager) const;
+                                       EditorManager&             a_editorManager);
 
         void DrawEmptySpacePopup(const std::string_view&          a_popupLabel, 
                                        Scene&                     a_scene,
                                        WorldOutlinerEditorWindow& a_editorWindow, 
-                                       EditorManager&             a_editorManager) const;
+                                       EditorManager&             a_editorManager);
  
     private:
  
         void DrawCreateEmptyGameObjectMenu(const std::weak_ptr<GameObject>& a_parent,
                                                  Scene&                     a_scene, 
                                                  WorldOutlinerEditorWindow& a_editorWindow, 
-                                                 EditorManager&             a_editorManager) const;
+                                                 EditorManager&             a_editorManager);
  
         static constexpr std::string_view k_createEmptyGameObjectMenuLabel = "空のゲームオブジェクトを作成";
         static constexpr std::string_view k_renameMenuLabel                = "名前変更";
@@ -54,5 +54,7 @@ namespace FWK::Editor
         static constexpr std::string_view k_pasteShortcutLabel     = "Ctrl + V";
         static constexpr std::string_view k_duplicateShortcutLabel = "Ctrl + D";
         static constexpr std::string_view k_deleteShortcutLabel    = "Del";
+
+        EditorPopupNavigator m_popupNavigator = {};
     };
 }

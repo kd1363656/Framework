@@ -35,7 +35,7 @@ nlohmann::json FWK::Converter::RenderTargetPassTextureJsonConverter::Serialize(c
 
     l_rootJson[k_formatJsonKey]                      = a_renderTargetPassTexture.GetVALFormat                     ();
     l_rootJson[k_renderGraphRenderTargetTypeJsonKey] = a_renderTargetPassTexture.GetVALRenderGraphRenderTargetType();
-    l_rootJson[k_widthJsonKey]                       = a_renderTargetPassTexture.GetVALWidth                          ();
+    l_rootJson[k_widthJsonKey]                       = a_renderTargetPassTexture.GetVALWidth                      ();
     l_rootJson[k_heightJsonKey]                      = a_renderTargetPassTexture.GetVALHeight                     ();
     l_rootJson[k_isFixedSizeJsonKey]                 = a_renderTargetPassTexture.GetVALIsFixedSize                ();
 

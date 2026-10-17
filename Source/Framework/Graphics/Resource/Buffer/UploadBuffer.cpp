@@ -59,12 +59,12 @@ bool FWK::Graphics::UploadBuffer::Create(const Device& a_device, const UINT64& a
     // UploadBufferはCPUでデータを書き込み、
     // その後CopyBufferRegionやCopyTextureRegionで本番リソースへ転送するため、
     // D3D12_HEAP_TYPE_UPLOADで作成する
-    auto l_heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD, l_nodeMask, l_nodeMask);
+    const auto& l_heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD, l_nodeMask, l_nodeMask);
 
     // D3D12_RESOURCE_DESCについての説明
     // Buffer(作成するバッファサイズ)
     // 今回はテクスチャではなく単純な線形メモリとして扱うアップロード用バッファを作成する。
-    auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(a_bufferSize);
+    const auto& l_resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(a_bufferSize);
 
     // CreateCommittedResource(ヒープ設定、
     //                         ヒープ追加フラグ、
@@ -139,7 +139,11 @@ bool FWK::Graphics::UploadBuffer::Map()
 
 void FWK::Graphics::UploadBuffer::UnMap()
 {
-    if (!m_uploadBuffer || !m_mappedData) { return; }
+    if (!m_uploadBuffer ||
+        !m_mappedData)
+    {
+        return;
+    }
 
     m_uploadBuffer->Unmap(Constant::k_firstSubresourceIndex, nullptr);
 
