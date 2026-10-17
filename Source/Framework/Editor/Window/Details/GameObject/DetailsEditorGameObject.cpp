@@ -62,5 +62,5 @@ void FWK::Editor::DetailsEditorGameObject::DrawTransformComponent(const FWK::Gam
     auto& l_editorManager  = EditorManager::GetInstance                 ();
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<EditGameObjectTransformComponentCommand>(m_editBeginTransformJson, l_editEndTransformJson, a_gameObject.GetREFSceneInstanceUUID());
+    l_undoRedoSystem.PushUndoCommand<EditGameObjectTransformComponentSceneCommand>(m_editBeginTransformJson, l_editEndTransformJson, a_gameObject.GetREFSceneInstanceUUID());
 }

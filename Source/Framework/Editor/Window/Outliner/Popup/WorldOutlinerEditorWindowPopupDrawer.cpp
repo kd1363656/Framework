@@ -170,5 +170,5 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawCreateEmptyGameObjec
 
     const std::vector<std::weak_ptr<GameObject>> l_createdGameObjectList = { l_createdGameObject };
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdGameObjectList);
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectSceneCommand>(l_createdGameObjectList);
 }

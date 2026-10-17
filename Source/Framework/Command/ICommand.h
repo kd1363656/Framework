@@ -11,5 +11,7 @@ namespace FWK
 
         virtual void Undo() = 0;
         virtual void Redo() = 0;
+
+        FWK_DEFINE_TYPE_INFO_ROOT(ICommand)
     };
 }

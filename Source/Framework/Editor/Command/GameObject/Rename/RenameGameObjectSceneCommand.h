@@ -2,12 +2,12 @@
 
 namespace FWK::Editor
 {
-    class RenameGameObjectCommand final : public ICommand
+    class RenameGameObjectSceneCommand final : public SceneCommandBase
     {
     public:
 
-         RenameGameObjectCommand(const std::string& a_beforeName, const std::string& a_afterName, const boost::uuids::uuid& a_gameObjectUUID);
-        ~RenameGameObjectCommand() override;
+         RenameGameObjectSceneCommand(const std::string& a_beforeName, const std::string& a_afterName, const boost::uuids::uuid& a_gameObjectUUID);
+        ~RenameGameObjectSceneCommand() override;
 
         void Undo() override;
         void Redo() override;

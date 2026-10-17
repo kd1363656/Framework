@@ -1,24 +1,24 @@
-﻿#include "EditGameObjectTransformComponentCommand.h"
+﻿#include "EditGameObjectTransformComponentSceneCommand.h"
 
-FWK::Editor::EditGameObjectTransformComponentCommand::EditGameObjectTransformComponentCommand(const nlohmann::json& a_beforeJson, const nlohmann::json& a_afterJson, const boost::uuids::uuid& a_gameObjectUUID) :
+FWK::Editor::EditGameObjectTransformComponentSceneCommand::EditGameObjectTransformComponentSceneCommand(const nlohmann::json& a_beforeJson, const nlohmann::json& a_afterJson, const boost::uuids::uuid& a_gameObjectUUID) :
     m_beforeJson(a_beforeJson),
     m_afterJson (a_afterJson),
 
     m_gameObjectUUID(a_gameObjectUUID)
 {}
-FWK::Editor::EditGameObjectTransformComponentCommand::~EditGameObjectTransformComponentCommand() = default;
+FWK::Editor::EditGameObjectTransformComponentSceneCommand::~EditGameObjectTransformComponentSceneCommand() = default;
 
-void FWK::Editor::EditGameObjectTransformComponentCommand::Undo()
+void FWK::Editor::EditGameObjectTransformComponentSceneCommand::Undo()
 {
     ApplyJson(m_beforeJson);
 }
 
-void FWK::Editor::EditGameObjectTransformComponentCommand::Redo()
+void FWK::Editor::EditGameObjectTransformComponentSceneCommand::Redo()
 {
     ApplyJson(m_afterJson);
 }
 
-void FWK::Editor::EditGameObjectTransformComponentCommand::ApplyJson(const nlohmann::json& a_json) const
+void FWK::Editor::EditGameObjectTransformComponentSceneCommand::ApplyJson(const nlohmann::json& a_json) const
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();

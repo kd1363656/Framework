@@ -2,12 +2,12 @@
 
 namespace FWK::Editor
 {
-    class EditGameObjectTransformComponentCommand final : public ICommand
+    class EditGameObjectTransformComponentSceneCommand final : public SceneCommandBase
     {
     public:
 
-         EditGameObjectTransformComponentCommand(const nlohmann::json& a_beforeJson, const nlohmann::json& a_afterJson, const boost::uuids::uuid& a_gameObjectUUID);
-        ~EditGameObjectTransformComponentCommand() override;
+         EditGameObjectTransformComponentSceneCommand(const nlohmann::json& a_beforeJson, const nlohmann::json& a_afterJson, const boost::uuids::uuid& a_gameObjectUUID);
+        ~EditGameObjectTransformComponentSceneCommand() override;
 
         void Undo() override;
         void Redo() override;

@@ -2,12 +2,12 @@
 
 namespace FWK::Editor
 {
-    class ReparentGameObjectCommand final : public ICommand
+    class ReparentGameObjectSceneCommand final : public SceneCommandBase
     {
     public:
 
-         ReparentGameObjectCommand(const boost::uuids::uuid& a_gameObjectUUID, const Struct::GameObjectPlacement& a_beforePlacement, const Struct::GameObjectPlacement& a_afterPlacement);
-        ~ReparentGameObjectCommand() override;
+         ReparentGameObjectSceneCommand(const boost::uuids::uuid& a_gameObjectUUID, const Struct::GameObjectPlacement& a_beforePlacement, const Struct::GameObjectPlacement& a_afterPlacement);
+        ~ReparentGameObjectSceneCommand() override;
 
         void Undo() override;
         void Redo() override;

@@ -374,7 +374,18 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
         l_label = k_renameInputTextLabel;
     }
 
-    const auto& l_nodeLabel = std::string{ Constant::k_imguiFontAwesomeSceneIcon } + " " + l_label;
+    // 保存していない変更があればシーン名の後ろに「*」を付ける
+    // 例 : シーン名"Title"で何かを動かした → "Title*"、保存すると"Title"に戻る
+    const auto& l_undoRedoSystem = a_editorManager.GetREFUndoRedoSystem();
+
+    if (l_undoRedoSystem.IsSceneModified())
+    {
+        l_label += k_sceneModifiedMark;
+    }
+
+    // ImGuiのIDはラベルから作られるため、「*」が付いてもIDが変わらないように
+    // 「###」以降の固定の文字列だけをIDに使う
+    const auto& l_nodeLabel = std::string{ Constant::k_imguiFontAwesomeSceneIcon } + l_label + std::string{ k_sceneNodeIDLabel };
 
     // 前フレームでGameObjectが一つも無かった場合に
     // 初めてGameObjectが追加されたならシーンノードを自動で開く
@@ -444,16 +455,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
         if (const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
             !l_createdList.empty())
         {
-            l_gameObjectSelectionState.ClearSelectedGameObjectList();
- 
-            for (const auto& l_created : l_createdList)
-            {
-                l_gameObjectSelectionState.AddSelectedGameObject(l_created);
-            }
-
-            auto& l_undoRedoSystem = a_editorManager.GetMutableREFUndoRedoSystem();
-
-            l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdList);
+            SelectAndRecordCreatedGameObjects(l_createdList, a_editorManager);
         }
     }
 
@@ -898,22 +900,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
 
     if (l_createdList.empty()) { return; }
 
-    auto& l_editorManager            = EditorManager::GetInstance                           ();
-    auto& l_gameObjectSelectionState = l_editorManager.GetMutableREFGameObjectSelectionState();
- 
-    l_gameObjectSelectionState.ClearSelectedGameObjectList();
- 
-    for (const auto& l_created : l_createdList)
-    {
-        // プレハブファイルから作成したゲームオブジェクトを選択状態にする
-        l_gameObjectSelectionState.AddSelectedGameObject(l_created);
-    }
-
-    // 生成をUndoRedo履歴へ登録する
+    // 作成したゲームオブジェクトを選択状態にし、生成をUndoRedo履歴へ登録する
     // 親(ドロップ先のGameObject)と並び順はコマンドが作成直後の状態から記録する
-    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
-
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdList);
+    SelectAndRecordCreatedGameObjects(l_createdList, EditorManager::GetInstance());
 
     // 子が追加されたのでドロップ先ノードを開いた状態にして結果を見せる
     if (const auto& l_targetGameObject = a_targetGameObject.lock();
@@ -951,21 +940,28 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
  
     if (l_createdList.empty()) { return; }
  
+    // 作成したゲームオブジェクトを選択状態にし、生成をUndoRedo履歴へ登録する
+    // 空白へのドロップなので親はなし
+    SelectAndRecordCreatedGameObjects(l_createdList, a_editorManager);
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::SelectAndRecordCreatedGameObjects(const std::vector<std::weak_ptr<GameObject>>& a_createdList, EditorManager& a_editorManager) const
+{
+    // ドロップで作成したゲームオブジェクトだけを選択状態にする
     auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
- 
+
     l_gameObjectSelectionState.ClearSelectedGameObjectList();
- 
-    for (const auto& l_created : l_createdList)
+
+    for (const auto& l_created : a_createdList)
     {
-        // プレハブファイルから作成したゲームオブジェクトを選択状態にする
         l_gameObjectSelectionState.AddSelectedGameObject(l_created);
     }
 
     // 生成をUndoRedo履歴へ登録する
-    // 空白へのドロップなので親はなし
+    // 親と並び順はコマンドが作成直後の状態から記録するので、ここでは作成したリストだけを渡す
     auto& l_undoRedoSystem = a_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdList);
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectSceneCommand>(a_createdList);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const

@@ -1,26 +1,26 @@
-﻿#include "ReparentGameObjectCommand.h"
+﻿#include "ReparentGameObjectSceneCommand.h"
 
-FWK::Editor::ReparentGameObjectCommand::ReparentGameObjectCommand(const boost::uuids::uuid& a_gameObjectUUID, const Struct::GameObjectPlacement& a_beforePlacement, const Struct::GameObjectPlacement& a_afterPlacement) :
+FWK::Editor::ReparentGameObjectSceneCommand::ReparentGameObjectSceneCommand(const boost::uuids::uuid& a_gameObjectUUID, const Struct::GameObjectPlacement& a_beforePlacement, const Struct::GameObjectPlacement& a_afterPlacement) :
     m_gameObjectUUID(a_gameObjectUUID),
 
     m_beforePlacement(a_beforePlacement),
     m_afterPlacement (a_afterPlacement)
 {}
-FWK::Editor::ReparentGameObjectCommand::~ReparentGameObjectCommand() = default;
+FWK::Editor::ReparentGameObjectSceneCommand::~ReparentGameObjectSceneCommand() = default;
 
-void FWK::Editor::ReparentGameObjectCommand::Undo()
+void FWK::Editor::ReparentGameObjectSceneCommand::Undo()
 {
     // 変更前の親と兄弟の並び順へ戻す
     ApplyPlacement(m_beforePlacement);
 }
 
-void FWK::Editor::ReparentGameObjectCommand::Redo()
+void FWK::Editor::ReparentGameObjectSceneCommand::Redo()
 {
     // 変更後の親と兄弟の並び順へ進める
     ApplyPlacement(m_afterPlacement);
 }
 
-void FWK::Editor::ReparentGameObjectCommand::ApplyPlacement(const Struct::GameObjectPlacement& a_placement) const
+void FWK::Editor::ReparentGameObjectSceneCommand::ApplyPlacement(const Struct::GameObjectPlacement& a_placement) const
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();

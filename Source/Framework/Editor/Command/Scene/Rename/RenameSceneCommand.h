@@ -2,7 +2,7 @@
 
 namespace FWK::Editor
 {
-    class RenameSceneCommand final : public ICommand
+    class RenameSceneCommand final : public SceneCommandBase
     {
     public:
 

@@ -58,9 +58,7 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::Draw(AssetBrowserE
     }
 
     // キャンセルボタンの横幅を事前に決める
-    // Buttonの横幅は
-    // テキスト幅 + 左側FramePadding.x + 右側FramePadding.xとなる
-    const float l_cancelButtonWidth = ImGui::CalcTextSize   (k_cancelLabel.data()).x + ImGui::GetStyle().FramePadding.x * k_framePaddingBothSidesNUM;
+    const float l_cancelButtonWidth = Utility::IMGUIFetchButtonWidth(k_cancelLabel);
     const auto* l_mainViewport      = ImGui::GetMainViewport();
 
     if (!l_mainViewport)

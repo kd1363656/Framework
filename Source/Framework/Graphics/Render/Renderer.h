@@ -48,24 +48,9 @@ namespace FWK::Graphics
 
             if (!l_pipelineState) { return {}; }
 
-
-            const auto* l_currentINFO  = &l_pipelineState->GetREFRuntimeTypeINFO();
-            const auto& l_baseTypeINFO = PipelineStateType::GetREFTypeINFO      ();
-                  bool  l_isDeriveFrom = false;
-
-            while (l_currentINFO)
-            {
-                if (l_currentINFO->k_staticTypeID == l_baseTypeINFO.k_staticTypeID)
-                {
-                    l_isDeriveFrom = true;
-                }
-
-                l_currentINFO = l_currentINFO->k_baseINFO;
-            }
-
             // もし基底クラスの型情報と、派生クラスの型情報が一致したらキャスト
             // 一致しなければreturn
-            if (!l_isDeriveFrom) { return {}; }
+            if (!Utility::IsDerivedTypeINFO(l_pipelineState->GetREFRuntimeTypeINFO(), PipelineStateType::GetREFTypeINFO())) { return {}; }
 
             return std::static_pointer_cast<PipelineStateType>(l_pipelineState);
         }

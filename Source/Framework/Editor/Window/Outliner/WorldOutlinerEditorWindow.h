@@ -51,6 +51,8 @@ namespace FWK::Editor
         void HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene&         a_scene);
         void HandlePrefabFileDropTarget(      Scene&                     a_scene,            EditorManager& a_editorManager);
 
+        void SelectAndRecordCreatedGameObjects(const std::vector<std::weak_ptr<GameObject>>& a_createdList, EditorManager& a_editorManager) const;
+
         void PushSelectionChangeCommand(const bool                        a_beforeIsSceneSelected,
                                         std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
                                         EditorGameObjectSelectionState&   a_gameObjectSelectionState,
@@ -80,6 +82,8 @@ namespace FWK::Editor
          
         static constexpr std::string_view k_editorName                        = "アウトライナー";
         static constexpr std::string_view k_emptySceneLabel                   = "Untitled";
+        static constexpr std::string_view k_sceneModifiedMark                 = "*";
+        static constexpr std::string_view k_sceneNodeIDLabel                  = "###WorldOutlinerSceneNode";
         static constexpr std::string_view k_thisWindowExplanationLabel        = "アウトライナーでは現在読み込んでいるシーン、シーンに含まれるゲームオブジェクトを見ることができ\n親子関係を結ぶ、名前を変える、シーンからゲームオブジェクトを削除することができるウィンドウ。";
         static constexpr std::string_view k_noCurrentSceneLabel               = "現在読み込まれているシーンはありません。";
         static constexpr std::string_view k_gameObjectDragDropZoneBeforeLabel = "Before";

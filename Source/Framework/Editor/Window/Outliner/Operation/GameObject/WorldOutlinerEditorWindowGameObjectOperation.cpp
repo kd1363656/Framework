@@ -21,7 +21,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::RenameGameObject
     auto& l_editorManager  = EditorManager::GetInstance                 ();
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<RenameGameObjectCommand>(l_beforeName, a_newName, l_gameObject->GetREFSceneInstanceUUID());
+    l_undoRedoSystem.PushUndoCommand<RenameGameObjectSceneCommand>(l_beforeName, a_newName, l_gameObject->GetREFSceneInstanceUUID());
 }
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroySelectedGameObjects(EditorGameObjectSelectionState& a_gameObjectSelectionState) const
 {
@@ -57,7 +57,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroySelectedG
     auto& l_editorManager  = EditorManager::GetInstance                 ();
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.ExecuteUndoCommand<DestroyGameObjectCommand>(l_destroyList);
+    l_undoRedoSystem.ExecuteUndoCommand<DestroyGameObjectSceneCommand>(l_destroyList);
 }
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObject(const std::weak_ptr<GameObject>& a_targetGameObject, const std::weak_ptr<GameObject>& a_moveGameObject, Scene& a_scene) const
 {
@@ -305,7 +305,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DuplicateSelecte
     auto& l_editorManager  = EditorManager::GetInstance                 ();
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_duplicatedList);
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectSceneCommand>(l_duplicatedList);
 }
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects(WorldOutlinerEditorWindowClipboard& a_clipboard, EditorGameObjectSelectionState& a_gameObjectSelectionState, Scene& a_scene) const
 {
@@ -375,14 +375,14 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects
     // コピーの貼り付けはGameObjectの作成として登録する
     if (l_cutList.empty())
     {
-        l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_pastedList);
+        l_undoRedoSystem.PushUndoCommand<CreateGameObjectSceneCommand>(l_pastedList);
 
         return;
     }
 
     // 切り取りの貼り付けは、元をシーンから外す処理までをコマンドに任せて
     // 「作成」と「削除」を1回のUndoで戻せるようにする
-    l_undoRedoSystem.ExecuteUndoCommand<PasteCutGameObjectCommand>(l_pastedList, l_cutList);
+    l_undoRedoSystem.ExecuteUndoCommand<PasteCutGameObjectSceneCommand>(l_pastedList, l_cutList);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PushReparentCommand(const std::shared_ptr<GameObject>& a_moveGameObject, const Scene& a_scene, const Struct::GameObjectPlacement& a_beforePlacement) const
@@ -397,7 +397,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PushReparentComm
     auto& l_editorManager  = EditorManager::GetInstance                 ();
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<ReparentGameObjectCommand>(a_moveGameObject->GetREFSceneInstanceUUID(), a_beforePlacement, l_afterPlacement);
+    l_undoRedoSystem.PushUndoCommand<ReparentGameObjectSceneCommand>(a_moveGameObject->GetREFSceneInstanceUUID(), a_beforePlacement, l_afterPlacement);
 }
 
 FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ChildGameObjectDataList::iterator FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const

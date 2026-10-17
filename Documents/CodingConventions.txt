@@ -205,6 +205,8 @@
 	Json変換クラスにはJsonConverterをつける   例↓ AudioManagerJsonConverter
 	エディターに表示するクラスにはInspector   例↓ AssetFilePathInspector
 	定数のヘッダーはConstant、構造体はStruct  例↓ AudioManagerConstant.h
+	継承したクラスは基底の名前(Baseを除く)をクラス名とファイル名の末尾につける
+	                                          例↓ SceneCommandBase → CreateGameObjectSceneCommand(.h/.cpp も同じ名前)
 }
 ・Enumはenum classで定義し、列挙子はアッパーキャメルケース
 ・無効値が要るEnumは先頭にInvalidを置き、最後の列挙子にもカンマをつける
@@ -1258,6 +1260,24 @@
 24.使わないもの===============================================================================================================================================
 ・this->
 ・Cスタイルのキャスト(static_castを使う)
+・RTTI(dynamic_cast / std::dynamic_pointer_cast / typeid / std::type_info / std::type_index / std::any)(TypeINFOのStaticTypeIDで判定する)
+{
+	理 : dynamic_castは実行時にRTTIの継承表を探すため重い。TypeINFOなら親の数だけ番号を比較するだけで済む
+
+	例外 : EditorManager(エディター)で使うstd::anyだけはよい(IMGUIDragDropPayloadStorageのドラッグ&ドロップのPayload)
+	       エディター以外(ゲーム・描画・物理など)では使わない
+
+	基底クラスにFWK_DEFINE_TYPE_INFO_ROOT、派生クラスにFWK_DEFINE_TYPE_INFOを書き、
+	継承しているかはUtility::IsDerivedTypeINFOで調べ、継承していればstatic_cast / std::static_pointer_castで戻す
+
+	例↓
+	if (!Utility::IsDerivedTypeINFO(a_command.GetREFRuntimeTypeINFO(), SceneCommandBase::GetREFTypeINFO())) { return; }
+
+	const auto& l_sceneCommand = static_cast<const SceneCommandBase&>(a_command);
+
+	同じ型かだけを調べるならk_staticTypeIDを直接比較する
+	if (a_component.GetREFRuntimeTypeINFO().k_staticTypeID == TransformComponent::GetREFTypeINFO().k_staticTypeID) { ... }
+}
 ・NULL(nullptrを使う)
 ・using namespace
 ・[[nodiscard]]

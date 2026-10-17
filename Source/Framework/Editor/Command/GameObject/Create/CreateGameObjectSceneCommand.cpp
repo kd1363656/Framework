@@ -1,6 +1,6 @@
-﻿#include "CreateGameObjectCommand.h"
+﻿#include "CreateGameObjectSceneCommand.h"
 
-FWK::Editor::CreateGameObjectCommand::CreateGameObjectCommand(const std::vector<std::weak_ptr<GameObject>>& a_createdGameObjectList) :
+FWK::Editor::CreateGameObjectSceneCommand::CreateGameObjectSceneCommand(const std::vector<std::weak_ptr<GameObject>>& a_createdGameObjectList) :
     m_recordList()
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
@@ -21,9 +21,9 @@ FWK::Editor::CreateGameObjectCommand::CreateGameObjectCommand(const std::vector<
         l_record.Capture(l_createdGameObject, *l_scene);
     }
 }
-FWK::Editor::CreateGameObjectCommand::~CreateGameObjectCommand() = default;
+FWK::Editor::CreateGameObjectSceneCommand::~CreateGameObjectSceneCommand() = default;
 
-void FWK::Editor::CreateGameObjectCommand::Undo()
+void FWK::Editor::CreateGameObjectSceneCommand::Undo()
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();
@@ -37,7 +37,7 @@ void FWK::Editor::CreateGameObjectCommand::Undo()
     }
 }
 
-void FWK::Editor::CreateGameObjectCommand::Redo()
+void FWK::Editor::CreateGameObjectSceneCommand::Redo()
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();

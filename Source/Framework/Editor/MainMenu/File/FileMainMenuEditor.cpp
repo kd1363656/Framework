@@ -15,12 +15,10 @@ void FWK::Editor::FileMainMenuEditor::DrawMenuFile()
 
     if (m_popupNavigator.MenuItem(k_saveTextString.data(), k_saveShortCutString.data()))
     {
-        // すべてのシーン情報をセーブ
-        const auto& l_sceneManager = SceneManager::GetInstance();
+        // 保存と「*」を消す処理は終了確認ダイアログと同じものを使う
+        auto& l_editorManager = EditorManager::GetInstance();
 
-        l_sceneManager.Save();
-
-        FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "シーンのセーブが完了しました。");
+        l_editorManager.SaveScene();
     }
 
     m_popupNavigator.End();
@@ -32,11 +30,8 @@ void FWK::Editor::FileMainMenuEditor::UpdateShortCutKey() const
     if (ImGui::IsKeyDown(ImGuiMod_Ctrl) &&
         ImGui::IsKeyPressed(ImGuiKey_S))
     {
-        // すべてのシーン情報をセーブ
-        const auto& l_sceneManager = SceneManager::GetInstance();
+        auto& l_editorManager = EditorManager::GetInstance();
 
-        l_sceneManager.Save();
-
-        FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "シーンのセーブが完了しました。");
+        l_editorManager.SaveScene();
     }
 }

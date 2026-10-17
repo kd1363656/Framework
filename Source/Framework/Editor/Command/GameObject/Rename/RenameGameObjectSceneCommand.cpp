@@ -1,24 +1,24 @@
-﻿#include "RenameGameObjectCommand.h"
+﻿#include "RenameGameObjectSceneCommand.h"
 
-FWK::Editor::RenameGameObjectCommand::RenameGameObjectCommand(const std::string& a_beforeName, const std::string& a_afterName, const boost::uuids::uuid& a_gameObjectUUID) :
+FWK::Editor::RenameGameObjectSceneCommand::RenameGameObjectSceneCommand(const std::string& a_beforeName, const std::string& a_afterName, const boost::uuids::uuid& a_gameObjectUUID) :
     m_beforeName(a_beforeName),
     m_afterName (a_afterName),
 
     m_gameObjectUUID(a_gameObjectUUID)
 {}
-FWK::Editor::RenameGameObjectCommand::~RenameGameObjectCommand() = default;
+FWK::Editor::RenameGameObjectSceneCommand::~RenameGameObjectSceneCommand() = default;
 
-void FWK::Editor::RenameGameObjectCommand::Undo()
+void FWK::Editor::RenameGameObjectSceneCommand::Undo()
 {
     ApplyName(m_beforeName);
 }
 
-void FWK::Editor::RenameGameObjectCommand::Redo()
+void FWK::Editor::RenameGameObjectSceneCommand::Redo()
 {
     ApplyName(m_afterName);
 }
 
-void FWK::Editor::RenameGameObjectCommand::ApplyName(const std::string& a_name) const
+void FWK::Editor::RenameGameObjectSceneCommand::ApplyName(const std::string& a_name) const
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();

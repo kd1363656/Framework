@@ -7,12 +7,12 @@ namespace FWK
 
 namespace FWK::Editor
 {
-    class CreateGameObjectCommand final : public ICommand
+    class CreateGameObjectSceneCommand final : public SceneCommandBase
     {
     public:
 
-         CreateGameObjectCommand(const std::vector<std::weak_ptr<GameObject>>& a_createdGameObjectList);
-        ~CreateGameObjectCommand() override;
+         CreateGameObjectSceneCommand(const std::vector<std::weak_ptr<GameObject>>& a_createdGameObjectList);
+        ~CreateGameObjectSceneCommand() override;
 
         void Undo() override;
         void Redo() override;

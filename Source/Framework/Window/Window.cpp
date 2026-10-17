@@ -22,7 +22,9 @@ FWK::Window::Window() :
 
     m_style(Enum::WindowStyle::None),
 
-    m_aspectRatio(k_initialAspectRatio)
+    m_aspectRatio(k_initialAspectRatio),
+
+    m_isCloseRequested(false)
 {}
 FWK::Window::~Window()
 {
@@ -91,6 +93,12 @@ void FWK::Window::ClearResizeRequest()
 {
     // ウィンドウのサイズ変更は一回だけ通知する
     m_resizeRequest.m_isRequested = false;
+}
+void FWK::Window::ClearCloseRequest()
+{
+    // ×ボタンの要求も一回だけ受け取る
+    // キャンセルされた後にもう一度×ボタンが押されたら、また確認を出せるようにする
+    m_isCloseRequested = false;
 }
 
 void FWK::Window::SaveCONFIG() const
@@ -227,11 +235,13 @@ LRESULT FWK::Window::WindowProcedure(const HWND   a_hwnd,
     // Windowsから送られてきたメッセージの種類ごとに処理を分ける
     switch(a_message)
     {
-        // ユーザーがウィンドウ右上の×ボタンを押したときに
-        // 自分で作成したウィンドウ開放処理を実行
+        // ユーザーがウィンドウ右上の×ボタンを押したときに届くメッセージ
+        // ここではウィンドウを壊さずに「閉じたい」という要求だけを覚えておく
+        // 未保存の変更があればエディターが確認を出し、閉じてよいと決まってからApplicationが終了する
+        // (DefWindowProcへ渡すとその場でウィンドウが破棄されるため渡さない)
         case WM_CLOSE:
         {
-            Release();
+            m_isCloseRequested = true;
         }
         break;
 

@@ -35,6 +35,12 @@ namespace FWK::Editor
 
         void ClearCommandHistory();
 
+        void SaveScene();
+
+        void RequestCloseWindow();
+
+        bool IsCloseWindowApproved() const;
+
         TypeAlias::DescriptorIndex AllocateImGuiSRVDescriptorIndex();
 
         void ReleaseImGuiSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
@@ -149,6 +155,8 @@ namespace FWK::Editor
         EditorUndoRedoSystem m_undoRedoSystem;
 
         EditorGameObjectSelectionState m_gameObjectSelectionState;
+
+        EditorCloseConfirmPopup m_closeConfirmPopup;
 
         Converter::EditorManagerJsonConverter m_jsonConverter;
 

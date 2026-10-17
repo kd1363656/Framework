@@ -301,17 +301,17 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
         return {};
     }
 
-    // 親を持つGameObjectでも親子関係は解除せずにPrefab化する
-    // Prefabのルートとして保存されるのはこのGameObjectのローカルのTransformなので
-    // 親から外さなくても正しいPrefabJsonが作られる
-    // 例 : 親(10, 0, 0)の子(1, 0, 0)をPrefab化 → Prefabのルートの位置は(1, 0, 0)
-    //      シーン上の子は親(10, 0, 0)の子のまま、ワールド位置(11, 0, 0)に残る
-    // Save内部でPrefabHierarchyNodeUUIDがnilへ戻されるが、
-    // 親のChildUUIDRegistryにはこのUUIDで登録されているため保存後に元へ戻す
-    // UUIDは書き換えられるため参照ではなくコピーで受け取る
-    const auto& l_hierarchy               = l_gameObject->GetREFHierarchy();
-    const bool  l_hasParent               = !l_hierarchy.GetREFParent().expired();
-    const auto  l_prefabHierarchyNodeUUID = l_gameObject->GetREFPrefabHierarchyNodeUUID();
+    // 親を持つGameObjectをPrefab化する場合はPrefabのルートとして扱うため親子関係を解除する
+    // ClearParent内でTransformがStandaloneへ切り替わりワールド行列は維持される
+    // PrefabHierarchyNodeUUIDはGameObjectPrefab::Save内でnilへ戻される
+    if (auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
+        !l_hierarchy.GetREFParent().expired())
+    {
+        l_hierarchy.ClearParent();
+ 
+        // 階層の深さが変わったため実行レベルを再構築する
+        a_scene.RebuildGameObjectExecutionLevelList();
+    }
 
     GameObjectPrefab l_gameObjectPrefab = {};
 
@@ -320,20 +320,11 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     // GameObjectJsonConverter::Serializeでフル形式のPrefabJsonが作られる
     // シーンのPrefabSystemを渡して別Prefabのネストインスタンスを正しく差分保存する
     auto& l_prefabSystem = a_scene.GetMutableREFGameObjectPrefabSystem();
-
-    const bool l_isSaved = l_gameObjectPrefab.Save(l_prefabFilePath,
-                                                   l_prefabUUID,
-                                                   l_prefabSystem,
-                                                   *l_gameObject);
-
-    // 親の子として登録されているUUIDへ戻して、親側の登録と食い違わないようにする
-    // 親を持たないGameObjectはPrefabのルートと同じnilのままでよい
-    if (l_hasParent)
-    {
-        l_gameObject->SetPrefabHierarchyNodeUUID(l_prefabHierarchyNodeUUID);
-    }
-
-    if (!l_isSaved)
+ 
+    if (!l_gameObjectPrefab.Save(l_prefabFilePath,
+                                 l_prefabUUID,
+                                 l_prefabSystem,
+                                 *l_gameObject))
     {
         // Registryだけにエントリが残るとWatcherが間違って
         // ファイルを削除しないようになるため、Registryから削除して登録前の状態へ戻す
@@ -351,7 +342,14 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     // シーン側のPrefabSystemへも登録する
     // 未登録のままだとScene保存時にPrefabとの差分が作れずフル形式になってしまう
     l_prefabSystem.AddPrefab(l_gameObjectPrefab, l_prefabUUID);
- 
+
+    // GameObjectがPrefabと紐付いたのでシーンの内容も変わった
+    // この操作はUndoできないため、保存するまで未保存の状態にする
+    auto& l_editorManager  = EditorManager::GetInstance                 ();
+    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+    l_undoRedoSystem.MarkSceneModified();
+
     Struct::AssetBrowserEditorWindowAssetCreationResult l_result = {};
  
     l_result.m_createdFilePath = l_prefabFilePath;

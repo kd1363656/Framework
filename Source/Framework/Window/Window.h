@@ -31,6 +31,7 @@ namespace FWK
         bool ProcessMessages() const;
 
         void ClearResizeRequest();
+        void ClearCloseRequest ();
 
         void SaveCONFIG() const;
 
@@ -48,6 +49,8 @@ namespace FWK
         auto GetVALStyle() const { return m_style; }
 
         float GetVALAspectRatio() const { return m_aspectRatio; }
+
+        bool GetVALIsCloseRequested() const { return m_isCloseRequested; }
 
     private:
 
@@ -135,5 +138,7 @@ namespace FWK
         Enum::WindowStyle m_style;
 
         float m_aspectRatio;
+
+        bool m_isCloseRequested;
     };
 }

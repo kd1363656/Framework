@@ -81,6 +81,22 @@ void Application::Execute()
         // falseが戻り値ならbreakする
         if (!BeginFrame()) { break; }
 
+        // ×ボタンが押されたら、閉じてよいかを確かめる
+        if (m_window.GetVALIsCloseRequested())
+        {
+            m_window.ClearCloseRequest();
+
+            // ゲームモード(エディターを表示していない)のときは確認せずにすぐ終了する
+            // 例 : Ctrl + Pでエディターを隠してゲーム画面だけの状態で× → そのまま終了処理へ
+            if (l_editorManager.GetVALIsDisableDrawEditor()) { break; }
+
+            // エディター表示中は、未保存の変更があれば確認ダイアログを出し、ボタンが選ばれるまで閉じない
+            l_editorManager.RequestCloseWindow();
+        }
+
+        // 閉じてよいと決まったらループを抜け、設定の保存などの終了処理へ進む
+        if (l_editorManager.IsCloseWindowApproved()) { break; }
+
         // AudioEngineや内部のVoice管理やAudioDevice状態の更新は、
         // Sceneや描画を停止している場合でも行う
         l_audioManager.Update();
@@ -178,12 +194,6 @@ bool Application::BeginFrame()
     // WindowProcedureでDirectXTK12へ入力メッセージを渡した後、
     // 現在フレームのKeyboard/Mouse状態を確定する
     l_inputManager.Update();
-
-    if (const auto& l_keyboardController = l_inputManager.GetREFKeyboardController();
-        l_keyboardController.IsKeyPressed(DirectX::Keyboard::Escape))
-    {
-        return false;
-    }
 
     return true;
 }

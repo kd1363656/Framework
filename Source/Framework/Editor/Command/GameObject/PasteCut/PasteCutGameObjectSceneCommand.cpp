@@ -1,6 +1,6 @@
-﻿#include "PasteCutGameObjectCommand.h"
+﻿#include "PasteCutGameObjectSceneCommand.h"
 
-FWK::Editor::PasteCutGameObjectCommand::PasteCutGameObjectCommand(const std::vector<std::weak_ptr<GameObject>>& a_pastedGameObjectList, const std::vector<std::weak_ptr<GameObject>>& a_cutGameObjectList) :
+FWK::Editor::PasteCutGameObjectSceneCommand::PasteCutGameObjectSceneCommand(const std::vector<std::weak_ptr<GameObject>>& a_pastedGameObjectList, const std::vector<std::weak_ptr<GameObject>>& a_cutGameObjectList) :
     m_pastedRecordList(),
     m_cutRecordList   ()
 {
@@ -34,9 +34,9 @@ FWK::Editor::PasteCutGameObjectCommand::PasteCutGameObjectCommand(const std::vec
         l_record.Capture(l_cutGameObject, *l_scene);
     }
 }
-FWK::Editor::PasteCutGameObjectCommand::~PasteCutGameObjectCommand() = default;
+FWK::Editor::PasteCutGameObjectSceneCommand::~PasteCutGameObjectSceneCommand() = default;
 
-void FWK::Editor::PasteCutGameObjectCommand::Undo()
+void FWK::Editor::PasteCutGameObjectSceneCommand::Undo()
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();
@@ -55,7 +55,7 @@ void FWK::Editor::PasteCutGameObjectCommand::Undo()
     }
 }
 
-void FWK::Editor::PasteCutGameObjectCommand::Redo()
+void FWK::Editor::PasteCutGameObjectSceneCommand::Redo()
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();

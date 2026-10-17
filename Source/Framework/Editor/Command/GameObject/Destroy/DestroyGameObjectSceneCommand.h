@@ -7,12 +7,12 @@ namespace FWK
 
 namespace FWK::Editor
 {
-    class DestroyGameObjectCommand final : public ICommand
+    class DestroyGameObjectSceneCommand final : public SceneCommandBase
     {
     public:
 
-         DestroyGameObjectCommand(const std::vector<std::weak_ptr<GameObject>>& a_destroyGameObjectList);
-        ~DestroyGameObjectCommand() override;
+         DestroyGameObjectSceneCommand(const std::vector<std::weak_ptr<GameObject>>& a_destroyGameObjectList);
+        ~DestroyGameObjectSceneCommand() override;
 
         void Undo() override;
         void Redo() override;

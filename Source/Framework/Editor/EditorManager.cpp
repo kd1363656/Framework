@@ -17,6 +17,8 @@ FWK::Editor::EditorManager::EditorManager() :
 
     m_gameObjectSelectionState(),
 
+    m_closeConfirmPopup(),
+
     m_jsonConverter(),
 
     m_currentActiveWindowStaticTpeID(Constant::k_invalidStaticTypeID),
@@ -175,6 +177,10 @@ void FWK::Editor::EditorManager::DrawEditor()
     m_mainMenuBar.Draw();
     DrawEditorWindow  ();
 
+    // ×ボタンが押されて未保存の変更があるときの確認ダイアログ
+    // 要求が無いときは何も描かない
+    m_closeConfirmPopup.Draw(*this);
+
     // エディター処理が終わった後にUndoRedo処理の
     // 入力を受け取る
     m_undoRedoSystem.HandleUndoRedoShortcut();
@@ -247,6 +253,39 @@ bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::CBVS
 void FWK::Editor::EditorManager::ClearCommandHistory()
 {
     m_undoRedoSystem.Clear();
+}
+
+void FWK::Editor::EditorManager::SaveScene()
+{
+    // すべてのシーン情報をセーブ
+    const auto& l_sceneManager = SceneManager::GetInstance();
+
+    l_sceneManager.Save();
+
+    // 今の内容を保存済みとして覚え、シーン名の後ろの「*」を消す
+    m_undoRedoSystem.MarkSceneSaved();
+
+    FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "シーンのセーブが完了しました。");
+}
+
+void FWK::Editor::EditorManager::RequestCloseWindow()
+{
+    // シーンに保存していない変更が無いときは確認せずに閉じる
+    // (ゲームモードのときはApplicationが先に終了するので、ここへ来るのはエディター表示中だけ)
+    if (!m_undoRedoSystem.IsSceneModified())
+    {
+        m_closeConfirmPopup.ApproveClose();
+
+        return;
+    }
+
+    // 保存して終了 / 保存せず終了 / キャンセル を選んでもらう
+    m_closeConfirmPopup.Request();
+}
+
+bool FWK::Editor::EditorManager::IsCloseWindowApproved() const
+{
+    return m_closeConfirmPopup.IsCloseApproved();
 }
 
 FWK::TypeAlias::DescriptorIndex FWK::Editor::EditorManager::AllocateImGuiSRVDescriptorIndex()

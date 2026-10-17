@@ -43,8 +43,7 @@ namespace FWK::Editor
 
         static constexpr ImVec2 k_modalPopupPivot = { 0.5F, 0.5F };
 
-        static constexpr float k_fileListChildHeight      = 300.0F;
-        static constexpr float k_framePaddingBothSidesNUM = 2.0F;
+        static constexpr float k_fileListChildHeight = 300.0F;
 
         static constexpr float k_popupWidth  = 500.0F;
         static constexpr float k_popupHeight = 400.0F;

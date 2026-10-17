@@ -349,7 +349,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Audio\SoundEffect\SoundEffect.h" />
     <ClInclude Include="Source\Framework\Command\ICommand.h" />
     <ClInclude Include="Source\Framework\Converter\Binary\BinaryConverterBase.h" />
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorWindowBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedICommandConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\GameObject\IsDerivedGameObjectComponentBaseConcept.h" />
@@ -361,7 +360,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Asset\AssetFilePathInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\AudioManagerConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstance2DConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstanceBaseConstant.h" />
@@ -384,7 +382,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectTransformComponentInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassStructConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBModelPerObjectStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CameraConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CascadeShadowMapJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandAllocatorConstant.h" />
@@ -396,7 +393,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelFBXMotionExtractorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelBinaryConverterConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelPerObjectConstantBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainJsonConverterConstasnt.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h" />
@@ -413,7 +409,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictByNumberSuffixUtilityConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIBoolToStringUtilityCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIItemHighlightUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUITooltipUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIFactoryUtilityCosntant.h" />
@@ -429,7 +424,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowPopupDrawerEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowShortcutHandlerEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowClipboardEnum.h" />
-    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowOperationEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\GameObject\GameObjectComponentTaggedFactoryEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\GameObject\GameObjectEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\GameObject\TransformComponentEnum.h" />
@@ -460,7 +454,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowAssetCreatorStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowDeleteConfirmPopupStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowPopupDrawerStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\WorldOutlinerEditorWindowPopupDrawerStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectTransformComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCameraPassStruct.h" />
@@ -473,7 +466,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationVertexSkinningPerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePerObjectStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelPerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex\VBPhysicsDebugStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\DepthStencilTextureStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\GPUResourceStruct.h" />
@@ -505,7 +497,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\GameObjectTransformComponentMatrixUpdateModeUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\NodeEditorTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h" />
@@ -599,7 +590,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Camera\Camera.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\FrameResourceJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\FrameResourceJsonUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\FrameResource.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Converter\Json\RenderGraphFrameResourceJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json\DepthStencilPassTextureJsonConverter.h" />
@@ -625,7 +615,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\ComputeRequestPerObjectBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant\ModelPerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\Constant\SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\Constant\SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.h" />
@@ -794,7 +783,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Graphics\IsSameTextureSizeUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsValidTextureUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\UFBXConvertUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToStringUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\ItemHighlight\IMGUIItemHighlightUtility.h" />
@@ -820,13 +808,13 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Window\Window.h" />
     <ClInclude Include="Source\PCH.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\GameObjectPlacementStruct.h" />
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectTransformComponentCommand.h" />
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.h" />
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectTransformComponentSceneCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectSceneCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectSceneCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Command\GameObject\GameObjectCommandRecord.h" />
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.h" />
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.h" />
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectSceneCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectSceneCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectSceneCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.h" />
     <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectPlacementUtility.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Popup\EditorPopupNavigatorEnum.h" />
@@ -863,6 +851,15 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Window\WindowConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowDirectoryNotificationProcessorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CascadeShadowMapConstant.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\SceneCommandBase.h" />
+    <ClInclude Include="Source\Framework\Editor\CloseConfirm\EditorCloseConfirmPopup.h" />
+    <ClInclude Include="Source\Framework\Utility\TypeINFO\IsDerivedTypeINFOUtility.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBModelPerObjectStructConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelPerObjectConstantBufferUploaderConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelPerObjectStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant\ModelPerObjectDynamicConstantBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIButtonUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIButtonUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp" />
@@ -1133,15 +1130,16 @@ if "$(Configuration)"=="Debug" (
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MultiThreaded</RuntimeLibrary>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreaded</RuntimeLibrary>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectTransformComponentCommand.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectTransformComponentSceneCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectSceneCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectSceneCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\GameObjectCommandRecord.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectSceneCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectSceneCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectSceneCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Popup\EditorPopupNavigator.cpp" />
+    <ClCompile Include="Source\Framework\Editor\CloseConfirm\EditorCloseConfirmPopup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt" />

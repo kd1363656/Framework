@@ -39,6 +39,11 @@ namespace FWK::Editor
 
         void Clear();
 
+        void MarkSceneSaved   ();
+        void MarkSceneModified();
+
+        bool IsSceneModified() const;
+
         nlohmann::json Serialize() const;
 
         void SetCapacity(const std::size_t& a_set) { m_capacity = a_set; }
@@ -49,11 +54,19 @@ namespace FWK::Editor
 
         void AddUndoCommand(std::unique_ptr<ICommand>&& a_command);
 
+        static bool IsSceneCommand(const ICommand& a_command);
+
+        static constexpr std::int64_t k_initialSceneChangeCount          =  0LL;
+        static constexpr std::int64_t k_unreachableSavedSceneChangeCount = -1LL;
+
         std::deque<std::unique_ptr<ICommand>> m_undoList = {};
         std::deque<std::unique_ptr<ICommand>> m_redoList = {};
 
         Converter::EditorUndoRedoSystemJsonConverter m_jsonConverter = {};
 
         std::size_t m_capacity = Constant::k_initialEditorUndoResoSystemListCapacity;
+
+        std::int64_t m_sceneChangeCount      = k_initialSceneChangeCount;
+        std::int64_t m_savedSceneChangeCount = k_initialSceneChangeCount;
     };
 }

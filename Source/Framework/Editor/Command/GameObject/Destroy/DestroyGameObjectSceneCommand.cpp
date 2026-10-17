@@ -1,6 +1,6 @@
-﻿#include "DestroyGameObjectCommand.h"
+﻿#include "DestroyGameObjectSceneCommand.h"
 
-FWK::Editor::DestroyGameObjectCommand::DestroyGameObjectCommand(const std::vector<std::weak_ptr<GameObject>>& a_destroyGameObjectList) :
+FWK::Editor::DestroyGameObjectSceneCommand::DestroyGameObjectSceneCommand(const std::vector<std::weak_ptr<GameObject>>& a_destroyGameObjectList) :
     m_recordList()
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
@@ -22,9 +22,9 @@ FWK::Editor::DestroyGameObjectCommand::DestroyGameObjectCommand(const std::vecto
         l_record.Capture(l_destroyGameObject, *l_scene);
     }
 }
-FWK::Editor::DestroyGameObjectCommand::~DestroyGameObjectCommand() = default;
+FWK::Editor::DestroyGameObjectSceneCommand::~DestroyGameObjectSceneCommand() = default;
 
-void FWK::Editor::DestroyGameObjectCommand::Undo()
+void FWK::Editor::DestroyGameObjectSceneCommand::Undo()
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();
@@ -39,7 +39,7 @@ void FWK::Editor::DestroyGameObjectCommand::Undo()
     }
 }
 
-void FWK::Editor::DestroyGameObjectCommand::Redo()
+void FWK::Editor::DestroyGameObjectSceneCommand::Redo()
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();

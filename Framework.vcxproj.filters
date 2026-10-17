@@ -211,9 +211,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\Converter\Json">
       <UniqueIdentifier>{11986f4f-5ca7-4f60-aac6-d3efd9c3cf90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Converter\Json\Utility">
-      <UniqueIdentifier>{85c8c18a-805c-495b-abd9-d2098e5ed2bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass">
       <UniqueIdentifier>{491b2cdb-b74d-4c2d-b958-19691304212e}</UniqueIdentifier>
     </Filter>
@@ -781,9 +778,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer">
       <UniqueIdentifier>{c52abb80-953f-4316-8b1d-dacbe3ce670f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer">
-      <UniqueIdentifier>{579be1ae-b767-4e61-9b1c-dae6196145d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal">
       <UniqueIdentifier>{cab651c8-34f0-4d5e-8947-6902155b8d27}</UniqueIdentifier>
     </Filter>
@@ -849,9 +843,6 @@
     </Filter>
     <Filter Include="Source\Framework\Utility\UUID">
       <UniqueIdentifier>{856e5243-73b1-488f-8ce4-72c0cab8432d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant">
-      <UniqueIdentifier>{c2b0d355-98da-4589-bf0b-a857e636b12a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\Constant">
       <UniqueIdentifier>{d526fa7e-eb07-49f1-99c1-c5eb11af040e}</UniqueIdentifier>
@@ -933,9 +924,6 @@
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Outliner">
       <UniqueIdentifier>{89493100-c2bd-4e6b-911b-9c2dc32ff644}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\IMGUI\Bool">
-      <UniqueIdentifier>{1fa2f86b-6a7e-40cd-9c51-664da9abe8fc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Utility\IMGUI\Factory">
       <UniqueIdentifier>{a38e72be-10ce-4bf8-8e46-bef028a4d7d7}</UniqueIdentifier>
@@ -1456,9 +1444,6 @@
     <Filter Include="Source\Framework\Editor\Window\Outliner\Operation\Scene">
       <UniqueIdentifier>{dd7ec834-52dc-41eb-889d-df1c7ab3d9a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Asset">
-      <UniqueIdentifier>{fb9790a6-99e1-4b52-8734-20637f89b9c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Asset\Inspector">
       <UniqueIdentifier>{5ce34741-5c7a-4b0d-9e2c-03db72554600}</UniqueIdentifier>
     </Filter>
@@ -1533,6 +1518,18 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Window">
       <UniqueIdentifier>{ac37509e-fc18-4bf3-b3cc-b706fc20675b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\CloseConfirm">
+      <UniqueIdentifier>{db8eea3d-5456-473e-8b85-c84e96f9cf53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\TypeINFO">
+      <UniqueIdentifier>{36ed60e5-ad2a-4f54-91ea-c182e342f494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer">
+      <UniqueIdentifier>{8e902f4a-6731-4758-a801-febc224a3d57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant">
+      <UniqueIdentifier>{b2670f6c-658e-4f76-b6bf-da18f4abd2d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1688,9 +1685,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\FrameResourceJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\FrameResourceJsonUtility.h">
-      <Filter>Source\Framework\Graphics\Resource\Converter\Json\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
@@ -1995,9 +1989,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelPerObjectConstantBufferUploaderConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\LightSystemStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
@@ -2043,9 +2034,6 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePerObjectStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelPerObjectStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex\VBPhysicsDebugStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Vertex</Filter>
     </ClInclude>
@@ -2063,9 +2051,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConverter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h">
-      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Editor</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.h">
       <Filter>Source\Framework\Editor\MainMenu\Converter\Json</Filter>
@@ -2403,9 +2388,6 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelCascadeShadowPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant\ModelPerObjectDynamicConstantBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\Constant\SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\Constant</Filter>
     </ClInclude>
@@ -2460,9 +2442,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\CascadeShadowMapPassDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBModelPerObjectStructConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Physics\RayCast\PhysicsRayCast.h">
       <Filter>Source\Framework\Physics\RayCast</Filter>
     </ClInclude>
@@ -2501,9 +2480,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToStringUtility.h">
-      <Filter>Source\Framework\Utility\IMGUI\Bool</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\Factory</Filter>
@@ -2573,9 +2549,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Input\Mouse\MouseController.h">
       <Filter>Source\Framework\Input\Mouse</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\NodeEditorTypeAlias.h">
-      <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
     <ClInclude Include="..\Library\UFBX\INC\ufbx.h">
       <Filter>Library\UFBX\INC</Filter>
@@ -2670,9 +2643,6 @@
     <ClInclude Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.h">
       <Filter>Source\Framework\Editor\Splitter\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\File\ReplaceRootFilePathUtility.h">
       <Filter>Source\Framework\Utility\File</Filter>
     </ClInclude>
@@ -2708,9 +2678,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowPopupDrawerStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIBoolToStringUtilityCosntant.h">
-      <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIItemHighlightUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
@@ -2798,9 +2765,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\List\SmartPointerVectorListUtility.h">
       <Filter>Source\Framework\Utility\List</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowOperationEnum.h">
-      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Operation\GameObject</Filter>
@@ -2961,9 +2925,6 @@
     <ClInclude Include="Source\Framework\Asset\AssetFilePath.h">
       <Filter>Source\Framework\Asset</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Asset\AssetFilePathInspectorConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Asset</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Asset\Converter\Json\AssetFilePathJsonConverter.h">
       <Filter>Source\Framework\Asset\Converter\Json</Filter>
     </ClInclude>
@@ -2997,25 +2958,25 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\GameObjectPlacementStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Command</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectTransformComponentCommand.h">
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectTransformComponentSceneCommand.h">
       <Filter>Source\Framework\Editor\Command\GameObject\Component\Edit</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.h">
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectSceneCommand.h">
       <Filter>Source\Framework\Editor\Command\GameObject\Create</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectCommand.h">
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectSceneCommand.h">
       <Filter>Source\Framework\Editor\Command\GameObject\Destroy</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Command\GameObject\GameObjectCommandRecord.h">
       <Filter>Source\Framework\Editor\Command\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.h">
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectSceneCommand.h">
       <Filter>Source\Framework\Editor\Command\GameObject\PasteCut</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.h">
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectSceneCommand.h">
       <Filter>Source\Framework\Editor\Command\GameObject\Rename</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.h">
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectSceneCommand.h">
       <Filter>Source\Framework\Editor\Command\GameObject\Reparent</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.h">
@@ -3125,6 +3086,33 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CascadeShadowMapConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\SceneCommandBase.h">
+      <Filter>Source\Framework\Editor\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\CloseConfirm\EditorCloseConfirmPopup.h">
+      <Filter>Source\Framework\Editor\CloseConfirm</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\TypeINFO\IsDerivedTypeINFOUtility.h">
+      <Filter>Source\Framework\Utility\TypeINFO</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBModelPerObjectStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelPerObjectConstantBufferUploaderConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelPerObjectStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant\ModelPerObjectDynamicConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIButtonUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIButtonUtility.h">
+      <Filter>Source\Framework\Utility\IMGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3869,25 +3857,25 @@
     <ClCompile Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.cpp">
       <Filter>Source\Framework\Editor\Selection\Command</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectTransformComponentCommand.cpp">
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectTransformComponentSceneCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\Component\Edit</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.cpp">
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectSceneCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\Create</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectCommand.cpp">
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectSceneCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\Destroy</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\GameObjectCommandRecord.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.cpp">
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectSceneCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\PasteCut</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.cpp">
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectSceneCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\Rename</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.cpp">
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectSceneCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\Reparent</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.cpp">
@@ -3895,6 +3883,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Popup\EditorPopupNavigator.cpp">
       <Filter>Source\Framework\Editor\Popup</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\CloseConfirm\EditorCloseConfirmPopup.cpp">
+      <Filter>Source\Framework\Editor\CloseConfirm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

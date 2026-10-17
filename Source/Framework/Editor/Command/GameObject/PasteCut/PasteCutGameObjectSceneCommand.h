@@ -7,12 +7,12 @@ namespace FWK
 
 namespace FWK::Editor
 {
-    class PasteCutGameObjectCommand final : public ICommand
+    class PasteCutGameObjectSceneCommand final : public SceneCommandBase
     {
     public:
 
-         PasteCutGameObjectCommand(const std::vector<std::weak_ptr<GameObject>>& a_pastedGameObjectList, const std::vector<std::weak_ptr<GameObject>>& a_cutGameObjectList);
-        ~PasteCutGameObjectCommand() override;
+         PasteCutGameObjectSceneCommand(const std::vector<std::weak_ptr<GameObject>>& a_pastedGameObjectList, const std::vector<std::weak_ptr<GameObject>>& a_cutGameObjectList);
+        ~PasteCutGameObjectSceneCommand() override;
 
         void Undo() override;
         void Redo() override;
