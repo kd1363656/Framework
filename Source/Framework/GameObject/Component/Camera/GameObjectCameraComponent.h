@@ -8,7 +8,7 @@ namespace FWK
 
          GameObjectCameraComponent()          = default;
         ~GameObjectCameraComponent() override = default;
-    
+
         void Deserialize(const nlohmann::json& a_rootJson) override;
 
         void PostDeserialize() override;
@@ -27,7 +27,7 @@ namespace FWK
         auto& GetMutableREFCamera() { return m_camera; }
 
     private:
-    
+
         Graphics::Camera m_camera = {};
 
         GameObjectCameraComponentInspector m_inspector = {};
@@ -38,5 +38,5 @@ namespace FWK
     };
 }
 
-FWK_REGISTER_FACTORY_METHOD                      (FWK::TypeAlias::GameObjectComponentSharedFactory, FWK::GameObjectCameraComponent)
-FWK_REGISTER_TAGGED_GAME_OBJECT_COMPONENT_FACTORY(FWK::Enum::GameObjectComponentFactoryTag::Camera, FWK::GameObjectCameraComponent)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::GameObjectComponentSharedFactory, FWK::GameObjectCameraComponent)
+FWK_REGISTER_TAGGED_FACTORY(FWK::GameObjectComponentBase, FWK::GameObjectCameraComponent, FWK::Constant::k_gameObjectComponentTagCamera)

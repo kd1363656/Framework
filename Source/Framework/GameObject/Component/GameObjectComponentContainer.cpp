@@ -387,6 +387,11 @@ void FWK::GameObjectComponentContainer::ClearPrefabRemovedComponentUUIDSet()
 {
     m_prefabRemovedComponentUUIDSet.clear();
 }
+void FWK::GameObjectComponentContainer::ErasePrefabRemovedComponentUUID(const boost::uuids::uuid& a_uuid)
+{
+    // Prefab由来のコンポーネントの削除を取り消したときに、削除した記録だけを消す
+    m_prefabRemovedComponentUUIDSet.erase(a_uuid);
+}
 
 bool FWK::GameObjectComponentContainer::IsPrefabRemovedComponentUUID(const boost::uuids::uuid& a_uuid) const
 {

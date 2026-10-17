@@ -105,6 +105,9 @@
 #include "Editor/Command/GameObject/Rename/RenameGameObjectSceneCommand.h"
 #include "Editor/Command/GameObject/Reparent/ReparentGameObjectSceneCommand.h"
 #include "Editor/Command/GameObject/Component/Edit/EditGameObjectTransformComponentSceneCommand.h"
+#include "Editor/Command/GameObject/Component/Edit/EditGameObjectComponentSceneCommand.h"
+#include "Editor/Command/GameObject/Component/Add/AddGameObjectComponentSceneCommand.h"
+#include "Editor/Command/GameObject/Component/Remove/RemoveGameObjectComponentSceneCommand.h"
 #include "Editor/Command/Scene/Rename/RenameSceneCommand.h"
 #include "Editor/Selection/EditorGameObjectSelectionState.h"
 #include "Editor/CloseConfirm/EditorCloseConfirmPopup.h"
@@ -116,10 +119,15 @@
 #include "Factory/GenericFactory.h"
 #include "Definition/Constant/Macros/FactoryMacrosConstant.h"
 #include "Definition/Macros/Factory/FactoryMacros.h"
+#include "Definition/Struct/Factory/TaggedFactoryStruct.h"
+#include "Factory/TaggedFactory.h"
+#include "Definition/Macros/Factory/TaggedFactoryMacros.h"
 
 //===============================================================================
 // エディター(ファクトリーを介さないといけないもの)
 //===============================================================================
+#include "Definition/Struct/Editor/Popup/EditorTagSearchPopupStruct.h"
+#include "Editor/Popup/EditorTagSearchPopup.h"
 #include "Definition/Type/Alias/Factory/Shared/EditorWindowSharedFactory.h"
 #include "Definition/Constant/Utility/Json/JsonUtilityConstant.h"
 #include "Utility/UUID/UUIDUtility.h"
@@ -480,7 +488,7 @@
 #include "Graphics/Render/Renderer.h"
 
 // グラフィックスマネージャー
-#include "Graphics/Converter/Json/GraphicsManagerJsonConverter.h" 
+#include "Graphics/Converter/Json/GraphicsManagerJsonConverter.h"
 #include "Graphics/GraphicsManager.h"
 
 //===============================================================================
@@ -550,9 +558,7 @@
 #include "GameObject/Component/GameObjectComponentBase.h"
 #include "Definition/Concept/IsDerivedBase/GameObject/IsDerivedGameObjectComponentBaseConcept.h"
 #include "Definition/Type/Alias/Factory/Shared/GameObjectComponentSharedFactory.h"
-#include "Definition/Enum/GameObject/GameObjectComponentTaggedFactoryEnum.h"
-#include "GameObject/Component/Factory/GameObjectComponentTaggedFactory.h"
-#include "Definition/Macros/GameObject/GameObjectComponentTaggedFactoryMacros.h"
+#include "Definition/Constant/GameObject/GameObjectComponentTaggedFactoryConstant.h"
 
 //===============================================================================
 // トランスフォームコンポーネント
@@ -658,6 +664,7 @@
 #include "Definition/Struct/Editor/Window/AssetBrowserEditorWindowAssetCreatorStruct.h"
 #include "Utility/Editor/AssetBrowserEditorWindowAssetCreatorUtility.h"
 #include "Utility/GameObject/GameObjectPlacementUtility.h"
+#include "Utility/GameObject/GameObjectComponentUtility.h"
 #include "Editor/Window/AssetBrowser/Creator/AssetBrowserEditorWindowAssetCreator.h"
 #include "Definition/Enum/Editor/Window/AssetBrowserEditorWindowShortcutHandlerEnum.h"
 #include "Definition/Enum/Editor/Window/AssetBrowserEditorWindowPopupDrawerEnum.h"

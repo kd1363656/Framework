@@ -10,7 +10,15 @@ void FWK::GameObjectCameraComponent::Deserialize(const nlohmann::json& a_rootJso
 
 void FWK::GameObjectCameraComponent::PostDeserialize()
 {
-    m_camera.Setup();
+    const auto& l_application = Application::GetInstance  ();
+    const auto& l_window      = l_application.GetREFWindow();
+
+    // アスペクト比はウィンドウのリサイズ時(EarlyUpdate)にしか入らないため、
+    // エディターから追加した直後のカメラは0のままで射影行列を作れない
+    // 準備の前に今のウィンドウのアスペクト比を入れておく
+    // 例 : 1280 x 720 のウィンドウ → 1.78
+    m_camera.SetAspectRatio(l_window.GetVALAspectRatio());
+    m_camera.Setup         ();
 }
 
 void FWK::GameObjectCameraComponent::EarlyUpdate()

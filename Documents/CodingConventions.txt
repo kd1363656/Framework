@@ -245,9 +245,18 @@
 	};
 }
 ・型エイリアスはアッパーキャメルケースで、std::unordered_mapなどの宣言が長くなるものに使う
+・テンプレートの型の型エイリアスは、テンプレート引数(一番外側の<>の中)が4つ以上のときだけ作る
+	3つ以下ならusingを作らず、そのまま型を書く
 {
 	例↓
-	using SoundEffectMap = std::unordered_map<std::filesystem::path, std::shared_ptr<SoundEffect>>;
+	// ○(テンプレート引数が4つ)
+	using StringToValueMap = std::unordered_map<std::string, Type, Struct::StringHash, std::equal_to<>>;
+
+	// ×(テンプレート引数が2つなのでusingを作らない)
+	using TagGroupIndexMap = std::unordered_map<std::string_view, std::size_t>;
+
+	// ○
+	std::unordered_map<std::string_view, std::size_t> m_gameObjectComponentTagGroupIndexMap = {};
 }
 ・マクロ名はFWK_をつけ、アッパースネークケースで書く
 {

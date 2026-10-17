@@ -1453,12 +1453,6 @@
     <Filter Include="Source\Framework\Utility\Editor">
       <UniqueIdentifier>{22dd4cde-ce04-4c6d-b52e-417c87936af1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\GameObject\Component\Factory">
-      <UniqueIdentifier>{681cec79-3025-4d78-85ab-b8852095e7bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Macros\GameObject">
-      <UniqueIdentifier>{32307e8a-e037-4f3d-a17f-d17a075fd860}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Struct\Editor\Command">
       <UniqueIdentifier>{2ea860a8-1c2f-4c43-b17b-e01e82105290}</UniqueIdentifier>
     </Filter>
@@ -1545,6 +1539,18 @@
     </Filter>
     <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Converter\Json">
       <UniqueIdentifier>{3449c08d-6904-482f-adbb-2eed168e5e97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Editor\Popup">
+      <UniqueIdentifier>{b1b7e7fa-9f50-4e3c-bcf5-0a339e5f7fdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Factory">
+      <UniqueIdentifier>{6c08fe51-dfa0-4429-9586-c7a8bae3a3ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Component\Add">
+      <UniqueIdentifier>{fcdc6b8c-bbbb-4ce4-b9fd-820313fdd870}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Component\Remove">
+      <UniqueIdentifier>{0ac03ad4-e691-48e8-a029-9763429eafe5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2955,17 +2961,8 @@
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Component\Factory\GameObjectComponentTaggedFactory.h">
-      <Filter>Source\Framework\GameObject\Component\Factory</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\GameObject\TransformComponentEnum.h">
       <Filter>Source\Framework\Definition\Enum\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\GameObject\GameObjectComponentTaggedFactoryEnum.h">
-      <Filter>Source\Framework\Definition\Enum\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\GameObject\GameObjectComponentTaggedFactoryMacros.h">
-      <Filter>Source\Framework\Definition\Macros\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\GameObjectPlacementStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Command</Filter>
@@ -3149,6 +3146,36 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectTransformComponentMatrixUpdateModeBaseJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectComponentTaggedFactoryConstant.h">
+      <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\Factory\TaggedFactoryMacros.h">
+      <Filter>Source\Framework\Definition\Macros\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Popup\EditorTagSearchPopupStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Popup</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Factory\TaggedFactoryStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Add\AddGameObjectComponentSceneCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Add</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectComponentSceneCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Edit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Remove\RemoveGameObjectComponentSceneCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Remove</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Popup\EditorTagSearchPopup.h">
+      <Filter>Source\Framework\Editor\Popup</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Factory\TaggedFactory.h">
+      <Filter>Source\Framework\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectComponentUtility.h">
+      <Filter>Source\Framework\Utility\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3931,6 +3958,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Converter\Json\GameObjectTransformComponentMatrixUpdateModeBaseJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Component\Transform\Mode\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Add\AddGameObjectComponentSceneCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Add</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectComponentSceneCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Edit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Remove\RemoveGameObjectComponentSceneCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Remove</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Popup\EditorTagSearchPopup.cpp">
+      <Filter>Source\Framework\Editor\Popup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

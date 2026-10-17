@@ -43,6 +43,7 @@ namespace FWK
         void RemoveComponent(const std::weak_ptr<GameObjectComponentBase>& a_component);
         
         void ClearPrefabRemovedComponentUUIDSet();
+        void ErasePrefabRemovedComponentUUID   (const boost::uuids::uuid& a_uuid);
 
         bool IsPrefabRemovedComponentUUID(const boost::uuids::uuid& a_uuid) const;
 

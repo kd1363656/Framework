@@ -377,6 +377,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\WorldOutlinerEditorWindowAssetCreatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectComponentBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectComponentContainerJsonConverterConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectComponentTaggedFactoryConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectHierarchyJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectTransformComponentInspectorConstant.h" />
@@ -425,7 +426,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowPopupDrawerEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowShortcutHandlerEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowClipboardEnum.h" />
-    <ClInclude Include="Source\Framework\Definition\Enum\GameObject\GameObjectComponentTaggedFactoryEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\GameObject\GameObjectEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\GameObject\TransformComponentEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DefaultTextureEnum.h" />
@@ -444,7 +444,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\Window\WindowEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Assert\AssertReturnMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Factory\FactoryMacros.h" />
-    <ClInclude Include="Source\Framework\Definition\Macros\GameObject\GameObjectComponentTaggedFactoryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Json\JsonSerializeEnumMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Json\PipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Json\RootSignatureJsonConverterMacros.h" />
@@ -559,7 +558,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\GameObject\Component\Camera\Inspector\GameObjectCameraComponentInspector.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.h" />
-    <ClInclude Include="Source\Framework\GameObject\Component\Factory\GameObjectComponentTaggedFactory.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentBase.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\Transform\Converter\Json\GameObjectTransformComponentJsonConverter.h" />
@@ -867,6 +865,15 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Editor\EditorListNavigationUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Utility\Editor\EditorListNavigationUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Editor\EditorRenameStateUtility.h" />
+    <ClInclude Include="Source\Framework\Definition\Macros\Factory\TaggedFactoryMacros.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Popup\EditorTagSearchPopupStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Factory\TaggedFactoryStruct.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Add\AddGameObjectComponentSceneCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectComponentSceneCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Remove\RemoveGameObjectComponentSceneCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Popup\EditorTagSearchPopup.h" />
+    <ClInclude Include="Source\Framework\Factory\TaggedFactory.h" />
+    <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectComponentUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp" />
@@ -1150,6 +1157,10 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Popup\EditorPopupNavigator.cpp" />
     <ClCompile Include="Source\Framework\Editor\CloseConfirm\EditorCloseConfirmPopup.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Add\AddGameObjectComponentSceneCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Edit\EditGameObjectComponentSceneCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Remove\RemoveGameObjectComponentSceneCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Popup\EditorTagSearchPopup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt" />
