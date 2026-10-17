@@ -345,6 +345,8 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
 
     const auto& l_lastKeyFrameIndex = l_keyFrameList.size() - k_nextKeyFrameOffset;
 
+    auto l_startKeyFrameIndex = k_firstKeyFrameIndex;
+
     // Animationは一定FrameRateでBakeされているため、
     // Animation時刻にFrameRateを掛ければ、
     // 現在時刻が存在するKeyFrame区間を直接求められる
@@ -353,13 +355,10 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
     // FrameRate     = 30FPS
     // FramePosition = 7.5
     // この場合、KeyFrame[7]とKeyFrame[8]の間を補間する
-    const auto& l_sampleFramePosition = a_timeSecond * a_motionSequence.m_frameRate;
-
-    auto l_startKeyFrameIndex = k_firstKeyFrameIndex;
-
     // 異常なIndexへ変換しないように、
     // size_tへ変換する前に最後のKeyFrameIndexと比較する
-    if (l_sampleFramePosition >= static_cast<float>(l_lastKeyFrameIndex))
+    if (const auto& l_sampleFramePosition = a_timeSecond * a_motionSequence.m_frameRate;
+        l_sampleFramePosition >= static_cast<float>(l_lastKeyFrameIndex))
     {
         l_startKeyFrameIndex = l_lastKeyFrameIndex;
     }

@@ -71,17 +71,19 @@ namespace FWK::Utility
 
         while (true)
         {
-            // baseName + 番号 + 拡張子を結合した新しいPathを作る
-            const auto& l_candidatePath = l_parentPath / (std::format("{}{}{}", 
-                                                          l_baseName,
-                                                          l_number,
-                                                          l_extension));
-
             l_errorCode.clear();
 
+            // baseName + 番号 + 拡張子を結合した新しいPathを作る
             // ファイルパスが存在しなければ他の番号と被りが発生していないため
             // そのファイルパスを返す
-            if (!std::filesystem::exists(l_candidatePath, l_errorCode)) { return l_candidatePath; }
+            if (const auto& l_candidatePath = l_parentPath / (std::format("{}{}{}",
+                                                              l_baseName,
+                                                              l_number,
+                                                              l_extension));
+                !std::filesystem::exists(l_candidatePath, l_errorCode))
+            {
+                return l_candidatePath;
+            }
 
             ++l_number;
         }

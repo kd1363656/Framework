@@ -33,10 +33,10 @@ void FWK::Editor::EditorPopupNavigator::Begin(const Enum::EditorPopupNavigationA
 
     // メニューは上下、横に並んだボタンは左右のキーで選択を動かす
     const bool l_isVertical = a_axis == Enum::EditorPopupNavigationAxis::Vertical;
-    const auto l_nextKey    = l_isVertical ? ImGuiKey_DownArrow : ImGuiKey_RightArrow;
     const auto l_prevKey    = l_isVertical ? ImGuiKey_UpArrow   : ImGuiKey_LeftArrow;
 
-    if (ImGui::IsKeyPressed(l_nextKey))
+    if (const auto l_nextKey = l_isVertical ? ImGuiKey_DownArrow : ImGuiKey_RightArrow;
+        ImGui::IsKeyPressed(l_nextKey))
     {
         MoveKeySelection(true);
     }
@@ -83,12 +83,11 @@ bool FWK::Editor::EditorPopupNavigator::ApplyItemState(const bool a_isClicked, c
     m_drawingItemEnabledList.emplace_back(a_isEnabled);
 
     const bool l_isKeySelected = l_itemIndex == m_keySelectedIndex;
-    const bool l_isHovered     = a_isEnabled &&
-                                 ImGui::IsItemHovered();
 
     // 中身の薄い塗りはImGuiがマウスの乗った項目にだけ行うため、ここでは枠だけを描く
     // キーで選んでいるだけの項目は塗りが付かず、枠だけになる
-    if (l_isHovered ||
+    if ((a_isEnabled             &&
+         ImGui::IsItemHovered()) ||
         l_isKeySelected)
     {
         DrawItemFrame();

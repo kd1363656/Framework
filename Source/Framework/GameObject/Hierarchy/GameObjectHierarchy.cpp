@@ -254,10 +254,10 @@ void FWK::GameObjectHierarchy::ClearPrefabRemovedChildUUIDSet()
 
 void FWK::GameObjectHierarchy::ConnectParentForDeserialize(const std::weak_ptr<GameObject>& a_parent)
 {
-    const auto& l_owner  = m_owner.lock ();
     const auto& l_parent = a_parent.lock();
  
-    if (!l_owner ||
+    if (const auto& l_owner = m_owner.lock();
+        !l_owner ||
         !l_parent)
     {
         return; 

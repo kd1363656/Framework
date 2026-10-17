@@ -173,14 +173,17 @@ bool Application::BeginFrame()
         return false;
     }
 
-          auto& l_inputManager       = FWK::InputManager::GetInstance         ();
-    const auto& l_keyboardController = l_inputManager.GetREFKeyboardController();
+    auto& l_inputManager = FWK::InputManager::GetInstance();
 
     // WindowProcedureでDirectXTK12へ入力メッセージを渡した後、
     // 現在フレームのKeyboard/Mouse状態を確定する
     l_inputManager.Update();
 
-    if (l_keyboardController.IsKeyPressed(DirectX::Keyboard::Escape)) { return false; }
+    if (const auto& l_keyboardController = l_inputManager.GetREFKeyboardController();
+        l_keyboardController.IsKeyPressed(DirectX::Keyboard::Escape))
+    {
+        return false;
+    }
 
     return true;
 }

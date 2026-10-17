@@ -58,9 +58,8 @@ bool FWK::Graphics::Device::Create(const Factory& a_factory)
 
         // 現在のGPUアダプターの情報を取得する関数
         // GetDesc3(取得したGPU情報を書き込む構造体のアドレス);
-        auto l_getDescResult = l_adapter->GetDesc3(&l_desc);
-
-        if (FAILED(l_getDescResult))
+        if (auto l_getDescResult = l_adapter->GetDesc3(&l_desc);
+            FAILED(l_getDescResult))
         {
             ++l_adapterIndex;
 
@@ -81,13 +80,15 @@ bool FWK::Graphics::Device::Create(const Factory& a_factory)
             // 指定したGPUとフィーチャーレベルでDirectX12デバイスが作成できるかを確認する
             // 第四引数にnullptrを渡しているため実際にデバイスを受け取るのではなく
             // この条件でデバイス作成が可能かどうかのテストだけを行っている
-            auto l_createDeviceResult = D3D12CreateDevice(l_adapter.Get(),
-                                                          l_level,
-                                                          __uuidof(ID3D12Device),
-                                                          nullptr);
-
             // もし作成テストに失敗したらもう一段階フィーチャーレベルを落として再確認する
-            if (FAILED(l_createDeviceResult)) { continue; }
+            if (auto l_createDeviceResult = D3D12CreateDevice(l_adapter.Get(),
+                                                              l_level,
+                                                              __uuidof(ID3D12Device),
+                                                              nullptr);
+                FAILED(l_createDeviceResult))
+            {
+                continue;
+            }
 
             // 指定のGPUは指定のフィーチャーレベルで使用可能なので採用候補として保存する
             l_selectedAdapter      = l_adapter;

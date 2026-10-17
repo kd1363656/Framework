@@ -104,10 +104,9 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplySceneDelet
     if (const auto& l_scene = a_sceneManager.GetVALScene().lock();
         l_scene)
     {
-        auto& l_sceneChanger = l_scene->GetMutableREFSceneChanger();
-
         // NextSceneとして登録済みのときだけSceneChanger側からも削除する
-        if (l_sceneChanger.FetchPTRNexScene(a_sceneUUID))
+        if (auto& l_sceneChanger = l_scene->GetMutableREFSceneChanger();
+            l_sceneChanger.FetchPTRNexScene(a_sceneUUID))
         {
             l_sceneChanger.RemoveNextScene(a_sceneUUID);
         }

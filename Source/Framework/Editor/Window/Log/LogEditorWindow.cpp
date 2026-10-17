@@ -61,9 +61,8 @@ void FWK::Editor::LogEditorWindow::AddLog(const std::string& a_text, const TypeA
     if (m_textLineOffsets.Size > k_emptyTextLineOffsetCount &&
         !m_textLineColorList.empty())
     {
-        const int l_lastLineIndex = m_textLineOffsets.Size - k_nextLineIndexOffset;
-
-        if (m_textLineOffsets[l_lastLineIndex] == l_oldSize)
+        if (const int l_lastLineIndex = m_textLineOffsets.Size - k_nextLineIndexOffset;
+            m_textLineOffsets[l_lastLineIndex] == l_oldSize)
         {
             m_textLineColorList[static_cast<std::size_t>(l_lastLineIndex)] = a_textColor;
         }

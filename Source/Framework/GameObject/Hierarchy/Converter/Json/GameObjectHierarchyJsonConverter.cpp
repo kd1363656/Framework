@@ -298,10 +298,8 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildListDiff(
         l_prefabNodeMap.try_emplace(l_nodeUUID, &l_prefabNodeJson);
     }
 
-    const auto& l_modifiedJsonArray = a_childListDiffJson.value(k_modifiedJsonKey, nlohmann::json{});
-    const auto& l_addedJsonArray    = a_childListDiffJson.value(k_addedJsonKey,    nlohmann::json{});
-
-    if (l_modifiedJsonArray.is_array())
+    if (const auto& l_modifiedJsonArray = a_childListDiffJson.value(k_modifiedJsonKey, nlohmann::json{});
+        l_modifiedJsonArray.is_array())
     {
         for (const auto& l_modifiedJson : l_modifiedJsonArray)
         {
@@ -313,7 +311,8 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildListDiff(
         }
     }
 
-    if (l_addedJsonArray.is_array())
+    if (const auto& l_addedJsonArray = a_childListDiffJson.value(k_addedJsonKey, nlohmann::json{});
+        l_addedJsonArray.is_array())
     {
         for (const auto& l_addedJson : l_addedJsonArray)
         {
@@ -369,14 +368,10 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildListDiff(
             if (l_nodeUUID.is_nil()) { continue; }
  
             // Prefab由来(Removed除く)かAddedか、どちらにも属さないUUIDは破棄
-            const bool l_isPrefab = l_prefabNodeMap.contains(l_nodeUUID) &&
-                                    !l_removedUUIDSet.contains(l_nodeUUID);
-
-            const bool l_isAdded = l_addedMap.contains(l_nodeUUID);
- 
             // プレハブ由来で追加された子ゲームオブジェクトでもなければ処理を飛ばす
-            if (!l_isPrefab &&
-                !l_isAdded)
+            if (!(l_prefabNodeMap.contains(l_nodeUUID)    &&
+                  !l_removedUUIDSet.contains(l_nodeUUID)) &&
+                !l_addedMap.contains(l_nodeUUID))
             {
                 continue;
             }

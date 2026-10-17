@@ -69,13 +69,12 @@ bool FWK::Physics::PhysicsStaticMeshBody::ApplyWorldTransform(TypeAlias::Math::M
 
     const auto& l_currentScaledShape = static_cast<const JPH::ScaledShape&> (*l_currentShape);
     const auto& l_physicsWorldScale  = Utility::DirectXMathVector3ToJoltVec3(l_worldScale);
-    const auto& l_currentWorldScale = l_currentScaledShape.GetScale         ();
 
     // スケールが変更されていれば変更を適用
-    if (const bool l_isWorldScaleChanged = std::abs(l_currentWorldScale.GetX() - l_physicsWorldScale.GetX()) > std::numeric_limits<float>::epsilon() ||
-                                           std::abs(l_currentWorldScale.GetY() - l_physicsWorldScale.GetY()) > std::numeric_limits<float>::epsilon() ||
-                                           std::abs(l_currentWorldScale.GetZ() - l_physicsWorldScale.GetZ()) > std::numeric_limits<float>::epsilon();
-        l_isWorldScaleChanged)
+    if (const auto& l_currentWorldScale = l_currentScaledShape.GetScale();
+        std::abs(l_currentWorldScale.GetX() - l_physicsWorldScale.GetX()) > std::numeric_limits<float>::epsilon() ||
+        std::abs(l_currentWorldScale.GetY() - l_physicsWorldScale.GetY()) > std::numeric_limits<float>::epsilon() ||
+        std::abs(l_currentWorldScale.GetZ() - l_physicsWorldScale.GetZ()) > std::numeric_limits<float>::epsilon())
     {
         // 現在のScaledShapeが持つMeshShape本体を再利用する
         const JPH::ScaledShapeSettings& l_scaledShapeSettings = { l_currentScaledShape.GetInnerShape(), l_physicsWorldScale };
@@ -158,13 +157,13 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 
             // JoltのMeshShapeは反時計回りを表面として扱う
             // モデル法線と幾何法線が逆ならIndex順を反転する
-            const auto& l_faceNormal    = (l_vertexOne.m_position - l_vertexZero.m_position).Cross(l_vertexTwo.m_position - l_vertexZero.m_position);
-            const auto& l_averageNormal = (l_vertexZero.m_normal  + l_vertexOne.m_normal + l_vertexTwo.m_normal) / Constant::k_triangleVertexCount;
+            const auto& l_faceNormal = (l_vertexOne.m_position - l_vertexZero.m_position).Cross(l_vertexTwo.m_position - l_vertexZero.m_position);
 
             // 現在のIndex順から求めた面法線と、
             // モデル頂点が持つ法線の方向が逆の場合は、
             // Index順を反転して三角形の表裏を合わせる
-            if (l_faceNormal.LengthSquared()      > std::numeric_limits<float>::epsilon() &&
+            if (const auto& l_averageNormal = (l_vertexZero.m_normal  + l_vertexOne.m_normal + l_vertexTwo.m_normal) / Constant::k_triangleVertexCount;
+                l_faceNormal.LengthSquared()      > std::numeric_limits<float>::epsilon() &&
                 l_averageNormal.LengthSquared()   > std::numeric_limits<float>::epsilon() &&
                 l_faceNormal.Dot(l_averageNormal) < k_oppositeNormalDotThreshold)
             {

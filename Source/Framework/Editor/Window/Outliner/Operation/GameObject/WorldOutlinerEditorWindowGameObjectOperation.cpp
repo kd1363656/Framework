@@ -33,9 +33,8 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroySelectedG
 
     for (const auto& l_selectedWeak : l_selectedList)
     {
-        const auto& l_selected = l_selectedWeak.lock();
-
-        if (!l_selected ||
+        if (const auto& l_selected = l_selectedWeak.lock();
+            !l_selected ||
             l_selected->GetVALIsDestroyed())
         {
             continue;
@@ -62,11 +61,11 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroySelectedG
 }
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObject(const std::weak_ptr<GameObject>& a_targetGameObject, const std::weak_ptr<GameObject>& a_moveGameObject, Scene& a_scene) const
 {
-    const auto& l_targetGameObject = a_targetGameObject.lock();
-    const auto& l_moveGameObject   = a_moveGameObject.lock  ();
+    const auto& l_moveGameObject = a_moveGameObject.lock();
 
     // 無効な対象、自分自身への親付けは行わない
-    if (!l_targetGameObject ||
+    if (const auto& l_targetGameObject = a_targetGameObject.lock();
+        !l_targetGameObject ||
         !l_moveGameObject   ||
         l_targetGameObject == l_moveGameObject)
     {

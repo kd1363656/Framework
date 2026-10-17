@@ -440,10 +440,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
         l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList))
     {
         // Prefabとして登録されているファイルのみ生成対象になる
-        const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
- 
         // 生成したGameObjectを選択状態にする
-        if (!l_createdList.empty())
+        if (const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
+            !l_createdList.empty())
         {
             l_gameObjectSelectionState.ClearSelectedGameObjectList();
  
@@ -561,16 +560,15 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
         l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
     }
 
+    const auto& l_style     = ImGui::GetStyle();
+          auto  l_textColor = l_style.Colors[ImGuiCol_Text];
+
     // 名前の文字色をPrefab状態に応じて変える
     // 白(デフォルト) : Prefabと無関係
     // 青             : Prefab由来、またはPrefabルート
     // 赤             : PrefabUUIDを持つがPrefabSystemに対応Prefabが見つからない
-    const auto& l_prefabUUID = l_gameObject->GetREFPrefabUUID();
- 
-    const auto& l_style     = ImGui::GetStyle();
-          auto  l_textColor = l_style.Colors[ImGuiCol_Text];
-
-    if (!l_prefabUUID.is_nil())
+    if (const auto& l_prefabUUID = l_gameObject->GetREFPrefabUUID();
+        !l_prefabUUID.is_nil())
     {
         const auto& l_prefabSystem = a_scene.GetREFGameObjectPrefabSystem();
        
@@ -592,6 +590,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     // 選択中・ホバー中・Cut対象の背景色をエディタ共通ルールでPushする
     // 他ウィンドウのアイテムと同じ選択色で描画される
     const bool l_isSelected  = l_gameObjectSelectionState.FindVALIsSelected(a_gameObject);
+
     const bool l_isCutTarget = m_clipboard.Contains(l_gameObject->GetREFSceneInstanceUUID()) &&
                                m_clipboard.GetVALOperationType() == Enum::WorldOutlinerClipboardOperationType::Cut;
 
@@ -659,13 +658,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     // 左クリック + Ctrl  : 選択、選択解除のトグル
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
     {
-        const auto& l_io = ImGui::GetIO();
-
         // 修飾キーなしで既選択のノードを押下した場合は選択リストを更新しない
         // この時点で単一選択へ潰すとドラッグ対象が1件だけになってしまうため
         // 複数選択を維持したままドラッグ&ドロップできるようにする
         // Shift + Click(範囲選択)・Ctrl + Click(トグル)は従来通り選択を更新する
-        if (!l_gameObjectSelectionState.FindVALIsSelected(a_gameObject) ||
+        if (const auto& l_io = ImGui::GetIO();
+            !l_gameObjectSelectionState.FindVALIsSelected(a_gameObject) ||
             l_io.KeyShift                                               ||
             l_io.KeyCtrl)
         {
@@ -684,11 +682,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
         ImGui::IsItemHovered()     &&
         !ImGui::GetDragDropPayload())
     {
-        const auto& l_io = ImGui::GetIO();
-     
         // Shift/Ctrlでの選択操作は押下時に更新済みのため解放時は無修飾のみ処理する
         // 既選択ノードへの無修飾クリックは単一選択へ潰す
-        if (!l_io.KeyShift &&
+        if (const auto& l_io = ImGui::GetIO();
+            !l_io.KeyShift &&
             !l_io.KeyCtrl  &&
             l_gameObjectSelectionState.FindVALIsSelected(a_gameObject))
         {
@@ -791,15 +788,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRenameInputText(Scene& a_scene)
     }
  
     // 空白クリックでリネームを確定する
-    const bool l_isEmptySpaceClick = ImGui::IsWindowHovered()   &&
-                                     !ImGui::IsAnyItemHovered() &&
-                                     ImGui::IsMouseClicked(ImGuiMouseButton_Left);
- 
     // 確定条件 : Enter押下かフォーカス取得後にフォーカス消失かフォーカス取得後の空白クリック
-    if (l_isEnterPressed          ||
-       (m_renameState.m_isFocused &&
-       (!ImGui::IsItemFocused()   ||
-        l_isEmptySpaceClick)))
+    if (l_isEnterPressed              ||
+        (m_renameState.m_isFocused    &&
+         (!ImGui::IsItemFocused()     ||
+          (ImGui::IsWindowHovered()   &&
+           !ImGui::IsAnyItemHovered() &&
+           ImGui::IsMouseClicked(ImGuiMouseButton_Left)))))
     {
         CommitRename(a_scene);
     }
@@ -937,14 +932,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
 
     std::vector<std::filesystem::path> l_droppedFilePathList = {};
 
-    auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-
     // Window全体の矩形をドロップ先にする
     // GameObjectペイロード用のDropZoneやノードのドロップ先とは
     // ペイロードラベルが異なるため干渉しない
     // GameObjectノード上はノード側(小さい矩形)のドロップ先が優先されるため
     // ここに届くのは空白部分へのドロップのみになる
-    if (!l_imguiDragDropPayloadStorage.DragDropTargetCustom(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
+    if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+        !l_imguiDragDropPayloadStorage.DragDropTargetCustom(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
                                                             l_currentWindow->Rect(),
                                                             ImGui::GetID(k_prefabFileDropTargetLabel.data()),
                                                             l_droppedFilePathList))
@@ -978,7 +972,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectionSnapshot(const Edi
 {
     // 現在の選択状態をUUIDリストとして取得する
     const auto& l_selectedList = a_gameObjectSelectionState.GetREFSelectedGameObjectList();
-    const auto& l_anchor       = a_gameObjectSelectionState.GetREFRangeSelectionAnchor  ().lock();
 
     a_outUUIDList.clear  ();
     a_outUUIDList.reserve(l_selectedList.size());
@@ -994,7 +987,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectionSnapshot(const Edi
 
     a_outAnchorUUID = {};
 
-    if (l_anchor)
+    if (const auto& l_anchor = a_gameObjectSelectionState.GetREFRangeSelectionAnchor().lock();
+        l_anchor)
     {
         a_outAnchorUUID = l_anchor->GetREFSceneInstanceUUID();
     }
@@ -1120,9 +1114,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::weak_pt
             BuildDisplayedGameObjectList(l_displayedList, a_scene);
 
             const auto& l_startITR = FindDisplayedGameObjectITR(l_displayedList, l_anchor);
-            const auto& l_endITR   = FindDisplayedGameObjectITR(l_displayedList, l_gameObject);
  
-            if (l_startITR != l_displayedList.end() &&
+            if (const auto& l_endITR = FindDisplayedGameObjectITR(l_displayedList, l_gameObject);
+                l_startITR != l_displayedList.end() &&
                 l_endITR   != l_displayedList.end())
             {
                 // アンカーがクリック点より後ろにある場合は入れ替える

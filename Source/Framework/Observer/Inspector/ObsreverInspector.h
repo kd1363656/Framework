@@ -37,11 +37,10 @@ namespace FWK
                 ImGui::Separator();
             }
 
-            const float l_listHeight = ImGui::GetTextLineHeightWithSpacing() * Constant::k_imguiDefaultChildVisibleItemCount;
-
             // -1.0Fを使用すると
             // 現在利用可能な横幅いっぱいまでリストを広げる
-            if (!ImGui::BeginListBox(k_observerSelectorCheckBoxListLabel.data(), ImVec2(Constant::k_imguiChildWindowMAXSize, l_listHeight)))
+            if (const float l_listHeight = ImGui::GetTextLineHeightWithSpacing() * Constant::k_imguiDefaultChildVisibleItemCount;
+                !ImGui::BeginListBox(k_observerSelectorCheckBoxListLabel.data(), ImVec2(Constant::k_imguiChildWindowMAXSize, l_listHeight)))
             {
                 ImGui::EndGroup();
                 ImGui::PopID   ();
@@ -65,9 +64,7 @@ namespace FWK
                 // 無効から有効化するならEventを監視対象へ追加
                 if (l_isSelected)
                 {
-                    const bool l_isAdded = l_eventMap.try_emplace(l_enumType, Constant::k_noFlagValue).second;
-
-                    if (l_isAdded)
+                    if (l_eventMap.try_emplace(l_enumType, Constant::k_noFlagValue).second)
                     {
                         l_isChanged = true;
                     }

@@ -82,11 +82,10 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Delete(const std::vecto
 {
     for (const auto& l_filePath : a_filePathList)
     {
-        std::error_code l_errorCode = {};
-
         // remove_all()はファイル・フォルダ問わず作成する
         // フォルダの場合は中身も再帰的に削除する
-        if (!std::filesystem::remove_all(l_filePath, l_errorCode) &&
+        if (std::error_code l_errorCode = {};
+            !std::filesystem::remove_all(l_filePath, l_errorCode) &&
             l_errorCode)
         {
             FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, 

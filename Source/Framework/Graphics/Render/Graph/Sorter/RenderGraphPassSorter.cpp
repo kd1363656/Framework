@@ -16,15 +16,19 @@ void FWK::Graphics::RenderGraphPassSorter::SortPassList(std::vector<std::unique_
     // l_beforePassIndexより後ろのPassだけ尾を見ることで、同じ組み合わせを二回比較しない
     for (std::size_t l_beforePassIndex = 0ULL; l_beforePassIndex < l_passCount; ++l_beforePassIndex)
     {
-        const auto& l_beforePass = a_passList[l_beforePassIndex];
-
-        if (!l_beforePass) { continue; }
+        if (const auto& l_beforePass = a_passList[l_beforePassIndex];
+            !l_beforePass)
+        {
+            continue;
+        }
 
         for (auto l_afterPassIndex = l_beforePassIndex + k_nextPassIndexOffset; l_afterPassIndex < l_passCount; ++l_afterPassIndex)
         {
-            const auto& l_afterPass = a_passList[l_afterPassIndex];
-
-            if (!l_afterPass) { continue; }
+            if (const auto& l_afterPass = a_passList[l_afterPassIndex];
+                !l_afterPass)
+            {
+                continue;
+            }
 
             // ExecutionLayerから依存関係を作る
             AddPassExecutionLayerDependencyEdge(a_passList,
@@ -131,17 +135,14 @@ void FWK::Graphics::RenderGraphPassSorter::AddPassResourceDependencyEdge(const s
             // 違うRenderGraphResource対象なら依存関係は作らない
             if (!IsSameRenderGraphResource(l_beforeResourceAccess, l_afterResourceAccess)) { continue; }
 
-            const auto l_isBeforeRead  = IsReadResourceAccess (l_beforeResourceAccess);
             const auto l_isBeforeWrite = IsWriteResourceAccess(l_beforeResourceAccess);
-
-            const auto l_isAfterRead  = IsReadResourceAccess (l_afterResourceAccess);
-            const auto l_isAfterWrite = IsWriteResourceAccess(l_afterResourceAccess);
+            const auto l_isAfterWrite  = IsWriteResourceAccess(l_afterResourceAccess);
 
             // beforeが書いてafterが読む場合。
             // afterはbeforeの書き込み結果を読む必要があるため、
             // before -> afterの依存関係を作る
             if (l_isBeforeWrite &&
-                l_isAfterRead)
+                IsReadResourceAccess(l_afterResourceAccess))
             {
                 AddPassDependencyEdge(a_beforePassIndex, a_afterPassIndex, a_passDependencyList);
 
@@ -150,7 +151,7 @@ void FWK::Graphics::RenderGraphPassSorter::AddPassResourceDependencyEdge(const s
 
             // beforeが読んでafterが書く場合
             // after -> beforeの依存関係を作る
-            if (l_isBeforeRead &&
+            if (IsReadResourceAccess(l_beforeResourceAccess) &&
                 l_isAfterWrite)
             {
                 AddPassDependencyEdge(a_afterPassIndex, a_beforePassIndex, a_passDependencyList);

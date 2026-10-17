@@ -129,10 +129,9 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplySceneFil
 
     if (!l_scene) { return; }
 
-    auto& l_sceneChanger = l_scene->GetMutableREFSceneChanger();
-
     // NextSceneとして登録済みのときだけSceneChanger側のFilePathも追従する
-    if (auto* l_nextScene = l_sceneChanger.FetchMutablePTRNextScene(a_sceneUUID))
+    if (auto& l_sceneChanger = l_scene->GetMutableREFSceneChanger();
+        auto* l_nextScene = l_sceneChanger.FetchMutablePTRNextScene(a_sceneUUID))
     {
         l_nextScene->Load(a_newFilePath);
     }

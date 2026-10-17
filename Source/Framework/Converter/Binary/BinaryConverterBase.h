@@ -41,9 +41,11 @@ namespace FWK::Converter
             if (!a_destinationData) { return false; }
 
             // バイナリーデータサイズを計算してからデータを読み取る
-            const auto& l_binaryDataSize = CalculateBinaryDataSize<Type>(a_readDataCount);
-
-            if (!CanReadBinaryData(a_memoryReadOffset, l_binaryDataSize)) { return false; }
+            if (const auto& l_binaryDataSize = CalculateBinaryDataSize<Type>(a_readDataCount);
+                !CanReadBinaryData(a_memoryReadOffset, l_binaryDataSize))
+            {
+                return false;
+            }
 
             ReadBinaryData(a_readDataCount, a_memoryReadOffset, a_destinationData);
 

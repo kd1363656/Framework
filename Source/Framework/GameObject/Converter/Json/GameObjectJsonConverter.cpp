@@ -183,10 +183,10 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeDIFF(const nloh
     if (const auto& l_transformComponent = a_gameObject.GetVALTransformComponent().lock();
         l_transformComponent)
     {
-        const auto&  l_baseTransformJson = a_baseJson.value       (k_transformComponentJsonKey, nlohmann::json{});
-              auto&& l_transformDiffJson = Utility::DetectJsonDiff(l_baseTransformJson,l_transformComponent->Serialize());
+        const auto& l_baseTransformJson = a_baseJson.value(k_transformComponentJsonKey, nlohmann::json{});
      
-        if (!l_transformDiffJson.is_null())
+        if (auto&& l_transformDiffJson = Utility::DetectJsonDiff(l_baseTransformJson,l_transformComponent->Serialize());
+            !l_transformDiffJson.is_null())
         {
             l_diffJson[k_transformComponentJsonKey] = std::move(l_transformDiffJson);
         }

@@ -396,10 +396,9 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::NavigateToCurrentCursor(Ass
 {
     if (m_currentCursorFilePath.empty()) { return; }
 
-    std::error_code l_errorCode = {};
-
     // カーソル位置がフォルダの場合のみナビゲート
-    if (std::filesystem::is_directory(m_currentCursorFilePath, l_errorCode))
+    if (std::error_code l_errorCode = {};
+        std::filesystem::is_directory(m_currentCursorFilePath, l_errorCode))
     {
         NavigateToFolder(m_currentCursorFilePath, a_editorWindow);
     }
@@ -680,11 +679,11 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const std::fil
 
     // 候補フォントサイズでのアイコン幅・高さを計算
     // フォントサイズに比例してグリフサイズも変化する
-    const float l_scaledIconWidth  = l_iconSize.x * (l_iconFontSize / l_currentFontSize);
     const float l_scaledIconHeight = l_iconSize.y * (l_iconFontSize / l_currentFontSize);
 
     // 幅が領域を超える場合は幅基準へ縮小
-    if (l_scaledIconWidth > l_iconAreaWidth)
+    if (const float l_scaledIconWidth = l_iconSize.x * (l_iconFontSize / l_currentFontSize);
+        l_scaledIconWidth > l_iconAreaWidth)
     {
         l_iconFontSize = l_iconFontSize * (l_iconAreaWidth / l_scaledIconWidth);
     }
@@ -805,21 +804,19 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
     }
 
     // 空白クリック検知
-    const bool l_isEmptySpaceClick = ImGui::IsWindowHovered()   &&
-                                     !ImGui::IsAnyItemHovered() &&
-                                     ImGui::IsMouseClicked(ImGuiMouseButton_Left);
-
     // リネーム確定条件
     // 1.Enter押下
     // 2.フォーカス消失
     // 3.空白クリック
-    // l_isEmptySpaceClickをm_isFocusedでガードしないと
+    // 空白クリックの判定をm_isFocusedでガードしないと
     // 初回フレーム(フォーカス前)のクリックで
     // デフォルト名のまま確定してしまう
-    if (l_isEnterPressed          ||
-       (l_renameState.m_isFocused &&
-       (!ImGui::IsItemFocused()   ||
-        l_isEmptySpaceClick)))
+    if (l_isEnterPressed              ||
+        (l_renameState.m_isFocused    &&
+         (!ImGui::IsItemFocused()     ||
+          (ImGui::IsWindowHovered()   &&
+           !ImGui::IsAnyItemHovered() &&
+           ImGui::IsMouseClicked(ImGuiMouseButton_Left)))))
     {
         // 先にm_isActiveをfalseにして
         // 次フレームでDrawCardRenameが呼ばれないようにする
@@ -852,13 +849,12 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::
     // 修飾キーなしの場合は単一選択
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
     {
-        const auto& l_io = ImGui::GetIO();
-
         // 修飾キーなしで既選択のカードをクリックした場合は選択リストを更新しない
         // この時点で単一選択へ潰すとドラッグ対象が1件だけになってしまうため
         // 複数選択を維持したままドラッグ&ドロップできるようにする
         // Ctrl + Click(トグル)・Shift + Click(範囲選択)は従来通り選択を更新する
-        if (!a_isSelected ||
+        if (const auto& l_io = ImGui::GetIO();
+            !a_isSelected ||
             l_io.KeyShift ||
             l_io.KeyCtrl)
         {
@@ -935,11 +931,10 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardDragDrop(const st
     if (std::error_code l_errorCode = {};
         std::filesystem::is_directory(a_filePath, l_errorCode))
     {
-        std::vector<std::filesystem::path> l_droppedFilePathList = {};
- 
         auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
  
-        if (l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList))
+        if (std::vector<std::filesystem::path> l_droppedFilePathList = {};
+            l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList))
         {
             const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
  
@@ -955,9 +950,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardDragDrop(const st
         // アウトライナーからのGameObjectドロップを受け付ける
         // ドロップされたGameObjectをこのフォルダ内へPrefabとして作成する
         // ドロップ対象が選択に含まれていれば選択中全てがPrefab化される
-        std::weak_ptr<GameObject> l_droppedGameObject = {};
- 
-        if (l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
+        if (std::weak_ptr<GameObject> l_droppedGameObject = {};
+            l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
         {
             const auto& l_sceneManager = SceneManager::GetInstance ();
             const auto& l_scene        = l_sceneManager.GetVALScene().lock();
@@ -996,13 +990,12 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandlePaneBackgroundDragDro
 
     if (!l_currentWindow) { return; }
 
-    std::vector<std::filesystem::path> l_droppedFilePathList = {};
- 
     // ChildWindow全体をドロップ対象矩形にする
     // GetCurrentWindow()->Rect()はスクリーン座標系のウィンドウ全体矩形
     // フォルダカード上ではカード側(小さい矩形)が優先されるため
     // ここに届くのは空白部分へのドロップのみになる
-    if (l_imguiDragDropPayloadStorage.DragDropTargetCustom(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
+    if (std::vector<std::filesystem::path> l_droppedFilePathList = {};
+        l_imguiDragDropPayloadStorage.DragDropTargetCustom(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
                                                            l_currentWindow->Rect(),
                                                            ImGui::GetID(k_paneDropTargetLabel.data()),
                                                            l_droppedFilePathList))
@@ -1044,16 +1037,16 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandlePaneBackgroundDragDro
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::BuildDisplayedFilePathList(const AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList) const
 {
-    const auto& l_folderPane         = a_editorWindow.GetREFFolderPane             ();
-    const auto& l_folderSelection    = l_folderPane.GetREFSelectionState           ();
-    const auto& l_selectedFolderList = l_folderSelection.GetREFSelectedFilePathList();
+    const auto& l_folderPane      = a_editorWindow.GetREFFolderPane  ();
+    const auto& l_folderSelection = l_folderPane.GetREFSelectionState();
 
     // 表示対象フォルダリストを決定
     // 複数選択時    : 選択中の全フォルダ
     // 単一/未選択時 : m_currentSelectFolderPath(空ならAssetルート)
     std::vector<std::filesystem::path> l_targetFolderList = {};
 
-    if (l_selectedFolderList.size() > Constant::k_editorSelectedFolderSingleSize)
+    if (const auto& l_selectedFolderList = l_folderSelection.GetREFSelectedFilePathList();
+        l_selectedFolderList.size() > Constant::k_editorSelectedFolderSingleSize)
     {
         // 複数選択時 : 選択中フォルダをすべて表示対象にする
         l_targetFolderList = l_selectedFolderList;
@@ -1086,12 +1079,14 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::BuildDisplayedFilePathList(
     std::ranges::sort(a_displayedList,
                       [](const auto& a_lhs, const auto& a_rhs)
                       {
-                                std::error_code l_errorCode      = {};
-                          const bool            l_lhsIsDirectory = std::filesystem::is_directory(a_lhs, l_errorCode);
-                          const bool            l_rhsIsDirectory = std::filesystem::is_directory(a_rhs, l_errorCode);
+                          std::error_code l_errorCode = {};
 
                           // フォルダを先にする
-                          if (l_lhsIsDirectory != l_rhsIsDirectory) { return l_lhsIsDirectory; }
+                          if (const bool l_lhsIsDirectory = std::filesystem::is_directory(a_lhs, l_errorCode);
+                              l_lhsIsDirectory != std::filesystem::is_directory(a_rhs, l_errorCode))
+                          {
+                              return l_lhsIsDirectory;
+                          }
 
                           const auto& l_lhsName = a_lhs.filename().string();
                           const auto& l_rhsName = a_rhs.filename().string();
@@ -1128,10 +1123,10 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::SelectFile(const std::vecto
         {
             // アンカーとクリック位置のリスト内インデックス検索
             auto l_startITR = std::find(a_displayedFilePathList.begin(), a_displayedFilePathList.end(), l_rangeSelectionStartPath);
-            auto l_endITR   = std::find(a_displayedFilePathList.begin(), a_displayedFilePathList.end(), a_filePath);
 
             // 両方がリストに存在する場合のみ範囲選択
-            if (l_startITR != a_displayedFilePathList.end() &&
+            if (auto l_endITR = std::find(a_displayedFilePathList.begin(), a_displayedFilePathList.end(), a_filePath);
+                l_startITR != a_displayedFilePathList.end() &&
                 l_endITR   != a_displayedFilePathList.end())
             {
                 // 開始位置がクリック位置より後ろの場合は入れ替え

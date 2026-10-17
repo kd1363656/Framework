@@ -421,6 +421,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     }
 
     const auto& l_clipboard   = a_editorWindow.GetREFClipboard();
+
     const bool  l_isCutTarget = (l_clipboard.GetVALOperationType() == Enum::AssetBrowserFileClipboardOperationType::Cut) &&
                                  l_clipboard.Contains(a_currentFolderPath);
 
@@ -459,6 +460,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // (量Paneで同時にInputTextを描画するとフォーカス競合が起きリネームが確定しなくなる)
     // カード表示 = 対象フォルダの親が現在参照中フォルダと一致する状態
     const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
+
     const bool  l_isDisplayedAsCard       = !l_currentSelectFolderPath.empty() &&
                                              a_currentFolderPath.parent_path() == l_currentSelectFolderPath;
 
@@ -468,6 +470,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
 
     // フォルダアイコン + フォルダ名のラベルを構築
     const bool  l_isOpen = IsFolderOpen(a_currentFolderPath);
+
     const auto& l_icon   = (l_isOpen && 
                             l_hasChild) ? Constant::k_imguiFontAwesomeFolderOpenIcon : Constant::k_imguiFontAwesomeFolderCloseIcon;
 
@@ -527,7 +530,6 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
 
     // ノードの高さを三分割した境界Y座標を計算
     const float l_itemHeight = l_itemMAX.y - l_itemMIN.y;
-    const float l_upperBound = l_itemMIN.y + l_itemHeight * Constant::k_imguiDragDropUpperZoneRatio;
     
     const bool l_isDragging = ImGui::GetDragDropPayload() != nullptr;
 
@@ -536,7 +538,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // これでドラッグ中かどうかを判定し
     // 上部ゾーンの場合はBanIconを描画する
     // 上 : ドロップ不可ゾーン
-    if (l_mouseY < l_upperBound)
+    if (const float l_upperBound = l_itemMIN.y + l_itemHeight * Constant::k_imguiDragDropUpperZoneRatio;
+        l_mouseY < l_upperBound)
     {
         // ドラッグ中かつこのノード上にマウスがある場合
         // BanIconをマウス位置に描画してドロップ不可を示す
@@ -576,11 +579,10 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // 中央、下 : フォルダの中へ移動
     else
     {
-        std::vector<std::filesystem::path> l_droppedFilePathList = {};
-
         auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
 
-        if (l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList))
+        if (std::vector<std::filesystem::path> l_droppedFilePathList = {};
+            l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList))
         {
             const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
 
@@ -592,14 +594,13 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // アウトライナーからのGameObjectドロップを受け付ける
         // ドロップされたGameObjectをこのフォルダ内へPrefabとして作成する
         // ドロップ対象が選択に含まれていれば選択中全てがPrefab化される
-        std::weak_ptr<GameObject> l_droppedGameObject = {};
- 
-        if (l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
+        if (std::weak_ptr<GameObject> l_droppedGameObject = {};
+            l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
         {
             const auto& l_sceneManager = SceneManager::GetInstance();
-            const auto& l_scene        = l_sceneManager.GetVALScene ().lock();
  
-            if (l_scene)
+            if (const auto& l_scene = l_sceneManager.GetVALScene().lock();
+                l_scene)
             {
                       auto& l_application           = Application::GetInstance                        ();
                       auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
@@ -678,20 +679,18 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // !ImGui::IsAnyItemHovered : いずれこのアイテム上にもマウスがない = 空白
         // ImGui::IsMouseClicked    : このフレームで左クリックされた
         // これにより空白をクリックしたときにリネームを確定する
-        const bool l_isEmptySpaceClick = ImGui::IsWindowHovered()   &&
-                                         !ImGui::IsAnyItemHovered() &&
-                                         ImGui::IsMouseClicked(ImGuiMouseButton_Left);
-
         // リネーム確定条件
         // 1 : Enter押下時
         // 2 : フォーカス取得後にフォーカス消失
-        // l_isEmptySpaceClickをm_isFocusedでガードしないと
+        // 空白クリックの判定をm_isFocusedでガードしないと
         // 初回フレーム(フォーカス前)のクリックで
         // ドフォルト名のまま確定してしまう
-        if (l_isEnterPressed          ||
-           (l_renameState.m_isFocused &&
-           (!ImGui::IsItemFocused()   ||
-            l_isEmptySpaceClick)))
+        if (l_isEnterPressed              ||
+            (l_renameState.m_isFocused    &&
+             (!ImGui::IsItemFocused()     ||
+              (ImGui::IsWindowHovered()   &&
+               !ImGui::IsAnyItemHovered() &&
+               ImGui::IsMouseClicked(ImGuiMouseButton_Left)))))
         {
             // 再帰にm_isActiveをfalseにして
             // 次フレームでリネームInputTextが描画されるようにする
@@ -734,13 +733,12 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // このフォルダを含まない/空のリストになってしまう
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
     {
-        const auto& l_io = ImGui::GetIO();
-         
         // 修飾キーなしで既選択のフォルダをクリックした場合は選択リストを更新しない
         // この時点で単一選択へ潰すとドラッグ対象が1件だけになってしまうため
         // 複数選択を維持したままドラッグ&ドロップできるようにする
         // Ctrl + Click(トグル)・Shift + Click(範囲選択)は従来通り選択を更新する
-        if (!l_isSelected ||
+        if (const auto& l_io = ImGui::GetIO();
+            !l_isSelected ||
             l_io.KeyShift ||
             l_io.KeyCtrl)
         {
@@ -764,11 +762,10 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     if (ImGui::IsItemDeactivated() &&
         ImGui::IsItemHovered())
     {
-        const auto& l_io = ImGui::GetIO();
-     
         // Shift/Ctrlでの選択操作(範囲選択・トグル)では
         // 解放時にも参照フォルダを切り替えない
-        if (!l_io.KeyShift &&
+        if (const auto& l_io = ImGui::GetIO();
+            !l_io.KeyShift &&
             !l_io.KeyCtrl)
         {
             a_editorWindow.SetCurrentSelectFolderPath(a_currentFolderPath);
@@ -883,10 +880,10 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
 
             // 開始地点とクリック店のリスト内インデックスを検索
             auto l_startITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_rangeSelectionStartPath);
-            auto l_endITR   = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), a_folderPath); 
 
             // 両方がリストに存在する場合のみ範囲選択を行う
-            if (l_startITR != l_displayedFolderList.end() &&
+            if (auto l_endITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), a_folderPath);
+                l_startITR != l_displayedFolderList.end() &&
                 l_endITR != l_displayedFolderList.end())
             {
                 // 開始地点がクリック点より後ろの場合は入れ替える

@@ -430,7 +430,23 @@
 	項が2つだけでも、短くても1行に書かない
 	returnかcontinueだけのif文でも、論理演算子があるならブロックにする
 	関数の引数の中で改行したら、その関数の引数はすべて1引数1行にする
+	論理演算子を使った変数の宣言は、隣の変数の宣言と関係があっても必ず1行開ける(=の位置は揃えたままでよい)
 	理 : 演算子が縦に並ぶことで条件の数と、&&と||のどちらでつないでいるかが一目で分かるから
+	     変数ごとに行間があることで、どこまでが1つの変数の条件なのかが一目で分かるから
+
+	例↓
+	// × (どちらも関数の引数に渡す変数)
+	const bool l_canRename    = !l_isMultiSelection &&
+	                            !l_isRootFolder;
+	const bool l_canDuplicate = l_hasSelection &&
+	                            !l_containsRoot;
+
+	// ○
+	const bool l_canRename    = !l_isMultiSelection &&
+	                            !l_isRootFolder;
+
+	const bool l_canDuplicate = l_hasSelection &&
+	                            !l_containsRoot;
 
 	例↓
 	const bool l_isHovered = a_isEnabled &&
@@ -1017,18 +1033,21 @@
 		return true;
 	}
 }
-・if文の条件と中でしか使わない変数はif文の初期化文で宣言する
+・if文でしか使わない変数(if文の条件と中でしか使わない変数)は、if文の外で宣言せずif文の中に書く
 {
-	例↓
-	if (const auto& l_itr = m_soundEffectMap.find(a_filePath);
-	    l_itr != m_soundEffectMap.end())
-	{
-		return l_itr->second;
-	}
-}
-・一度しか使わないboolの変数は作らず、その式をif文の条件へ直接書く
-　(2回以上使うbool、名前を付けないと意味が分からない長い式は変数にしてよい)
-{
+	理 : 値が判定の直前に作られるため、宣言から判定までの間に値が古くなったり、別の場所で使われたりすることがなく判定が確実になるから
+	条件で1回しか使わないbool(Is・Has・Can・Shouldで始まる名前をautoで受けたものも含む)は変数を作らず、式を条件へ直接書く
+	　名前を付けないと意味が分からない長い式でも変数にしない(意味はif文の上のコメントに書く)
+	　式に論理演算子があれば8章と同じく改行して演算子の位置を揃える
+	それ以外(条件と中の両方で使う、bool以外)はif文の初期化文で宣言する
+	　初期化文の後の条件は改行し、「if (」の次の文字に揃える
+	　returnかcontinueだけの1行のif文でも、初期化文を書くならブロックにする
+	次の変数はif文の外で宣言してよい
+	　2つ以上のif文や、if文の外でも使う変数
+	　宣言からif文までの間に値や状態を変える処理がある変数(ImGuiの描画、保存、通知の登録など。中へ移すと処理の順番が変わり結果が変わる)
+	　初期化文はif文1つに1つしか書けないため、同じif文で使う変数が2つ以上あるときは、条件に一番近い1つだけを初期化文に入れ残りは外で宣言する
+	　constexprの定数
+
 	例↓
 	// ×
 	const bool l_isRangeSelection = l_io.KeyShift || l_io.KeyCtrl;
@@ -1038,9 +1057,42 @@
 		...
 	}
 
+	const auto& l_itr = m_soundEffectMap.find(a_filePath);
+
+	if (l_itr != m_soundEffectMap.end())
+	{
+		return l_itr->second;
+	}
+
+	const auto& l_beforePass = a_passList[l_beforePassIndex];
+
+	if (!l_beforePass) { continue; }
+
 	// ○
 	if (l_io.KeyShift ||
 	    l_io.KeyCtrl)
+	{
+		...
+	}
+
+	if (const auto& l_itr = m_soundEffectMap.find(a_filePath);
+	    l_itr != m_soundEffectMap.end())
+	{
+		return l_itr->second;
+	}
+
+	if (const auto& l_beforePass = a_passList[l_beforePassIndex];
+	    !l_beforePass)
+	{
+		continue;
+	}
+
+	// ○ 間に描画があるので外で宣言したままにする
+	const bool l_isEnterPressed = ImGui::InputText(...);
+
+	ImGui::PopStyleVar();
+
+	if (l_isEnterPressed)
 	{
 		...
 	}

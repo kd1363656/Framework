@@ -23,11 +23,10 @@ namespace FWK::Utility
         // 変更があった場合はtrueを返す
         bool EditInspector(const std::string_view& a_label, EnumBitShift<Type>& a_enumBitShift)
         {
-            auto& l_shiftFlagList = a_enumBitShift.GetMutableREFBitShiftFlagList();
-
             // CheckBoxSelectorがフラグリストへ直接追加・削除を行う
             // 変更がなければビット値を再構築する必要はない
-            if (!Utility::IMGUIStringValueBidirectionalRegistryCheckBoxSelector(a_label, l_shiftFlagList))
+            if (auto& l_shiftFlagList = a_enumBitShift.GetMutableREFBitShiftFlagList();
+                !Utility::IMGUIStringValueBidirectionalRegistryCheckBoxSelector(a_label, l_shiftFlagList))
             {
                 return false;
             }

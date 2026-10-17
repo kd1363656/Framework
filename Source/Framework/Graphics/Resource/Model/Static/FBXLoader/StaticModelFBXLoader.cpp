@@ -170,9 +170,11 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
         {
             // face_material配列を使って、現在処理中のMaterialIndexと一致するFaceだけを対象にする
             // 要は同じマテリアルを使用しない場合処理をスキップする
-            const auto& l_faceMaterialIndex = static_cast<std::size_t>(l_fbxMesh->face_material.data[l_faceIndex]);
-
-            if (l_faceMaterialIndex != a_materialIndex) { continue; }
+            if (const auto& l_faceMaterialIndex = static_cast<std::size_t>(l_fbxMesh->face_material.data[l_faceIndex]);
+                l_faceMaterialIndex != a_materialIndex)
+            {
+                continue;
+            }
         }
 
         // FBXのFaceは四角形以上の場合もあるため、描画しやすい三角形リストへ変換する

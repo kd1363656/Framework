@@ -49,9 +49,8 @@ namespace FWK::Utility
                     continue;
                 }
         
-                const auto& l_childDiffJson = DetectJsonDiff(a_baseJson[l_key], l_value);
-        
-                if (!l_childDiffJson.is_null())
+                if (const auto& l_childDiffJson = DetectJsonDiff(a_baseJson[l_key], l_value);
+                    !l_childDiffJson.is_null())
                 {
                     l_diffJson[l_key] = l_childDiffJson;
                 }

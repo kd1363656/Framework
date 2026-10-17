@@ -73,9 +73,8 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 
     // TexMetadataを使ってScratchImageの内部メモリを確保する。
     // この時点では「画像を入れる箱」を作るだけで、実際のピクセル値はまだ入っていない
-    const auto l_hr = a_scratchImage.Initialize(a_texMetadata);
-
-    if (FAILED(l_hr))
+    if (const auto l_hr = a_scratchImage.Initialize(a_texMetadata);
+        FAILED(l_hr))
     {
         DestroyMemoryMappedFile();
 

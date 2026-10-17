@@ -106,10 +106,6 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
             return true;
         }
 
-        // 現愛通知Recordが実際に必要とするByte数
-        // 固定部分 + FileName部分で必要なByte数を算出
-        const auto& l_recordByteSize = l_notificationFixedByteSize + l_fileNameByteSize;
-
         // ファイルのByte数からWCHARを割って何文字必要かを算出
         const auto& l_fileNameCharacterCount = l_fileNameByteSize / sizeof(WCHAR);
 
@@ -132,7 +128,10 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 
         const auto& l_nextEntryOffset = static_cast<std::size_t>(l_notificationInformation.NextEntryOffset);
 
-        if (l_nextEntryOffset < l_recordByteSize ||
+        // 現愛通知Recordが実際に必要とするByte数
+        // 固定部分 + FileName部分で必要なByte数を算出
+        if (const auto& l_recordByteSize = l_notificationFixedByteSize + l_fileNameByteSize;
+            l_nextEntryOffset < l_recordByteSize ||
             l_nextEntryOffset >= l_remainingByteSize)
         {
             FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorの通知Bufferに無効なNextEntryOffsetが含まれています。");

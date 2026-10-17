@@ -28,11 +28,10 @@ namespace FWK::Utility
         if (a_filePath.extension() != Constant::k_lowerJsonExtension) { return false; }
 
         // ファイルパの親パスを取得
-        const auto& l_parentDirectoryPath = a_filePath.parent_path();
-
         // 保存先フォルダーが存在しない場合は、
         // 親フォルダーを含めて作成する
-        if (!l_parentDirectoryPath.empty())
+        if (const auto& l_parentDirectoryPath = a_filePath.parent_path();
+            !l_parentDirectoryPath.empty())
         {
             std::error_code l_errorCode = {};
 

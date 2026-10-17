@@ -30,9 +30,11 @@ namespace FWK::Utility
         // a_filterLabel        = L"JSON File(*.json)"
         // a_filterPatternLabel = L"*.json"とした場合、
         // SaveDialogではJSONファイル保存対象として表示する
-        const std::array<COMDLG_FILTERSPEC, Constant::k_defaultSaveFileDialogCount> l_fileTypeList = { {a_filterLabel.data(), a_filterPatternLabel.data()} };
-
-        if (FAILED(l_fileDialog->SetFileTypes(static_cast<UINT>(l_fileTypeList.size()), l_fileTypeList.data()))) { return false; }
+        if (const std::array<COMDLG_FILTERSPEC, Constant::k_defaultSaveFileDialogCount> l_fileTypeList = { {a_filterLabel.data(), a_filterPatternLabel.data()} };
+            FAILED(l_fileDialog->SetFileTypes(static_cast<UINT>(l_fileTypeList.size()), l_fileTypeList.data())))
+        {
+            return false;
+        }
 
         // ユーザーがTestSceneとだけ入力した場合に、
         // TestScene.jsonのように拡張子を自動的につける
@@ -71,9 +73,11 @@ namespace FWK::Utility
 
             // std::filesystem::pathを
             // WindowShellが扱うIShellItemへ変換する
-            TypeAlias::ComPtr<IShellItem> l_initialDirectoryItem = nullptr;
-
-            if (FAILED(SHCreateItemFromParsingName(l_initialDirectoryPath.c_str(), nullptr, IID_PPV_ARGS(&l_initialDirectoryItem)))) { return false; }
+            if (TypeAlias::ComPtr<IShellItem> l_initialDirectoryItem = nullptr;
+                FAILED(SHCreateItemFromParsingName(l_initialDirectoryPath.c_str(), nullptr, IID_PPV_ARGS(&l_initialDirectoryItem))))
+            {
+                return false;
+            }
         }
 
         // 実際に保存ダイアログを表示する

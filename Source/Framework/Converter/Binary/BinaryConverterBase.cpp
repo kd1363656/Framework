@@ -85,9 +85,8 @@ bool FWK::Converter::BinaryConverterBase::CreateReadMemoryMappedFile(const std::
     // それが本当にエラーなのか、またはファイルサイズの下位32bitがたまたま0xFFFFFFFFなのかをGetLastError()で確認する
     if (l_fileSizeLow == INVALID_FILE_SIZE)
     {
-        const auto l_error = GetLastError();
-
-        if (l_error != NO_ERROR)
+        if (const auto l_error = GetLastError();
+            l_error != NO_ERROR)
         {
             DestroyMemoryMappedFile();
             FWK_ASSERT_RETURN_VALUE("BinaryFileのファイルサイズ取得に失敗しました。", false);
@@ -207,9 +206,8 @@ bool FWK::Converter::BinaryConverterBase::CreateWriteMemoryMappedFile(const std:
                                                            FILE_BEGIN);
         l_setFilePointerResult == INVALID_SET_FILE_POINTER)
     {
-        const auto l_error = GetLastError();
-
-        if (l_error != NO_ERROR)
+        if (const auto l_error = GetLastError();
+            l_error != NO_ERROR)
         {
             DestroyMemoryMappedFile();
             FWK_ASSERT_RETURN_VALUE("BinaryFileの書き込み用ファイルサイズ指定位置の移動に失敗しました。", false);

@@ -37,11 +37,8 @@ void FWK::Editor::ViewportToolbar::DrawDisplayOptionsPopup() const
 }
 void FWK::Editor::ViewportToolbar::DrawCollisionMenuItem() const
 {
-    auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
-
-    const bool l_isEnabled = l_physicsManager.GetVALIsDisableDebugDraw();
-
-    if (ImGui::MenuItem(k_collisionMenuItemLabel.data(), nullptr, l_isEnabled))
+    if (auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
+        ImGui::MenuItem(k_collisionMenuItemLabel.data(), nullptr, l_physicsManager.GetVALIsDisableDebugDraw()))
     {
         l_physicsManager.TogglePhysicsDebugDraw();
     }

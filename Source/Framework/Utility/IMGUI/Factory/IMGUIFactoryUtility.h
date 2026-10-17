@@ -117,9 +117,8 @@ namespace FWK::Utility
             if (const auto& l_itr = a_selectedMap.find(l_staticTypeID);
                 l_itr != a_selectedMap.end())
             {
-                const auto& l_instance = l_itr->second;
-
-                if (l_instance)
+                if (const auto& l_instance = l_itr->second;
+                    l_instance)
                 {
                     l_isSelected = l_instance->GetREFRuntimeTypeINFO().k_staticTypeID == l_staticTypeID;
                 }
@@ -141,9 +140,8 @@ namespace FWK::Utility
                 }
 
                 // Factoryから生成されたInstanceが、本当に選択したFactory型と一致しているか確認する
-                const auto l_createdStaticTypeID = l_instance->GetREFRuntimeTypeINFO().k_staticTypeID;
-
-                if (l_createdStaticTypeID != l_staticTypeID)
+                if (const auto l_createdStaticTypeID = l_instance->GetREFRuntimeTypeINFO().k_staticTypeID;
+                    l_createdStaticTypeID != l_staticTypeID)
                 {
                     FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Factoryから生成したInstanceのStaticTypeIDが一致しませんでした。\nTypeName : {}", l_key);
 

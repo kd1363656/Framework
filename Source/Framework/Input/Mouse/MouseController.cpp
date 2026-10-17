@@ -33,11 +33,11 @@ void FWK::MouseController::Update()
 
     const auto& l_application = Application::GetInstance  ();
     const auto& l_window      = l_application.GetREFWindow();
-    const auto& l_hwnd        = l_window.GetREFHWND       ();
 
     // ApplicationのMainWindowが操作対象になっている場合だけ
     // MousePositionとMovementを更新する
-    if (GetForegroundWindow() == l_hwnd)
+    if (const auto& l_hwnd = l_window.GetREFHWND();
+        GetForegroundWindow() == l_hwnd)
     {
         const auto& l_currentPosition = TypeAlias::Math::Vector2{ static_cast<float>(m_state.x), static_cast<float>(m_state.y) };
 

@@ -121,9 +121,8 @@ void FWK::Editor::EditorWindowPaneSplitter::Draw(const std::string_view&        
 
     // GetWindowDrawList()が返すImDrawList*はImGui所有
     // この関数内だけで一時的に参照し、保持はしない
-    auto* l_drawList = ImGui::GetWindowDrawList();
-
-    if (!l_drawList)
+    if (auto* l_drawList = ImGui::GetWindowDrawList();
+        !l_drawList)
     {
         // 通常はImGui標準Separator色
         ImGuiCol l_splitterColor = ImGuiCol_Separator;

@@ -2,12 +2,12 @@
 
 void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransformComponent& a_transformComponent)
 {
-    auto& l_transform        = a_transformComponent.GetMutableREFTransform       ();
-    auto& l_matrixUpdateMode = a_transformComponent.GetMutableREFMatrixUpdateMode();
+    auto& l_transform = a_transformComponent.GetMutableREFTransform();
 
     // 行列の計算方法を選択することができるラジオボタンリスト
     // 新しく生成されたらMatrix確定処理を実行
-    if (Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixUpdateMode))
+    if (auto& l_matrixUpdateMode = a_transformComponent.GetMutableREFMatrixUpdateMode();
+        Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixUpdateMode))
     {
         // 関連するポインタとつなげる処理
         l_matrixUpdateMode->PostDeserialize(a_transformComponent);

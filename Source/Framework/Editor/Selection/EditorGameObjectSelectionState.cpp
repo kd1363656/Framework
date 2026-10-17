@@ -54,9 +54,11 @@ void FWK::Editor::EditorGameObjectSelectionState::ToggleSelectedGameObject(const
 
 void FWK::Editor::EditorGameObjectSelectionState::AddSelectedGameObject(const std::weak_ptr<GameObject>& a_gameObject)
 {
-    const auto& l_gameObject = a_gameObject.lock();
-
-    if (!l_gameObject) { return; }
+    if (const auto& l_gameObject = a_gameObject.lock();
+        !l_gameObject)
+    {
+        return;
+    }
 
     // 既に選択済みなら追加しない
     if (FindVALIsSelected(a_gameObject)) { return; }

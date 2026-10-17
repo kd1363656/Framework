@@ -4,9 +4,8 @@ void FWK::Converter::GameObjectComponentBaseJsonConverter::Deserialize(const nlo
 {
     if (a_rootJson.is_null()) { return; }
 
-    const auto& l_uuid = Utility::DeserializeUUID(a_rootJson, Constant::k_uuidJsonKey);
-
-    if (l_uuid.is_nil()) 
+    if (const auto& l_uuid = Utility::DeserializeUUID(a_rootJson, Constant::k_uuidJsonKey);
+        l_uuid.is_nil()) 
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントにUUIDが割り当てられていませんでした。");
     }

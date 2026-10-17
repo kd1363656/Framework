@@ -17,15 +17,13 @@ JPH::Vec3 FWK::Physics::PhysicsCharacterVirtualAffectedByGravity::CalculateLinea
     // 水平入力速度は毎フレームa_updateDataから設定し直す
     const auto& l_currentVerticalVelocity = l_currentLinearVelocity.Dot(l_up) * l_up;
 
-    // 床に対してCharacterVirtualが上方向へ離れようとしているかを調べる
-    // この値が小さい場合は、床方向へ移動中または由香とほぼ同じ速度である
-    const float l_verticalVelocityRelativeToGround = (l_currentVerticalVelocity - l_groundVelocity).Dot(l_up);
-    const bool  l_isMovigTowardsGround             = l_verticalVelocityRelativeToGround < Constant::k_characterVirtualMovingTowardsGroundTolerance;
-
     auto l_nextLinearVelocity = l_currentVerticalVelocity;
 
-    if (a_characterVirtual.GetGroundState() == JPH::CharacterBase::EGroundState::OnGround &&
-        l_isMovigTowardsGround)
+    // 床に対してCharacterVirtualが上方向へ離れようとしているかを調べる
+    // この値が小さい場合は、床方向へ移動中または由香とほぼ同じ速度である
+    if (const float l_verticalVelocityRelativeToGround = (l_currentVerticalVelocity - l_groundVelocity).Dot(l_up);
+        a_characterVirtual.GetGroundState() == JPH::CharacterBase::EGroundState::OnGround &&
+        l_verticalVelocityRelativeToGround < Constant::k_characterVirtualMovingTowardsGroundTolerance)
     {
         // 接地中は由香の速度を引き継ぐ、
         // StaticBodyなら基本的に0、動く床ならその移動速度になる

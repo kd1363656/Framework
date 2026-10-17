@@ -11,13 +11,13 @@ namespace FWK::Utility
         if (!l_gameObject) { return l_placement; }
 
         const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
-        const auto& l_parent    = l_hierarchy.GetREFParent     ().lock();
 
         // 並び順は添字ではなくSceneInstanceUUIDの並びで記録する
         // 添字だと途中で別のGameObjectが増減したときに指す場所がずれるが、
         // UUIDの並びなら残っているものだけで並びを組み直せる
         // 例 : 兄弟が[A, B, C]でBを記録 → { 親のUUID, [A, B, C] }
-        if (l_parent)
+        if (const auto& l_parent = l_hierarchy.GetREFParent().lock();
+            l_parent)
         {
             l_placement.m_parentUUID = l_parent->GetREFSceneInstanceUUID();
 
