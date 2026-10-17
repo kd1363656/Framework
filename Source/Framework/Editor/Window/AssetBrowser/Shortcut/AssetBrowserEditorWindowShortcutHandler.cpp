@@ -262,9 +262,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleAssetPane(Asset
 
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const std::filesystem::path& a_parentFolderPath, const Enum::AssetBrowserPopupContextType a_contextType, AssetBrowserEditorWindow& a_editorWindow) const
 {
-    const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator     ();
-          auto& l_folderPane   = a_editorWindow.GetMutableREFFolderPane();
-          auto& l_renameState = a_editorWindow.GetMutableREFRenameState();
+    const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator      ();
+          auto& l_folderPane   = a_editorWindow.GetMutableREFFolderPane ();
+          auto& l_renameState  = a_editorWindow.GetMutableREFRenameState();
 
     // AssetCreator::CreateFolderでフォルダを作成
     // 戻り値がCreationResultに作成パスと成否が入っている
@@ -312,41 +312,16 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(co
     // PopupDrawer::StartRenameと同じ処理だが
     // ShortcutHandlerはPopupDrawerに依存せずに独自に名前変更モードを起動する
     l_renameState.m_targetFilePath = l_result.m_createdFilePath;
-    l_renameState.m_isActive       = true;
 
-    // InputTextの初期値としてファイル名を設定
-    const auto& l_stem = l_result.m_createdFilePath.stem().string();
-
-    // バッファをゼロクリア
-    l_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
-
-    // ファイルっ名をバッファへコピー
-    const auto& l_copySize = std::min(l_stem.size(), l_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
-
-    std::copy_n(l_stem.begin(), l_copySize, l_renameState.m_inputBuffer.begin());
-
-    // 初回フォーカス制御用フラグをリセット
-    l_renameState.m_isFocused = false;
+    Utility::StartEditorRename(l_result.m_createdFilePath.stem().string(), l_renameState);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleRename(const std::filesystem::path& a_targetFilePath, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
 {
-    // 名前変更対象のパスを設定
+    // 名前変更対象のパスを設定し、InputTextの初期値としてファイル名(拡張子なし)を入れる
     a_renameState.m_targetFilePath = a_targetFilePath;
 
-    // 名前変更モードをアクティブにする
-    a_renameState.m_isActive = true;
-
-    // InputTextの初期値としてファイル名を設定
-    const auto& l_stem = a_targetFilePath.stem().string();
-
-    // バッファをゼロクリア
-    a_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
-
-    // ファイル名をバッファへコピー
-    const auto& l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
-
-    std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());
+    Utility::StartEditorRename(a_targetFilePath.stem().string(), a_renameState);
 }
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCopy(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
@@ -377,7 +352,8 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleDelete(const st
     // FileOperation::Deleteを直接よばす
     // 削除確認ダイアログをリクエストする
     // ユーザーがダイアログで削除を選んだ場合に実際の削除処理が行われる
-    auto l_deleteConfirmPopup = a_editorWindow.GetREFDeleteConfirmPopup();
+    // 状態はウィンドウ側(DeleteConfirmState)が持つため、ポップアップはコピーせず参照で使う
+    const auto& l_deleteConfirmPopup = a_editorWindow.GetREFDeleteConfirmPopup();
 
     l_deleteConfirmPopup.Request(a_selectedFilePathList, a_editorWindow);
 }

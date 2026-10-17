@@ -103,120 +103,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
     ImGui::End();
 }
 
-void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionUp(EditorManager& a_editorManager, const bool a_isRangeSelection)
-{
-    const auto& l_scene = SceneManager::GetInstance().GetVALScene().lock();
-
-    if (!l_scene) { return; }
-
-          auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState   ();
-    const auto& l_cursor                   = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
-
-    // GameObjectが選択されていない場合はシーンから選択を始める
-    // シーンは表示の一番上にあるため、既にシーンが選択されているならそれより上はない
-    if (!l_cursor)
-    {
-        if (!m_sceneSelectionState.GetVALIsSceneSelected())
-        {
-            SelectScene(l_gameObjectSelectionState);
-        }
-
-        return;
-    }
-
-    // 表示中ノードリストを構築
-    // 矢印キー押下時のみ構築するため毎フレームのオーバーヘッドなし
-    std::vector<std::weak_ptr<GameObject>> l_displayedList = {};
-
-    BuildDisplayedGameObjectList(l_displayedList, *l_scene);
-
-    // weak_ptr同士は直接比較できないためlock()したshared_ptrのアドレスで比較する
-    const auto& l_cursorITR = FindDisplayedGameObjectITR(l_displayedList, l_cursor);
-
-    // 閉じたノードの中など、表示されていないGameObjectからは移動しない
-    if (l_cursorITR == l_displayedList.end()) { return; }
-
-    // 先頭のGameObjectから上へ移動したときはその上にあるシーンを選択する
-    // 範囲選択はGameObjectだけが対象のため、シーンまでは広げない
-    if (l_cursorITR == l_displayedList.begin())
-    {
-        if (!a_isRangeSelection)
-        {
-            SelectScene(l_gameObjectSelectionState);
-        }
-
-        return;
-    }
-
-    const auto& l_prev = std::prev(l_cursorITR)->lock();
-
-    if (!l_prev) { return; }
-
-    SelectGameObject(l_prev,
-                     a_isRangeSelection,
-                     false,
-                     *l_scene,
-                     l_gameObjectSelectionState);
-}
-void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionDown(EditorManager& a_editorManager, const bool a_isRangeSelection)
-{
-    const auto& l_scene = SceneManager::GetInstance().GetVALScene().lock();
- 
-    if (!l_scene) { return; }
- 
-    std::vector<std::weak_ptr<GameObject>> l_displayedList = {};
-
-    // 表示中ノードリストを構築
-    // 矢印キー押下時のみ構築するため毎フレームのオーバーヘッドなし
-    BuildDisplayedGameObjectList(l_displayedList, *l_scene);
-
-          auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState   ();
-    const auto& l_cursor                   = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
-
-    // GameObjectが選択されていない場合
-    // 何も選択されていなければシーンから選択を始め、
-    // シーンが選択されていればその下にある先頭のGameObjectへ移動する
-    if (!l_cursor)
-    {
-        if (!m_sceneSelectionState.GetVALIsSceneSelected())
-        {
-            SelectScene(l_gameObjectSelectionState);
-
-            return;
-        }
-
-        if (l_displayedList.empty()) { return; }
-
-        SelectGameObject(l_displayedList.front().lock(),
-                         false,
-                         false,
-                         *l_scene,
-                         l_gameObjectSelectionState);
-
-        return;
-    }
- 
-    // weak_ptr同士は直接比較できないためlock()したshared_ptrのアドレスで比較する
-    const auto& l_cursorITR = FindDisplayedGameObjectITR(l_displayedList, l_cursor);
-
-    if (l_cursorITR == l_displayedList.end()) { return; }
- 
-    const auto& l_nextITR = std::next(l_cursorITR);
- 
-    // 既に末尾なら何もしない
-    if (l_nextITR == l_displayedList.end()) { return; }
- 
-    const auto& l_next = l_nextITR->lock();
- 
-    if (!l_next) { return; }
- 
-    SelectGameObject(l_next,
-                     a_isRangeSelection,
-                     false,
-                     *l_scene,
-                     l_gameObjectSelectionState);
-}
-
 void FWK::Editor::WorldOutlinerEditorWindow::SelectAllGameObjects(EditorManager& a_editorManager)
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
@@ -266,18 +152,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectAllGameObjects(EditorManager&
 
 void FWK::Editor::WorldOutlinerEditorWindow::StartSceneRename(const Scene& a_scene)
 {
-    m_renameState.m_isActive         = true;
-    m_renameState.m_isFocused        = false;
     m_renameState.m_isSceneTarget    = true;
     m_renameState.m_targetGameObject = {};
- 
-    // 現在の名前を入力バッファへ入れておく
-    const auto& l_name     = a_scene.GetREFName();
-    const auto& l_copySize = std::min          (l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
- 
-    std::memcpy(m_renameState.m_inputBuffer.data(), l_name.data(), l_copySize);
- 
-    m_renameState.m_inputBuffer[l_copySize] = Constant::k_nullCharacter;
+
+    // 現在の名前を入力バッファへ入れ、名前変更を始める
+    Utility::StartEditorRename(a_scene.GetREFName(), m_renameState);
 }
 void FWK::Editor::WorldOutlinerEditorWindow::StartGameObjectRename(const std::weak_ptr<GameObject>& a_gameObject)
 {
@@ -285,17 +164,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartGameObjectRename(const std::we
 
     if (!l_gameObject) { return; }
  
-    m_renameState.m_isActive         = true;
-    m_renameState.m_isFocused        = false;
     m_renameState.m_isSceneTarget    = false;
     m_renameState.m_targetGameObject = l_gameObject;
- 
-    const auto& l_name     = l_gameObject->GetREFName();
-    const auto& l_copySize = std::min                (l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
- 
-    std::memcpy(m_renameState.m_inputBuffer.data(), l_name.data(), l_copySize);
- 
-    m_renameState.m_inputBuffer[l_copySize] = Constant::k_nullCharacter;
+
+    // 現在の名前を入力バッファへ入れ、名前変更を始める
+    Utility::StartEditorRename(l_gameObject->GetREFName(), m_renameState);
 }
 void FWK::Editor::WorldOutlinerEditorWindow::StartRenameByCurrentSelection(const EditorManager& a_editorManager)
 {
@@ -319,6 +192,77 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartRenameByCurrentSelection(const
     if (!l_scene) { return; }
  
     StartSceneRename(*l_scene);
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::MoveSelection(const std::ptrdiff_t a_step, const bool a_isRangeSelection, EditorManager& a_editorManager)
+{
+    const auto& l_scene = SceneManager::GetInstance().GetVALScene().lock();
+
+    if (!l_scene) { return; }
+
+          auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState   ();
+    const auto& l_cursor                   = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
+
+    // 表示中ノードリストを構築
+    // 矢印キー押下時のみ構築するため毎フレームのオーバーヘッドなし
+    std::vector<std::weak_ptr<GameObject>> l_displayedList = {};
+
+    BuildDisplayedGameObjectList(l_displayedList, *l_scene);
+
+    // GameObjectが選択されていない場合
+    // シーンは表示の一番上にあるため、何も選択されていなければ上下どちらでもシーンから選択を始める
+    // シーンが選択されていれば、下へはその下にある先頭のGameObjectへ移動し、上へは移動しない
+    if (!l_cursor)
+    {
+        if (!m_sceneSelectionState.GetVALIsSceneSelected())
+        {
+            SelectScene(l_gameObjectSelectionState);
+
+            return;
+        }
+
+        if (a_step < k_noGameObjectMoveStep ||
+            l_displayedList.empty())
+        {
+            return;
+        }
+
+        SelectGameObject(l_displayedList.front(),
+                         false,
+                         false,
+                         *l_scene,
+                         l_gameObjectSelectionState);
+
+        return;
+    }
+
+    // 閉じたノードの中など、表示されていないGameObjectからは移動しない
+    const auto& l_cursorITR = Utility::FindVALEditorListITR(l_displayedList, l_cursor);
+
+    if (l_cursorITR == l_displayedList.end()) { return; }
+
+    const auto& l_movedITR = Utility::FetchVALEditorListMovedITR(l_displayedList, l_cursorITR, a_step);
+
+    // 一覧の外へ出る場合
+    // 先頭のGameObjectから上へ移動したときはその上にあるシーンを選択する
+    // 範囲選択はGameObjectだけが対象のため、シーンまでは広げない
+    // 末尾から下へは何もしない
+    if (l_movedITR == l_displayedList.end())
+    {
+        if (a_step < k_noGameObjectMoveStep &&
+            !a_isRangeSelection)
+        {
+            SelectScene(l_gameObjectSelectionState);
+        }
+
+        return;
+    }
+
+    SelectGameObject(*l_movedITR,
+                     a_isRangeSelection,
+                     false,
+                     *l_scene,
+                     l_gameObjectSelectionState);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, EditorManager& a_editorManager)
@@ -376,9 +320,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
 
     // 保存していない変更があればシーン名の後ろに「*」を付ける
     // 例 : シーン名"Title"で何かを動かした → "Title*"、保存すると"Title"に戻る
-    const auto& l_undoRedoSystem = a_editorManager.GetREFUndoRedoSystem();
-
-    if (l_undoRedoSystem.IsSceneModified())
+    if (const auto& l_undoRedoSystem = a_editorManager.GetREFUndoRedoSystem();
+        l_undoRedoSystem.IsSceneModified())
     {
         l_label += k_sceneModifiedMark;
     }
@@ -1109,9 +1052,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::weak_pt
  
             BuildDisplayedGameObjectList(l_displayedList, a_scene);
 
-            const auto& l_startITR = FindDisplayedGameObjectITR(l_displayedList, l_anchor);
+            const auto& l_startITR = Utility::FindVALEditorListITR(l_displayedList, l_anchor);
  
-            if (const auto& l_endITR = FindDisplayedGameObjectITR(l_displayedList, l_gameObject);
+            if (const auto& l_endITR = Utility::FindVALEditorListITR(l_displayedList, l_gameObject);
                 l_startITR != l_displayedList.end() &&
                 l_endITR   != l_displayedList.end())
             {
@@ -1261,17 +1204,4 @@ bool FWK::Editor::WorldOutlinerEditorWindow::IsGameObjectNodeOpen(const boost::u
     if (l_itr == m_gameObjectOpenStateMap.end()) { return true; }
 
     return l_itr->second;
-}
-
-std::vector<std::weak_ptr<FWK::GameObject>>::const_iterator FWK::Editor::WorldOutlinerEditorWindow::FindDisplayedGameObjectITR(const std::vector<std::weak_ptr<GameObject>>& a_displayedList, const std::shared_ptr<GameObject>& a_target) const
-{
-    // 無効なターゲットは「見つからない」扱いにする
-    if (!a_target) { return a_displayedList.end(); }
- 
-    // weak_ptr同士は直接比較できないためlock()したshared_ptrのアドレスで比較する
-    return std::find_if(a_displayedList.begin(), a_displayedList.end(),
-                        [&a_target](const auto& a_gameObjectWeak)
-                        {
-                            return a_gameObjectWeak.lock() == a_target;
-                        });
 }

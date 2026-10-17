@@ -16,8 +16,8 @@ namespace FWK::Editor
 
         void Draw(EditorManager& a_editorManager) override;
 
-        void MoveSelectionUp  (EditorManager& a_editorManager, const bool a_isRangeSelection = false);
-        void MoveSelectionDown(EditorManager& a_editorManager, const bool a_isRangeSelection = false);
+        void MoveSelectionUp  (EditorManager& a_editorManager, const bool a_isRangeSelection = false) { MoveSelection(-k_gameObjectMoveStep, a_isRangeSelection, a_editorManager); }
+        void MoveSelectionDown(EditorManager& a_editorManager, const bool a_isRangeSelection = false) { MoveSelection(k_gameObjectMoveStep, a_isRangeSelection, a_editorManager); }
  
         void SelectAllGameObjects(EditorManager& a_editorManager);
  
@@ -37,7 +37,9 @@ namespace FWK::Editor
         auto& GetMutableREFClipboard          () { return m_clipboard; }
 
     private:
-       
+
+        void MoveSelection(const std::ptrdiff_t a_step, const bool a_isRangeSelection, EditorManager& a_editorManager);
+
         void DrawSceneNode(Scene& a_scene, EditorManager& a_editorManager);
 
         void DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject,
@@ -77,8 +79,6 @@ namespace FWK::Editor
         void CommitRename(Scene& a_scene);
  
         bool IsGameObjectNodeOpen(const boost::uuids::uuid& a_sceneInstanceUUID) const;
-        
-        std::vector<std::weak_ptr<GameObject>>::const_iterator FindDisplayedGameObjectITR(const std::vector<std::weak_ptr<GameObject>>& a_displayedList, const std::shared_ptr<GameObject>& a_target) const;
          
         static constexpr std::string_view k_editorName                        = "アウトライナー";
         static constexpr std::string_view k_emptySceneLabel                   = "Untitled";
@@ -101,6 +101,9 @@ namespace FWK::Editor
         static constexpr float k_nodeFramePaddingHeight  = 3.0F;
         static constexpr float k_dropZoneHeight          = 3.0F;
         static constexpr float k_dropZoneHighlightHeight = 2.0F;
+
+        static constexpr std::ptrdiff_t k_gameObjectMoveStep   = 1;
+        static constexpr std::ptrdiff_t k_noGameObjectMoveStep = 0;
 
         static constexpr int k_keyboardFocusNextItem = 0;
         static constexpr int k_nodePopStyleNUM       = 2;

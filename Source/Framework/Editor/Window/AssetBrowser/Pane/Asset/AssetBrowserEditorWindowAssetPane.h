@@ -20,10 +20,10 @@ namespace FWK::Editor
 
         nlohmann::json Serialize() const;
 
-        void MoveSelectionUp   (const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
-        void MoveSelectionDown (const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
-        void MoveSelectionLeft (const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
-        void MoveSelectionRight(const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
+        void MoveSelectionUp   (const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false) { MoveSelection(a_editorWindow, -static_cast<std::ptrdiff_t>(m_lastCardsPerRow), a_isRangeSelection); }
+        void MoveSelectionDown (const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false) { MoveSelection(a_editorWindow,  static_cast<std::ptrdiff_t>(m_lastCardsPerRow), a_isRangeSelection); }
+        void MoveSelectionLeft (const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false) { MoveSelection(a_editorWindow, -k_cardMoveStep,                                  a_isRangeSelection); }
+        void MoveSelectionRight(const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false) { MoveSelection(a_editorWindow,  k_cardMoveStep,                                  a_isRangeSelection); }
 
         void NavigateToCurrentCursor(AssetBrowserEditorWindow& a_editorWindow);
         void NavigateToFolderUp     (AssetBrowserEditorWindow& a_editorWindow);
@@ -37,6 +37,8 @@ namespace FWK::Editor
         auto& GetMutableREFSelectionState() { return m_selectionState; }
 
     private:
+
+        void MoveSelection(const AssetBrowserEditorWindow& a_editorWindow, const std::ptrdiff_t a_step, const bool a_isRangeSelection);
 
         void DrawCard(const std::vector<std::filesystem::path>& a_displayedFilePathList, const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow);
 
@@ -116,6 +118,8 @@ namespace FWK::Editor
         static constexpr float k_iconMargin     = 2.0F;
 
         static constexpr float k_doubleMagnification = 2.0F;
+
+        static constexpr std::ptrdiff_t k_cardMoveStep = 1;
 
         static constexpr ImU32 k_initialSelectionColor = 0U;
 

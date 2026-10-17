@@ -1531,6 +1531,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant">
       <UniqueIdentifier>{b2670f6c-658e-4f76-b6bf-da18f4abd2d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Concept\IsEditorRenameState">
+      <UniqueIdentifier>{a92ff131-25ad-48c3-8a45-a0e6a8b5c01c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility\Editor">
+      <UniqueIdentifier>{3b16050b-2a15-4377-9911-6899cc93480e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3113,6 +3119,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIButtonUtility.h">
       <Filter>Source\Framework\Utility\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsEditorRenameState\IsEditorRenameStateConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsEditorRenameState</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Editor\EditorListNavigationUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Editor\EditorListNavigationUtility.h">
+      <Filter>Source\Framework\Utility\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Editor\EditorRenameStateUtility.h">
+      <Filter>Source\Framework\Utility\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

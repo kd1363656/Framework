@@ -131,267 +131,6 @@ nlohmann::json FWK::Editor::AssetBrowserEditorWindowAssetPane::Serialize() const
     return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionUp(const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection)
-{
-    std::vector<std::filesystem::path> l_displayedList = {};
-
-    // 表示中ファイルパスリストを構築
-    BuildDisplayedFilePathList(a_editorWindow, l_displayedList);
-
-    if (l_displayedList.empty()) { return; }
-
-    // カーソル未設定時は先頭を選択してreturn
-    if (m_currentCursorFilePath.empty())
-    {
-        m_currentCursorFilePath = l_displayedList.front();
-
-        SelectFile(l_displayedList,
-                   l_displayedList.front(),
-                   a_isRangeSelection,
-                   false);
-
-        return;
-    }
-
-    // カーソル位置を決定
-    const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
-
-    // カーソル位置をリストから検索
-    const auto& l_cursorITR = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
-
-    if (l_cursorITR == l_displayedList.end())
-    {
-        // リストに見つからない場合は先頭を選択
-        m_currentCursorFilePath = l_displayedList.front();
-
-        SelectFile(l_displayedList, 
-                   l_displayedList.front(),                    
-                   a_isRangeSelection,
-                   false);
-
-        return;
-    }
-
-    // 1行分(CardsPerRow)前に移動
-    // CardsPerRowはChildWindow外で幅を取得すると誤計算されるため
-    // Draw時に保持した値を使用する
-    const auto l_cardsPerRow = m_lastCardsPerRow;
-
-    // インデックスを計算
-    const auto l_cursorIndex = static_cast<std::uint32_t>(std::distance(l_displayedList.begin(), l_cursorITR));
-    const auto l_newIndex    = l_cursorIndex - l_cardsPerRow;
-
-    // 先頭より前なのか、サイズに収まっているかを確認する
-    if (l_newIndex >= l_displayedList.size())
-    {
-        return; 
-    }
-    
-    const auto& l_newPath = l_displayedList[l_newIndex];
-
-    // 範囲選択モード
-    if (a_isRangeSelection)
-    {
-        // アンカー未設定の場合は現在のカーソルをアンカーにする
-        if (m_selectionState.GetREFRangeSelectionStartPath().empty())
-        {
-            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
-        }
-    }
-
-    // カーソル更新
-    m_currentCursorFilePath = l_newPath;
-
-    // 選択実行
-    SelectFile(l_displayedList,
-               l_newPath,
-               a_isRangeSelection,
-               false);
-}
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionDown(const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection)
-{
-    std::vector<std::filesystem::path> l_displayedList = {};
-
-    BuildDisplayedFilePathList(a_editorWindow, l_displayedList);
-
-    if (l_displayedList.empty()) { return; }
-
-    // カーソル未設定時は先頭を選択してreturn
-    if (m_currentCursorFilePath.empty())
-    {
-        m_currentCursorFilePath = l_displayedList.front();
-
-        SelectFile(l_displayedList,
-                   l_displayedList.front(),
-                   a_isRangeSelection,
-                   false);
-
-        return;
-    }
-
-
-    const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
-    const auto& l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
-
-    if (l_cursorITR == l_displayedList.end())
-    {
-        m_currentCursorFilePath = l_displayedList.front();
-
-        SelectFile(l_displayedList,
-                   l_displayedList.front(),
-                   a_isRangeSelection,
-                   false);
-
-        return;
-    }
-
-    // CardsPerRowはChildWindow外で幅を取得すると誤計算されるため
-    // Draw時に保持した値を使用する
-    const auto l_cardsPerRow = m_lastCardsPerRow;
-     
-    const auto  l_cursorIndex = static_cast<std::uint32_t>(std::distance(l_displayedList.begin(), l_cursorITR));
-    const auto  l_newIndex    = l_cursorIndex + l_cardsPerRow;
-
-    // 末尾を超えたら何もしない
-    if (l_newIndex >= l_displayedList.size()) { return; }
-
-    const auto& l_newPath = l_displayedList[l_newIndex];
-
-    if (a_isRangeSelection)
-    {
-        if (const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
-            l_rangeSelectionStartPath.empty())
-        {
-            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
-        }
-    }
-
-    m_currentCursorFilePath = l_newPath;
-
-    SelectFile(l_displayedList,
-               l_newPath,
-               a_isRangeSelection,
-               false);
-}
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionLeft(const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection)
-{
-    std::vector<std::filesystem::path> l_displayedList = {};
-
-    BuildDisplayedFilePathList(a_editorWindow, l_displayedList);
-
-    if (l_displayedList.empty()) { return; }
-
-    // カーソル未設定時は先頭を選択してreturn
-    if (m_currentCursorFilePath.empty())
-    {
-        m_currentCursorFilePath = l_displayedList.front();
-
-        SelectFile(l_displayedList,
-                   l_displayedList.front(),
-                   a_isRangeSelection,
-                   false);
-
-        return;
-    }
-
-    const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
-    const auto& l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
-
-    if (l_cursorITR == l_displayedList.end())
-    {
-        m_currentCursorFilePath = l_displayedList.front();
-
-        SelectFile(l_displayedList, 
-                   l_displayedList.front(),
-                   a_isRangeSelection,
-                   false);
-
-        return;
-    }
-
-    // 既に先頭なら何もしない
-    if (l_cursorITR == l_displayedList.begin()) { return; }
-
-    const auto& l_prevITR  = std::prev(l_cursorITR);
-    const auto& l_prevPath = *l_prevITR;
-
-    if (a_isRangeSelection)
-    {
-        if (const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
-            l_rangeSelectionStartPath.empty())
-        {
-            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
-        }
-    }
-
-    m_currentCursorFilePath = l_prevPath;
-
-    SelectFile(l_displayedList, 
-               l_prevPath, 
-               a_isRangeSelection,
-               false);
-}
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionRight(const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection)
-{
-    std::vector<std::filesystem::path> l_displayedList = {};
-
-    BuildDisplayedFilePathList(a_editorWindow, l_displayedList);
-
-    if (l_displayedList.empty()) { return; }
-
-    // カーソル未設定時は先頭を選択してreturn
-    if (m_currentCursorFilePath.empty())
-    {
-        m_currentCursorFilePath = l_displayedList.front();
-
-        SelectFile(l_displayedList,
-                   l_displayedList.front(),
-                   a_isRangeSelection,
-                   false);
-
-        return;
-    }
-
-    const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
-    const auto& l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
-
-    // 既に末尾なら何もしない
-    if (l_cursorITR == l_displayedList.end()) 
-    {
-        m_currentCursorFilePath = l_displayedList.front();
-
-        SelectFile(l_displayedList,
-                   l_displayedList.front(),
-                   a_isRangeSelection,
-                   false);
-
-        return; 
-    }
-
-    const auto& l_nextITR = std::next(l_cursorITR);
-
-    // 既に末尾なら何もしない
-    if (l_nextITR == l_displayedList.end()) { return; }
-
-    const auto& l_nextPath = *l_nextITR;
-
-    if (a_isRangeSelection)
-    {
-        if (const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
-            l_rangeSelectionStartPath.empty())
-        {
-            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
-        }
-    }
-
-    m_currentCursorFilePath = l_nextPath;
-
-    SelectFile(l_displayedList,
-               l_nextPath,
-               a_isRangeSelection,
-               false);
-}
-
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::NavigateToCurrentCursor(AssetBrowserEditorWindow& a_editorWindow)
 {
     if (m_currentCursorFilePath.empty()) { return; }
@@ -441,6 +180,55 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchVALOp
 
     // 選択中の最後を返す
     return l_selectedFilePathList.back();
+}
+
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelection(const AssetBrowserEditorWindow& a_editorWindow, const std::ptrdiff_t a_step, const bool a_isRangeSelection)
+{
+    // 表示中ファイルパスリストを構築
+    // 矢印キー押下時のみ構築するため毎フレームのオーバーヘッドなし
+    std::vector<std::filesystem::path> l_displayedList = {};
+
+    BuildDisplayedFilePathList(a_editorWindow, l_displayedList);
+
+    if (l_displayedList.empty()) { return; }
+
+    // カーソルが未設定、またはフォルダ移動などで一覧から消えた場合は先頭を選択する
+    // 上下左右どの矢印キーでも、最初の1回は先頭から始めるため移動量は使わない
+    const auto& l_cursorITR = Utility::FindVALEditorListITR(l_displayedList, m_currentCursorFilePath);
+
+    if (l_cursorITR == l_displayedList.end())
+    {
+        m_currentCursorFilePath = l_displayedList.front();
+
+        SelectFile(l_displayedList,
+                   m_currentCursorFilePath,
+                   a_isRangeSelection,
+                   false);
+
+        return;
+    }
+
+    // 上下は1行分(m_lastCardsPerRow枚)、左右は1枚分ずらす
+    // 1行の枚数はChildWindow外で幅を取得すると誤計算されるため、Draw時に保持した値を呼び出し側で渡している
+    const auto& l_movedITR = Utility::FetchVALEditorListMovedITR(l_displayedList, l_cursorITR, a_step);
+
+    // 一覧の外へ出る場合は何もしない
+    if (l_movedITR == l_displayedList.end()) { return; }
+
+    // 範囲選択でアンカーが未設定なら、移動前のカーソルをアンカーにする
+    // これによりCtrl / Shift + 矢印を押した瞬間の位置が範囲の始点になる
+    if (a_isRangeSelection &&
+        m_selectionState.GetREFRangeSelectionStartPath().empty())
+    {
+        m_selectionState.SetRangeSelectionStartPath(m_currentCursorFilePath);
+    }
+
+    m_currentCursorFilePath = *l_movedITR;
+
+    SelectFile(l_displayedList,
+               m_currentCursorFilePath,
+               a_isRangeSelection,
+               false);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<std::filesystem::path>& a_displayedFilePathList, const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow)

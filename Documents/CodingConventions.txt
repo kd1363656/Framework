@@ -44,6 +44,14 @@
 	};
 	←改行なしで終わる
 }
+・テンプレート(関数・クラス・メンバ関数)は必ずヘッダーに定義を書く(.cppには書かない)
+{
+	理 : テンプレートは使った型・値ごとにコンパイラーが関数を作るため、使う場所から定義が見えている必要がある
+	     .cppに書くと、そこ以外から使ったときにリンクエラーになる
+
+	テンプレートの中は短くし、型・値に関係ない処理はテンプレートでない関数にして.cppへ書く
+	例↓ CreateRegisteredAssetFile<RegistryType>(ヘッダー)の中で、RegisterNewAssetFile / CancelNewAssetFile(.cpp)を呼ぶ
+}
 ・ヘッダーの1行目は必ず#pragma once
 ・空行は2行以上続けない
 ・行末に空白を残さない
@@ -1277,6 +1285,36 @@
 
 	同じ型かだけを調べるならk_staticTypeIDを直接比較する
 	if (a_component.GetREFRuntimeTypeINFO().k_staticTypeID == TransformComponent::GetREFTypeINFO().k_staticTypeID) { ... }
+}
+・関数ポインタ・メンバ関数ポインタ(using Hoge = bool (Class::*)(...); / &Class::Func を値として渡す / std::invoke)
+{
+	理 : どの関数が呼ばれるかが呼び出し側を見ないと分からず読みにくい。nullptrの確認も要る
+
+	種類ごとに呼ぶ関数を変えるときは、種類のEnumをテンプレート引数で受け取りif constexprで呼び分ける
+	使えない種類はstatic_assertでコンパイルエラーにする
+	種類が実行中にしか分からないとき(Jsonから読んだ値など)だけ、Enumを引数で受け取りswitchで呼び分ける
+	クラスごとに違う処理なら継承の仮想関数にする
+
+	例↓
+	template <Enum::AssetFilePathRegistryType RegistryType>
+	bool WriteNewAssetFile(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_uuid) const
+	{
+		static_assert(RegistryType == Enum::AssetFilePathRegistryType::Prefab ||
+		              RegistryType == Enum::AssetFilePathRegistryType::Scene,
+		              "書き込み方が決まっていないアセットの種類です");
+
+		if constexpr (RegistryType == Enum::AssetFilePathRegistryType::Prefab)
+		{
+			return WriteNewPrefabFile(a_filePath, a_uuid);
+		}
+		else
+		{
+			return WriteNewSceneFile(a_filePath);
+		}
+	}
+
+	呼び出し↓
+	WriteNewAssetFile<Enum::AssetFilePathRegistryType::Prefab>(l_filePath, l_uuid);
 }
 ・NULL(nullptrを使う)
 ・using namespace

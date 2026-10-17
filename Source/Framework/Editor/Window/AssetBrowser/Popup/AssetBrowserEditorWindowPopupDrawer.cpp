@@ -326,7 +326,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDeleteMenu(const std:
     {
         // FileOperation::Deleteを直接呼ばず
         // 削除確認ダイアログをリクエストする
-        auto& l_deleteConfirmPopup = a_editorWindow.GetREFDeleteConfirmPopup();
+        const auto& l_deleteConfirmPopup = a_editorWindow.GetREFDeleteConfirmPopup();
 
         l_deleteConfirmPopup.Request(a_selectedFilePathList, a_editorWindow);
     }
@@ -337,29 +337,10 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::StartRename(const std::fi
     // 名前変更対象のパスを設定
     a_renameState.m_targetFilePath = a_targetFilePath;
 
-    // 名前変更モードをアクティブにする
-    // 呼び出し側(Pane)は次Frame以降このフラグを確認し
-    // 通常のファイル名描画の代わりにImGui::InputTextを描画する
-    a_renameState.m_isActive = true;
-
-    // InputTextの初期値としてファイル名を設定
+    // InputTextの初期値としてファイル名(拡張子なし)を入れ、名前変更モードをアクティブにする
     // 例 "NewFolder"      -> "NewFolder"
     //    "NewPrefab.json" -> "NewPrefab"
-    const auto& l_stem = a_targetFilePath.stem().string();
-
-    // バッファをゼロクリア
-    // std::array::fillで全要求を'\0'にする
-    a_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
-
-    // ファイル名をバッファへコピー
-    // バッファサイズを超えないようにminで制限
-    // -1は終端null用
-    const auto& l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
-
-    // std::copy_nで先頭からl_copySize分をコピー
-    std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());
-
-    // 初回フォーカス制御フラグをリセット
-    // m_isActiveがtrueになった直後はフォーカスされていない状態
-    a_renameState.m_isFocused = false;
+    // 呼び出し側(Pane)は次Frame以降このフラグを確認し
+    // 通常のファイル名描画の代わりにImGui::InputTextを描画する
+    Utility::StartEditorRename(a_targetFilePath.stem().string(), a_renameState);
 }

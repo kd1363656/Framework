@@ -18,8 +18,8 @@ namespace FWK::Editor
 
         void Draw(AssetBrowserEditorWindow& a_editorWindow);
 
-        void MoveSelectionUp    (      AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
-        void MoveSelectionDown  (      AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
+        void MoveSelectionUp    (      AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false) { MoveSelection(-k_folderMoveStep, a_isRangeSelection, a_editorWindow); }
+        void MoveSelectionDown  (      AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false) { MoveSelection(k_folderMoveStep, a_isRangeSelection, a_editorWindow); }
         void ForciblyFolderOpen (const AssetBrowserEditorWindow& a_editorWindow);
         void ForciblyFolderClose(const AssetBrowserEditorWindow& a_editorWindow);
 
@@ -42,6 +42,8 @@ namespace FWK::Editor
         auto& GetMutableREFSelectionState() { return m_selectionState; }
 
     private:
+
+        void MoveSelection(const std::ptrdiff_t a_step, const bool a_isRangeSelection, AssetBrowserEditorWindow& a_editorWindow);
 
         void DrawTreeNode(const std::filesystem::path& a_currentFolderPath, AssetBrowserEditorWindow& a_editorWindow);
 
@@ -67,6 +69,8 @@ namespace FWK::Editor
         static constexpr ImVec2 k_banIconOffset = { 4.0F, 4.0F };
 
         static constexpr float k_banIconSizeOffset = 2.0F;
+
+        static constexpr std::ptrdiff_t k_folderMoveStep = 1;
 
         static constexpr int k_keyboardFocusNextItem = 0;
 

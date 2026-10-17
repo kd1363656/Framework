@@ -860,6 +860,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant\ModelPerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIButtonUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIButtonUtility.h" />
+    <ClInclude Include="Source\Framework\Definition\Concept\IsEditorRenameState\IsEditorRenameStateConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Editor\EditorListNavigationUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Utility\Editor\EditorListNavigationUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\Editor\EditorRenameStateUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp" />

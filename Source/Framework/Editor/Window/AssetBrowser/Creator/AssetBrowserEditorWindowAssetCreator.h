@@ -24,6 +24,50 @@ namespace FWK::Editor
 
     private:
 
+        template <Enum::AssetFilePathRegistryType RegistryType>
+        Struct::AssetBrowserEditorWindowAssetCreationResult CreateRegisteredAssetFile(const std::filesystem::path& a_parentFolderPath, const std::string_view& a_defaultName, AssetFilePathRegistry& a_assetFilePathRegistry) const
+        {
+            const auto& l_filePath = ResolveDefaultFilePath(a_parentFolderPath, Constant::k_lowerJsonExtension, a_defaultName);
+            const auto& l_uuid     = RegisterNewAssetFile  (l_filePath, RegistryType, a_assetFilePathRegistry);
+
+            if (l_uuid.is_nil()) { return {}; }
+
+            if (!WriteNewAssetFile<RegistryType>(l_filePath, l_uuid))
+            {
+                CancelNewAssetFile(l_filePath, a_assetFilePathRegistry);
+
+                return {};
+            }
+
+            return FetchVALSuccessCreationResult(l_filePath);
+        }
+
+        template <Enum::AssetFilePathRegistryType RegistryType>
+        bool WriteNewAssetFile(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_uuid) const
+        {
+            static_assert(RegistryType == Enum::AssetFilePathRegistryType::Prefab ||
+                          RegistryType == Enum::AssetFilePathRegistryType::Scene,
+                          "書き込み方が決まっていないアセットの種類です");
+
+            if constexpr (RegistryType == Enum::AssetFilePathRegistryType::Prefab)
+            {
+                return WriteNewPrefabFile(a_filePath, a_uuid);
+            }
+            else
+            {
+                return WriteNewSceneFile(a_filePath);
+            }
+        }
+
+        bool WriteNewPrefabFile(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_prefabUUID) const;
+        bool WriteNewSceneFile (const std::filesystem::path& a_filePath)                                         const;
+
+        static boost::uuids::uuid RegisterNewAssetFile(const std::filesystem::path& a_filePath, const Enum::AssetFilePathRegistryType a_registryType, AssetFilePathRegistry& a_assetFilePathRegistry);
+
+        static void CancelNewAssetFile(const std::filesystem::path& a_filePath, AssetFilePathRegistry& a_assetFilePathRegistry);
+
+        static Struct::AssetBrowserEditorWindowAssetCreationResult FetchVALSuccessCreationResult(const std::filesystem::path& a_createdFilePath);
+
         static std::filesystem::path ResolveDefaultFilePath(const std::filesystem::path&     a_parentFolderPath, const std::filesystem::path& a_extension, const std::string_view& a_defaultName);
 
         static std::string FetchVALPrefabFileName(const std::weak_ptr<GameObject>& a_gameObject);

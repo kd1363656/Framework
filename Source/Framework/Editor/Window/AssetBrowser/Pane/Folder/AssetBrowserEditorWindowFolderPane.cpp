@@ -81,166 +81,6 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWin
     ImGui::EndChild();
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionUp(AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection)
-{
-    // 表示中ノードリストを構築
-    // 矢印キー押下時のみ構築するため毎フレームのオーバーヘッドなし
-    // Assetルートから再帰的に開いているフォルダの子を収集
-          std::vector<std::filesystem::path> l_displayedFolderList = {};
-    const auto&                              l_folderHierarchyMap  = a_editorWindow.GetREFFolderHierarchyMap();
-
-    // 現在フォルダツリーで開いている部分のみ収集
-    BuildDisplayedFolderList(l_folderHierarchyMap, Constant::k_assetRootFolderPath, l_displayedFolderList);
-
-    // ナビゲーションカーソル位置を決定
-    // m_currentFolderPathをカーソルとして使う
-    // // Window側のm_currentSelectFolderPathを参照する
-    // 空の場合はリスト先頭
-    const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
-    const auto& l_cursorPath              = l_currentSelectFolderPath.empty() ? l_displayedFolderList.front() : l_currentSelectFolderPath;
-
-    // カーソル位置をリストから検索
-    const auto& l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
-
-    // リストに現在選択中のパスが見つからない場合は
-    // 先頭を現在選択中のパスとして扱う
-    if (l_cursorITR == l_displayedFolderList.end())
-    {
-        SelectFolder(l_folderHierarchyMap,
-                     l_displayedFolderList.front(),
-                     a_editorWindow,
-                     a_isRangeSelection,
-                     false);
-
-        return;
-    }
-
-    // 既に先頭なら何もしない
-    if (l_cursorITR == l_displayedFolderList.begin()) { return; }
-
-    // 前のノードを取得
-    const auto& l_prevITR  = std::prev(l_cursorITR);
-    const auto& l_prevPath = *l_prevITR;
-
-    // 範囲選択モード(Ctrl / Shift + 矢印)
-    // 現在のカーソル位置をアンカーにする
-    // これによりCtrl / Shift + 矢印を押した瞬間の位置がアンカーになる
-    if (a_isRangeSelection)
-    {
-        // アンカーが未設定の場合は
-        // 現在のカーソル位置をアンカーにする
-        // これによりCtrl / Shift + 矢印を押した瞬間の位置がカアンカーになる
-        if (const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
-            l_rangeSelectionStartPath.empty())
-        {
-            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
-        }
-
-        // カーソルを前のノードへ移動
-        // SelectFolderの範囲選択部分はm_currentFolderPathを更新しないため
-        // ここで明示的に更新する
-        a_editorWindow.SetCurrentSelectFolderPath(l_prevPath);
-
-        // アンカーカーソル位置までを範囲選択
-        // SelectFolderのShift部分(アンカークリック位置間を選択)を利用
-        // アンカーは既に設定済みのため単一選択にはならず範囲選択される
-        SelectFolder(l_folderHierarchyMap, 
-                     l_prevPath,
-                     a_editorWindow, 
-                     true,
-                     false);
-    }
-    // 通常モード
-    else
-    {
-        // 移動先ノードを単一選択
-        // SelectFolderの通常クリック部分で
-        // m_currentFolderPathとm_rangeSelectionStartPathが更新される
-        // これによりアンカーが移動先にリセットされる
-        SelectFolder(l_folderHierarchyMap, l_prevPath, a_editorWindow);
-    }
-}
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionDown(AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection)
-{
-    const auto& l_folderHierarchyMap = a_editorWindow.GetREFFolderHierarchyMap();
-
-    // 表示中ノードリストを構築
-    // 矢印キー押下時のみ構築するため毎フレームのオーバーヘッドなし
-    // Assetルートから再帰的に開いているフォルダの子を収集
-    std::vector<std::filesystem::path> l_displayedFolderList = {};
-
-    // 現在フォルダツリーで開いている部分のみ収集
-    BuildDisplayedFolderList(l_folderHierarchyMap, Constant::k_assetRootFolderPath, l_displayedFolderList);
-
-    // ナビゲーションカーソル位置を決定
-    // m_currentFolderPathをカーソルとして使う
-    // 空の場合はリスト先頭
-    const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
-    const auto& l_cursorPath              = l_currentSelectFolderPath.empty() ? l_displayedFolderList.front() : l_currentSelectFolderPath;
-
-    // カーソル位置をリストから検索
-    const auto& l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
-
-    // リストに現在選択中のパスが見つからない場合は
-    // 先頭を現在選択中のパスとして扱う
-    if (l_cursorITR == l_displayedFolderList.end())
-    {
-        SelectFolder(l_folderHierarchyMap, 
-                     l_displayedFolderList.front(),
-                     a_editorWindow,
-                     a_isRangeSelection,
-                     false);
-
-        return;
-    }
-
-    // 次のノードを取得
-    const auto& l_nextITR = std::next(l_cursorITR);
-
-    // 既に末尾なら何もしない
-    if (l_nextITR == l_displayedFolderList.end()) { return; }
-
-    const auto& l_nextPath = *l_nextITR;
-
-    // 範囲選択モード(Ctrl / Shift + 矢印)
-    if (a_isRangeSelection)
-    {
-        // アンカーが未設定の場合は
-        // 現在のカーソル位置をアンカーにする
-        // これによりCtrl / Shift + 矢印を押した瞬間の位置がアンカーになる
-        if (const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
-            l_rangeSelectionStartPath.empty())
-        {
-            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
-        }
-
-        // カーソルを次のノードへ移動
-        // SelectFolderの範囲選択部分はm_currentFolderPathを更新しないためここで更新
-        a_editorWindow.SetCurrentSelectFolderPath(l_nextPath);
-
-        // アンカー新カーソル位置までを範囲選択
-        // SelectFolderのShift部分(アンカークリック位置間を選択)を利用
-        // アンカーは既に設定済みのため単一選択にはならず範囲選択される
-        SelectFolder(l_folderHierarchyMap, 
-                     l_nextPath,
-                     a_editorWindow,
-                     true,
-                     false);
-    }
-    // 通常移動モード
-    else
-    {
-        // 移動先ノードを単一選択
-        // SelectFolderの通常クリック部分で
-        // m_currentFolderPathとm_rangeSelectionStartPathが更新される
-        // これによりアンカーが移動先にリセットされる
-        SelectFolder(l_folderHierarchyMap,
-                     l_nextPath,
-                     a_editorWindow,
-                     false,
-                     false);
-    }
-}
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderOpen(const AssetBrowserEditorWindow& a_editorWindow)
 {
     const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
@@ -370,6 +210,71 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFolderPane::FetchVALO
     // 選択中フォルダの最後を返す
     // vector::back()は要求へのconst 参照を返すためコピー発生なし
     return l_selectedFilePathList.back();
+}
+
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelection(const std::ptrdiff_t a_step, const bool a_isRangeSelection, AssetBrowserEditorWindow& a_editorWindow)
+{
+    const auto& l_folderHierarchyMap = a_editorWindow.GetREFFolderHierarchyMap();
+
+    // 表示中ノードリストを構築
+    // 矢印キー押下時のみ構築するため毎フレームのオーバーヘッドなし
+    // Assetルートから再帰的に開いているフォルダの子だけを上から順に集める
+    std::vector<std::filesystem::path> l_displayedFolderList = {};
+
+    BuildDisplayedFolderList(l_folderHierarchyMap, Constant::k_assetRootFolderPath, l_displayedFolderList);
+
+    if (l_displayedFolderList.empty()) { return; }
+
+    // 現在参照中のフォルダをカーソルとして使う
+    // 移動後にSetCurrentSelectFolderPathで書き換わるため、参照ではなくコピーで持つ
+    const auto  l_cursorPath = a_editorWindow.GetREFCurrentSelectFolderPath();
+    const auto& l_cursorITR  = Utility::FindVALEditorListITR               (l_displayedFolderList, l_cursorPath);
+
+    // カーソルが未設定、または閉じたフォルダの中にある場合は先頭を選択する
+    if (l_cursorITR == l_displayedFolderList.end())
+    {
+        SelectFolder(l_folderHierarchyMap,
+                     l_displayedFolderList.front(),
+                     a_editorWindow,
+                     a_isRangeSelection,
+                     false);
+
+        return;
+    }
+
+    const auto& l_movedITR = Utility::FetchVALEditorListMovedITR(l_displayedFolderList, l_cursorITR, a_step);
+
+    // 先頭より上・末尾より下へは移動しない
+    if (l_movedITR == l_displayedFolderList.end()) { return; }
+
+    const auto& l_movedPath = *l_movedITR;
+
+    // 通常移動モード
+    // SelectFolderの通常クリック部分で現在参照中のフォルダとアンカーが移動先に更新される
+    if (!a_isRangeSelection)
+    {
+        SelectFolder(l_folderHierarchyMap, l_movedPath, a_editorWindow);
+
+        return;
+    }
+
+    // 範囲選択モード(Ctrl / Shift + 矢印)
+    // アンカーが未設定なら、移動前のカーソルをアンカーにする
+    // これによりCtrl / Shift + 矢印を押した瞬間の位置が範囲の始点になる
+    if (m_selectionState.GetREFRangeSelectionStartPath().empty())
+    {
+        m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
+    }
+
+    // SelectFolderの範囲選択部分は現在参照中のフォルダを更新しないため、ここで移動先にする
+    a_editorWindow.SetCurrentSelectFolderPath(l_movedPath);
+
+    // アンカーから移動先までを範囲選択
+    SelectFolder(l_folderHierarchyMap,
+                 l_movedPath,
+                 a_editorWindow,
+                 true,
+                 false);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::filesystem::path& a_currentFolderPath, AssetBrowserEditorWindow& a_editorWindow)
