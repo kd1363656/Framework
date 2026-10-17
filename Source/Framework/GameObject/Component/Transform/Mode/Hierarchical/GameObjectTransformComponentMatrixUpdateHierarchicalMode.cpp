@@ -13,7 +13,7 @@ void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PostDeserial
 
     if (!l_owner) { return; }
 
-    const auto& l_ownerHierarchy  = l_owner->GetREFHierarchy      ();
+    const auto& l_ownerHierarchy   = l_owner->GetREFHierarchy     ();
     const auto& l_parentGameObject = l_ownerHierarchy.GetREFParent().lock();
 
     if (!l_parentGameObject) { return; }
@@ -27,13 +27,32 @@ void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PostDeserial
 
 void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::UpdateMatrix(GameObjectTransformComponent& a_transformComponent)
 {
-    // 親の行列が先に更新されていることを前提にしている処理です。
-    auto&& l_resultMatrix = a_transformComponent.CalculateScaleMatrix()       *
-                            a_transformComponent.CalculateRotationMatrix()    *
-                            a_transformComponent.CalculateTranslationMatrix() *
-                            CalculateParentWorldMatrix();
+    // 親の行列が先に更新されていることを前提にしている処理
+    auto l_resultMatrix = TypeAlias::Math::Matrix::Identity;
+
+    // 回転してから移動するか、移動してから回転する違い
+    // 移動してから回転する挙動は原点を中心に回転する
+    if (GetVALIsRotateAroundPosition())
+    {
+        l_resultMatrix = a_transformComponent.CalculateScaleMatrix()       *
+                         a_transformComponent.CalculateTranslationMatrix() *
+                         a_transformComponent.CalculateRotationMatrix()    *
+                         CalculateParentWorldMatrix();
+    }
+    else
+    {
+        l_resultMatrix = a_transformComponent.CalculateScaleMatrix()       *
+                         a_transformComponent.CalculateRotationMatrix()    *
+                         a_transformComponent.CalculateTranslationMatrix() *
+                         CalculateParentWorldMatrix();
+    }
 
     a_transformComponent.SetMatrix(std::move(l_resultMatrix));
+}
+
+void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::EditInspector()
+{
+    m_inspector.EditInspector(*this);
 }
 
 nlohmann::json FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::Serialize() const
@@ -69,16 +88,14 @@ FWK::TypeAlias::Math::Matrix FWK::GameObjectTransformComponentMatrixUpdateHierar
     // この順序はApplyParentの逆行列計算と一致させるため必ずこの関数経由にする
     auto l_resultMatrix = TypeAlias::Math::Matrix::Identity;
 
-    
-    if (m_calculateParentWorldMatrixEnumBitShift.IsFlagEnabled(Enum::ApplyCalculateWorldMatrixBitShiftFlag::Scale)    ||
+    if (m_calculateParentWorldMatrixEnumBitShift.IsFlagEnabled(Enum::ApplyCalculateWorldMatrixBitShiftFlag::Scale) ||
         m_calculateParentWorldMatrixEnumBitShift.IsFlagEnabled(Enum::ApplyCalculateWorldMatrixBitShiftFlag::Rotation) ||
         m_calculateParentWorldMatrixEnumBitShift.IsFlagEnabled(Enum::ApplyCalculateWorldMatrixBitShiftFlag::Position))
     {
-        auto& l_parentMatrix = l_parent->GetMutableREFMatrix();
-
-        TypeAlias::Math::Vector3    l_scale    = {};
-        TypeAlias::Math::Quaternion l_rotation = {};
-        TypeAlias::Math::Vector3    l_position = {};
+        auto&                       l_parentMatrix = l_parent->GetMutableREFMatrix();
+        TypeAlias::Math::Vector3    l_scale        = {};
+        TypeAlias::Math::Quaternion l_rotation     = {};
+        TypeAlias::Math::Vector3    l_position     = {};
 
         l_parentMatrix.Decompose(l_scale, l_rotation, l_position);
 

@@ -98,7 +98,7 @@ namespace FWK::Utility
         };
     }
 
-    inline TypeAlias::Math::Vector3 DeserializeVector3(const nlohmann::json& a_json , const std::string_view a_key)
+    inline TypeAlias::Math::Vector3 DeserializeVector3(const nlohmann::json& a_json, const std::string_view& a_key)
     {
         // "json"を読み込めるか確認、読み込めなければ"return"
         if (a_json.is_null() ||
@@ -120,7 +120,7 @@ namespace FWK::Utility
         };
     }
 
-    inline ImVec2 DeserializeIMVEC2(const nlohmann::json& a_json, const std::string_view a_key)
+    inline ImVec2 DeserializeIMVEC2(const nlohmann::json& a_json, const std::string_view& a_key)
     {
         // "json"を読み込めるか確認、読み込めなければ"return"
         if (a_json.is_null() ||
@@ -141,7 +141,7 @@ namespace FWK::Utility
         };
     }
 
-    inline TypeAlias::Math::Quaternion DeserializeQuaternion(const nlohmann::json& a_json , const std::string_view a_key)
+    inline TypeAlias::Math::Quaternion DeserializeQuaternion(const nlohmann::json& a_json, const std::string_view& a_key)
     {
         // "json"を読み込めるか確認、読み込めなければ"return"
         if (a_json.is_null() ||
@@ -203,7 +203,7 @@ namespace FWK::Utility
         };
     }
 
-    inline nlohmann::json SerializeVector3(const TypeAlias::Math::Vector3& a_value , const std::string_view a_key)
+    inline nlohmann::json SerializeVector3(const std::string_view& a_key, const TypeAlias::Math::Vector3& a_value)
     {
         // キーとなる文字列がなければ空の"json"を返す
         if (a_key.empty()) { return nlohmann::json(); }
@@ -221,7 +221,7 @@ namespace FWK::Utility
         };
     }
 
-    inline nlohmann::json SerializeIMVEC2(const ImVec2& a_value , const std::string_view a_key)
+    inline nlohmann::json SerializeIMVEC2(const std::string_view& a_key, const ImVec2& a_value)
     {
         // キーとなる文字列がなければ空の"json"を返す
         if (a_key.empty()) { return nlohmann::json(); }
@@ -239,7 +239,7 @@ namespace FWK::Utility
     }
 
 
-    inline nlohmann::json SerializeQuaternion(const TypeAlias::Math::Quaternion& a_value , const std::string_view a_key)
+    inline nlohmann::json SerializeQuaternion(const std::string_view& a_key, const TypeAlias::Math::Quaternion& a_value)
     {
         // キーとなる文字列がなければ空の"json"を返す
         if (a_key.empty()) { return {}; }

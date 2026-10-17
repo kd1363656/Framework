@@ -1,6 +1,6 @@
 ﻿#include "GameObjectTransformComponentJsonConverter.h"
 
-void FWK::Converter::GameObjectTransformComponentJsonConverter::Deserialize(const nlohmann::json& a_rootJson, GameObjectTransformComponent& a_transformComponent) const
+void FWK::Converter::GameObjectTransformComponentJsonConverter::Deserialize(const nlohmann::json& a_rootJson, GameObjectTransformComponent& a_gameObjectTransformComponent) const
 {
     if (a_rootJson.is_null()) { return; }
 
@@ -8,16 +8,16 @@ void FWK::Converter::GameObjectTransformComponentJsonConverter::Deserialize(cons
     const auto& l_rotation = Utility::DeserializeQuaternion(a_rootJson, k_rotationJsonKey);
     const auto& l_position = Utility::DeserializeVector3   (a_rootJson, k_positionJsonKey);
 
-    a_transformComponent.ApplyTransformScale   (l_scale);
-    a_transformComponent.ApplyTransformRotation(l_rotation);
-    a_transformComponent.ApplyTransformPosition(l_position);
+    a_gameObjectTransformComponent.ApplyTransformScale   (l_scale);
+    a_gameObjectTransformComponent.ApplyTransformRotation(l_rotation);
+    a_gameObjectTransformComponent.ApplyTransformPosition(l_position);
 
-    auto& l_matrixUpdateMode = a_transformComponent.GetMutableREFMatrixUpdateMode();
+    auto& l_matrixUpdateMode = a_gameObjectTransformComponent.GetMutableREFMatrixUpdateMode();
 
     Utility::DeserializeInstanceType<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(a_rootJson, k_matrixUpdateModeJsonKey, l_matrixUpdateMode);
 
     // インスタンス化出来なければreturn(デシリアライズの意味がないから)
-    if (!l_matrixUpdateMode) 
+    if (!l_matrixUpdateMode)
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "TransformComponentのMatrixUpdateModeのデシリアライズに失敗。");
 
@@ -38,10 +38,10 @@ nlohmann::json FWK::Converter::GameObjectTransformComponentJsonConverter::Serial
     const auto& l_transform        = a_gameObjectTransformComponent.GetREFTransform       ();
     const auto& l_matrixUpdateMode = a_gameObjectTransformComponent.GetREFMatrixUpdateMode();
 
-    Utility::UpdateJson(Utility::SerializeVector3(l_transform.m_scale, k_scaleJsonKey), l_rootJson);
-    Utility::UpdateJson(Utility::SerializeQuaternion(l_transform.m_rotation, k_rotationJsonKey), l_rootJson);
-    Utility::UpdateJson(Utility::SerializeVector3(l_transform.m_position, k_positionJsonKey), l_rootJson);
-    
+    Utility::UpdateJson(Utility::SerializeVector3(k_scaleJsonKey, l_transform.m_scale),          l_rootJson);
+    Utility::UpdateJson(Utility::SerializeQuaternion(k_rotationJsonKey, l_transform.m_rotation), l_rootJson);
+    Utility::UpdateJson(Utility::SerializeVector3(k_positionJsonKey, l_transform.m_position),    l_rootJson);
+
     if (!l_matrixUpdateMode) { return l_rootJson; }
 
     // 行列更新モードのシリアライズ

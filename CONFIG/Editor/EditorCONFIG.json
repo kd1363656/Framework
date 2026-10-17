@@ -27,12 +27,8 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "Asset\\Texture\\Test.png",
-                        "SelectedFilePathList": [
-                            {
-                                "SelectedFilePath": "Asset\\Texture\\Test.png"
-                            }
-                        ]
+                        "RangeSelectionStartPath": "",
+                        "SelectedFilePathList": []
                     }
                 },
                 "CurrentSelectFolderPath": "Asset\\Texture",

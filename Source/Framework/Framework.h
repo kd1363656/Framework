@@ -564,6 +564,9 @@
 #include "Definition/Enum/GameObject/TransformComponentEnum.h"
 #include "Definition/Struct/GameObject/GameObjectTransformComponentStruct.h"
 
+#include "Definition/Constant/GameObject/GameObjectTransformComponentMatrixUpdateModeBaseJsonConverterConstant.h"
+#include "GameObject/Component/Transform/Mode/Inspector/GameObjectTransformComponentMatrixUpdateModeBaseInspector.h"
+#include "GameObject/Component/Transform/Mode/Converter/Json/GameObjectTransformComponentMatrixUpdateModeBaseJsonConverter.h"
 #include "GameObject/Component/Transform/Mode/GameObjectTransformComponentMatrixUpdateModeBase.h"
 #include "Definition/Type/Alias/Factory/Unique/GameObjectTransformComponentMatrixUpdateModeUniqueFactory.h"
 #include "GameObject/Component/Transform/Mode/Standalone/GameObjectTransformComponentMatrixUpdateStandaloneMode.h"
@@ -571,7 +574,7 @@
 #include "Utility/Enum/Converter/Json/EnumBitShiftJsonConverter.h"
 #include "Utility/Enum/Inspector/EnumBitShiftInspector.h"
 #include "Utility/Enum/EnumBitShift.h"
-#include "GameObject/Component/Transform/Mode/Hierarchical/Converter/Json/GameObjectTransformComponentHierarchicalMatrixUpdateModeJsonConverter.h"
+#include "GameObject/Component/Transform/Mode/Hierarchical/Converter/Json/GameObjectTransformComponentMatrixUpdateHierarchicalModeJsonConverter.h"
 #include "GameObject/Component/Transform/Mode/Hierarchical/Inspector/GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector.h"
 #include "GameObject/Component/Transform/Mode/Hierarchical/GameObjectTransformComponentMatrixUpdateHierarchicalMode.h"
 #include "GameObject/Component/Transform/Converter/Json/GameObjectTransformComponentJsonConverter.h"

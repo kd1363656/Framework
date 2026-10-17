@@ -16,7 +16,7 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::Handle(WorldOutliner
 
     // ShiftかCtrlを押しながらの上下キーは範囲選択
     // そうでないなら選択位置の移動
-    HandleArrowKey(l_io.KeyShift &&
+    HandleArrowKey(l_io.KeyShift ||
                    l_io.KeyCtrl,
                    a_editorWindow,
                    a_editorManager);

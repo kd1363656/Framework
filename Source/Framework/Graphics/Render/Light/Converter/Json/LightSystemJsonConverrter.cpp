@@ -54,8 +54,8 @@ nlohmann::json FWK::Converter::LightSystemJsonConverter::Serialize(const Graphic
     nlohmann::json l_directionalLightJson = {};
 
     // ディレクショナルライトをシリアライズ
-    Utility::UpdateJson(Utility::SerializeVector3(l_directionalLight.m_color, k_colorJsonKey), l_directionalLightJson);
-    Utility::UpdateJson(Utility::SerializeVector3(l_directionalLight.m_direction, k_directionJsonKey), l_directionalLightJson);
+    Utility::UpdateJson(Utility::SerializeVector3(k_colorJsonKey, l_directionalLight.m_color), l_directionalLightJson);
+    Utility::UpdateJson(Utility::SerializeVector3(k_directionJsonKey, l_directionalLight.m_direction), l_directionalLightJson);
 
     l_directionalLightJson[k_intensityJsonKey] = l_directionalLight.m_intensity;
 
@@ -64,7 +64,7 @@ nlohmann::json FWK::Converter::LightSystemJsonConverter::Serialize(const Graphic
     // アンビエントライトをシリアライズ
     nlohmann::json l_ambientLightJson = {};
 
-    l_ambientLightJson[k_colorJsonKey]     = Utility::SerializeVector3(l_ambientLight.m_color, k_colorJsonKey);
+    l_ambientLightJson[k_colorJsonKey]     = Utility::SerializeVector3(k_colorJsonKey, l_ambientLight.m_color);
     l_ambientLightJson[k_intensityJsonKey] = l_ambientLight.m_intensity;
 
     l_rootJson[k_ambientLightJsonKey] = l_ambientLightJson;

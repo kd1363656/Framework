@@ -346,8 +346,8 @@
 	すべてのファイルに適用し、コンパイルできないなどの理由がなければ積極的にconst参照を使う
 	(if文・switch文の初期化文、範囲for文のループ変数、ラムダの中のローカル変数も同じ)
 	理 : コピーを作らずに済み、書き換えないことも型を見ただけで分かるから
-	8バイト以上 : クラス、構造体、std::string、std::filesystem::path、std::size_t、std::uint64_t、double、イテレータ、スマートポインタ、
-	              boost::uuids::uuid、D3D12_CPU_DESCRIPTOR_HANDLEなど
+	8バイト以上 : クラス、構造体、std::string、std::string_view(16バイト)、std::filesystem::path、std::size_t、std::uint64_t、double、
+	              イテレータ、スマートポインタ、boost::uuids::uuid、D3D12_CPU_DESCRIPTOR_HANDLEなど
 	8バイト未満(bool、int、float、UINT、DWORD、Enum、DescriptorIndexなど)は参照にせずconst autoで受け取る
 	関数の戻り値(一時オブジェクト)をconst参照で受けても、変数の寿命が尽きるまで一時オブジェクトは消えない
 	型名を書く変数も同じ(const std::filesystem::path& l_filePath = l_selectedFilePath;)
@@ -572,13 +572,21 @@
 	例↓
 	void ApplyMasterVolume(const float a_volume);
 }
-・8バイト以上のもの(クラス、構造体、std::string、std::size_t、std::uint64_t、doubleなど)はすべてconst参照で渡す(書き換えるなら参照)
+・8バイト以上のもの(クラス、構造体、std::string、std::string_view、std::size_t、std::uint64_t、doubleなど)はすべてconst参照で渡す(書き換えるなら参照)
 {
 	8バイト未満(bool、int、float、UINT、Enumなど)と生ポインタ・HANDLEはconstの値で渡す
 	外部APIが決めた形の関数(WNDPROC、ImGuiのコールバック、overrideなど)は変えない
+	std::string_viewは「先頭ポインタ8バイト+長さ8バイト」の16バイトなので値渡しにしない(const std::string_view&)
+	参照にして並び順が変わる引数は、宣言・定義・呼び出し側をすべて並べ替える
 
 	例↓
 	void ResizeBackBufferList(const std::size_t& a_backBufferNUM);
+
+	// ×(値渡し、std::string_viewがVector3の後ろ)
+	nlohmann::json SerializeVector3(const TypeAlias::Math::Vector3& a_value, const std::string_view a_key);
+
+	// ○(const参照、stdクラス → 構造体のTypeAliasの順)
+	nlohmann::json SerializeVector3(const std::string_view& a_key, const TypeAlias::Math::Vector3& a_value);
 }
 ・スマートポインタ
 {

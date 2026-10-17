@@ -20,7 +20,8 @@ void FWK::Editor::EditorGameObjectSelectionState::SelectSingleGameObject(const s
 
 void FWK::Editor::EditorGameObjectSelectionState::SelectGameObjectRange(const std::vector<std::weak_ptr<GameObject>>& a_gameObjectList)
 {
-    // 範囲選択は表示順に並んだ範囲をそのまま選択状態へ置き換える
+    // 範囲選択は渡された範囲(アンカーから選んだGameObjectへ向かう順)をそのまま選択状態へ置き換える
+    // 並びを保つため、最後の要素が矢印キーで次に動く起点になる
     // アンカーは更新しない(開始地点が動くと連続したShift選択ができなくなるため)
     m_selectedGameObjectList.clear();
  

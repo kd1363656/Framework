@@ -1,22 +1,14 @@
 ﻿#include "GameObjectTransformComponentInspector.h"
 
-void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransformComponent& a_transformComponent)
+void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransformComponent& a_gameObjectTransformComponent) const
 {
-    auto& l_transform = a_transformComponent.GetMutableREFTransform();
-
-    // 行列の計算方法を選択することができるラジオボタンリスト
-    // 新しく生成されたらMatrix確定処理を実行
-    if (auto& l_matrixUpdateMode = a_transformComponent.GetMutableREFMatrixUpdateMode();
-        Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixUpdateMode))
-    {
-        // 関連するポインタとつなげる処理
-        l_matrixUpdateMode->PostDeserialize(a_transformComponent);
-    }
+    auto& l_transform        = a_gameObjectTransformComponent.GetMutableREFTransform       ();
+    auto& l_matrixUpdateMode = a_gameObjectTransformComponent.GetMutableREFMatrixUpdateMode();
 
     // 位置
     if (ImGui::DragFloat3(k_transformPositionLabel.data(), &l_transform.m_position.x, Constant::k_imguiDefaultDragValue))
     {
-        a_transformComponent.SetShouldUpdateMatrixDirty(true);
+        a_gameObjectTransformComponent.SetShouldUpdateMatrixDirty(true);
     }
 
     // 回転
@@ -28,7 +20,7 @@ void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransfo
 
         l_transform.m_rotation = l_dragResult;
 
-        a_transformComponent.SetShouldUpdateMatrixDirty(true);
+        a_gameObjectTransformComponent.SetShouldUpdateMatrixDirty(true);
     }
 
     // 初期スポーン位置はエディターでドラッグしたときのみ決まる拡大率
@@ -36,6 +28,22 @@ void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransfo
     {
         l_transform.m_scale = l_transform.m_scale;
 
-        a_transformComponent.SetShouldUpdateMatrixDirty(true);
+        a_gameObjectTransformComponent.SetShouldUpdateMatrixDirty(true);
+    }
+
+    ImGui::SeparatorText(k_matrixStrategyInspectorLabel.data());
+
+    // 行列の計算方法を選択することができるラジオボタンリスト
+    // 新しく生成されたらMatrix確定処理を実行
+    if (Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixUpdateMode))
+    {
+        // 関連するポインタとつなげる処理
+        l_matrixUpdateMode->PostDeserialize(a_gameObjectTransformComponent);
+    }
+
+    // MatrixUpdateModeの編集インスペクターを存在していたら描画
+    if (l_matrixUpdateMode)
+    {
+        l_matrixUpdateMode->EditInspector();
     }
 }

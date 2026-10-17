@@ -13,18 +13,20 @@ namespace FWK
 
          GameObjectTransformComponentMatrixUpdateHierarchicalMode()          = default;
         ~GameObjectTransformComponentMatrixUpdateHierarchicalMode() override = default;
-    
+
         void Deserialize(const nlohmann::json& a_rootJson);
 
         void PostDeserialize(const GameObjectTransformComponent& a_transformComponent) override;
 
         void UpdateMatrix(GameObjectTransformComponent& a_transformComponent) override;
 
+        void EditInspector() override;
+
         nlohmann::json Serialize() const;
 
         void PreserveWorldMatrix(const TypeAlias::Math::Matrix& a_parentWorldMatrix, GameObjectTransformComponent& a_transformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix) override;
 
-        void EnableAllApplyCalculateParentWorldMatrixFlag();;
+        void EnableAllApplyCalculateParentWorldMatrixFlag();
 
         const auto& GetREFCalculateParentWorldMatrixEnumBitShift() const { return m_calculateParentWorldMatrixEnumBitShift; }
 

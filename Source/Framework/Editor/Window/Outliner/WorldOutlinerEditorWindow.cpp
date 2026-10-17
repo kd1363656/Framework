@@ -226,9 +226,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::MoveSelection(const std::ptrdiff_t 
     // GameObjectが選択されていない場合
     // シーンは表示の一番上にあるため、何も選択されていなければ上下どちらでもシーンから選択を始める
     // シーンが選択されていれば、下へはその下にある先頭のGameObjectへ移動し、上へは移動しない
+    // 範囲選択(ShiftかCtrlを押している間)はGameObjectだけが対象のため、シーンは選択しない
+    // そのため何も選択されていなくても、下へは先頭のGameObjectから選択を始める
     if (!l_cursor)
     {
-        if (!m_sceneSelectionState.GetVALIsSceneSelected())
+        if (!m_sceneSelectionState.GetVALIsSceneSelected() &&
+            !a_isRangeSelection)
         {
             SelectScene(l_gameObjectSelectionState);
 
@@ -1126,17 +1129,23 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::weak_pt
                 l_startITR != l_displayedList.end() &&
                 l_endITR   != l_displayedList.end())
             {
-                // アンカーがクリック点より後ろにある場合は入れ替える
-                auto l_beginITR = l_startITR;
-                auto l_lastITR  = l_endITR;
- 
-                if (l_beginITR > l_lastITR)
+                // 両端を含む範囲を「アンカー → 選んだGameObject」の順に並べる
+                // 選択リストの最後の要素が、次に矢印キーで動くときの起点(FindVALLastSelectedGameObject)になるため
+                // 表示順のまま渡すと、上へ広げたときに起点がアンカー側に残り、2つ目から先へ広がらない
+                std::vector<std::weak_ptr<GameObject>> l_rangeList = {};
+
+                if (l_startITR <= l_endITR)
                 {
-                    std::swap(l_beginITR, l_lastITR);
+                    l_rangeList.assign(l_startITR, std::next(l_endITR));
                 }
- 
-                // 両端を含む範囲を選択リストへ渡す
-                a_gameObjectSelectionState.SelectGameObjectRange({ l_beginITR, std::next(l_lastITR) });
+                else
+                {
+                    // 上へ広げた場合は表示順の範囲を取ってから逆順にする
+                    l_rangeList.assign  (l_endITR, std::next(l_startITR));
+                    std::ranges::reverse(l_rangeList);
+                }
+
+                a_gameObjectSelectionState.SelectGameObjectRange(l_rangeList);
             }
             else
             {

@@ -14,7 +14,7 @@ namespace FWK
 
          GameObjectTransformComponent() = default;
         ~GameObjectTransformComponent() = default;
- 
+
         void Deserialize(const nlohmann::json& a_rootJson);
 
         void PostDeserialize();
@@ -27,13 +27,13 @@ namespace FWK
 
         std::shared_ptr<GameObjectTransformComponent> Clone() const;
 
-        TypeAlias::Math::Matrix CalculateScaleMatrix      () const { return TypeAlias::Math::Matrix::CreateScale         (m_transform.m_scale); }
-        TypeAlias::Math::Matrix CalculateRotationMatrix   () const { return TypeAlias::Math::Matrix::CreateFromQuaternion(m_transform.m_rotation); }
-        TypeAlias::Math::Matrix CalculateTranslationMatrix() const { return TypeAlias::Math::Matrix::CreateTranslation   (m_transform.m_position); }
+        TypeAlias::Math::Matrix CalculateScaleMatrix      () const;
+        TypeAlias::Math::Matrix CalculateRotationMatrix   () const;
+        TypeAlias::Math::Matrix CalculateTranslationMatrix() const;
 
         void ApplyParent    ();
         void ApplyStandalone();
-        
+
         void ApplyTransformScale   (const TypeAlias::Math::Vector3&    a_scale);
         void ApplyTransformRotation(const TypeAlias::Math::Quaternion& a_rotation);
         void ApplyTransformPosition(const TypeAlias::Math::Vector3&    a_position);
@@ -50,20 +50,18 @@ namespace FWK
 
         const auto& GetREFMatrix() const { return m_matrix; }
 
-        const auto& GetREFGameObjectTransformComponent() const { return m_transform; }
-
         const auto& GetREFTransform() const { return m_transform; }
 
-        auto& GetMutableREFMatrixUpdateMode() { return m_matrixUpdateMode;; }
+        auto& GetMutableREFMatrixUpdateMode() { return m_matrixUpdateMode; }
 
         auto& GetMutableREFTransform() { return m_transform; }
 
         auto& GetMutableREFMatrix() { return m_matrix; }
 
     private:
-    
+
         void UpdateMatrix();
-        
+
         void ConfirmMatrixFromRootToSelf() const;
 
         std::unique_ptr<GameObjectTransformComponentMatrixUpdateModeBase> m_matrixUpdateMode = nullptr;
@@ -74,9 +72,9 @@ namespace FWK
 
         Converter::GameObjectTransformComponentJsonConverter m_jsonConverter = {};
 
-        Struct::Transform m_transform = {};
-
         TypeAlias::Math::Matrix m_matrix = TypeAlias::Math::Matrix::Identity;
+
+        Struct::Transform m_transform = {};
 
         bool m_shouldUpdateMatrixDirty = false;
 

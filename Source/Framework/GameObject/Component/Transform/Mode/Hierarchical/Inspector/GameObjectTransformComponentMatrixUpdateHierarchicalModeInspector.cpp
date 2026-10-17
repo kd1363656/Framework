@@ -1,8 +1,12 @@
 ﻿#include "GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector.h"
 
-void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector::EditInspector(GameObjectTransformComponentMatrixUpdateHierarchicalMode& a_matrixUpdateHierarchicalMode)
+void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector::EditInspector(GameObjectTransformComponentMatrixUpdateHierarchicalMode& a_gameObjectTransformComponentMatrixUpdateHierarchicalMode)
 {
-    auto& l_calculateParentWorldMatrixEnumBitShift = a_matrixUpdateHierarchicalMode.GetMutableREFCalculateParentWorldMatrixEnumBitShift();
+    auto& l_calculateParentWorldMatrixEnumBitShift = a_gameObjectTransformComponentMatrixUpdateHierarchicalMode.GetMutableREFCalculateParentWorldMatrixEnumBitShift();
 
+    // 行列の乗算で使用するEnumをセレクターから決める
     l_calculateParentWorldMatrixEnumBitShift.EditInspector(k_calculateParentWorldMatrixEnumBitShiftCheckBoxSelectorLabel);
+
+    // Transformの後にRotationを掛けるのかそれともRotationの後にTransformを掛けるのかをチェックボックスで選択
+    a_gameObjectTransformComponentMatrixUpdateHierarchicalMode.GameObjectTransformComponentMatrixUpdateModeBase::EditInspector();
 }
