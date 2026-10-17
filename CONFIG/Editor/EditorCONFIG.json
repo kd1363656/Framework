@@ -27,8 +27,12 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "",
-                        "SelectedFilePathList": []
+                        "RangeSelectionStartPath": "Asset\\Texture\\Test.png",
+                        "SelectedFilePathList": [
+                            {
+                                "SelectedFilePath": "Asset\\Texture\\Test.png"
+                            }
+                        ]
                     }
                 },
                 "CurrentSelectFolderPath": "Asset\\Texture",
@@ -50,6 +54,14 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Model",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Texture",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
                             "IsOpen": true
                         },
@@ -59,14 +71,6 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Font",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Texture",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
@@ -82,11 +86,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\Run",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Run",
+                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
                             "IsOpen": false
                         },
                         {
@@ -106,11 +110,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Prefab\\Camera",
+                            "FilePath": "Asset\\Data\\Sound\\BGM",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\BGM",
+                            "FilePath": "Asset\\Data\\Prefab\\Camera",
                             "IsOpen": false
                         },
                         {
@@ -118,12 +122,16 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Texture\\UI\\Title",
+                            "IsOpen": true
+                        },
+                        {
                             "FilePath": "Asset\\Data\\Prefab\\ShakyoTest",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Texture\\UI\\Title",
-                            "IsOpen": true
+                            "FilePath": "Asset\\Model\\Enemy\\SnadGolem\\SnadGolem.fbm",
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\SE\\Terrain",
@@ -135,6 +143,10 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\Combat",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Enemy\\SnadGolem",
                             "IsOpen": false
                         },
                         {
@@ -155,6 +167,18 @@
                         },
                         {
                             "FilePath": "Asset\\Texture\\Title",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Enemy",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Enemy\\Anubis",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Enemy\\Anubis\\Anubis.fbm",
                             "IsOpen": false
                         }
                     ],

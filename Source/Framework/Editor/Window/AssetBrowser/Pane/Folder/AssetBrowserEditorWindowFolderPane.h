@@ -56,7 +56,8 @@ namespace FWK::Editor
                           const bool                                                                           a_isToggleSelection          = false,
                           const bool                                                                           a_updateCurrentFolderPath = true);
 
-        bool IsFolderOpen(const std::filesystem::path& a_folderPath) const;
+        bool IsFolderOpen        (const std::filesystem::path& a_folderPath) const;
+        bool IsSelectedFileParent(const std::filesystem::path& a_folderPath) const;
 
         void ToggleFolderOpen(const std::filesystem::path& a_folderPath);
 

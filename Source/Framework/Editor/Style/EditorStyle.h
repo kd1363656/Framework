@@ -9,7 +9,7 @@ namespace FWK::Editor
          EditorStyle() = default;
         ~EditorStyle() = default;
 
-        static void ApplySakuraDarkStyle();
+        static void ApplyUnrealDarkStyle();
         static void ApplyFont           ();
 
     private:
@@ -18,121 +18,150 @@ namespace FWK::Editor
 
         static constexpr ImWchar k_iconGlyphRanges[] = { 0xE000, 0xF8FF, 0 };
 
-        // UEエディタ風のダークグレー基調 + 青アクセント配色。
-        // クリアカラー: ビューポートのクリア背景。UEはほぼ黒に近い濃グレー。
-        static constexpr TypeAlias::Math::Color k_clearColor = { 0.04F,
-                                                                 0.04F,
-                                                                 0.04F,
-                                                                 1.00F };
+        static constexpr TypeAlias::Math::Color k_clearColor = { 0.059F,
+                                                                 0.059F,
+                                                                 0.059F,
+                                                                 1.000F };
 
-        // 通常ウィンドウ背景。UEエディタの基本背景色。
-        static constexpr TypeAlias::Math::Color k_backgroundColor = { 0.09F,
-                                                                      0.09F,
-                                                                      0.09F,
-                                                                      1.00F };
+        static constexpr TypeAlias::Math::Color k_titleColor = { 0.082F,
+                                                                 0.082F,
+                                                                 0.082F,
+                                                                 1.000F };
 
-        // 子パネル背景。背景より一段明るいグレー。
-        static constexpr TypeAlias::Math::Color k_panelColor = { 0.14F,
-                                                                 0.14F,
-                                                                 0.14F,
-                                                                 1.00F };
+        static constexpr TypeAlias::Math::Color k_recessedColor = { 0.102F,
+                                                                    0.102F,
+                                                                    0.102F,
+                                                                    1.000F };
 
-        static constexpr TypeAlias::Math::Color k_panelHoverColor = { 0.20F,
-                                                                      0.20F,
-                                                                      0.20F,
-                                                                      1.00F };
+        static constexpr TypeAlias::Math::Color k_backgroundColor = { 0.141F,
+                                                                      0.141F,
+                                                                      0.141F,
+                                                                      1.000F };
 
-        static constexpr TypeAlias::Math::Color k_panelActiveColor = { 0.25F,
-                                                                       0.25F,
-                                                                       0.25F,
-                                                                       1.00F };
+        static constexpr TypeAlias::Math::Color k_panelColor = { 0.184F,
+                                                                 0.184F,
+                                                                 0.184F,
+                                                                 1.000F };
 
-        // 枠線色。UEは控えめで暗めのグレー。
-        static constexpr TypeAlias::Math::Color k_borderColor = { 0.22F,
-                                                                  0.22F,
-                                                                  0.22F,
-                                                                  0.60F };
+        static constexpr TypeAlias::Math::Color k_panelHoverColor = { 0.220F,
+                                                                      0.220F,
+                                                                      0.220F,
+                                                                      1.000F };
 
-        static constexpr TypeAlias::Math::Color k_borderShadowColor = { 0.00F,
-                                                                        0.00F,
-                                                                        0.00F,
-                                                                        0.00F };
+        static constexpr TypeAlias::Math::Color k_panelActiveColor = { 0.341F,
+                                                                       0.341F,
+                                                                       0.341F,
+                                                                       1.000F };
 
-        // テキスト色。UEは明るいグレー。
-        static constexpr TypeAlias::Math::Color k_textColor = { 0.88F,
-                                                                0.88F,
-                                                                0.88F,
-                                                                1.00F };
+        static constexpr TypeAlias::Math::Color k_borderColor = { 0.059F,
+                                                                  0.059F,
+                                                                  0.059F,
+                                                                  1.000F };
 
-        static constexpr TypeAlias::Math::Color k_textDisabledColor = { 0.45F,
-                                                                        0.45F,
-                                                                        0.45F,
-                                                                        1.00F };
+        static constexpr TypeAlias::Math::Color k_borderShadowColor = { 0.000F,
+                                                                        0.000F,
+                                                                        0.000F,
+                                                                        0.000F };
 
-        // アクセントカラー: UEのシグネチャブルー。
-        // 選択、チェック、スライダーつまみ、Dockingプレビューなどに使う。
-        static constexpr TypeAlias::Math::Color k_accentColor = { 0.20F,
-                                                                  0.52F,
-                                                                  1.00F,
-                                                                  1.00F };
+        static constexpr TypeAlias::Math::Color k_separatorColor = { 0.184F,
+                                                                     0.184F,
+                                                                     0.184F,
+                                                                     1.000F };
 
-        static constexpr TypeAlias::Math::Color k_accentHoverColor = { 0.30F,
-                                                                       0.62F,
-                                                                       1.00F,
-                                                                       1.00F };
+        static constexpr TypeAlias::Math::Color k_textColor = { 0.753F,
+                                                                0.753F,
+                                                                0.753F,
+                                                                1.000F };
 
-        static constexpr TypeAlias::Math::Color k_accentActiveColor = { 0.15F,
-                                                                        0.45F,
-                                                                        0.95F,
-                                                                        1.00F };
+        static constexpr TypeAlias::Math::Color k_textDisabledColor = { 0.502F,
+                                                                        0.502F,
+                                                                        0.502F,
+                                                                        1.000F };
 
-        // ボタン: 基本はグレー、押下時は青みを帯びる。
-        static constexpr TypeAlias::Math::Color k_buttonColor = { 0.16F,
-                                                                  0.16F,
-                                                                  0.16F,
-                                                                  1.00F };
+        static constexpr TypeAlias::Math::Color k_accentColor = { 0.000F,
+                                                                  0.439F,
+                                                                  0.878F,
+                                                                  1.000F };
 
-        static constexpr TypeAlias::Math::Color k_buttonHoverColor = { 0.22F,
-                                                                       0.22F,
-                                                                       0.22F,
-                                                                       1.00F };
+        static constexpr TypeAlias::Math::Color k_accentHoverColor = { 0.055F,
+                                                                       0.525F,
+                                                                       1.000F,
+                                                                       1.000F };
 
-        static constexpr TypeAlias::Math::Color k_buttonActiveColor = { 0.10F,
-                                                                        0.45F,
-                                                                        0.95F,
-                                                                        1.00F };
+        static constexpr TypeAlias::Math::Color k_accentActiveColor = { 0.000F,
+                                                                        0.314F,
+                                                                        0.627F,
+                                                                        1.000F };
 
-        static constexpr TypeAlias::Math::Color k_tabColor = { 0.12F,
-                                                               0.12F,
-                                                               0.12F,
-                                                               1.00F };
+        static constexpr TypeAlias::Math::Color k_textSelectedColor = { 0.000F,
+                                                                        0.439F,
+                                                                        0.878F,
+                                                                        0.500F };
 
-        static constexpr TypeAlias::Math::Color k_tabHoverColor = { 0.20F,
-                                                                    0.20F,
-                                                                    0.20F,
-                                                                    1.00F };
+        static constexpr TypeAlias::Math::Color k_dropdownColor = { 0.220F,
+                                                                    0.220F,
+                                                                    0.220F,
+                                                                    1.000F };
 
-        static constexpr TypeAlias::Math::Color k_tabActiveColor = { 0.18F,
-                                                                     0.18F,
-                                                                     0.18F,
-                                                                     1.00F };
+        static constexpr TypeAlias::Math::Color k_buttonColor = { 0.220F,
+                                                                  0.220F,
+                                                                  0.220F,
+                                                                  1.000F };
 
-        // Frame: InputText/Combo/Checkbox背景。
-        // アクティブ時は青系でフォーカス状態を表現。
-        static constexpr TypeAlias::Math::Color k_frameColor = { 0.12F,
-                                                                 0.12F,
-                                                                 0.12F,
-                                                                 1.00F };
+        static constexpr TypeAlias::Math::Color k_buttonHoverColor = { 0.341F,
+                                                                       0.341F,
+                                                                       0.341F,
+                                                                       1.000F };
 
-        static constexpr TypeAlias::Math::Color k_frameHoverColor = { 0.18F,
-                                                                      0.18F,
-                                                                      0.18F,
-                                                                      1.00F };
+        static constexpr TypeAlias::Math::Color k_buttonActiveColor = { 0.000F,
+                                                                        0.314F,
+                                                                        0.627F,
+                                                                        1.000F };
 
-        static constexpr TypeAlias::Math::Color k_frameActiveColor = { 0.10F,
-                                                                       0.45F,
-                                                                       0.95F,
-                                                                       1.00F };
+        static constexpr TypeAlias::Math::Color k_tabColor = { 0.082F,
+                                                               0.082F,
+                                                               0.082F,
+                                                               1.000F };
+
+        static constexpr TypeAlias::Math::Color k_tabHoverColor = { 0.220F,
+                                                                    0.220F,
+                                                                    0.220F,
+                                                                    1.000F };
+
+        static constexpr TypeAlias::Math::Color k_tabActiveColor = { 0.141F,
+                                                                     0.141F,
+                                                                     0.141F,
+                                                                     1.000F };
+
+        static constexpr TypeAlias::Math::Color k_frameColor = { 0.059F,
+                                                                 0.059F,
+                                                                 0.059F,
+                                                                 1.000F };
+
+        static constexpr TypeAlias::Math::Color k_frameHoverColor = { 0.102F,
+                                                                      0.102F,
+                                                                      0.102F,
+                                                                      1.000F };
+
+        static constexpr TypeAlias::Math::Color k_frameActiveColor = { 0.059F,
+                                                                       0.059F,
+                                                                       0.059F,
+                                                                       1.000F };
+
+        static constexpr TypeAlias::Math::Color k_scrollbarGrabColor = { 0.282F,
+                                                                         0.282F,
+                                                                         0.282F,
+                                                                         1.000F };
+
+        static constexpr TypeAlias::Math::Color k_scrollbarGrabHoverColor = { 0.341F,
+                                                                              0.341F,
+                                                                              0.341F,
+                                                                              1.000F };
+
+        static constexpr TypeAlias::Math::Color k_scrollbarGrabActiveColor = { 0.502F,
+                                                                               0.502F,
+                                                                               0.502F,
+                                                                               1.000F };
 
         static constexpr float k_editorGlobalScale = 1.0F;
 

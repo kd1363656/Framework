@@ -72,7 +72,7 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 
     // スタイル設定
     EditorStyle::ApplyFont           ();
-    EditorStyle::ApplySakuraDarkStyle();
+    EditorStyle::ApplyUnrealDarkStyle();
 
     ImGui_ImplDX12_InitInfo l_initINFO = {};
 

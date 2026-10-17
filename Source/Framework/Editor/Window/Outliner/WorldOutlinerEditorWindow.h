@@ -49,6 +49,8 @@ namespace FWK::Editor
 
         void DrawRenameInputText   (      Scene&                     a_scene);
         void DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, const bool a_isDropAfter, Scene& a_scene) const;
+
+        void DrawRowStripe();
         
         void HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene&         a_scene);
         void HandlePrefabFileDropTarget(      Scene&                     a_scene,            EditorManager& a_editorManager);
@@ -78,7 +80,8 @@ namespace FWK::Editor
  
         void CommitRename(Scene& a_scene);
  
-        bool IsGameObjectNodeOpen(const boost::uuids::uuid& a_sceneInstanceUUID) const;
+        bool IsGameObjectNodeOpen      (const boost::uuids::uuid&        a_sceneInstanceUUID) const;
+        bool IsSelectedGameObjectParent(const std::weak_ptr<GameObject>& a_gameObject, const EditorGameObjectSelectionState& a_gameObjectSelectionState) const;
          
         static constexpr std::string_view k_editorName                        = "アウトライナー";
         static constexpr std::string_view k_emptySceneLabel                   = "Untitled";
@@ -105,8 +108,15 @@ namespace FWK::Editor
         static constexpr std::ptrdiff_t k_gameObjectMoveStep   = 1;
         static constexpr std::ptrdiff_t k_noGameObjectMoveStep = 0;
 
+        static constexpr std::size_t k_rowStripeInterval    = 2ULL;
+        static constexpr std::size_t k_evenRowRemainder     = 0ULL;
+        static constexpr std::size_t k_initialDrawnRowCount = 0ULL;
+
         static constexpr int k_keyboardFocusNextItem = 0;
         static constexpr int k_nodePopStyleNUM       = 2;
+        static constexpr int k_rowDrawChannelNUM     = 2;
+        static constexpr int k_rowBackgroundChannel  = 0;
+        static constexpr int k_rowForegroundChannel  = 1;
 
         static constexpr bool k_initialIsSceneNodeOpenValue = true;
 
@@ -121,6 +131,8 @@ namespace FWK::Editor
         WorldOutlinerEditorWindowShortcutHandler     m_shortcutHandler     = {};
 
         Struct::WorldOutlinerEditorWindowRenameState m_renameState = {};
+
+        std::size_t m_drawnRowCount = k_initialDrawnRowCount;
 
         bool m_isSceneNodeOpen  = k_initialIsSceneNodeOpenValue;
         bool m_wasSceneHasChild = false;

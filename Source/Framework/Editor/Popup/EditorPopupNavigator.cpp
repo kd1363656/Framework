@@ -20,12 +20,14 @@ void FWK::Editor::EditorPopupNavigator::Begin(const Enum::EditorPopupNavigationA
 
     m_isConfirmRequested = false;
 
-    // マウスが乗った項目の中身を薄い色で塗る
+    // マウスが乗った項目の中身を明るい灰色で塗る
+    // ポップアップの背景(#383838)は一覧の背景より明るいので、一覧と同じホバー色(#383838)だと見えなくなる
+    // そのためUEのメニューと同じく一段明るいホバー色(#575757)を使う
     // MenuItemはHeader系、ButtonはButton系の色で背景を塗るため両方を差し替える
-    ImGui::PushStyleColor(ImGuiCol_HeaderHovered, Constant::k_imguiAccentTranslucentColor);
-    ImGui::PushStyleColor(ImGuiCol_HeaderActive,  Constant::k_imguiAccentTranslucentColor);
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Constant::k_imguiAccentTranslucentColor);
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  Constant::k_imguiAccentTranslucentColor);
+    ImGui::PushStyleColor(ImGuiCol_HeaderHovered, Constant::k_imguiRaisedItemHoveredColor);
+    ImGui::PushStyleColor(ImGuiCol_HeaderActive,  Constant::k_imguiItemActiveColor);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Constant::k_imguiRaisedItemHoveredColor);
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  Constant::k_imguiItemActiveColor);
 
     // このポップアップにフォーカスがあるときだけキーを受け付ける
     // サブメニューと親メニューが同時に開いているときに、両方が同じキーで動かないようにするため
@@ -145,7 +147,7 @@ void FWK::Editor::EditorPopupNavigator::DrawItemFrame() const
 
     l_drawList->AddRect(l_itemMIN,
                         l_itemMAX,
-                        ImGui::GetColorU32(Constant::k_imguiAccentColor),
+                        ImGui::GetColorU32(Constant::k_imguiItemSelectedColor),
                         l_style.FrameRounding,
                         ImDrawFlags_None,
                         k_itemFrameThickness);

@@ -377,13 +377,20 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardBackground(const Im
     // 外側カードをフレーム色で塗りつぶす
     // この色が内側ボックスの周囲(上下左右)にリムとして残り
     // 選択時に青く光る
-    // 色の優先基準 : 切り取り対象 > 選択中(AssetPaneがアクティブ) > 選択中(AssetPaneが非アクティブ) > ホバー > 通常
+    // 色の優先基準 : 切り取り対象 > 選択中(AssetPaneがアクティブ、ホバー中) > 選択中(AssetPaneがアクティブ) > 選択中(AssetPaneが非アクティブ) > ホバー > 通常
     auto l_frameColor = ImGui::GetColorU32(k_cardDefaultGrayColor);
 
     if (a_isCutTarget)
     {
-        // Cut対象は選択色へ半分倍率を掛けて暗くした色を使う
-        l_frameColor = ImGui::GetColorU32(Constant::k_imguiItemSelectedColor * Constant::k_halfMagnification);
+        // Cut対象はアウトライナーと同じ切り取り色を使う
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiItemCutColor);
+    }
+    else if (a_isSelected   &&
+             a_isActivePane &&
+             a_isHovered)
+    {
+        // UEと同じく、選択中のカードにマウスが乗ったら明るい青にする
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiItemSelectedHoveredColor);
     }
     else if (a_isSelected &&
              a_isActivePane)
@@ -396,7 +403,9 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardBackground(const Im
     }
     else if (a_isHovered)
     {
-        l_frameColor = ImGui::GetColorU32(Constant::k_imguiItemHoveredColor);
+        // カードの通常色(#383838)は一覧のホバー色と同じなので、
+        // UEのカードと同じく一段明るい色(#575757)にしてホバーが分かるようにする
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiRaisedItemHoveredColor);
     }
 
     // 外側カードは全角丸で描画

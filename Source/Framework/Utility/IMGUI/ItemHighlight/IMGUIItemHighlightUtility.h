@@ -1,10 +1,11 @@
-#pragma once
+﻿#pragma once
 
 namespace FWK::Utility
 {
     inline void IMGUIPushItemHighlightColors(const bool a_isSelected,
                                              const bool a_isActiveTarget,
-                                             const bool a_isCutTarget = false)
+                                             const bool a_isCutTarget      = false,
+                                             const bool a_isSelectedParent = false)
     {
         // デフォルトは未選択アイテムのニュートラルなグレー系
         auto l_headerColor  = Constant::k_imguiItemColor;
@@ -14,12 +15,10 @@ namespace FWK::Utility
         if (a_isCutTarget)
         {
             // Cut対象は選択状態より優先してCut色を使う
-            // Cut色は選択色へ半分倍率を掛けて暗くしたもの
-            const auto& l_cutColor = Constant::k_imguiItemSelectedColor * Constant::k_halfMagnification;
-
-            l_headerColor  = l_cutColor;
-            l_hoveredColor = l_cutColor;
-            l_activeColor  = l_cutColor;
+            // Cut色は選択色を半分の明るさにしたもので、アセットブラウザーのカードと同じ定数を使う
+            l_headerColor  = Constant::k_imguiItemCutColor;
+            l_hoveredColor = Constant::k_imguiItemCutColor;
+            l_activeColor  = Constant::k_imguiItemCutColor;
         }
         else if (a_isSelected)
         {
@@ -33,12 +32,20 @@ namespace FWK::Utility
             }
             else
             {
-                // 非アクティブなウィンドウ・ペイン内では半透明にして
+                // 非アクティブなウィンドウ・ペイン内ではUEと同じくくすんだ青にして
                 // フォーカスが外れていることが見た目で分かるようにする
+                // 半透明の青だと下の縞模様で色が変わるため不透明の色にしている
                 l_headerColor  = Constant::k_imguiItemSelectedInactiveColor;
                 l_hoveredColor = Constant::k_imguiItemSelectedInactiveColor;
                 l_activeColor  = Constant::k_imguiItemSelectedInactiveColor;
             }
+        }
+        else if (a_isSelectedParent)
+        {
+            // 選択中のアイテムの親(フォルダの親・GameObjectの親)は
+            // UEと同じく暗い青灰色で塗り、選択がどこの下にあるかを畳んだままでも分かるようにする
+            // ホバー・押下は通常のアイテムと同じ色にする
+            l_headerColor = Constant::k_imguiItemSelectedParentColor;
         }
 
         ImGui::PushStyleColor(ImGuiCol_Header,        l_headerColor);

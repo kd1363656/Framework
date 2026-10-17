@@ -320,7 +320,14 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     const auto& l_selectedFilePathList = m_selectionState.GetREFSelectedFilePathList();
     const bool  l_isSelected           = std::find                                  (l_selectedFilePathList.begin(), l_selectedFilePathList.end(), a_currentFolderPath) != l_selectedFilePathList.end();
 
-    if (l_isSelected)
+    // 選択中のファイル・フォルダの親フォルダかどうか
+    // UEと同じく親のフォルダも暗い青灰色で塗るため、Selectedフラグを立てて背景を描かせる
+    // (ImGuiのTreeNodeはSelectedフラグが無いと背景のHeader色を描かない)
+    const bool l_isSelectedParent = !l_isSelected &&
+                                    IsSelectedFileParent(a_currentFolderPath);
+
+    if (l_isSelected ||
+        l_isSelectedParent)
     {
         l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
     }
@@ -331,12 +338,15 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
                                  l_clipboard.Contains(a_currentFolderPath);
 
     // ハイライト強弱の制御
-    // 描画先ペインがアクティブなら不透明の選択色
-    // 非アクティブなら半透明の選択色となる
+    // 描画先ペインがアクティブなら青の選択色
+    // 非アクティブならくすんだ青の選択色となる
     // a_activePane == Invalid    : 非アクティブと同じ扱い
     const bool l_isActivePane = a_editorWindow.GetVALActivePane() == Enum::AssetBrowserActivePaneType::FolderPane;
 
-    Utility::IMGUIPushItemHighlightColors(l_isSelected, l_isActivePane, l_isCutTarget);
+    Utility::IMGUIPushItemHighlightColors(l_isSelected,
+                                          l_isActivePane,
+                                          l_isCutTarget,
+                                          l_isSelectedParent);
 
     // IMGUIPushItemHighlightColors分 + Cut時は追加でImGuiCol_Text分
     int l_popStyleColorNUM = Constant::k_imguiItemHighlightColorPushCount;
@@ -888,6 +898,32 @@ bool FWK::Editor::AssetBrowserEditorWindowFolderPane::IsFolderOpen(const std::fi
     if (l_itr == m_folderOpenStateMap.end()) { return false; }
 
     return l_itr->second;
+}
+bool FWK::Editor::AssetBrowserEditorWindowFolderPane::IsSelectedFileParent(const std::filesystem::path& a_folderPath) const
+{
+    const auto& l_selectedFilePathList = m_selectionState.GetREFSelectedFilePathList();
+
+    for (const auto& l_selectedFilePath : l_selectedFilePathList)
+    {
+        auto l_parentPath = l_selectedFilePath.parent_path();
+
+        // 選択中のパスの親を根元まで辿り、途中でa_folderPathに一致すれば親(祖先)のフォルダ
+        // パスの比較は区切りごとに行われるため「Asset/Model」と「Asset/ModelData」を取り違えない
+        // 例 : 選択 Asset/Model/Player/Antike.fbx → Asset/Model/Player → Asset/Model → Asset の順に比べる
+        while (!l_parentPath.empty())
+        {
+            if (l_parentPath == a_folderPath) { return true; }
+
+            auto l_nextParentPath = l_parentPath.parent_path();
+
+            // ルート("C:/"など)のparent_pathは自分自身を返すので、変わらなくなったら止める
+            if (l_nextParentPath == l_parentPath) { break; }
+
+            l_parentPath = std::move(l_nextParentPath);
+        }
+    }
+
+    return false;
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleFolderOpen(const std::filesystem::path& a_folderPath)

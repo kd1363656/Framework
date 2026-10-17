@@ -64,7 +64,21 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
     // (0にしないとノードとドロップゾーン両方にItemSpacingが掛かり間隔が開きすぎる)
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(l_style.ItemSpacing.x, Constant::k_imguiRemainingSize.y));
 
+    // UEのアウトライナーと同じく1行おきに暗い縞を敷く
+    // 縞の大きさはノードを描いた後でないと分からないため、描画先を2層に分けて
+    // 縞は奥の層(0)、ノードは手前の層(1)へ描く
+    // こうすると後から描いた縞がノードの文字や選択色を隠さない
+    auto* l_drawList = ImGui::GetWindowDrawList();
+
+    l_drawList->ChannelsSplit     (k_rowDrawChannelNUM);
+    l_drawList->ChannelsSetCurrent(k_rowForegroundChannel);
+
+    m_drawnRowCount = k_initialDrawnRowCount;
+
     DrawSceneNode(*l_scene, a_editorManager);
+
+    // 2層を奥 → 手前の順に1つへまとめる
+    l_drawList->ChannelsMerge();
 
     ImGui::PopStyleVar(k_nodePopStyleNUM);
 
@@ -276,8 +290,17 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
                                          ImGuiTreeNodeFlags_OpenOnArrow    |
                                          ImGuiTreeNodeFlags_OpenOnDoubleClick;
  
+    // GameObjectが1つでも選択されていれば、シーンは全GameObjectの親として暗い青灰色で塗る
+    // (ImGuiのTreeNodeはSelectedフラグが無いと背景のHeader色を描かない)
+    const auto& l_selectedGameObjectList = l_gameObjectSelectionState.GetREFSelectedGameObjectList();
+    const bool  l_isSceneSelected        = m_sceneSelectionState.GetVALIsSceneSelected            ();
+
+    const bool  l_isSceneSelectedParent  = !l_isSceneSelected &&
+                                           !l_selectedGameObjectList.empty();
+
     // シーンが選択されていれば選択されているというフラグを上げる
-    if (m_sceneSelectionState.GetVALIsSceneSelected())
+    if (l_isSceneSelected ||
+        l_isSceneSelectedParent)
     {
         l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
     }
@@ -348,11 +371,16 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
 
     // 選択中・ホバー中の背景色をエディタ共通ルールでPushする
     // 他ウィンドウのアイテムと同じ選択色で描画される
-    Utility::IMGUIPushItemHighlightColors(m_sceneSelectionState.GetVALIsSceneSelected(), a_editorManager.GetVALCurrentActiveWindowStaticTpeID() == GetREFTypeINFO().k_staticTypeID);
+    Utility::IMGUIPushItemHighlightColors(l_isSceneSelected,
+                                          a_editorManager.GetVALCurrentActiveWindowStaticTpeID() == GetREFTypeINFO().k_staticTypeID,
+                                          false,
+                                          l_isSceneSelectedParent);
 
     const bool l_isNodeOpen = ImGui::TreeNodeEx(l_nodeLabel.c_str(), l_treeNodeFlags);
 
     Utility::IMGUIPopItemHighlightColors();
+
+    DrawRowStripe();
 
     // 開閉状態を保持して次フレームへ引き継ぐ
     m_isSceneNodeOpen = l_isNodeOpen;
@@ -499,8 +527,16 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
         ImGui::SetNextItemOpen(l_isNodeOpen);
     }
 
-    // 選択中ならハイライト表示
-    if (l_gameObjectSelectionState.FindVALIsSelected(a_gameObject))
+    // 選択中、または選択中のGameObjectの親ならハイライト表示
+    // 親はUEと同じく暗い青灰色で塗り、畳んだままでも選択がどこの下にあるかを分かるようにする
+    // (ImGuiのTreeNodeはSelectedフラグが無いと背景のHeader色を描かない)
+    const bool l_isSelected       = l_gameObjectSelectionState.FindVALIsSelected(a_gameObject);
+
+    const bool l_isSelectedParent = !l_isSelected &&
+                                    IsSelectedGameObjectParent(a_gameObject, l_gameObjectSelectionState);
+
+    if (l_isSelected ||
+        l_isSelectedParent)
     {
         l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
     }
@@ -534,12 +570,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
 
     // 選択中・ホバー中・Cut対象の背景色をエディタ共通ルールでPushする
     // 他ウィンドウのアイテムと同じ選択色で描画される
-    const bool l_isSelected  = l_gameObjectSelectionState.FindVALIsSelected(a_gameObject);
-
     const bool l_isCutTarget = m_clipboard.Contains(l_gameObject->GetREFSceneInstanceUUID()) &&
                                m_clipboard.GetVALOperationType() == Enum::WorldOutlinerClipboardOperationType::Cut;
 
-    Utility::IMGUIPushItemHighlightColors(l_isSelected, a_editorManager.GetVALCurrentActiveWindowStaticTpeID() == GetREFTypeINFO().k_staticTypeID, l_isCutTarget);
+    Utility::IMGUIPushItemHighlightColors(l_isSelected,
+                                          a_editorManager.GetVALCurrentActiveWindowStaticTpeID() == GetREFTypeINFO().k_staticTypeID,
+                                          l_isCutTarget,
+                                          l_isSelectedParent);
 
     // このノードがリネーム対象かどうか
     const bool l_isRenaming = m_renameState.m_isActive       &&
@@ -563,6 +600,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     // Header系3色分(IMGUIPushItemHighlightColors) → テキスト色の順でPopする
     Utility::IMGUIPopItemHighlightColors();
     ImGui::PopStyleColor                ();
+
+    DrawRowStripe();
 
     const auto& l_sceneInstanceUUID = l_gameObject->GetREFSceneInstanceUUID();
 
@@ -808,6 +847,35 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::w
                                                      l_droppedGameObject,
                                                      a_isDropAfter,
                                                      a_scene);
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::DrawRowStripe()
+{
+    // 偶数行(0, 2, 4...)は一覧の背景のまま、奇数行だけ一段暗い色を敷く
+    // 例 : シーン(0行目) → そのまま、1つ目のGameObject(1行目) → 暗い色、2つ目(2行目) → そのまま
+    const bool l_isStripeRow = (m_drawnRowCount % k_rowStripeInterval) != k_evenRowRemainder;
+
+    ++m_drawnRowCount;
+
+    if (!l_isStripeRow) { return; }
+
+    auto* l_drawList = ImGui::GetWindowDrawList();
+
+    // 直前に描いたノードの矩形から行の範囲を作る
+    // 横はウィンドウの左端から右端まで、縦はノードの下にあるドロップゾーンの分まで伸ばし
+    // 行と行の間に縞の切れ目ができないようにする
+    const auto& l_itemMIN     = ImGui::GetItemRectMin();
+    const auto& l_itemMAX     = ImGui::GetItemRectMax();
+    const auto& l_windowPos   = ImGui::GetWindowPos  ();
+    const float l_windowWidth = ImGui::GetWindowWidth();
+
+    const ImVec2& l_stripeMIN = { l_windowPos.x,                 l_itemMIN.y };
+    const ImVec2& l_stripeMAX = { l_windowPos.x + l_windowWidth, l_itemMAX.y + k_dropZoneHeight };
+
+    // 縞だけ奥の層へ描き、描き終わったら手前の層へ戻す
+    l_drawList->ChannelsSetCurrent(k_rowBackgroundChannel);
+    l_drawList->AddRectFilled     (l_stripeMIN, l_stripeMAX, ImGui::GetColorU32(Constant::k_imguiRowStripeColor));
+    l_drawList->ChannelsSetCurrent(k_rowForegroundChannel);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene)
@@ -1204,4 +1272,35 @@ bool FWK::Editor::WorldOutlinerEditorWindow::IsGameObjectNodeOpen(const boost::u
     if (l_itr == m_gameObjectOpenStateMap.end()) { return true; }
 
     return l_itr->second;
+}
+bool FWK::Editor::WorldOutlinerEditorWindow::IsSelectedGameObjectParent(const std::weak_ptr<GameObject>& a_gameObject, const EditorGameObjectSelectionState& a_gameObjectSelectionState) const
+{
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return false; }
+
+    const auto& l_selectedGameObjectList = a_gameObjectSelectionState.GetREFSelectedGameObjectList();
+
+    for (const auto& l_selectedGameObjectWeak : l_selectedGameObjectList)
+    {
+        const auto& l_selectedGameObject = l_selectedGameObjectWeak.lock();
+
+        if (!l_selectedGameObject) { continue; }
+
+        const auto& l_selectedHierarchy = l_selectedGameObject->GetREFHierarchy();
+              auto  l_parent            = l_selectedHierarchy.GetREFParent  ().lock();
+
+        // 選択中のGameObjectから親を根元まで辿り、途中で自分に着けば自分はその親(祖先)の行
+        // 例 : Player → Body → Hand でHandを選択 → Body、Playerの順に比べ、BodyとPlayerが親の色になる
+        while (l_parent)
+        {
+            if (l_parent == l_gameObject) { return true; }
+
+            const auto& l_parentHierarchy = l_parent->GetREFHierarchy();
+
+            l_parent = l_parentHierarchy.GetREFParent().lock();
+        }
+    }
+
+    return false;
 }

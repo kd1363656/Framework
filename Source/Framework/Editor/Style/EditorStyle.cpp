@@ -1,7 +1,13 @@
 ﻿#include "EditorStyle.h"
 
-void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
+void FWK::Editor::EditorStyle::ApplyUnrealDarkStyle()
 {
+    // Unreal Engine 5のエディター(Starshipスタイル)の色に合わせる
+    // UEの色は"#242424"のような16進数で決められているため、255で割って0.0F～1.0Fにしている
+    // 例 : #242424 → 0x24 = 36 → 36 / 255 = 0.141F
+    //      #0070E0 → (0, 112, 224) / 255 = (0.000F, 0.439F, 0.878F) ← UEの選択色の青
+    // 濃さの順 : 入力欄(#0F0F0F) < タイトル(#151515) < 一覧の背景(#1A1A1A) < パネル(#242424) < ヘッダー(#2F2F2F) < ボタン・メニュー(#383838) < ホバー(#575757)
+    // 色はUE5.8の画面から1ピクセルずつ測った値に合わせている
     auto& l_style = ImGui::GetStyle();
 
     // ImGui::Begin()で作られる通常ウィンドウ内部の余白。
@@ -75,11 +81,13 @@ void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
     l_colorList[ImGuiCol_WindowBg] = ConvertEditorColorToIMVEC4(k_backgroundColor);
 
     // BeginChild()で作る子ウィンドウの背景色。
-    // Content Browserの左ツリー、Inspectorの内部枠などに使える。
-    l_colorList[ImGuiCol_ChildBg] = ConvertEditorColorToIMVEC4(k_panelColor);
+    // UEのアウトライナーやコンテンツブラウザーの一覧のように、パネルより一段暗くして凹んで見せる
+    l_colorList[ImGuiCol_ChildBg] = ConvertEditorColorToIMVEC4(k_recessedColor);
 
-    // Combo、Popup、ContextMenuなどの背景色。
-    l_colorList[ImGuiCol_PopupBg] = ConvertEditorColorToIMVEC4(k_panelColor);
+    // Combo、Popup、ContextMenu、ツールチップの背景色。
+    // UEのメニューとツールチップはパネルより一段明るい#383838なので、
+    // メニューの項目のホバーはさらに明るい#575757にする(EditorPopupNavigator)
+    l_colorList[ImGuiCol_PopupBg] = ConvertEditorColorToIMVEC4(k_dropdownColor);
 
     // ウィンドウ、Child、Frame、Tabなどの枠線色。
     l_colorList[ImGuiCol_Border] = ConvertEditorColorToIMVEC4(k_borderColor);
@@ -95,32 +103,27 @@ void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
     l_colorList[ImGuiCol_FrameBgHovered] = ConvertEditorColorToIMVEC4(k_frameHoverColor);
 
     // InputText入力中、Combo選択中などアクティブ状態の色。
+    // UEは入力中も背景は暗いままなので、青で塗りつぶさず通常と同じ暗さにする
     l_colorList[ImGuiCol_FrameBgActive] = ConvertEditorColorToIMVEC4(k_frameActiveColor);
 
-    // 非アクティブなウィンドウタイトルバーの色。
-    l_colorList[ImGuiCol_TitleBg] = ConvertEditorColorToIMVEC4(k_panelColor);
-
-    // アクティブなウィンドウタイトルバーの色。
-    l_colorList[ImGuiCol_TitleBgActive] = ConvertEditorColorToIMVEC4(k_panelActiveColor);
-
-    // 折り畳まれたウィンドウタイトルバーの色。
-    l_colorList[ImGuiCol_TitleBgCollapsed] = ConvertEditorColorToIMVEC4(k_panelColor);
+    // ウィンドウタイトルバーの色。
+    // UEはタイトルとメニューバーを一番暗い帯にしている
+    l_colorList[ImGuiCol_TitleBg]          = ConvertEditorColorToIMVEC4(k_titleColor);
+    l_colorList[ImGuiCol_TitleBgActive]    = ConvertEditorColorToIMVEC4(k_titleColor);
+    l_colorList[ImGuiCol_TitleBgCollapsed] = ConvertEditorColorToIMVEC4(k_titleColor);
 
     // メニューバー背景色。
     // File / Edit / View / Tools などを置く場合に効く。
-    l_colorList[ImGuiCol_MenuBarBg] = ConvertEditorColorToIMVEC4(k_backgroundColor);
+    l_colorList[ImGuiCol_MenuBarBg] = ConvertEditorColorToIMVEC4(k_titleColor);
 
     // スクロールバーの背景。
-    l_colorList[ImGuiCol_ScrollbarBg] = ConvertEditorColorToIMVEC4(k_backgroundColor);
+    l_colorList[ImGuiCol_ScrollbarBg] = ConvertEditorColorToIMVEC4(k_recessedColor);
 
-    // スクロールバーのつまみ通常色。
-    l_colorList[ImGuiCol_ScrollbarGrab] = ConvertEditorColorToIMVEC4(k_panelHoverColor);
-
-    // スクロールバーのつまみにマウスが乗った時の色。
-    l_colorList[ImGuiCol_ScrollbarGrabHovered] = Constant::k_imguiItemHoveredColor;
-
-    // スクロールバーをドラッグ中の色。
-    l_colorList[ImGuiCol_ScrollbarGrabActive] = Constant::k_imguiItemActiveColor;
+    // スクロールバーのつまみの色(通常 → マウスが乗った時 → ドラッグ中 の順に明るくする)
+    // アイテムのホバー色(青)とは分けて、UEと同じグレーにする
+    l_colorList[ImGuiCol_ScrollbarGrab]        = ConvertEditorColorToIMVEC4(k_scrollbarGrabColor);
+    l_colorList[ImGuiCol_ScrollbarGrabHovered] = ConvertEditorColorToIMVEC4(k_scrollbarGrabHoverColor);
+    l_colorList[ImGuiCol_ScrollbarGrabActive]  = ConvertEditorColorToIMVEC4(k_scrollbarGrabActiveColor);
 
     // Checkboxのチェック、MenuItemのチェックなどの色。
     l_colorList[ImGuiCol_CheckMark] = ConvertEditorColorToIMVEC4(k_accentColor);
@@ -147,13 +150,14 @@ void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
     l_colorList[ImGuiCol_Header] = Constant::k_imguiItemColor;
 
     // TreeNode、Selectableなどにマウスが乗った時の色。
+    // UEは行のホバーを青ではなく明るい灰色(#383838)で表し、青は選択だけに使う
     l_colorList[ImGuiCol_HeaderHovered] = Constant::k_imguiItemHoveredColor;
 
     // TreeNode、Selectableなどをクリック中、または選択中の色。
     l_colorList[ImGuiCol_HeaderActive] = Constant::k_imguiItemActiveColor;
 
     // 区切り線の通常色。
-    l_colorList[ImGuiCol_Separator] = ConvertEditorColorToIMVEC4(k_borderColor);
+    l_colorList[ImGuiCol_Separator] = ConvertEditorColorToIMVEC4(k_separatorColor);
 
     // Splitterなどの区切り線にマウスが乗った時の色。
     l_colorList[ImGuiCol_SeparatorHovered] = ConvertEditorColorToIMVEC4(k_accentHoverColor);
@@ -212,14 +216,14 @@ void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
     // Tableの薄い境界線。
     l_colorList[ImGuiCol_TableBorderLight] = ConvertEditorColorToIMVEC4(k_borderColor);
 
-    // Tableの通常行背景。
-    l_colorList[ImGuiCol_TableRowBg] = ConvertEditorColorToIMVEC4(k_backgroundColor);
-
-    // Tableの交互行背景。
-    l_colorList[ImGuiCol_TableRowBgAlt] = ConvertEditorColorToIMVEC4(k_panelColor);
+    // Tableの通常行背景と交互行背景。
+    // UEのアウトライナーと同じく、一覧の背景(#1A1A1A)とタイトル色(#151515)の縞模様にする
+    l_colorList[ImGuiCol_TableRowBg]    = ConvertEditorColorToIMVEC4(k_recessedColor);
+    l_colorList[ImGuiCol_TableRowBgAlt] = ConvertEditorColorToIMVEC4(k_titleColor);
 
     // InputTextなどで文字列を選択した時の背景色。
-    l_colorList[ImGuiCol_TextSelectedBg] = ConvertEditorColorToIMVEC4(k_accentActiveColor);
+    // 選択した文字が読めるように選択色の青を半透明にする
+    l_colorList[ImGuiCol_TextSelectedBg] = ConvertEditorColorToIMVEC4(k_textSelectedColor);
 
     // キーボード、ゲームパッド操作時のフォーカス枠色。
     l_colorList[ImGuiCol_NavHighlight] = ConvertEditorColorToIMVEC4(k_accentColor);
