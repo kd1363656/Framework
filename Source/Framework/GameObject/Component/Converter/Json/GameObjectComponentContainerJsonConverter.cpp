@@ -96,7 +96,11 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeCompo
  
             continue;
         }
- 
+
+        // 生成直後に初期化する
+        // INIT()はUUIDなどをリセットするため、必ずDeserialize()より前に呼ぶ
+        l_component->INIT();
+
         // ComponentData内にUUID/IsDisable/IsPrefabOrigin/各プロパティが含まれる
         l_component->Deserialize(l_json.value(k_componentDataJsonKey, nlohmann::json{}));
  

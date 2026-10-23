@@ -118,7 +118,9 @@ namespace FWK::Utility
         {
             std::erase_if(m_elementDataList, [this](const ArrayElementData& a_arrayElementData)
             {
-                if (!a_arrayElementData.m_type) { return false; }
+                // 有効なshared_ptrは所有中の要素なので削除しない
+                // nullptrになっている要素だけを削除対象にする
+                if (a_arrayElementData.m_type) { return false; }
 
                 // このアドレスはオブジェクトへアクセスするために
                 // 使用せず、unordered_setからキーを削除するためだけに使う。

@@ -48,7 +48,7 @@ namespace FWK
 
         bool GetVALIsDisable     () const { return m_isDisable; }
         bool GetVALIsPrefabOrigin() const { return m_isPrefabOrigin; }
-        
+
     private:
 
         std::weak_ptr<GameObject> m_owner = {};

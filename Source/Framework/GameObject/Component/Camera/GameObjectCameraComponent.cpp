@@ -46,6 +46,9 @@ std::shared_ptr<FWK::GameObjectComponentBase> FWK::GameObjectCameraComponent::Cl
 {
     auto l_clone = std::make_shared<GameObjectCameraComponent>();
 
+    // INIT()はUUIDなどをリセットするため、値をコピーするDeserialize()より前に呼ぶ
+    l_clone->INIT();
+
     // jsonに乗る部分はDeserialize/Serializeで一括生成
     l_clone->Deserialize(Serialize());
 
