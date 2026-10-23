@@ -63,7 +63,8 @@ namespace FWK
     private:
     
         void UpdateMatrix();
-        
+
+        void MarkChildrenMatrixDirty    () const;
         void ConfirmMatrixFromRootToSelf() const;
 
         std::unique_ptr<GameObjectTransformComponentMatrixUpdateModeBase> m_matrixUpdateMode = nullptr;

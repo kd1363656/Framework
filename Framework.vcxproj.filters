@@ -211,9 +211,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\Converter\Json">
       <UniqueIdentifier>{11986f4f-5ca7-4f60-aac6-d3efd9c3cf90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Converter\Json\Utility">
-      <UniqueIdentifier>{85c8c18a-805c-495b-abd9-d2098e5ed2bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass">
       <UniqueIdentifier>{491b2cdb-b74d-4c2d-b958-19691304212e}</UniqueIdentifier>
     </Filter>
@@ -1637,9 +1634,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\FrameResourceJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\FrameResourceJsonUtility.h">
-      <Filter>Source\Framework\Graphics\Resource\Converter\Json\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>

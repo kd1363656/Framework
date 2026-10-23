@@ -24,6 +24,11 @@ void FWK::GameObjectTransformComponent::PostLateUpdate()
     UpdateMatrix();
 
     m_shouldUpdateMatrixDirty = false;
+
+    // 自分のワールド行列が変わったので、子の行列も作り直す必要がある
+    // 子は実行レベルが自分より深いため、同じフレームのPostLateUpdateで
+    // 自分より後に実行され、更新済みの親行列を使って再計算される
+    MarkChildrenMatrixDirty();
 }
 
 void FWK::GameObjectTransformComponent::EditInspector()
@@ -138,6 +143,32 @@ void FWK::GameObjectTransformComponent::UpdateMatrix()
     if (!m_matrixUpdateMode) { return; }
 
     m_matrixUpdateMode->UpdateMatrix(*this);
+}
+
+void FWK::GameObjectTransformComponent::MarkChildrenMatrixDirty() const
+{
+    const auto& l_ownerGameObject = m_owner.lock();
+
+    if (!l_ownerGameObject) { return; }
+
+    const auto& l_ownerGameObjectHierarchy = l_ownerGameObject->GetREFHierarchy();
+    const auto& l_childSmartPointerList    = l_ownerGameObjectHierarchy.GetREFChildSmartPointerVectorList();
+    const auto& l_childDataList            = l_childSmartPointerList.GetREFElementDataList();
+
+    for (const auto& l_childData : l_childDataList)
+    {
+        const auto& l_childGameObject = l_childData.m_type.lock();
+
+        if (!l_childGameObject) { continue; }
+
+        const auto& l_childTransform = l_childGameObject->GetVALTransformComponent().lock();
+
+        if (!l_childTransform) { continue; }
+
+        // 子のdirtyを立てるだけで、行列計算は子自身のPostLateUpdateに任せる
+        // 孫以降は、子のPostLateUpdateが同じ処理を行うことで連鎖的に伝わる
+        l_childTransform->SetShouldUpdateMatrixDirty(true);
+    }
 }
 
 void FWK::GameObjectTransformComponent::ConfirmMatrixFromRootToSelf() const

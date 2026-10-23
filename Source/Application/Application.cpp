@@ -101,8 +101,10 @@ void Application::Execute()
             continue;
         }
 
-        l_inputManager.Update();
-        
+        // ※InputManager::Update()はBeginFrame()内で1フレームに1回だけ呼んでいる
+        // ここでもう一度呼ぶと、DirectXTK12のStateTrackerが「前回と今回の差」を0と判断し
+        // IsKeyPressed()やマウス移動量などが常にfalse / 0になってしまうため呼ばない
+
         // CharacterVirtualのDraw内容も受け取るため、ここでクリア
         l_physicsManager.ClearFrame();
 
