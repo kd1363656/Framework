@@ -41,8 +41,9 @@ private:
 
     void ClearWindowResizeRequest();
 
-    bool CanUpdateFrame      () const;
-    void UpdateWindowTitleBar() const;
+    bool CanUpdateFrame         () const;
+    bool IsEditorTextInputActive() const;
+    void UpdateWindowTitleBar   () const;
 
     inline static const std::string  k_titleName       = "MRI_FRAMEWORK";
     inline static const std::wstring k_windowClassName = L"Window";

@@ -182,6 +182,12 @@ bool Application::BeginFrame()
     // 現在フレームのKeyboard/Mouse状態を確定する
     l_inputManager.Update();
 
+    // ImGuiのInputText(リネーム欄や数値入力欄など)で文字入力中のEscは
+    // 「入力のキャンセル」としてImGuiが使うキーなので、アプリ終了には使わない
+    // ※WantTextInputは前フレームのImGui::NewFrame()で決まった値だが、
+    //   Escを押した瞬間はまだ入力欄がアクティブなので正しく判定できる
+    if (IsEditorTextInputActive()) { return true; }
+
     if (l_keyboardController.IsKeyPressed(DirectX::Keyboard::Escape)) { return false; }
 
     return true;
@@ -219,6 +225,18 @@ bool Application::CanUpdateFrame() const
     if (m_window.IsMinimized()) { return false; }
 
     return true;
+}
+bool Application::IsEditorTextInputActive() const
+{
+    // ImGuiのContext(ImGui全体の状態)は
+    // EditorManager::INIT()でImGui::CreateContext()を呼ぶまで存在しない
+    // Contextが無い状態でImGui::GetIO()を呼ぶとクラッシュするため先に確認する
+    if (!ImGui::GetCurrentContext()) { return false; }
+
+    // ImGuiIO::WantTextInputは
+    // 「いまImGuiのInputTextなどに文字を入力中である」ことを表すフラグ
+    // trueの間はキーボード入力をImGui側に任せる必要がある
+    return ImGui::GetIO().WantTextInput;
 }
 void Application::UpdateWindowTitleBar() const
 {

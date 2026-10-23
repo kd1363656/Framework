@@ -6,7 +6,7 @@ namespace FWK::Graphics
     {
     public:
 
-         StaticModelStandardLitPerObjectDrawRequest()            = default;
+         StaticModelStandardLitPerObjectDrawRequest()          = default;
         ~StaticModelStandardLitPerObjectDrawRequest() override = default;
 
         FWK_DEFINE_TYPE_INFO(StaticModelStandardLitPerObjectDrawRequest, StaticModelPerObjectDrawRequestBase)

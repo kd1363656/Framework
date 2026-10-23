@@ -19,14 +19,15 @@ void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceCon
 
     for (const auto& l_computeRequestPerObject : m_computeRequestPerObjectList)
     {
-        FWK_ASSERT_RETURN_IF(!l_computeRequestPerObject, "ComputeRequestPerObjectが無効のため、BeginFrame処理に失敗しました。");
+        // 無効な要素が1つあっても、残りの要素のBeginFrame()は行う
+        FWK_ASSERT_CONTINUE_IF(!l_computeRequestPerObject, "ComputeRequestPerObjectが無効のため、この要素のBeginFrame処理をスキップしました。");
 
         l_computeRequestPerObject->BeginFrame();
     }
 
     for (const auto& l_drawRequestPerObject : m_drawRequestPerObjectList)
     {
-        FWK_ASSERT_RETURN_IF              (!l_drawRequestPerObject, "DrawRequestPerObjectが無効のため、BeginFrame処理に失敗しました。");
+        FWK_ASSERT_CONTINUE_IF            (!l_drawRequestPerObject, "DrawRequestPerObjectが無効のため、この要素のBeginFrame処理をスキップしました。");
         l_drawRequestPerObject->BeginFrame();
     }
 

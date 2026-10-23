@@ -449,6 +449,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\TypeTrait\TypeTraitPTREnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Window\WindowEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Assert\AssertReturnMacros.h" />
+    <ClInclude Include="Source\Framework\Assert\AssertReporter.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Factory\FactoryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\GameObject\GameObjectComponentTaggedFactoryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Json\JsonSerializeEnumMacros.h" />
@@ -823,7 +824,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\PCH.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp" />
+    <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp">
+      <ObjectFileName>$(IntDir)Library\UFBX\%(Filename).obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Application\Converter\Json\ApplicationJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Asset\AssetFilePath.cpp" />
@@ -840,6 +843,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Converter\Binary\BinaryConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp" />
+    <ClCompile Include="Source\Framework\Assert\AssertReporter.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenuBarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />

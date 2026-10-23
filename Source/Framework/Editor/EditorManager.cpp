@@ -23,9 +23,21 @@ FWK::Editor::EditorManager::EditorManager() :
 
     m_isInitialized      (false),
     m_isDisableDrawEditor(false)
-{}
+{
+    // シングルトン(関数内static)は「作り終わった順の逆順」で破棄される
+    // EditorManagerはファクトリー登録(main関数より前)で最初に作られ、最後に破棄されるため、
+    // AssertReporterがEditorManagerより後に作られると、EditorManagerの破棄中に起きた失敗の報告が
+    // 既に破棄されたAssertReporterを触ってしまう
+    // ここで先に作っておくことで、AssertReporterはEditorManagerより後に破棄される
+    AssertReporter::GetInstance();
+}
 FWK::Editor::EditorManager::~EditorManager()
 {
+    // ここから先はLogウィンドウ(m_logEditorWindow)が破棄されていくので、
+    // FWK_ASSERT_RETURN系マクロの失敗をLogウィンドウへ書き込まないようにする
+    // (OutputDebugStringWへの出力は引き続き行われる)
+    AssertReporter::GetInstance().SetIsEditorLogEnabled(false);
+
     Release();
 }
 

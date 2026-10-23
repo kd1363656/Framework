@@ -11,7 +11,7 @@ namespace FWK::Converter
     {
     public:
 
-        PhysicsCharacterVirtualBaseJsonConverter() = default;
+         PhysicsCharacterVirtualBaseJsonConverter() = default;
         ~PhysicsCharacterVirtualBaseJsonConverter() = default;
 
         void Deserialize(const nlohmann::json& a_rootJson, Physics::PhysicsCharacterVirtualBase& a_physicsCharacterVirtualBase) const;

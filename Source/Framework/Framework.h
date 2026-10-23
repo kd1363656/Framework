@@ -8,6 +8,8 @@
 #include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
 #include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 #include "Definition/Macros/Assert/AssertReturnMacros.h"
+#include "Definition/Type/Alias/MathTypeAlias.h"
+#include "Assert/AssertReporter.h"
 #include "Utility/List/SmartPointerVectorListUtility.h"
 
 //===============================================================================
@@ -49,7 +51,6 @@
 //===============================================================================
 // 音
 //===============================================================================
-#include "Definition/Type/Alias/MathTypeAlias.h"
 #include "Definition/Constant/Audio/AudioManagerConstant.h"
 #include "Audio/SoundEffect/SoundEffect.h"
 #include "Definition/Constant/Audio/SoundEffectInstanceBaseConstant.h"

@@ -22,11 +22,15 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
 
         const auto& l_skeletalAnimationPlayer = l_drawRequest->m_skeletalAnimationPlayer.lock();
 
-        FWK_ASSERT_RETURN_IF(!l_skeletalAnimationPlayer, "SkeletalAnimationPlayerが無効なため、Skeletal Animation Modelを描画できません。");
+        // この関数のループ内の失敗チェックはreturnではなくcontinueにしている
+        // returnにすると、1体(または1メッシュ)の不具合で
+        // それ以降のモデルがすべて描画されなくなるため
+        // 失敗したものだけを飛ばし、次のモデル / メッシュへ進む
+        FWK_ASSERT_CONTINUE_IF(!l_skeletalAnimationPlayer, "SkeletalAnimationPlayerが無効なため、Skeletal Animation Modelを描画できません。");
 
         const auto& l_skeletalAnimationModelRecord = l_skeletalAnimationPlayer->GetREFSkeletalAnimationModelRecord().lock();
 
-        FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効なため、Skeletal Animation Modelを描画できません。");
+        FWK_ASSERT_CONTINUE_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効なため、Skeletal Animation Modelを描画できません。");
 
         // FrameDataはこの関数内でのみ参照し、
         // メンバ変数などへ保持しない。
@@ -34,7 +38,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
         // 生ポインタを使用して問題ない。
         const auto* l_frameData = l_skeletalAnimationPlayer->FindPTRCurrentFrameData();
 
-        FWK_ASSERT_RETURN_IF(!l_frameData, "現在FrameDataを取得できないため、Skeletal Animation Modelを描画できません。");
+        FWK_ASSERT_CONTINUE_IF(!l_frameData, "現在FrameDataを取得できないため、Skeletal Animation Modelを描画できません。");
 
         const auto& l_modelData               = l_skeletalAnimationModelRecord->GetREFModelData();
         const auto& l_modelMeshList           = l_modelData.m_modelMeshList;
@@ -43,12 +47,12 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
 
         // Player::CreateではModel Mesh一つにつき、
         // 動的Meshlet BoundsBufferを一つ作成している。
-        FWK_ASSERT_RETURN_IF(l_modelMeshList.size() != l_meshletBoundsBufferList.size(), "ModelMeshListとMeshletBoundsBufferListの要素数が一致しません。");
-        FWK_ASSERT_RETURN_IF(l_modelMeshList.empty(),                                    "ModelMeshListが空のため、SkeletalAnimationModelを描画できません。");
+        FWK_ASSERT_CONTINUE_IF(l_modelMeshList.size() != l_meshletBoundsBufferList.size(), "ModelMeshListとMeshletBoundsBufferListの要素数が一致しません。");
+        FWK_ASSERT_CONTINUE_IF(l_modelMeshList.empty(),                                    "ModelMeshListが空のため、SkeletalAnimationModelを描画できません。");
 
         // Player::CreateではModel Mesh一個につき、
         // SkinnedVertexBufferを一個作成している
-        FWK_ASSERT_RETURN_IF(l_modelMeshList.size() != l_skinnedVertexBufferList.size(), "ModelMeshListとSkinnedVertexBufferListの要素数が一致しません。");
+        FWK_ASSERT_CONTINUE_IF(l_modelMeshList.size() != l_skinnedVertexBufferList.size(), "ModelMeshListとSkinnedVertexBufferListの要素数が一致しません。");
 
         const float l_worldMaxScale        = Utility::CalculateWorldMaxScale         (l_drawRequest->m_worldMatrix);
         const float l_worldOrientationSign = l_drawRequest->m_worldMatrix.Determinant() < Constant::k_modelWorldOrientationDeterminantBoundary ? Constant::k_mirrorModelWorldOrientationSign : Constant::k_normalModelWorldOrientationSign;
@@ -63,7 +67,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             const auto& l_skinnedVertexBuffer      = l_skinnedVertexBufferList[l_modelMeshIndex];
             const auto& l_meshletBoundsBuffer      = l_meshletBoundsBufferList[l_modelMeshIndex];
 
-            FWK_ASSERT_RETURN_IF(l_modelMeshletData.m_meshletList.empty(), "Meshletが存在しないため、Skeletal Animation Modelを描画できません。");
+            FWK_ASSERT_CONTINUE_IF(l_modelMeshletData.m_meshletList.empty(), "Meshletが存在しないため、Skeletal Animation Modelを描画できません。");
 
             const auto l_meshletCount = static_cast<std::uint32_t>(l_modelMeshletData.m_meshletList.size());
 
@@ -71,8 +75,8 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             // SkinnedVertexBufferをNON_PIXEL_SHADER_RESOURCEへ遷移している
             // Mesh ShaderはNON_PIXEL Shaderに含まれるため、
             // この状態でStructuredBufferとして読み取れる
-            FWK_ASSERT_RETURN_IF(l_skinnedVertexBuffer.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE, "SkinnedVertexBufferがMesh Shaderから読み取れるResource Stateではありません。");
-            FWK_ASSERT_RETURN_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_modelMeshletData.m_meshletList.size(),                "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。");
+            FWK_ASSERT_CONTINUE_IF(l_skinnedVertexBuffer.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE, "SkinnedVertexBufferがMesh Shaderから読み取れるResource Stateではありません。");
+            FWK_ASSERT_CONTINUE_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_modelMeshletData.m_meshletList.size(),                "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。");
 
             // スキニング後の頂点構造はStatic Modelの頂点構造と同じため、
             // 既存のModel描画用定数バッファを共有する
@@ -97,21 +101,21 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             l_cbModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    = l_modelMeshRuntimeData.m_primitiveIndexBuffer.GetVALSRVDescriptorIndex   ();
             l_cbModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     = l_meshletBoundsBuffer.GetVALSRVDescriptorIndex                           ();
 
-            FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_vertexBufferSRVDescriptorIndex            == DescriptorHeap::k_invalidDescriptorIndex, "SkinnedVertexBufferのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_meshletBufferSRVDescriptorIndex           == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBufferのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_uniqueVertexIndexBufferSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "UniqueVertexIndexBufferのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "PrimitiveIndexBufferのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBoundsBufferのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_vertexBufferSRVDescriptorIndex            == DescriptorHeap::k_invalidDescriptorIndex, "SkinnedVertexBufferのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_meshletBufferSRVDescriptorIndex           == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBufferのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_uniqueVertexIndexBufferSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "UniqueVertexIndexBufferのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "PrimitiveIndexBufferのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBoundsBufferのSRVDescriptorIndexが無効です。");
 
             const auto l_baseColorTextureSRVDescriptorIndex = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_baseColorTexture);
             const auto l_normalTextureSRVDescriptorIndex    = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_normalTexture);
             const auto l_metallicTextureSRVDescriptorIndex  = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_metallicTexture);
             const auto l_roughnessTextureSRVDescriptorIndex = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_roughnessTexture);
 
-            FWK_ASSERT_RETURN_IF(l_baseColorTextureSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "BaseColorTextureのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_normalTextureSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "NormalTextureのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_metallicTextureSRVDescriptorIndex  == DescriptorHeap::k_invalidDescriptorIndex, "MetallicTextureのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_roughnessTextureSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RoughnessのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_baseColorTextureSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "BaseColorTextureのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_normalTextureSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "NormalTextureのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_metallicTextureSRVDescriptorIndex  == DescriptorHeap::k_invalidDescriptorIndex, "MetallicTextureのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_roughnessTextureSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RoughnessのSRVDescriptorIndexが無効です。");
 
             l_cbModelPerObject.m_baseColorTextureSRVDescriptorIndex = l_baseColorTextureSRVDescriptorIndex;
             l_cbModelPerObject.m_normalTextureSRVDescriptorIndex    = l_normalTextureSRVDescriptorIndex;
@@ -129,7 +133,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             // Meshが保持するMeshlet数だけMesh Shaderを起動する
             const bool l_isDispatchModelMeshSuccess = DispatchModelMesh(l_directCommandList, l_modelMesh);
 
-            FWK_ASSERT_RETURN_IF(!l_isDispatchModelMeshSuccess, "Skeletal Animation ModelのMeshlet描画に失敗しました。");
+            FWK_ASSERT_CONTINUE_IF(!l_isDispatchModelMeshSuccess, "Skeletal Animation ModelのMeshlet描画に失敗しました。");
         }
     }
 }

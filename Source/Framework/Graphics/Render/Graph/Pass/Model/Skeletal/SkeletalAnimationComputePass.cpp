@@ -52,17 +52,20 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
 
         const auto& l_skeletalAnimationModelRecord = l_skeletalAnimationPlayer->GetREFSkeletalAnimationModelRecord().lock();
 
-        FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効なため、VertexSkinningを実行できません。");
+        // Playerごとの処理は互いに独立しているので、失敗したPlayerだけを飛ばす
+        // returnにすると、後ろに並んだ全キャラクターのスキニングまで止まってしまう
+        // (下のMeshletBounds更新ループも同じ理由でcontinueにしている)
+        FWK_ASSERT_CONTINUE_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効なため、VertexSkinningを実行できません。");
 
         auto* l_frameData = l_skeletalAnimationPlayer->FindMutablePTRCurrentFrameData();
 
-        FWK_ASSERT_RETURN_IF(!l_frameData, "現在FrameDataを取得できないため、Vertex Skinningを実行できません。");
+        FWK_ASSERT_CONTINUE_IF(!l_frameData, "現在FrameDataを取得できないため、Vertex Skinningを実行できません。");
 
         // CPUで計算した現在のPoseのBoneMatrixをGPUへ転送する
-        FWK_ASSERT_RETURN_IF(!UploadBoneMatrix(l_computeCommandList, *l_frameData), "BoneMatrixのGPU転送に失敗しました。");
+        FWK_ASSERT_CONTINUE_IF(!UploadBoneMatrix(l_computeCommandList, *l_frameData), "BoneMatrixのGPU転送に失敗しました。");
 
         // Model内の各MeshへLBSVertexSkinningを実行する。
-        FWK_ASSERT_RETURN_IF(!DispatchVertexSkinning(l_skeletalAnimationModelRecord->GetREFModelData(),
+        FWK_ASSERT_CONTINUE_IF(!DispatchVertexSkinning(l_skeletalAnimationModelRecord->GetREFModelData(),
                                                      *l_vertexSkinningRootSignature,
                                                      l_computeCommandList,
                                                      *l_frameData,
@@ -86,15 +89,15 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
 
         const auto& l_skeletalAnimationModelRecord = l_skeletalAnimationPlayer->GetREFSkeletalAnimationModelRecord().lock();
 
-        FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効なため、MeshletBoundsを更新できません。" );
+        FWK_ASSERT_CONTINUE_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効なため、MeshletBoundsを更新できません。" );
 
         auto* l_frameData = l_skeletalAnimationPlayer->FindMutablePTRCurrentFrameData();
 
-        FWK_ASSERT_RETURN_IF(!l_frameData, "現在FrameDataを取得できないため、MeshletBoundsを更新できません。");
+        FWK_ASSERT_CONTINUE_IF(!l_frameData, "現在FrameDataを取得できないため、MeshletBoundsを更新できません。");
 
         // Model内の各Meshについて、
         // スキニング後頂点から現在PoseのMeshletBoundsを計算する。
-        FWK_ASSERT_RETURN_IF(!DispatchMeshletBoundsUpdate(l_skeletalAnimationModelRecord->GetREFModelData(),
+        FWK_ASSERT_CONTINUE_IF(!DispatchMeshletBoundsUpdate(l_skeletalAnimationModelRecord->GetREFModelData(),
                                                           *l_meshletBoundsUpdateRootSignature,
                                                           l_computeCommandList,
                                                           *l_frameData,

@@ -328,6 +328,9 @@
     <Filter Include="Source\Framework\Graphics\Render\Light">
       <UniqueIdentifier>{e511c7bc-15d9-48c5-8b09-63bad146d696}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Assert">
+      <UniqueIdentifier>{aff4fa99-c38f-496d-ade9-b7875452f237}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Utility">
       <UniqueIdentifier>{77c8c8ea-e154-4337-a576-64bfdb53efae}</UniqueIdentifier>
     </Filter>
@@ -1896,6 +1899,9 @@
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorWindowBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Assert\AssertReporter.h">
+      <Filter>Source\Framework\Assert</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\String\StringUtility.h">
       <Filter>Source\Framework\Utility\String</Filter>
     </ClInclude>
@@ -3115,6 +3121,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp">
       <Filter>Source\Framework\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Assert\AssertReporter.cpp">
+      <Filter>Source\Framework\Assert</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp">
       <Filter>Source\Framework\Editor\Style</Filter>

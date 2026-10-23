@@ -34,7 +34,11 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
             const auto& l_modelMaterialAssetData   = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
             const auto& l_modelMaterialRuntimeData = l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData;
 
-            FWK_ASSERT_RETURN_IF(l_modelMeshletData.m_meshletList.empty(), "Meshletが存在しないため、StaticModelのPerObject定数バッファを設定できませんでした");
+            // このループ内の失敗チェックはreturnではなくcontinueにしている
+            // returnにすると、1つのメッシュの不具合(テクスチャ未設定など)で
+            // それ以降のメッシュ・モデルがすべて描画されなくなるため
+            // 失敗したメッシュだけを描画せずに飛ばし、次のメッシュへ進む
+            FWK_ASSERT_CONTINUE_IF(l_modelMeshletData.m_meshletList.empty(), "Meshletが存在しないため、StaticModelのPerObject定数バッファを設定できませんでした");
 
             Struct::CBModelPerObject l_cbModelPerObject = {};
 
@@ -70,21 +74,21 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
             l_cbModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    = l_modelMeshRuntimeData.m_primitiveIndexBuffer.GetVALSRVDescriptorIndex   ();
             l_cbModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     = l_modelMeshRuntimeData.m_meshletBoundsBuffer.GetVALSRVDescriptorIndex    ();
 
-            FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_vertexBufferSRVDescriptorIndex            == DescriptorHeap::k_invalidDescriptorIndex, "VertexBufferのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_meshletBufferSRVDescriptorIndex           == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBufferのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_uniqueVertexIndexBufferSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "UniqueVertexIndexBufferのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "PrimitiveIndexBufferのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBoundsBufferのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_vertexBufferSRVDescriptorIndex            == DescriptorHeap::k_invalidDescriptorIndex, "VertexBufferのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_meshletBufferSRVDescriptorIndex           == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBufferのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_uniqueVertexIndexBufferSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "UniqueVertexIndexBufferのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "PrimitiveIndexBufferのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBoundsBufferのSRVDescriptorIndexが無効です。");
 
             const auto l_baseColorTextureSRVDescriptorIndex = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_baseColorTexture);
             const auto l_normalTextureSRVDescriptorIndex    = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_normalTexture);
             const auto l_metallicTextureSRVDescriptorIndex  = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_metallicTexture);
             const auto l_roughnessTextureSRVDescriptorIndex = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_roughnessTexture);
 
-            FWK_ASSERT_RETURN_IF(l_baseColorTextureSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "BaseColorTextureのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_normalTextureSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "NormalTextureのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_metallicTextureSRVDescriptorIndex  == DescriptorHeap::k_invalidDescriptorIndex, "MetallicTextureのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_RETURN_IF(l_roughnessTextureSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RoughnessのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_baseColorTextureSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "BaseColorTextureのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_normalTextureSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "NormalTextureのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_metallicTextureSRVDescriptorIndex  == DescriptorHeap::k_invalidDescriptorIndex, "MetallicTextureのSRVDescriptorIndexが無効です。");
+            FWK_ASSERT_CONTINUE_IF(l_roughnessTextureSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RoughnessのSRVDescriptorIndexが無効です。");
 
             l_cbModelPerObject.m_baseColorTextureSRVDescriptorIndex = l_baseColorTextureSRVDescriptorIndex;
             l_cbModelPerObject.m_normalTextureSRVDescriptorIndex    = l_normalTextureSRVDescriptorIndex;
@@ -100,7 +104,7 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
 
             const bool l_isDispatchModelMeshSuccess = DispatchModelMesh(l_directCommandList, l_modelMesh);
 
-            FWK_ASSERT_RETURN_IF(!l_isDispatchModelMeshSuccess, "StaticModelのMeshlet描画に失敗しました。");
+            FWK_ASSERT_CONTINUE_IF(!l_isDispatchModelMeshSuccess, "StaticModelのMeshlet描画に失敗しました。");
         }
     }
 }

@@ -293,7 +293,14 @@ void FWK::Scene::RemoveDestroyedGameObjects()
 
                      if (a_gameObject->GetVALIsDestroyed())
                      {
-                         FWK_ASSERT_RETURN_VALUE_IF(!m_gameObjectUUIDRegistry.Erase(a_gameObject->GetREFSceneInstanceUUID()), "削除対象GameObjectのUUID登録解除に失敗しました。", false);
+                         // UUIDの登録解除に失敗しても(=もともと登録されていなかった)、
+                         // 破棄済みのGameObjectはリストから取り除く
+                         // ここでfalseを返すと、破棄済みGameObjectがリストに永久に残り続けるため
+                         // 失敗は報告だけ行い、下のreturnでtrue(削除する)を返す
+                         if (!m_gameObjectUUIDRegistry.Erase(a_gameObject->GetREFSceneInstanceUUID()))
+                         {
+                             FWK_ASSERT_REPORT("削除対象GameObjectのUUID登録解除に失敗しました。");
+                         }
                      }
                  
                      return a_gameObject->GetVALIsDestroyed();

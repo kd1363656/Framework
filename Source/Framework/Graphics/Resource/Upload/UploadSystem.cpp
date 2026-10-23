@@ -42,7 +42,10 @@ void FWK::Graphics::UploadSystem::SubmitPendingTextureCopyBatchIfNeededAndWait(c
     {
         const auto& l_textureRecord = l_pendingTextureBatchUploadRecord.m_textureRecord;
 
-        FWK_ASSERT_RETURN_IF(!l_textureRecord, "TextureRecordが無効になっており、テクスチャコピー処理ができませんでした。");
+        // ここでreturnすると、Reset済みのコマンドリストがClose / Executeされないまま残り
+        // 次回のReset()がエラーになって以降のアップロードがすべて失敗する
+        // そのため無効なものだけ飛ばし、必ずAfterSubmitResourceProcess()まで到達させる
+        FWK_ASSERT_CONTINUE_IF(!l_textureRecord, "TextureRecordが無効になっているため、このテクスチャのコピーをスキップしました。");
 
         const auto& l_textureUploadRecord = l_pendingTextureBatchUploadRecord.m_textureUploadRecord;
 
@@ -68,7 +71,8 @@ void FWK::Graphics::UploadSystem::SubmitPendingStaticModelBatchIfNeededAndWait(c
 
     for (const auto& [l_filePath, l_pendingStaticModelBatchUploadRecord] : l_pendingModelBatchUploadRecordMap)
     {
-        FWK_ASSERT_RETURN_IF(l_pendingStaticModelBatchUploadRecord.m_bufferUploadCommandList.empty(), "StaticModel用BufferUploadCommandListが空のため、StaticModel用BufferResourceのバッチコピーに失敗しました。");
+        // 必ずAfterSubmitResourceProcess()まで到達させるため、returnではなくcontinueで飛ばす
+        FWK_ASSERT_CONTINUE_IF(l_pendingStaticModelBatchUploadRecord.m_bufferUploadCommandList.empty(), "StaticModel用BufferUploadCommandListが空のため、このモデルのバッファコピーをスキップしました。");
 
         // バッファーをコピーしていく
         for (const auto& l_bufferUploadCommand : l_pendingStaticModelBatchUploadRecord.m_bufferUploadCommandList)
@@ -97,7 +101,8 @@ void FWK::Graphics::UploadSystem::SubmitPendingSkeletalAnimationModelBatchIfNeed
     {
         const auto& l_bufferUploadCommandList = l_pendingModelBatchUploadRecord.m_bufferUploadCommandList;
 
-        FWK_ASSERT_RETURN_IF(l_bufferUploadCommandList.empty(), "SkeletalAnimationModel用BufferUploadCommandListが空のため、BufferResourceのバッチコピーに失敗しました。");
+        // 必ずAfterSubmitResourceProcess()まで到達させるため、returnではなくcontinueで飛ばす
+        FWK_ASSERT_CONTINUE_IF(l_bufferUploadCommandList.empty(), "SkeletalAnimationModel用BufferUploadCommandListが空のため、このモデルのバッファコピーをスキップしました。");
 
         for (const auto& l_bufferUploadCommand : l_bufferUploadCommandList)
         {
