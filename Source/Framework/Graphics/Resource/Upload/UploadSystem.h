@@ -15,6 +15,7 @@ namespace FWK::Graphics
         void SubmitPendingTextureCopyBatchIfNeededAndWait           (const TextureSystem&                a_textureSystem);
         void SubmitPendingStaticModelBatchIfNeededAndWait           (const StaticModelSystem&            a_staticModelSystem);
         void SubmitPendingSkeletalAnimationModelBatchIfNeededAndWait(const SkeletalAnimationModelSystem& a_skeletalAnimationModelSystem);
+        void SubmitPendingMaterialBatchIfNeededAndWait              (const MaterialSystem&               a_materialSystem);
 
         nlohmann::json Serialize() const;
 

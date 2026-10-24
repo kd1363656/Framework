@@ -199,7 +199,9 @@ void FWK::Editor::EditorManager::DrawEditor()
     // ImGuiの描画コマンドを現在記録中のDirectCommandListへ積む
     // ImGui_ImplDX12_RenderDrawData(IMGUIが作成した描画データ、
     //                               描画命令を書き込むDirectCommandList);
-    ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), l_directCommandList.GetREFCommandList().Get());
+    const auto& l_commandList = l_directCommandList.GetREFCommandList();
+
+    ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), l_commandList.Get());
 }
 
 void FWK::Editor::EditorManager::SaveCONFIG() const

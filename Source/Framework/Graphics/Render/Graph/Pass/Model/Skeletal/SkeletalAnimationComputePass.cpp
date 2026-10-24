@@ -32,7 +32,8 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
 
     FWK_ASSERT_RETURN_IF(!l_meshletBoundsUpdateConstantBufferUploader, "SkeletalAnimationMeshletBoundsUpdate用DynamicConstantBufferUploaderを取得できません。");
 
-    const auto& l_skeletalAnimationPlayerSmartPointerVectorArray = l_skeletalAnimationPerObjectComputeRequest->GetREFSkeletalAnimationPlayerSmartPointerVectorList().GetREFElementDataList();
+    const auto& l_skeletalAnimationPlayerSmartPointerVectorList  = l_skeletalAnimationPerObjectComputeRequest->GetREFSkeletalAnimationPlayerSmartPointerVectorList();
+    const auto& l_skeletalAnimationPlayerSmartPointerVectorArray = l_skeletalAnimationPlayerSmartPointerVectorList.GetREFElementDataList                          ();
     const auto& l_computeCommandList                             = a_renderer.GetREFComputeCommandList                                                            ();
 
     // 最初にすべてのPlayerへVertex Skinningを行う。
@@ -123,7 +124,8 @@ bool FWK::Graphics::SkeletalAnimationComputePass::UploadBoneMatrix(const Compute
     FWK_ASSERT_RETURN_VALUE_IF(!l_boneMatrixBufferUploader.Write(l_globalBoneMatrixList), "BoneMatrixのUploadBufferへの書き込みに失敗しました。", false);
 
     const auto& l_boneMatrixBufferResource       = l_boneMatrixBuffer.GetREFBufferGPUResource   ().m_resource;
-    const auto& l_boneMatrixUploadBufferResource = l_boneMatrixBufferUploader.GetREFUploadBuffer().GetREFUploadBuffer();
+    const auto& l_boneMatrixUploadBuffer         = l_boneMatrixBufferUploader.GetREFUploadBuffer();
+    const auto& l_boneMatrixUploadBufferResource = l_boneMatrixUploadBuffer.GetREFUploadBuffer  ();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_boneMatrixBufferResource,       "BoneMatrixBufferのGPUResourceが無効です。",         false);
     FWK_ASSERT_RETURN_VALUE_IF(!l_boneMatrixUploadBufferResource, "BoneMatrix用UploadBufferのGPUResourceが無効です。", false);
@@ -154,7 +156,11 @@ bool FWK::Graphics::SkeletalAnimationComputePass::UploadBoneMatrix(const Compute
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const SkeletalAnimationModelRecord::ModelData& a_modelData, const RootSignature& a_rootSignature, const ComputeCommandList& a_computeCommandList, SkeletalAnimationPlayer::FrameData& a_frameData, SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader& a_constantBufferUploader)
+bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const SkeletalAnimationModelRecord::ModelData&                               a_modelData,
+                                                                         const RootSignature&                                                         a_rootSignature,
+                                                                         const ComputeCommandList&                                                    a_computeCommandList,
+                                                                               SkeletalAnimationPlayer::FrameData&                                    a_frameData,
+                                                                               SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader& a_constantBufferUploader)
 {
     const auto& l_modelMeshList           = a_modelData.m_modelMeshList;
           auto& l_skinnedVertexBufferList = a_frameData.m_skinnedVertexBufferList;
@@ -246,7 +252,6 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const S
 
     return true;
 }
-
 bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(const SkeletalAnimationModelRecord::ModelData&                                    a_modelData,
                                                                               const RootSignature&                                                              a_rootSignature,
                                                                               const ComputeCommandList&                                                         a_computeCommandList,

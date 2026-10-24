@@ -40,6 +40,9 @@
 #include "Definition/Type/Alias/ComPTRTypeAlias.h"
 #include "Graphics/Hardware/Factory/Factory.h"
 #include "Graphics/Hardware/Device/Device.h"
+
+// D3D12デバッグレイヤーの警告・エラーをファイルへ記録するクラス
+#include "Graphics/Hardware/Debug/D3D12DebugMessageLogger.h"
 #include "Definition/Type/Alias/DescriptorIndexTypeAlias.h"
 #include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
 #include "Graphics/Resource/Descriptor/Heap/Allocator/Converter/Json/DescriptorHeapIndexAllocatorJsonConverter.h"
@@ -113,7 +116,6 @@
 //===============================================================================
 // バイナリーファイル化基底クラス
 //===============================================================================
-#include "Definition/Constant/Converter/BinaryConverterBaseConstant.h"
 #include "Converter/Binary/BinaryConverterBase.h"
 
 //===============================================================================
@@ -243,6 +245,23 @@
 #include "Graphics/Resource/Texture/TextureSystem.h"
 #include "Graphics/Resource/Texture/Texture.h"
 
+// マテリアル
+#include "Definition/Constant/Graphics/MaterialConstant.h"
+#include "Definition/Constant/Graphics/StandardMaterialConstant.h"
+#include "Graphics/Resource/Material/Converter/Binary/MaterialBinaryConverter.h"
+#include "Graphics/Resource/Material/MaterialBase.h"
+#include "Definition/Type/Alias/Factory/Shared/MaterialSharedFactory.h"
+#include "Definition/Struct/Graphics/Buffer/Structured/StandardMaterialStruct.h"
+#include "Graphics/Resource/Material/Standard/Lit/Inspector/StandardLitMaterialInspector.h"
+#include "Graphics/Resource/Material/Standard/Lit/StandardLitMaterial.h"
+#include "Graphics/Resource/Material/Standard/UnLit/Inspector/StandardUnLitMaterialInspector.h"
+#include "Graphics/Resource/Material/Standard/UnLit/StandardUnLitMaterial.h"
+#include "Definition/Struct/Graphics/MaterialSystemStruct.h"
+#include "Graphics/Resource/Material/Converter/Json/MaterialSystemJsonConverter.h"
+#include "Graphics/Resource/Material/MaterialSystem.h"
+#include "Graphics/Resource/Material/Material.h"
+#include "Utility/Graphics/IsDrawTargetMaterialUtility.h"
+
 // モデル(Static)
 #include "Definition/Struct/Graphics/ModelCommonStruct.h"
 #include "Definition/Constant/Graphics/FBXModelLoaderBaseConstant.h"
@@ -262,7 +281,7 @@
 #include "Graphics/Resource/Model/Static/Builder/StaticModelBatchUploadRecordBuilder.h"
 #include "Definition/Struct/Graphics/StaticModelSystemStruct.h"
 #include "Graphics/Resource/Model/Static/Converter/Json/StaticModelSystemJsonConverter.h"
-#include "Graphics/Resource/Model/Material/ModelMaterialRuntimeTextureBuilder.h"
+#include "Graphics/Resource/Model/Material/ModelMaterialRuntimeBuilder.h"
 #include "Graphics/Resource/Model/Static/StaticModelSystem.h"
 #include "Graphics/Resource/Model/Static/StaticModel.h"
 
@@ -385,6 +404,9 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationMeshletBoundsUpdatePerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/Constant/SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader.h"
 
+// モデルのLOD(詳細度)選択クラス
+#include "Graphics/Resource/Model/LOD/ModelLODSelector.h"
+
 // 描画リクエスト(共通していないパス)
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectBase.h"
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedDrawRequestPerObjectBaseConcept.h"
@@ -400,6 +422,24 @@
 #include "Graphics/Render/Graph/Request/Object/Model/Buffer/Constant/ModelPerObjectDynamicConstantBufferUploader.h"
 #include "Utility/Math/MathMatrixUtility.h"
 #include "Definition/Struct/Graphics/ModelCascadeShadowPassStruct.h"
+
+// StaticModelのGPUドリブン描画(カリングとLOD選択をGPUで行い、ExecuteIndirectでまとめて描画する)
+#include "Definition/Constant/Graphics/ModelGPUDrivenConstant.h"
+#include "Definition/Enum/Graphics/ModelGPUDrivenEnum.h"
+#include "Definition/Struct/Graphics/Buffer/Structured/ModelGPUDrivenStruct.h"
+
+// Hi-Z(階層深度バッファ、オクルージョンカリング用)
+#include "Definition/Struct/Graphics/Buffer/Constant/CBHierarchicalDepthBuildPassStruct.h"
+#include "Graphics/Render/Occlusion/HierarchicalDepthTexture.h"
+
+#include "Graphics/Resource/Buffer/Dynamic/Structured/DynamicUploadStructuredBuffer.h"
+#include "Graphics/Render/Pipeline/CommandSignature/ModelIndirectDispatchMeshCommandSignature.h"
+#include "Graphics/Render/GPUDriven/ModelGPUDrivenDrawer.h"
+#include "Graphics/Render/GPUDriven/ModelGPUDrivenTableBuilder.h"
+
+// アニメーションのベイク(GPUスキニングで大量のキャラクターを描画するため)
+#include "Graphics/Resource/Model/Skeletal/Baked/SkeletalAnimationBakedSkinning.h"
+
 #include "Graphics/Render/Graph/Request/Object/Model/Static/StaticModelPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
@@ -408,6 +448,11 @@
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/Lit/SkeletalAnimationModelStandardLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Shadow/Cascade/StaticModelCascadeShadowPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Shadow/Cascade/SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.h"
+
+// GPUスキニングで描画するSkeletalAnimationModelの描画申請
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/GPUSkinned/SkeletalAnimationModelGPUSkinnedPerObjectDrawRequestBase.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/GPUSkinned/Standard/Lit/SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequest.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/GPUSkinned/Shadow/Cascade/SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest.h"
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"
@@ -438,6 +483,11 @@
 #include "Graphics/Render/Graph/Resource/Binder/RenderGraphResourceBinder.h"
 #include "Graphics/Render/Graph/Sorter/RenderGraphPassSorter.h"
 #include "Graphics/Render/Graph/RenderGraph.h"
+
+// CPU、GPUの処理時間計測クラス
+#include "Definition/Struct/Graphics/FrameProfilerStruct.h"
+#include "Graphics/Profiler/GPUTimestampQueryRecorder.h"
+#include "Graphics/Profiler/FrameProfiler.h"
 
 // レンダーラー
 #include "Graphics/Render/Converter/Json/RendererJsonConverter.h"

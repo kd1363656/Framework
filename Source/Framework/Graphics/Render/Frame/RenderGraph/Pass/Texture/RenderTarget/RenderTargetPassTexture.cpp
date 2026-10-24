@@ -37,7 +37,6 @@ bool FWK::Graphics::RenderTargetPassTexture::Create(const Device&               
 
     return true;
 }
-
 bool FWK::Graphics::RenderTargetPassTexture::Resize(const Device&                             a_device,
                                                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                                                     const Window::ClientSize&                 a_clientSize,

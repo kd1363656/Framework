@@ -10,13 +10,15 @@
 // ・「同じ場所では1回だけ報告する」判定はAssertReporterが行う
 //   (毎フレーム呼ばれる処理で失敗しても、ログが毎フレーム増え続けないようにするため)
 // ・std::source_location::current()はこのマクロを書いた場所(ファイル名・行番号・関数名)を表す
-#define FWK_ASSERT_REPORT(Message)                                                        \
-do                                                                                        \
-{                                                                                         \
-    FWK::AssertReporter::GetInstance().Report(Message, std::source_location::current());  \
-                                                                                          \
-    assert(false && Message);                                                             \
-}                                                                                         \
+#define FWK_ASSERT_REPORT(Message)                                     \
+do                                                                     \
+{                                                                      \
+    auto& l_assertReporter = FWK::AssertReporter::GetInstance();       \
+                                                                       \
+    l_assertReporter.Report(Message, std::source_location::current()); \
+                                                                       \
+    assert(false && Message);                                          \
+}                                                                      \
 while (false)
 
 #define FWK_ASSERT_RETURN(Message) \
@@ -80,6 +82,4 @@ if (Conditions)                                     \
                                                     \
     continue;                                       \
 }                                                   \
-else                                                \
-{                                                   \
-}
+else {}

@@ -16,3 +16,8 @@ void FWK::Graphics::StaticModelCascadeShadowPerObjectDrawRequest::AddDrawRequest
 
     m_staticModelPerObjectDrawRequest.AddDrawRequest(a_drawRequestData);
 }
+
+bool FWK::Graphics::StaticModelCascadeShadowPerObjectDrawRequest::DispatchGPUCulling(Renderer& a_renderer, const std::size_t a_cascadeIndex, const Struct::ModelGPUDrivenCullingView& a_cullingView)
+{
+    return m_staticModelPerObjectDrawRequest.DispatchGPUCulling(a_renderer, a_cascadeIndex, a_cullingView);
+}

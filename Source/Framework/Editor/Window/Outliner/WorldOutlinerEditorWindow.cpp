@@ -87,7 +87,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
 
     // 空スペース用ポップアップ描画
     // ポップアップが開いていない場合はDraw内部でreturnする
-    m_popupDrawer.DrawEmptySpacePopup(k_emptySpaceContextMenuLabel, *l_scene, *this, a_editorManager);
+    m_popupDrawer.DrawEmptySpacePopup(k_emptySpaceContextMenuLabel,
+                                      *l_scene,
+                                      *this,
+                                      a_editorManager);
  
     // アセットブラウザーからのPrefabファイルのドロップ先
     // Window内の空白へドロップされたPrefabはルートGameObjectとして生成する
@@ -99,7 +102,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
 
 void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionUp(EditorManager& a_editorManager, const bool a_isRangeSelection)
 {
-    const auto& l_scene = SceneManager::GetInstance().GetVALScene().lock();
+    const auto& l_sceneManager = SceneManager::GetInstance ();
+    const auto& l_scene        = l_sceneManager.GetVALScene().lock();
 
     if (!l_scene) { return; }
 
@@ -149,7 +153,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionUp(EditorManager& a_ed
 }
 void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionDown(EditorManager& a_editorManager, const bool a_isRangeSelection)
 {
-    const auto& l_scene = SceneManager::GetInstance().GetVALScene().lock();
+    const auto& l_sceneManager = SceneManager::GetInstance ();
+    const auto& l_scene        = l_sceneManager.GetVALScene().lock();
  
     if (!l_scene) { return; }
  
@@ -190,7 +195,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionDown(EditorManager& a_
  
     if (!l_next) { return; }
  
-    SelectGameObject(l_next, *l_scene, l_gameObjectSelectionState, a_isRangeSelection, false);
+    SelectGameObject(l_next,
+                     *l_scene,
+                     l_gameObjectSelectionState,
+                     a_isRangeSelection,
+                     false);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::SelectAllGameObjects(EditorManager& a_editorManager)

@@ -17,7 +17,8 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
     // 使用するルートシグネチャを探すなどの処理を行う
     PrepareCommonPipelineStateCreate(a_device, a_renderer);
 
-    const auto& l_device = a_device.GetREFDevice().Get();
+    const auto& l_d3dDevice = a_device.GetREFDevice();
+    const auto& l_device    = l_d3dDevice.Get      ();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_device, "デバイスが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
 

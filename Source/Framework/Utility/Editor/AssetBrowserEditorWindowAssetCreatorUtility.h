@@ -9,7 +9,8 @@ namespace FWK::Utility
         if (!l_gameObject) { return false; }
  
         // 親を辿って選択リスト内に祖先がいるか判定する
-        auto l_current = l_gameObject->GetREFHierarchy().GetREFParent().lock();
+        const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
+              auto  l_current   = l_hierarchy.GetREFParent     ().lock();
  
         while (l_current)
         {

@@ -80,9 +80,19 @@ namespace FWK::Converter
         static constexpr std::uint64_t k_emptyBoneMotionTrackCount = 0ULL;
         static constexpr std::uint64_t k_emptyKeyFrameCount        = 0ULL;
 
+        // SkeletalModelのバイナリーファイル用拡張子
+        // StaticModelと同じFBXから作っても別ファイルになるように、モデルの種類ごとに拡張子を分ける
+        inline static const std::filesystem::path k_skeletalModelAssetExtension = ".skeletalModel";
+
         // 'S' = 0x53、'A' = 0x41のため、0x5341で"SA"を表す
         static constexpr std::uint16_t k_modelAssetTypeID = 0x5341U;
 
-        static constexpr std::uint16_t k_modelAssetVersion = 1U;
+        // Version2 : LOD一覧とMesh全体の囲み球を追加
+        // Version3 : 遠距離用LODで継ぎ目をまたいだ簡略化を許可(LODの作り方の変更)
+        // Version4 : 遠距離用LODでSloppy簡略化を使い、LODの最大数を9に増加(LODの作り方の変更)
+        // Version5 : 簡略化で三角形が減らない場合は Permissive → Sloppy の順に試すように変更(LODの作り方の変更)
+        // Version6 : Materialを.materialファイルへ分け、.materialファイルのパスだけを保存するように変更
+        // Version7 : LODの簡略化で法線とUVのずれも誤差に含め、Sloppy簡略化をやめた(LODの作り方の変更)
+        static constexpr std::uint16_t k_modelAssetVersion = 7U;
     };
 }

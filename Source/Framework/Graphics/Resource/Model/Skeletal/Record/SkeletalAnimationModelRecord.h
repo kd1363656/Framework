@@ -2,6 +2,11 @@
 
 namespace FWK::Graphics
 {
+    class SkeletalAnimationBakedSkinning;
+}
+
+namespace FWK::Graphics
+{
     class SkeletalAnimationModelRecord final : public AssetRecordBase
     {
     public:
@@ -128,7 +133,13 @@ namespace FWK::Graphics
 
         void SetModelData(ModelData&& a_set) { m_modelData = std::move(a_set); }
 
+        // GPUスキニング(大量のキャラクター向け)で使う、事前計算したアニメーション
+        // 初めて使われるときに作成し、このモデルを使う全ての描画で共有する
+        void SetBakedSkinning(const std::shared_ptr<SkeletalAnimationBakedSkinning>& a_set) { m_bakedSkinning = a_set; }
+
         const auto& GetREFModelData() const { return m_modelData; }
+
+        const auto& GetREFBakedSkinning() const { return m_bakedSkinning; }
 
         auto& GetMutableREFModelData() { return m_modelData; }
 
@@ -142,5 +153,7 @@ namespace FWK::Graphics
     private:
 
         ModelData m_modelData = {};
+
+        std::shared_ptr<SkeletalAnimationBakedSkinning> m_bakedSkinning = nullptr;
     };
 }

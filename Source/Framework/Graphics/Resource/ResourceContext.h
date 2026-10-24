@@ -16,6 +16,8 @@ namespace FWK::Graphics
         void ProcessPendingStaticModelUploads           ();
         void ProcessPendingSkeletalAnimationModelUploads();
 
+        void ProcessPendingMaterialUploads(const Device& a_device, const TypeAlias::DirectCommandQueue& a_directCommandQueue);
+
         void ReleaseCompletedDeferredResources(const TypeAlias::DirectCommandQueue& a_directCommandQueue);
 
         nlohmann::json Serialize() const;
@@ -30,6 +32,7 @@ namespace FWK::Graphics
 
         const auto& GetREFUploadSystem                () const { return m_uploadSystem; }
         const auto& GetREFTextureSystem               () const { return m_textureSystem; }
+        const auto& GetREFMaterialSystem              () const { return m_materialSystem; }
         const auto& GetREFStaticModelSystem           () const { return m_staticModelSystem; }
         const auto& GetREFSkeletalAnimationModelSystem() const { return m_skeletalAnimationModelSystem; }
 
@@ -41,6 +44,7 @@ namespace FWK::Graphics
 
         auto& GetMutableREFUploadSystem                () { return m_uploadSystem; }
         auto& GetMutableREFTextureSystem               () { return m_textureSystem; }
+        auto& GetMutableREFMaterialSystem              () { return m_materialSystem; }
         auto& GetMutableREFStaticModelSystem           () { return m_staticModelSystem; }
         auto& GetMutableREFSkeletalAnimationModelSystem() { return m_skeletalAnimationModelSystem; }
 
@@ -57,7 +61,10 @@ namespace FWK::Graphics
         GPUMemoryAllocator m_gpuMemoryAllocator = {};
         UploadSystem       m_uploadSystem       = {};
 
+        // MaterialはTextureを参照し、ModelはMaterialを参照するため、
+        // 破棄される順番(宣言と逆順)がModel -> Material -> Textureになるように並べる
         TextureSystem                m_textureSystem                = {};
+        MaterialSystem               m_materialSystem               = {};
         StaticModelSystem            m_staticModelSystem            = {};
         SkeletalAnimationModelSystem m_skeletalAnimationModelSystem = {};
 

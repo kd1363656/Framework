@@ -15,6 +15,14 @@ namespace FWK::Graphics
 
         void AddDrawRequest(const std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData>& a_drawRequestData);
 
+        // カスケード1枚ごとに、影を落とすMeshの選別とLOD選択をGPUで行う(View番号 = カスケード番号)
+        bool DispatchGPUCulling(Renderer& a_renderer, const std::size_t a_cascadeIndex, const Struct::ModelGPUDrivenCullingView& a_cullingView);
+
+        void SetCurrentDrawCascadeIndex(const std::size_t a_set) { m_staticModelPerObjectDrawRequest.SetCurrentDrawViewIndex(a_set); }
+
+        // 描画した三角形の総数(全カスケードの合計、計測用)
+        auto GetVALSubmittedTriangleCount() const { return m_staticModelPerObjectDrawRequest.GetVALSubmittedTriangleCount(); }
+
     private:
 
         StaticModelPerObjectDrawRequestBase m_staticModelPerObjectDrawRequest = {};

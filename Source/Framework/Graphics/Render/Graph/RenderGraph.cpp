@@ -52,9 +52,14 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
     // ComputeCommandListへも設定する
     l_computeCommandList.SetupDescriptorHeap(l_cbvSRVUAVDescriptorPool);
 
+    auto& l_frameProfiler = a_renderer.GetMutableREFFrameProfiler();
+
     for (const auto& l_pass : m_passList)
     {
         if (!l_pass) { continue; }
+
+        // Passごとに、GPUが何ミリ秒かかったかを計測する(区間名はPassのクラス名)
+        l_frameProfiler.BeginGPUScope(l_directCommandList, l_pass->GetREFRuntimeTypeINFO().k_name);
 
         // Pass実行前に、ResourceAccessのbeforeUsageへ遷移する
         m_resourceTransitioner.TransitionPassResourceBefore(*l_pass, a_renderer);
@@ -66,6 +71,8 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
 
         // Pass実行後に、ResourceAccessのafterUsageへ遷移する
         m_resourceTransitioner.TransitionPassResourceAfter(*l_pass, a_renderer);
+
+        l_frameProfiler.EndGPUScope(l_directCommandList);
     }
 }
 void FWK::Graphics::RenderGraph::EndFrame(Renderer& a_renderer) const

@@ -34,9 +34,10 @@ bool FWK::Converter::BinaryConverterBase::IsUpdatedSourceFile(const std::filesys
     return l_binaryLastWriteTime <= l_sourceLastWriteTime;
 }
 
-std::filesystem::path FWK::Converter::BinaryConverterBase::CreateAssetFilePath(const std::filesystem::path& a_filePath) const
+std::filesystem::path FWK::Converter::BinaryConverterBase::CreateAssetFilePath(const std::filesystem::path& a_filePath, const std::filesystem::path& a_assetExtension) const
 {
-    return Utility::CreateFilePathByReplaceExtension(a_filePath, Constant::k_lowerAssetExtension);
+    // 元ファイルと同じ場所・同じ名前で、拡張子だけ渡されたバイナリーファイル用の拡張子に変える
+    return Utility::CreateFilePathByReplaceExtension(a_filePath, a_assetExtension);
 }
 
 bool FWK::Converter::BinaryConverterBase::CreateReadMemoryMappedFile(const std::filesystem::path& a_filePath)
@@ -335,6 +336,23 @@ bool FWK::Converter::BinaryConverterBase::TryReadWStringBinaryData(const std::ui
 
     // wString情報を読み込む
     ReadWStringBinaryData(a_wStringBinaryFileSize, a_destinationString, a_memoryReadOffset);
+
+    return true;
+}
+bool FWK::Converter::BinaryConverterBase::TryReadStringBinaryData(const std::uint64_t& a_stringBinaryFileSize, std::string& a_destinationString, std::uint64_t& a_memoryReadOffset) const
+{
+    if (a_stringBinaryFileSize == k_emptyReadDataSize)
+    {
+        a_destinationString.clear();
+
+        return true;
+    }
+
+    // 読み込めるバイナリーデータかどうかを検証
+    if (!CanReadBinaryData(a_memoryReadOffset, a_stringBinaryFileSize)) { return false; }
+
+    // string情報を読み込む
+    ReadStringBinaryData(a_stringBinaryFileSize, a_destinationString, a_memoryReadOffset);
 
     return true;
 }

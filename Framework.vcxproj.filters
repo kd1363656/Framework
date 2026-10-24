@@ -1,6 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Source\Framework\Scene\Changer\Converter\Json">
+      <UniqueIdentifier>{2153964d-d73a-4495-a697-1d05f4e9b0ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade">
+      <UniqueIdentifier>{f26a366f-8990-4076-9dc5-fb6b6124bacb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow">
+      <UniqueIdentifier>{fc75999a-e4de-4304-8dc5-35792ea6144d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Standard\Lit">
+      <UniqueIdentifier>{a6fcf66c-6392-452f-8bbf-96df8ed42c0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Standard">
+      <UniqueIdentifier>{9c1d956d-207c-4ee8-a7b4-1a9ce22431ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned">
+      <UniqueIdentifier>{e52d4f74-b7bc-442f-98d3-c8cf861ce8a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Baked">
+      <UniqueIdentifier>{93338d7d-4c79-4f99-a855-47e745201eba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal">
+      <UniqueIdentifier>{97ad4d71-e3ff-42ad-9625-5e47a0f6e941}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\GPUDriven">
+      <UniqueIdentifier>{e0eebe6f-db24-429f-bf8e-f803c70ee888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Occlusion">
+      <UniqueIdentifier>{9462b2d9-9654-4848-93a1-17e44516c8bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Hardware\Debug">
+      <UniqueIdentifier>{0426b225-54d9-4808-b7d3-c05f26312955}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\CommandSignature">
+      <UniqueIdentifier>{fdc3941e-ad69-4d96-851c-ac0034ebc6ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured">
+      <UniqueIdentifier>{7f741db3-79be-4e2f-b90e-a7141f13dd67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\LOD">
+      <UniqueIdentifier>{5bf11802-5e7a-4e0e-b56b-b1bcdf2f1da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Profiler">
+      <UniqueIdentifier>{b4df3c27-daea-4492-9f0c-a0bdd65adc32}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{d9e0643d-0144-41d0-9a90-8fadd99411c7}</UniqueIdentifier>
     </Filter>
@@ -10,7 +55,7 @@
     <Filter Include="Source\Framework">
       <UniqueIdentifier>{642edde5-5a2b-4090-aba3-432e9bbb6179}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dosuments">
+    <Filter Include="Documents">
       <UniqueIdentifier>{26a88736-694e-4bb9-821b-75ed16843981}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Window">
@@ -577,7 +622,7 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug">
       <UniqueIdentifier>{ccbfcb87-3a65-4d27-aeb8-400c45a6bccb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Physics\DebugDraw">
+    <Filter Include="Source\Framework\Physics\DebugRenderer">
       <UniqueIdentifier>{2701bf92-44bb-48b2-b0e1-aff21c3daac0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Scene\Converter">
@@ -586,10 +631,10 @@
     <Filter Include="Source\Framework\Scene\Converter\Json">
       <UniqueIdentifier>{2ab1272b-ca63-49a2-b772-f5af36cfb8e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Physics\DebugDraw\Queue">
+    <Filter Include="Source\Framework\Physics\DebugRenderer\Queue">
       <UniqueIdentifier>{e3508ee0-0c34-4c8f-87f7-56973e512cb1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Physics\DebugDraw\Batch">
+    <Filter Include="Source\Framework\Physics\DebugRenderer\Batch">
       <UniqueIdentifier>{a5af2d25-0569-4ad7-9839-0149c3d9a767}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Editor\MainMenu">
@@ -736,46 +781,43 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Builder">
       <UniqueIdentifier>{6804e9df-bbbb-4c64-8d2d-3062ae5c8da1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal">
-      <UniqueIdentifier>{b14bb783-5c01-4935-8662-03e9b0e1d080}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Record">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Record">
       <UniqueIdentifier>{9cbdabde-06cc-4f4a-9f5e-341972ec5a53}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Converter">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Converter">
       <UniqueIdentifier>{2bdab43a-f7a1-4e7c-baed-5d28a2a8f522}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Binary">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Binary">
       <UniqueIdentifier>{42f151fa-1abe-45ab-a47f-a4d86b7ab72f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Json">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Json">
       <UniqueIdentifier>{5662c144-a29b-494b-a7b7-4307fd610f66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader">
       <UniqueIdentifier>{56b5ec13-2e82-42ff-8c99-8e767742ad3f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor">
       <UniqueIdentifier>{e35f148d-7675-413a-978f-269465bfe3c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Motion">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Motion">
       <UniqueIdentifier>{90752af8-6938-4d80-8b0b-dc73605b0477}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Skeleton">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Skeleton">
       <UniqueIdentifier>{e324063c-8ba6-4ecd-907d-f4fb0c6fd44d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Builder">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder">
       <UniqueIdentifier>{96910efc-4572-4440-8a5f-e2c10b113551}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Player">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player">
       <UniqueIdentifier>{87d8dcf4-2cb5-4162-95cd-f1d655f9212c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal">
       <UniqueIdentifier>{5471599d-ca50-4eb0-b98e-87a4e1b3e14b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Player\Evaluator">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Evaluator">
       <UniqueIdentifier>{0ab61c6b-5959-459c-9e81-618eb95f3ab4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Player\Buffer">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer">
       <UniqueIdentifier>{b6746b3f-d558-4f03-a555-f9ecf11d4f0b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer">
@@ -1201,9 +1243,6 @@
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Converter\Json">
       <UniqueIdentifier>{e4d6899c-e258-406b-b5e3-b374367d269c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Converter">
-      <UniqueIdentifier>{d57fac8a-3538-412e-b5a5-608629586cf0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Creator">
       <UniqueIdentifier>{687534e0-dc75-4209-b3b4-f433f44ea0bf}</UniqueIdentifier>
     </Filter>
@@ -1218,6 +1257,27 @@
     </Filter>
     <Filter Include="Shader\Model">
       <UniqueIdentifier>{fa93691e-67d7-4ba6-883c-37bdd3dff222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Model\GPUDriven">
+      <UniqueIdentifier>{6f1d2b7e-3c4a-4e8b-9a51-2d7c8e0f4b13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Occlusion">
+      <UniqueIdentifier>{2a8e5c31-7b9d-4f06-8c4e-91d3b6a7e520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Model\Skeletal\GPUSkinning">
+      <UniqueIdentifier>{94d587e6-29a5-4c4f-8929-c8a5b4b0e500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Model\Skeletal\GPUSkinning\Standard">
+      <UniqueIdentifier>{7342240d-1400-41b6-bb74-26236bbf1008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Model\Skeletal\GPUSkinning\Standard\Lit">
+      <UniqueIdentifier>{0e3a53fc-c545-4ede-9ad5-11788ba21be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Model\Skeletal\GPUSkinning\Shadow">
+      <UniqueIdentifier>{fb12d557-c501-4dd6-ad78-51cc8b3fa564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Model\Skeletal\GPUSkinning\Shadow\Cascade">
+      <UniqueIdentifier>{ed674af8-7891-462c-b7b2-e2d9cf59bdb3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shader\Model\Skeletal">
       <UniqueIdentifier>{103fc5dc-4e48-40bf-8c2c-a7879bea0dfa}</UniqueIdentifier>
@@ -1483,8 +1543,101 @@
     <Filter Include="Source\Framework\Definition\Macros\GameObject">
       <UniqueIdentifier>{32307e8a-e037-4f3d-a17f-d17a075fd860}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\Material">
+      <UniqueIdentifier>{04d96116-c824-4bf9-9baf-6723bc69ead5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Material\Standard">
+      <UniqueIdentifier>{013999cb-81b0-4ab2-b4aa-01b7d025de8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Material\Standard\Lit">
+      <UniqueIdentifier>{1181ffa9-b36d-4a02-abbf-64a74ac6bab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Material\Standard\UnLit">
+      <UniqueIdentifier>{3628b1a6-adf0-4125-b3e9-07fabde8f3c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material">
+      <UniqueIdentifier>{afccf21c-2b97-4f1a-971b-3419c079f5c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Converter">
+      <UniqueIdentifier>{6e105f4d-8150-4a0c-b832-8ac30ef95bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Converter\Binary">
+      <UniqueIdentifier>{2953014e-bced-4c67-83a2-7bc9fe14ce0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Converter\Json">
+      <UniqueIdentifier>{7d542b3f-0b3b-4eae-a28b-d90823abd6b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Standard">
+      <UniqueIdentifier>{e8a6a1c4-c824-449c-9068-32c1c1c924b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Standard\Lit">
+      <UniqueIdentifier>{ef654f48-67c4-4ff9-a36a-279917dc9322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector">
+      <UniqueIdentifier>{814ae57c-3bc6-462f-9aa4-07b471d2fb69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit">
+      <UniqueIdentifier>{86b39893-f73b-416e-a6f0-d3b3d95ed793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector">
+      <UniqueIdentifier>{32d542c8-1622-4a94-a684-7d7c1f7ab6c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Standard\Lit\SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Standard\Lit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\SkeletalAnimationModelGPUSkinnedPerObjectDrawRequestBase.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Baked\SkeletalAnimationBakedSkinning.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Baked</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenTableBuilder.h">
+      <Filter>Source\Framework\Graphics\Render\GPUDriven</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenDrawer.h">
+      <Filter>Source\Framework\Graphics\Render\GPUDriven</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Occlusion\HierarchicalDepthTexture.h">
+      <Filter>Source\Framework\Graphics\Render\Occlusion</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBHierarchicalDepthBuildPassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\ModelGPUDrivenEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Hardware\Debug\D3D12DebugMessageLogger.h">
+      <Filter>Source\Framework\Graphics\Hardware\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\CommandSignature\ModelIndirectDispatchMeshCommandSignature.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\CommandSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicUploadStructuredBuffer.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\ModelGPUDrivenStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Structured</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelGPUDrivenConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSelector.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\LOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Profiler\FrameProfiler.h">
+      <Filter>Source\Framework\Graphics\Profiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Profiler\GPUTimestampQueryRecorder.h">
+      <Filter>Source\Framework\Graphics\Profiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\FrameProfilerStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="Source\PCH.h">
       <Filter>Source</Filter>
     </ClInclude>
@@ -2032,13 +2185,13 @@
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.h">
-      <Filter>Source\Framework\Physics\DebugDraw</Filter>
+      <Filter>Source\Framework\Physics\DebugRenderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\Queue\PhysicsDebugRendererQueue.h">
-      <Filter>Source\Framework\Physics\DebugDraw\Queue</Filter>
+      <Filter>Source\Framework\Physics\DebugRenderer\Queue</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.h">
-      <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
+      <Filter>Source\Framework\Physics\DebugRenderer\Batch</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Converter\Json\AssetStorageJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Storage\Converter\Json</Filter>
@@ -2208,9 +2361,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMeshletBuilderConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialRuntimeTextureBuilder.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Material</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Builder\ModelBatchUploadRecordBuilder.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Builder</Filter>
     </ClInclude>
@@ -2221,34 +2371,34 @@
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Builder</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Builder</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Binary\SkeletalAnimationModelBinaryConverter.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Binary</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Binary</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Json\SkeletalAnimationModelSystemJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Json</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Motion</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Motion</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Skeleton</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Skeleton</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\SkeletalAnimationModelFBXLoader.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Record\SkeletalAnimationModelRecord.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Record</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Record</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SkeletalAnimationModel.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SkeletalAnimationModelSystem.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SkeletalAnimationPlayer.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Player</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationVertexSkinningPerObjectStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
@@ -2266,10 +2416,10 @@
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Evaluator\SkeletalAnimationPoseEvaluator.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Evaluator</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Player\Evaluator</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer\SkeletalAnimationBoneMatrixBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Buffer</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer\PhysicsDebugDynamicVertexBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer</Filter>
@@ -2724,9 +2874,6 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Converter\Json\AssetBrowserEditorWindowAssetPaneJsonConverter.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Converter\BinaryConverterBaseConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Converter</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Creator\AssetBrowserEditorWindowAssetCreator.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Creator</Filter>
     </ClInclude>
@@ -2791,7 +2938,7 @@
       <Filter>Source\Framework\Scene\Changer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Scene\Changer\Converter\Json\SceneChangerJsonConverter.h">
-      <Filter>Source\Framework\Scene\Changer\Converter</Filter>
+      <Filter>Source\Framework\Scene\Changer\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.h">
       <Filter>Source\Framework\GameObject\Component</Filter>
@@ -2893,7 +3040,7 @@
       <Filter>Source\Framework\Scene\Changer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Scene\Changer\Converter\Json\NextSceneJsonConverter.h">
-      <Filter>Source\Framework\Scene\Changer\Converter</Filter>
+      <Filter>Source\Framework\Scene\Changer\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.h">
       <Filter>Source\Framework\Editor\Selection</Filter>
@@ -2952,8 +3099,92 @@
     <ClInclude Include="Source\Framework\Definition\Macros\GameObject\GameObjectComponentTaggedFactoryMacros.h">
       <Filter>Source\Framework\Definition\Macros\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\MaterialConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StandardMaterialConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\StandardMaterialStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Structured</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\MaterialSystemStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\MaterialSharedFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBinaryConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Converter\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialSystemJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\MaterialBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\MaterialSystem.h">
+      <Filter>Source\Framework\Graphics\Resource\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Material.h">
+      <Filter>Source\Framework\Graphics\Resource\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\StandardLitMaterial.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialInspector.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\StandardUnLitMaterial.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialInspector.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialRuntimeBuilder.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Graphics\IsDrawTargetMaterialUtility.h">
+      <Filter>Source\Framework\Utility\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\SkeletalAnimationModelGPUSkinnedPerObjectDrawRequestBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Baked\SkeletalAnimationBakedSkinning.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Baked</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenTableBuilder.cpp">
+      <Filter>Source\Framework\Graphics\Render\GPUDriven</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenDrawer.cpp">
+      <Filter>Source\Framework\Graphics\Render\GPUDriven</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Occlusion\HierarchicalDepthTexture.cpp">
+      <Filter>Source\Framework\Graphics\Render\Occlusion</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Hardware\Debug\D3D12DebugMessageLogger.cpp">
+      <Filter>Source\Framework\Graphics\Hardware\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\CommandSignature\ModelIndirectDispatchMeshCommandSignature.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\CommandSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicUploadStructuredBuffer.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSelector.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\LOD</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Profiler\FrameProfiler.cpp">
+      <Filter>Source\Framework\Graphics\Profiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Profiler\GPUTimestampQueryRecorder.cpp">
+      <Filter>Source\Framework\Graphics\Profiler</Filter>
+    </ClCompile>
     <ClCompile Include="Source\PCH.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -3258,13 +3489,13 @@
       <Filter>Source\Framework\Editor\MainMenu\File</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.cpp">
-      <Filter>Source\Framework\Physics\DebugDraw</Filter>
+      <Filter>Source\Framework\Physics\DebugRenderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\Queue\PhysicsDebugRendererQueue.cpp">
-      <Filter>Source\Framework\Physics\DebugDraw\Queue</Filter>
+      <Filter>Source\Framework\Physics\DebugRenderer\Queue</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.cpp">
-      <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
+      <Filter>Source\Framework\Physics\DebugRenderer\Batch</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.cpp">
       <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
@@ -3345,43 +3576,43 @@
       <Filter>Source\Framework\Graphics\Resource\Model\Builder</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Builder</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Builder</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Binary\SkeletalAnimationModelBinaryConverter.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Binary</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Binary</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Json\SkeletalAnimationModelSystemJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Json</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Motion</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Motion</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Skeleton</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Skeleton</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\SkeletalAnimationModelFBXLoader.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Record\SkeletalAnimationModelRecord.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Record</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Record</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SkeletalAnimationModel.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SkeletalAnimationModelSystem.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SkeletalAnimationPlayer.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Player</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Evaluator\SkeletalAnimationPoseEvaluator.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Evaluator</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Player\Evaluator</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer\SkeletalAnimationBoneMatrixBufferUploader.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Buffer</Filter>
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
@@ -3597,7 +3828,7 @@
       <Filter>Source\Framework\Scene\Changer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Scene\Changer\Converter\Json\SceneChangerJsonConverter.cpp">
-      <Filter>Source\Framework\Scene\Changer\Converter</Filter>
+      <Filter>Source\Framework\Scene\Changer\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.cpp">
       <Filter>Source\Framework\GameObject\Component</Filter>
@@ -3672,7 +3903,7 @@
       <Filter>Source\Framework\Scene\Changer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Scene\Changer\Converter\Json\NextSceneJsonConverter.cpp">
-      <Filter>Source\Framework\Scene\Changer\Converter</Filter>
+      <Filter>Source\Framework\Scene\Changer\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.cpp">
       <Filter>Source\Framework\Editor\Selection</Filter>
@@ -3704,10 +3935,37 @@
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Command</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBinaryConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Converter\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialSystemJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\MaterialBase.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\MaterialSystem.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Material.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\StandardLitMaterial.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialInspector.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\StandardUnLitMaterial.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialInspector.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">
-      <Filter>Dosuments</Filter>
+      <Filter>Documents</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -3735,6 +3993,9 @@
     <None Include="Shader\Model\Model.hlsli">
       <Filter>Shader\Model</Filter>
     </None>
+    <None Include="Shader\Model\GPUDriven\ModelGPUDriven.hlsli">
+      <Filter>Shader\Model\GPUDriven</Filter>
+    </None>
     <None Include="Shader\Model\ModelMeshlet.hlsli">
       <Filter>Shader\Model</Filter>
     </None>
@@ -3749,6 +4010,9 @@
     </None>
     <None Include="Shader\Model\Shadow\Cascade\ModelCascadeShadowMeshletCulling.hlsli">
       <Filter>Shader\Model\Shadow\Cascade</Filter>
+    </None>
+    <None Include="Shader\Model\Skeletal\GPUSkinning\SkeletalAnimationModelGPUSkinning.hlsli">
+      <Filter>Shader\Model\Skeletal\GPUSkinning</Filter>
     </None>
     <None Include="Shader\Model\Skeletal\SkeletalAnimationModel.hlsli">
       <Filter>Shader\Model\Skeletal</Filter>
@@ -3780,10 +4044,25 @@
     <None Include="CONFIG\Application\ApplicationCONFIG.json">
       <Filter>CONFIG\Application</Filter>
     </None>
+    <None Include="Shader\Material\Material.hlsli">
+      <Filter>Shader\Material</Filter>
+    </None>
+    <None Include="Shader\Material\Standard\Lit\StandardLitMaterial.hlsli">
+      <Filter>Shader\Material\Standard\Lit</Filter>
+    </None>
+    <None Include="Shader\Material\Standard\UnLit\StandardUnLitMaterial.hlsli">
+      <Filter>Shader\Material\Standard\UnLit</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Shader\Model\Shadow\Cascade\ModelCascadeShadow_AS.hlsl">
       <Filter>Shader\Model\Shadow\Cascade</Filter>
+    </DXCTask>
+    <DXCTask Include="Shader\Model\GPUDriven\ModelGPUDrivenCulling_CS.hlsl">
+      <Filter>Shader\Model\GPUDriven</Filter>
+    </DXCTask>
+    <DXCTask Include="Shader\Occlusion\HierarchicalDepthBuild_CS.hlsl">
+      <Filter>Shader\Occlusion</Filter>
     </DXCTask>
     <DXCTask Include="Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
       <Filter>Shader\Model\Skeletal</Filter>
@@ -3796,6 +4075,12 @@
     </DXCTask>
     <DXCTask Include="Shader\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadow_MS.hlsl">
       <Filter>Shader\Model\Skeletal\Shadow\Cascade</Filter>
+    </DXCTask>
+    <DXCTask Include="Shader\Model\Skeletal\GPUSkinning\Standard\Lit\SkeletalAnimationModelGPUSkinnedLit_MS.hlsl">
+      <Filter>Shader\Model\Skeletal\GPUSkinning\Standard\Lit</Filter>
+    </DXCTask>
+    <DXCTask Include="Shader\Model\Skeletal\GPUSkinning\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadow_MS.hlsl">
+      <Filter>Shader\Model\Skeletal\GPUSkinning\Shadow\Cascade</Filter>
     </DXCTask>
     <DXCTask Include="Shader\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLit_MS.hlsl">
       <Filter>Shader\Model\Skeletal\Standard\Lit</Filter>

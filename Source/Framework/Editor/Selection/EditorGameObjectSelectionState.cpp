@@ -92,7 +92,8 @@ void FWK::Editor::EditorGameObjectSelectionState::SweepUnavailableGameObjects()
     // Undoで生成が取り消されたGameObjectはコマンドがshared_ptrを保持し続けるため
     // 実体が消えずlock()も成功するが、SceneのUUIDRegistryからは外れている
     // 「シーン管理下にあるか」をRegistry解決で判定して選択対象から外す
-    const auto& l_scene = SceneManager::GetInstance().GetVALScene().lock();
+    const auto& l_sceneManager = SceneManager::GetInstance ();
+    const auto& l_scene        = l_sceneManager.GetVALScene().lock();
 
     std::erase_if(m_selectedGameObjectList,
                   [&l_scene](const auto& a_gameObjectWeak)

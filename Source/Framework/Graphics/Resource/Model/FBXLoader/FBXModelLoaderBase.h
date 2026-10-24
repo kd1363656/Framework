@@ -13,7 +13,10 @@ namespace FWK::Graphics
 
         ufbx_scene* LoadFBXScene(const std::filesystem::path& a_filePath) const;
 
-        void ExtractModelMaterial(const ufbx_material* a_fbxMaterial, Struct::ModelMaterialAssetData& a_modelMaterialAssetData) const;
+        // FBXのMaterialからStandardLitMaterialを作り、モデルファイルと同じ場所へ.materialファイルとして保存する
+        // 戻り値はモデルファイルの場所を基準にした.materialファイルの相対パス(Materialが無い場合は空)
+        // ※ 既に.materialファイルがある場合は、編集した内容を消さないように上書きしない
+        std::wstring ExtractModelMaterial(const ufbx_material* a_fbxMaterial, const std::filesystem::path& a_modelFilePath) const;
 
         void DestroyFBXScene(ufbx_scene* a_fbxScene) const;
 
@@ -31,6 +34,17 @@ namespace FWK::Graphics
     private:
 
         ufbx_load_opts CreateFBXLoadOptions() const;
+
+        // .materialファイル名に使う名前を作る(モデル名_Material名、ファイル名に使えない文字は置き換える)
+        std::wstring CreateMaterialName(const ufbx_material* a_fbxMaterial, const std::filesystem::path& a_modelFilePath) const;
+
+        // ファイル名に使えない文字
+        static constexpr std::wstring_view k_invalidFileNameCharacterList = L"<>:\"/\\|?*";
+
+        static constexpr std::wstring_view k_materialNameSeparator = L"_";
+        static constexpr std::wstring_view k_defaultMaterialName   = L"Material";
+
+        static constexpr wchar_t k_invalidFileNameReplacementCharacter = L'_';
 
 #if defined(_DEBUG)
         static constexpr std::size_t k_errorTextBufferSize = 1024ULL;

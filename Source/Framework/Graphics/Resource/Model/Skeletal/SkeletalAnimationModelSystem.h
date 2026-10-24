@@ -60,8 +60,8 @@ namespace FWK::Graphics
 
         SkeletalAnimationModelBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
 
-        SkeletalAnimationModelFBXLoader                                  m_loader                        = {};
-        ModelMaterialRuntimeTextureBuilder<SkeletalAnimationModelRecord> m_materialRuntimeTextureBuilder = {};
+        SkeletalAnimationModelFBXLoader                           m_loader                 = {};
+        ModelMaterialRuntimeBuilder<SkeletalAnimationModelRecord> m_materialRuntimeBuilder = {};
 
         ModelMeshOptimizer<SkeletalAnimationModelRecord>  m_meshOptimizer  = {};
         ModelMeshletBuilder<SkeletalAnimationModelRecord> m_meshletBuilder = {};

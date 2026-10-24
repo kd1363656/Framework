@@ -15,6 +15,9 @@ namespace FWK::Graphics
 
         void AddDrawRequest(const std::shared_ptr<Struct::SkeletalAnimationModelPerObjectDrawRequestData>& a_drawRequestData);
 
+        // このフレームで描画命令を出した三角形の総数(全カスケードの合計、計測用)
+        auto GetVALSubmittedTriangleCount() const { return m_skeletalAnimationModelPerObjectDrawRequest.GetVALSubmittedTriangleCount(); }
+
     private:
 
         SkeletalAnimationModelPerObjectDrawRequestBase m_skeletalAnimationModelPerObjectDrawRequest = {};

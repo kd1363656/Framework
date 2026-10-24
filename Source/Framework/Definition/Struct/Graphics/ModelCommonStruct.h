@@ -2,51 +2,7 @@
 
 namespace FWK::Struct
 {
-    struct ModelMaterialAssetData final
-    {
-        static constexpr TypeAlias::Math::Color k_defaultModelMaterialBaseColorFactor =
-        {
-            1.0F,
-            1.0F,
-            1.0F,
-            1.0F
-        };
-
-        static constexpr float k_defaultModelMaterialRoughnessFactor = 1.0F;
-        static constexpr float k_defaultModelMaterialMetallicFactor  = 0.0F;
-
-         ModelMaterialAssetData() = default;
-        ~ModelMaterialAssetData() = default;
-
-        TypeAlias::Math::Color m_baseColorFactor = k_defaultModelMaterialBaseColorFactor;
-
-        std::wstring m_baseColorTextureFilePath = {};
-        std::wstring m_normalTextureFilePath    = {};
-        std::wstring m_roughnessTextureFilePath = {};
-        std::wstring m_metallicTextureFilePath  = {};
-
-        float m_roughnessFactor = k_defaultModelMaterialRoughnessFactor;
-        float m_metallicFactor  = k_defaultModelMaterialMetallicFactor;
-    };
-
-    struct ModelMaterialRuntimeData final
-    {
-         ModelMaterialRuntimeData() = default;
-        ~ModelMaterialRuntimeData() = default;
-
-        ModelMaterialRuntimeData(const ModelMaterialRuntimeData&)           = delete;
-        ModelMaterialRuntimeData(      ModelMaterialRuntimeData&&) noexcept = default;
-
-        ModelMaterialRuntimeData& operator=(const ModelMaterialRuntimeData&)           = delete;
-        ModelMaterialRuntimeData& operator=(      ModelMaterialRuntimeData&&) noexcept = default;
-
-        // 全てのテクスチャをインスタンス化する前提だが、メモリ共有を行うためstd::shared_ptrで保持する
-        std::shared_ptr<Graphics::Texture> m_baseColorTexture = nullptr;
-        std::shared_ptr<Graphics::Texture> m_normalTexture    = nullptr;
-        std::shared_ptr<Graphics::Texture> m_roughnessTexture = nullptr;
-        std::shared_ptr<Graphics::Texture> m_metallicTexture  = nullptr;
-    };
-
+    // ModelMesh1つが使うMaterial
     struct ModelMaterial final
     {
          ModelMaterial() = default;
@@ -58,8 +14,12 @@ namespace FWK::Struct
         ModelMaterial& operator=(const ModelMaterial&)           = delete;
         ModelMaterial& operator=(      ModelMaterial&&) noexcept = default;
 
-        ModelMaterialAssetData   m_modelMaterialAssetData   = {};
-        ModelMaterialRuntimeData m_modelMaterialRuntimeData = {};
+        // 実行時に読み込むMaterial(テクスチャやシェーダーへ送るデータはMaterial側が持つ)
+        Graphics::Material m_material = {};
+
+        // モデルファイルの場所を基準にした.materialファイルの相対パス(空の場合はデフォルトマテリアルを使う)
+        // ※ モデルのバイナリーファイルにはこのパスだけを保存する
+        std::wstring m_materialFilePath = {};
     };
 
     // Meshlet1個分の参照範囲情報
@@ -119,10 +79,39 @@ namespace FWK::Struct
         float m_padding = k_initialMeshletBoundsPadding;
     };
 
+    // LOD(Level Of Detail : 詳細度)1段階分の情報
+    // 遠くのモデルは画面上で小さく映るため、三角形を減らした形でも見た目がほとんど変わらない。
+    // そこで、三角形数を段階的に減らした形をあらかじめ作っておき、距離に応じて使い分ける。
+    //
+    // 全LODのMeshletは、ModelMeshletDataの各リストへ「LOD0、LOD1、LOD2…」の順に連結して格納する。
+    // LOD1段階は「何番目のMeshletから何個使うか」という範囲だけを持つため、
+    // GPU Bufferや頂点Bufferを増やさずにLODを切り替えられる
+    struct ModelMeshLOD final
+    {
+        static constexpr std::uint32_t k_initialMeshletOffset = 0U;
+        static constexpr std::uint32_t k_initialMeshletCount  = 0U;
+        static constexpr std::uint32_t k_initialTriangleCount = 0U;
+
+        static constexpr float k_initialSimplifyError = 0.0F;
+
+        // このLODが使うMeshletの先頭番号と個数
+        std::uint32_t m_meshletOffset = k_initialMeshletOffset;
+        std::uint32_t m_meshletCount  = k_initialMeshletCount;
+
+        // このLODの三角形数(計測、確認用)
+        std::uint32_t m_triangleCount = k_initialTriangleCount;
+
+        // 元の形からどれだけ形が崩れたか(モデルのローカル座標での距離)
+        // 描画時にこの値を画面上のピクセル数へ換算し、1ピクセル程度以下ならこのLODを使う
+        float m_simplifyError = k_initialSimplifyError;
+    };
+
     // 1つのModelMeshが持つMeshlet関連データ一式
     // ※ MeshShader描画では、このデータをGPU Buffer化してShader側から参照する
     struct ModelMeshletData final
     {
+        static constexpr float k_initialBoundsRadius = 0.0F;
+
         // Meshlet一覧
         // 1要素がMeshlet1個分の参照範囲情報を表す
         std::vector<ModelMeshlet> m_meshletList = {};
@@ -140,6 +129,15 @@ namespace FWK::Struct
         // Meshletごとのカリング用境界情報
         // m_meshletList[i]に対するBoundsはm_meshletBoundsList[i]に入る
         std::vector<ModelMeshletBounds> m_meshletBoundsList = {};
+
+        // LOD一覧(m_lodList[0]が元の形、番号が大きいほど三角形が少ない)
+        std::vector<ModelMeshLOD> m_lodList = {};
+
+        // Mesh全体を囲むBounding Sphere(ローカル座標)
+        // LOD選択でカメラからの距離を求めるために使用する
+        TypeAlias::Math::Vector3 m_boundsCenter = {};
+
+        float m_boundsRadius = k_initialBoundsRadius;
     };
 
     struct ModelMeshRuntimeDataBase

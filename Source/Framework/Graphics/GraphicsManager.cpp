@@ -20,6 +20,12 @@ bool FWK::Graphics::GraphicsManager::PostLoadCONFIG(const Window& a_window)
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_factory.Create(),                         "ファクトリーの作成に失敗しました。",                          false);
     FWK_ASSERT_RETURN_VALUE_IF(!m_device.Create(m_factory),                 "デバイスの作成処理に失敗しました。",                          false);
+
+#if defined(_DEBUG)
+    // デバッグレイヤーの警告・エラーをLog/D3D12DebugLayerLog.txtへ記録する
+    // (記録できなくても描画には影響しないため、失敗しても処理を続ける)
+    m_d3d12DebugMessageLogger.Create(m_device);
+#endif
     FWK_ASSERT_RETURN_VALUE_IF(!m_resourceContext.PostDeserialize(m_device), "リソースコンテキストのデシリアライズ後の処理に失敗しました。", false);
 
     FWK_ASSERT_RETURN_VALUE_IF(!m_renderer.PostDeserialize(m_device,
@@ -43,6 +49,10 @@ void FWK::Graphics::GraphicsManager::BeginFrame()
 
     // 待機中スケルタルアニメーションモデルのバッファーコピー及びスケルタルアニメーションモデル登録処理
     m_resourceContext.ProcessPendingSkeletalAnimationModelUploads();
+
+    // 待機中マテリアルのバッファーコピー及びマテリアル登録処理
+    // ※ モデルの読み込み時にマテリアルを、マテリアルの読み込み時にテクスチャを読み込むため、モデルの後、テクスチャの前に行う
+    m_resourceContext.ProcessPendingMaterialUploads(m_device, m_renderer.GetREFDirectCommandQueue());
 
     // 待機中テクスチャのコピー処理及びテクスチャ登録処理
     m_resourceContext.ProcessPendingTextureUploads();

@@ -31,11 +31,11 @@ namespace FWK::Graphics
             Struct::ModelMaterial m_modelMaterial = {};
 
             // MeshShaderで描画するためのMeshletData
-            // FBX読み込み後に、meshoptimizerで作成し、.asset保存/読み込み対象にする
+            // FBX読み込み後に、meshoptimizerで作成し、.staticModel保存/読み込み対象にする
             Struct::ModelMeshletData m_modelMeshletData = {};
 
             // MeshShader描画時にGPU側で参照するBufferResource群
-            // .asset保存対象ではなく、実行時にModelDataから作成する
+            // .staticModel保存対象ではなく、実行時にModelDataから作成する
             Struct::ModelMeshRuntimeDataBase m_modelMeshRuntimeData = {};
         };
 

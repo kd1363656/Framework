@@ -20,17 +20,23 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID,
     
     // SV_DispatchThreadID.xは、全てのAmplificationShaderGroupを通した連続ThreadIndex
     // 1つのThreadが1つのMeshletを担当するため、
-    // この値をそのままMeshletIndexとして使用できる
-    const uint l_meshletIndex = a_dispatchThreadID.x;
-    
+    // この値は「描画するLODの中で何番目のMeshletか」を表す
+    const uint l_lodMeshletIndex = a_dispatchThreadID.x;
+
+    // 全LODのMeshletは1つのBufferへ連結されているため、
+    // LODの先頭番号を足してBuffer全体での番号へ変換する
+    const uint l_meshletIndex = g_meshletOffset + l_lodMeshletIndex;
+
     bool l_shouldDispatch = false;
-    
+
     // 最後のAmplificationShaderGroupには、
     // 実際のMeshlet数を超えた余分なThreadが含まれる可能性がある
     // 範囲外のThreadはMeshletBoundsBufferへアクセスさせない
-    if (l_meshletIndex < g_meshletCount)
+    if (l_lodMeshletIndex < g_meshletCount)
     {
-        l_shouldDispatch = ShouldDispatchModelMeshlet(l_meshletIndex);
+        // GPUスキニングするMeshは、Meshletの範囲(元の姿勢で計算した物)が動いた形と合わないため、
+        // Meshlet単位のカリングをせずに全て描画する(Mesh単位のカリングは動いた形を囲む球で済ませている)
+        l_shouldDispatch = g_isGPUSkinning != 0U ? true : ShouldDispatchModelMeshlet(l_meshletIndex);
     }
     
     if (l_shouldDispatch)

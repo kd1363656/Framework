@@ -250,7 +250,6 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateSceneMenu(const
         }
     }
 }
-
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawRenameMenu(const std::filesystem::path& a_targetFilePath, const bool a_canRename, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
 {
     // ショートカット : F2

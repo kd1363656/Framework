@@ -13,8 +13,7 @@ namespace FWK::Utility
 
         l_imGuiStyle.HoverDelayNormal = a_delaySeconds;
 
-        const bool l_isTooltipDisplayable = ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal |
-                                                                 ImGuiHoveredFlags_NoSharedDelay);
+        const bool l_isTooltipDisplayable = ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay);
 
         // 他のImGuiItemへ影響させないため
         // 元の値へ必ず戻す

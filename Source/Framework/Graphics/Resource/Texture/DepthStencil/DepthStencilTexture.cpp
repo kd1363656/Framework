@@ -61,7 +61,6 @@ bool FWK::Graphics::DepthStencilTexture::Create(const Device&                   
 
     return true;
 }
-
 bool FWK::Graphics::DepthStencilTexture::Resize(const Device&                             a_device,
                                                 const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                                                 const UINT64&                             a_retiredFenceValue,

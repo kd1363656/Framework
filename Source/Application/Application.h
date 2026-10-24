@@ -52,6 +52,11 @@ private:
     inline static const std::filesystem::path k_firstLoadSceneFilepath = "Asset/Data/Scene/Title/Title.json";
     inline static const std::filesystem::path k_firstLoadSceneName     = "Title";
 
+    // FrameProfilerで計測するCPU区間の名前
+    static constexpr std::string_view k_frameTotalCPUScopeName     = "CPU : Frame Total (Without FPS Sleep)";
+    static constexpr std::string_view k_sceneUpdateCPUScopeName    = "CPU : Scene Update";
+    static constexpr std::string_view k_graphicsRecordCPUScopeName = "CPU : Graphics (BeginFrame ～ EndFrame)";
+
     std::unique_ptr<Converter::ApplicationJsonConverter> m_jsonConverter;
 
     FWK::AssetFilePathRegistry m_assetFilePathRegistry = {};

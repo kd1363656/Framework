@@ -124,7 +124,8 @@ FWK::Struct::PhysicsRayCastHitResult FWK::Physics::PhysicsRayCast::CreateHitResu
 {
     Struct::PhysicsRayCastHitResult l_hitResult = {};
 
-    const auto& l_phisicsSystem     = PhysicsManager::GetInstance         ().GetREFPhysicsSystem();
+    const auto& l_physicsManager    = PhysicsManager::GetInstance         ();
+    const auto& l_phisicsSystem     = l_physicsManager.GetREFPhysicsSystem();
     const auto& l_bodyLockInterface = l_phisicsSystem.GetBodyLockInterface();
 
     // RayCast結果取得後にBodyが別Threadで破棄される可能性を考慮し、

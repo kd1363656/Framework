@@ -37,7 +37,6 @@ bool FWK::Graphics::DepthStencilPassTexture::Create(const Device&               
 
     return true;
 }
-
 bool FWK::Graphics::DepthStencilPassTexture::Resize(const Device&                             a_device,
                                                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                                                     const Window::ClientSize&                 a_clientSize,

@@ -9,6 +9,8 @@ namespace FWK::Graphics
          StaticModelStandardUnLitPerObjectDrawRequest()          = default;
         ~StaticModelStandardUnLitPerObjectDrawRequest() override = default;
 
+        TypeAlias::StaticTypeID GetVALTargetMaterialStaticTypeID() const override { return StandardUnLitMaterial::GetREFTypeINFO().k_staticTypeID; }
+
         FWK_DEFINE_TYPE_INFO(StaticModelStandardUnLitPerObjectDrawRequest, StaticModelPerObjectDrawRequestBase)
     };
 }

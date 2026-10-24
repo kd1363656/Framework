@@ -18,6 +18,10 @@ namespace FWK::Graphics
 
         virtual void SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource) = 0;
 
+        // この描画申請で描画するMeshのMaterialの種類
+        // 無効値の場合はMaterialの種類を問わず全てのMeshを描画する(影描画などMaterialを使わない描画)
+        virtual TypeAlias::StaticTypeID GetVALTargetMaterialStaticTypeID() const { return StaticTypeIDGenerator::k_invalidStaticTypeID; }
+
     protected:
 
         // 定数バッファの上書き禁止(定数バッファのインデックスを進めて新しい定数バッファに書き込む方式)
@@ -42,8 +46,10 @@ namespace FWK::Graphics
             a_directCommandList.SetupConstantBufferView(l_gpuVirtualAddress, a_rootSignature, a_rootParameterType);
         }
 
+        // LOD選択に必要なカメラ情報と画面の高さをRendererから取得し、ModelLODSelectorを準備する
+        bool SetupModelLODSelector(const Renderer& a_renderer, const float a_maxScreenSpaceErrorPixel, ModelLODSelector& a_modelLODSelector) const;
+
         TypeAlias::DescriptorIndex FetchTextureSRVDescriptorIndex(const std::weak_ptr<TextureRecord>& a_textureRecord) const;
-        TypeAlias::DescriptorIndex FetchTextureSRVDescriptorIndex(const std::shared_ptr<Texture>&     a_texture) const;
 
         FWK_DEFINE_TYPE_INFO_ROOT(DrawRequestPerObjectBase)
     };

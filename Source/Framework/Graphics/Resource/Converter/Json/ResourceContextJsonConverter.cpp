@@ -49,6 +49,15 @@ void FWK::Converter::ResourceContextJsonConverter::Deserialize(const nlohmann::j
         l_textureSystem.Deserialize(l_json);
     }
 
+    // マテリアルシステムのデシリアライズ
+    if (const auto& l_json = a_rootJson.value(k_materialSystemJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        auto& l_materialSystem = a_resourceContext.GetMutableREFMaterialSystem();
+
+        l_materialSystem.Deserialize(l_json);
+    }
+
     // スタティックモデルシステムのデシリアライズ
     if (const auto& l_json = a_rootJson.value(k_staticModelSystemJsonKey, nlohmann::json{});
         !l_json.is_null())
@@ -78,6 +87,7 @@ nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Gra
 
     const auto& l_uploadSystem                 = a_resourceContext.GetREFUploadSystem                ();
     const auto& l_textureSystem                = a_resourceContext.GetREFTextureSystem               ();
+    const auto& l_materialSystem               = a_resourceContext.GetREFMaterialSystem              ();
     const auto& l_staticModelSystem            = a_resourceContext.GetREFStaticModelSystem           ();
     const auto& l_skeletalAnimationModelSystem = a_resourceContext.GetREFSkeletalAnimationModelSystem();
 
@@ -95,6 +105,9 @@ nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Gra
 
     // テクスチャシステムのシリアライズ
     l_rootJson[k_textureSystemJsonKey] = l_textureSystem.Serialize();
+
+    // マテリアルシステムのシリアライズ
+    l_rootJson[k_materialSystemJsonKey] = l_materialSystem.Serialize();
 
     // スタティックモデルシステムのシリアライズ
     l_rootJson[k_staticModelSystemJsonKey] = l_staticModelSystem.Serialize();

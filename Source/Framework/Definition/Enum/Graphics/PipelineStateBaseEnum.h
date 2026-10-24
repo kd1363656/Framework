@@ -17,6 +17,10 @@ namespace FWK::Enum
         FinalColor,
         PhysicsDebug,
         FinalPresent,
+        ModelGPUDrivenCulling,
+        HierarchicalDepthBuild,
+        SkeletalAnimationModelGPUSkinnedLit,
+        SkeletalAnimationModelGPUSkinnedCascadeShadow,
         Count,
     };
 
@@ -36,6 +40,10 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(PipelineStateType::FinalColor),
         FWK_JSON_ENUM_VALUE(PipelineStateType::PhysicsDebug),
         FWK_JSON_ENUM_VALUE(PipelineStateType::FinalPresent),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::ModelGPUDrivenCulling),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::HierarchicalDepthBuild),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::SkeletalAnimationModelGPUSkinnedLit),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::SkeletalAnimationModelGPUSkinnedCascadeShadow),
         FWK_JSON_ENUM_VALUE(PipelineStateType::Count)
     )
 }

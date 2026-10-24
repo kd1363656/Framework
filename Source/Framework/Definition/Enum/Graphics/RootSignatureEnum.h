@@ -13,6 +13,8 @@ namespace FWK::Enum
         FinalColor,
         PhysicsDebug,
         FinalPresent,
+        ModelGPUDrivenCulling,
+        HierarchicalDepthBuild,
         Count,
     };
 
@@ -28,6 +30,8 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(RootSignatureType::FinalColor),
         FWK_JSON_ENUM_VALUE(RootSignatureType::PhysicsDebug),
         FWK_JSON_ENUM_VALUE(RootSignatureType::FinalPresent),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::ModelGPUDrivenCulling),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::HierarchicalDepthBuild),
         FWK_JSON_ENUM_VALUE(RootSignatureType::Count),
     )
 }

@@ -13,7 +13,7 @@ bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesys
     FWK_ASSERT_RETURN_VALUE_IF(!l_fbxScene, "FBXシーンの読み込みに失敗したため、StaticModelファイルの読み込みに失敗しました。", false);
 
     // モデルデータをシーンから抽出
-    if (!ExtractModelData(l_fbxScene, l_modelData))
+    if (!ExtractModelData(l_fbxScene, a_filePath, l_modelData))
     {
         // 安全のためシーン情報の破棄
         DestroyFBXScene(l_fbxScene);
@@ -27,7 +27,7 @@ bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesys
     return true;
 }
 
-bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, StaticModelRecord::ModelData& a_modelData) const
+bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, const std::filesystem::path& a_filePath, StaticModelRecord::ModelData& a_modelData) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene, "ufbx_sceneが無効のため、ModelDataの抽出に失敗しました。", false);
 
@@ -56,7 +56,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
 
         // ufbx_mesh 1つを、自作フレームワーク側のModelMeshへ変換する
         // 1つのufbx_meshに複数のMaterialがある場合、MaterialごとにModelMeshを分割する
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshList(l_fbxNode, l_modelMeshList), "ufbx_nodeからModelMeshリストの抽出に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshList(l_fbxNode, a_filePath, l_modelMeshList), "ufbx_nodeからModelMeshリストの抽出に失敗しました。", false);
 
         for (auto& l_staticModelMesh : l_modelMeshList)
         {
@@ -71,7 +71,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
 
     return true;
 }
-bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* a_fbxNode, std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList) const
+bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* a_fbxNode, const std::filesystem::path& a_filePath, std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList) const
 {
     // もし前回モデルを読み込んでいたらそのモデルのメッシュ情報が残ってしまうのでリストをクリア
     a_modelMeshList.clear();
@@ -92,7 +92,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
         if (!l_modelMesh.m_modelVertexList.empty() &&
             !l_modelMesh.m_indexList.empty())
         {
-            // Materialが存在しないため、AssetData/RuntimeDataは初期値のままにする
+            // Materialが存在しないため、.materialファイルのパスは空(デフォルトマテリアル)のままにする
             l_modelMesh.m_modelMaterial = {};
 
             a_modelMeshList.emplace_back(std::move(l_modelMesh));
@@ -114,11 +114,9 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 
         const auto* l_fbxMaterial = l_fbxMesh->materials.data[l_materialIndex];
 
-        // FBXから取得したMaterial情報のうち、.assetへ保存してよいデータだけを設定する
-        ExtractModelMaterial(l_fbxMaterial, l_modelMesh.m_modelMaterial.m_modelMaterialAssetData);
-
-        // Runtime情報はTextureSystem登録後に決めるため、FBXLoaderでは必ず初期値のままにする
-        l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData = {};
+        // FBXのMaterialから.materialファイルを作り、そのパスだけをModelMeshへ設定する
+        // (.staticModelには.materialファイルのパスだけを保存する)
+        l_modelMesh.m_modelMaterial.m_materialFilePath = ExtractModelMaterial(l_fbxMaterial, a_filePath);
 
         a_modelMeshList.emplace_back(std::move(l_modelMesh));
     }

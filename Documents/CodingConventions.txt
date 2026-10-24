@@ -325,6 +325,24 @@
 	      auto& l_inputManager       = FWK::InputManager::GetInstance         ();
 	const auto& l_keyboardController = l_inputManager.GetREFKeyboardController();
 
+	ゲッターをつなげて呼び出さない(.lock()は除く)
+	GetInstance()もゲッターとして扱い、GetInstance().Get～()のように続けて呼ばない
+	アサート文の中や関数の引数、return文の中でも同じく禁止
+	1つのゲッターごとにローカル変数で受け取り、()の位置を合わせる
+	理 : 途中の値に名前が付くことで何を取得しているのかが分かりやすく、()が揃うことで一覧性が高まるから
+	例↓ だめな例
+	auto& l_frameProfiler = l_graphicsManager.GetMutableREFRenderer().GetMutableREFFrameProfiler();
+
+	const auto& l_scene = SceneManager::GetInstance().GetVALScene().lock();
+
+	例↓ よい例
+	auto& l_renderer      = l_graphicsManager.GetMutableREFRenderer();
+	auto& l_frameProfiler = l_renderer.GetMutableREFFrameProfiler   ();
+
+	例↓ .lock()はゲッター1つの後ろにつなげてよい
+	const auto& l_sceneManager = SceneManager::GetInstance ();
+	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
+
 	※.cppでのそのクラスの関数定義には適用しない
 	理 : 関数定義はクラス名修飾が付き名前が長くなるうえに
 	1関数につき1定義なので整列の意味が薄いから
@@ -429,6 +447,26 @@
 						   const Struct::SpriteRect* a_sourceRect = nullptr,
 						   const Math::Color*        a_color      = nullptr,
 						   const Math::Vector2&      a_pivot      = Constant::k_defaultPivot);
+}
+・関数の引数が3個以下なら改行しない(テンプレート引数も同じ)
+{
+	理 : 4個以上かどうかで改行の有無が決まるので、改行されていれば引数が多い関数だと一目で分かるから
+	※宣言・定義だけでなく関数の呼び出しにも適用する
+	(論理演算子での改行やラムダ式の本体による改行は除く)
+
+	例↓
+	void BeginFrame(const std::size_t a_frameIndex, const DirectCommandList& a_directCommandList, const ComputeCommandList& a_computeCommandList);
+}
+・4個以上の引数がある関数呼び出しも改行し、引数は(の直後に揃える
+・アサートマクロの中で4個以上の引数の関数を呼ぶ場合は、マクロの残りの引数も同じ位置に揃えて改行する
+{
+	例↓
+	FWK_ASSERT_RETURN_VALUE_IF(!m_loader.LoadTextureFile(a_filePath,
+	                                                     a_textureLoadColorSpace,
+	                                                     l_scratchImage,
+	                                                     l_texMetadata),
+	                                                     "PNGテクスチャ読み込みに失敗しました。",
+	                                                     l_textureLoadResult);
 }
 ・関数ので四個以上の引数があり改行してるものがあれば
 似たような処理でも定義側は離して定義する

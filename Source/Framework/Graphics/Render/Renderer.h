@@ -90,6 +90,8 @@ namespace FWK::Graphics
 
         const auto& GetREFCurrentFrameResourceIndex() const { return m_currentFrameResourceIndex; }
 
+        const auto& GetREFFrameProfiler() const { return m_frameProfiler; }
+
         auto& GetMutableREFSwapChain  () { return m_swapChain; }
         auto& GetMutableREFRenderGraph() { return m_renderGraph; }
 
@@ -97,6 +99,8 @@ namespace FWK::Graphics
 
         auto& GetMutableREFDirectCommandList () { return m_directCommandList; }
         auto& GetMutableREFComputeCommandList() { return m_computeCommandList; }
+
+        auto& GetMutableREFFrameProfiler() { return m_frameProfiler; }
 
     private:
 
@@ -109,6 +113,10 @@ namespace FWK::Graphics
         bool PrepareForSwapChainResize();
 
         void SyncSpritePassDrawRequest();
+
+        // FrameProfilerで計測するCPU区間の名前
+        static constexpr std::string_view k_waitForGPUCPUScopeName = "CPU : Wait For GPU (FrameResource)";
+        static constexpr std::string_view k_presentCPUScopeName    = "CPU : Present";
 
         static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
         static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;
@@ -132,6 +140,8 @@ namespace FWK::Graphics
         ComputeCommandList             m_computeCommandList  = {};
 
         RenderGraph m_renderGraph = {};
+
+        FrameProfiler m_frameProfiler = {};
 
         Converter::RendererJsonConverter m_jsonConverter = {};
 

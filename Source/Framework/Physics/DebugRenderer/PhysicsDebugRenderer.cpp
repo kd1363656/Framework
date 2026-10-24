@@ -95,7 +95,6 @@ void FWK::Physics::PhysicsDebugRenderer::DrawGeometry(      JPH::RMat44Arg      
                                              ConvertVALColor(l_triangleColor));
     }
 }
-
 void FWK::Physics::PhysicsDebugRenderer::DrawText3D(      JPH::RVec3Arg     a_position,
                                                     const JPH::string_view& a_string,
                                                           JPH::ColorArg     a_color,

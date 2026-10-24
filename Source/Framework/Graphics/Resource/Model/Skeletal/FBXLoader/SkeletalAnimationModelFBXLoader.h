@@ -14,8 +14,12 @@ namespace FWK::Graphics
     private:
 
 
-        bool ExtractModelData    (const ufbx_scene*                                          a_fbxScene,               SkeletalAnimationModelRecord::ModelData& a_modelData) const;
-        bool ExtractModelMeshList(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const ufbx_node*                               a_fbxNode, std::vector<SkeletalAnimationModelRecord::ModelMesh>& a_modelMeshList) const;
+        bool ExtractModelData(const ufbx_scene* a_fbxScene, const std::filesystem::path& a_filePath, SkeletalAnimationModelRecord::ModelData& a_modelData) const;
+
+        bool ExtractModelMeshList(const std::unordered_map<const ufbx_node*, std::uint32_t>&  a_boneNodeIndexMap,
+                                  const ufbx_node*                                            a_fbxNode,
+                                  const std::filesystem::path&                                a_filePath,
+                                        std::vector<SkeletalAnimationModelRecord::ModelMesh>& a_modelMeshList) const;
 
         bool ApplyModelVertexBoneInfluence(const std::unordered_map<const ufbx_node*, std::uint32_t>&                a_boneNodeIndexMap,
                                            const ufbx_mesh*                                                          a_fbxMesh,

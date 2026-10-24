@@ -45,7 +45,6 @@ void FWK::Graphics::Camera::ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_c
 
     UpdateViewProjectionMatrix();
 }
-
 void FWK::Graphics::Camera::ApplyProjectionMatrix(const float a_aspectRatio,
                                                   const float a_fovYDegree,
                                                   const float a_farClip,
@@ -81,7 +80,6 @@ void FWK::Graphics::Camera::ApplyProjectionMatrix(const float a_aspectRatio,
 
     UpdatePerspectiveProjectionMatrix();
 }
-
 void FWK::Graphics::Camera::ApplyProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix)
 {
     if (!m_cbCameraPass) { return; }

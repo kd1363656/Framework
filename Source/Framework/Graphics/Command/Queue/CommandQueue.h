@@ -58,7 +58,8 @@ namespace FWK::Graphics
             // 未使用フェンス値なら、待機対象がないことを表す
             if (a_waitFenceValue == Fence::k_unusedFenceValue) { return true; }
 
-            const auto& l_waitFence = a_waitCommandQueue.GetREFFence().GetREFFence();
+            const auto& l_waitCommandQueueFence = a_waitCommandQueue.GetREFFence     ();
+            const auto& l_waitFence             = l_waitCommandQueueFence.GetREFFence();
 
             FWK_ASSERT_RETURN_VALUE_IF(!m_commandQueue, "待機命令を登録するCommandQueueが作成されていません。", false);
             FWK_ASSERT_RETURN_VALUE_IF(!l_waitFence,    "待機対象CommandQueueのFenceが作成されていません。",    false);

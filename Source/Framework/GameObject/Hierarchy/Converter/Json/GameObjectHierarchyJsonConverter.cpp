@@ -265,7 +265,6 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildList(cons
                          a_scene);
     }
 }
-
 void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildListDiff(const nlohmann::json&              a_prefabChildListJson, 
                                                                                 const nlohmann::json&              a_childListDiffJson, 
                                                                                 const SceneGameObjectPrefabSystem& a_prefabSystem, 
@@ -495,7 +494,6 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildListDiff(
         }
     }
 }
-
 void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChild(const std::weak_ptr<GameObject>&   a_parentGameObject, 
                                                                         const nlohmann::json&              a_childJson, 
                                                                         const nlohmann::json&              a_baseJson, 
@@ -549,7 +547,6 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChild(const st
                               a_prefabSystem,
                               a_scene);
 }
-
 void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeRemovedUUIDList(const nlohmann::json& a_childListDiffJson, GameObjectHierarchy& a_gameObjectHierarchy) const
 {
     const auto& l_rootJsonArray = a_childListDiffJson.value(k_removedUUIDListJsonKey, nlohmann::json{});

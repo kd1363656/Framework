@@ -80,8 +80,12 @@ bool FWK::Graphics::CascadeShadowMap::Update()
     m_cbCascadeShadowMapPass.m_cascadeCount                = static_cast<UINT>                             (m_cascadeDataList.size());
     m_cbCascadeShadowMapPass.m_sampleDepthBias             = m_sampleDepthBias;
 
+    // カスケードを描き直すフレームの判定に使うため、Updateを呼んだ回数を数える
+    ++m_updateFrameCount;
+
     // 使用しないCascade領域にも明確な初期値を設定する
-    for (std::size_t l_cascadeIndex = 0ULL; l_cascadeIndex < Constant::k_cascadeShadowMapDefaultMAXCascadeCount; ++l_cascadeIndex)
+    // (使用するCascadeは、描き直さないフレームでも前回の行列を使い続けるため、ここでは上書きしない)
+    for (std::size_t l_cascadeIndex = m_cascadeDataList.size(); l_cascadeIndex < Constant::k_cascadeShadowMapDefaultMAXCascadeCount; ++l_cascadeIndex)
     {
         m_cbCascadeShadowMapPass.m_viewProjectionMatrixList[l_cascadeIndex] = TypeAlias::Math::Matrix::Identity;
         m_cbCascadeShadowMapPass.m_splitDepthList          [l_cascadeIndex] = l_shadowFarClip;
@@ -343,6 +347,26 @@ bool FWK::Graphics::CascadeShadowMap::Update()
         auto& l_cascadeData              = m_cascadeDataList[l_cascadeIndex];
         auto& l_cbModelCascadeShadowPass = l_cascadeData.m_cbModelCascadeShadowPass;
 
+        // このフレームでシャドウマップを描き直すか決める
+        // 描き直さない場合は、前回描いたときの行列をそのまま使い続ける
+        // (行列とシャドウマップの中身が食い違うと、影の位置がずれてしまうため)
+        l_cascadeData.m_isRenderRequired = ShouldRenderCascade(l_cascadeIndex,
+                                                               l_stableCascadeCenter,
+                                                               l_cascadeRadius,
+                                                               l_lightDirection);
+
+        if (!l_cascadeData.m_isRenderRequired)
+        {
+            l_previousSplitRatio = l_currentSplitRatio;
+
+            continue;
+        }
+
+        l_cascadeData.m_renderedCascadeCenter  = l_stableCascadeCenter;
+        l_cascadeData.m_renderedCascadeRadius  = l_cascadeRadius;
+        l_cascadeData.m_renderedLightDirection = l_lightDirection;
+        l_cascadeData.m_hasRendered            = true;
+
         // World座標をLightのClip空間へ変換する行列を保存する
         // Shadow描画時はモデル頂点をShadowMap上へ変換し、
         // 通常のLit描画時はWorld座標からShadowMap座標を求める
@@ -383,4 +407,44 @@ const FWK::Struct::CBModelCascadeShadowPass* FWK::Graphics::CascadeShadowMap::Fe
     FWK_ASSERT_RETURN_VALUE_IF(a_cascadeIndex >= m_cascadeDataList.size(), "CascadeIndexがCascadeDataListの範囲外のため、CBModelCascadeShadowPassの取得に失敗しました。", nullptr);
 
     return &m_cascadeDataList[a_cascadeIndex].m_cbModelCascadeShadowPass;
+}
+
+bool FWK::Graphics::CascadeShadowMap::IsCascadeRenderRequired(const UINT a_cascadeIndex) const
+{
+    FWK_ASSERT_RETURN_VALUE_IF(a_cascadeIndex >= m_cascadeDataList.size(), "CascadeIndexがCascadeDataListの範囲外のため、描き直しの判定に失敗しました。", false);
+
+    return m_cascadeDataList[a_cascadeIndex].m_isRenderRequired;
+}
+
+bool FWK::Graphics::CascadeShadowMap::ShouldRenderCascade(const std::size_t              a_cascadeIndex,
+                                                          const TypeAlias::Math::Vector3& a_cascadeCenter,
+                                                          const float                     a_cascadeRadius,
+                                                          const TypeAlias::Math::Vector3& a_lightDirection) const
+{
+    const auto& l_cascadeData = m_cascadeDataList[a_cascadeIndex];
+
+    // まだ1度も描いていないカスケードは必ず描く
+    if (!l_cascadeData.m_hasRendered) { return true; }
+
+    // ライトの向きが変わった場合は、影の向きが変わるため描き直す
+    if (a_lightDirection.Dot(l_cascadeData.m_renderedLightDirection) < k_lightDirectionSameDotThreshold) { return true; }
+
+    // カメラの視野角やクリップ距離が変わって範囲の大きさが変わった場合は描き直す
+    if (std::abs(a_cascadeRadius - l_cascadeData.m_renderedCascadeRadius) > k_cascadeRadiusChangeEpsilon) { return true; }
+
+    // カメラが動いて、前回のシャドウマップが今の範囲を覆いきれなくなりそうなら描き直す
+    const float l_centerMoveDistance = (a_cascadeCenter - l_cascadeData.m_renderedCascadeCenter).Length();
+
+    if (l_centerMoveDistance > a_cascadeRadius * k_cascadeReuseMAXMoveRatio) { return true; }
+
+    // 上記に当てはまらない場合は、カスケードごとに決めた間隔のフレームでだけ描き直す
+    // (間隔が決められていないカスケードは毎フレーム描き直す)
+    if (a_cascadeIndex >= k_cascadeRenderIntervalList.size()) { return true; }
+
+    const auto l_renderInterval = k_cascadeRenderIntervalList[a_cascadeIndex];
+    const auto l_renderPhase    = k_cascadeRenderPhaseList   [a_cascadeIndex];
+
+    if (l_renderInterval <= k_everyFrameRenderInterval) { return true; }
+
+    return m_updateFrameCount % l_renderInterval == l_renderPhase;
 }

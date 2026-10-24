@@ -55,6 +55,15 @@ namespace FWK::Graphics
 
         virtual void SetupRootSignature(ID3D12GraphicsCommandList6& a_commandList, ID3D12RootSignature& a_rootSignature) = 0;
 
+        // 記録済みのPipelineStateの情報を消す
+        // DirectCommandListでComputeShader用のPipelineStateを設定した後は、
+        // 次の描画用PipelineStateの設定を省略されないように呼ぶ
+        // ※ RootSignatureは描画用とComputeShader用で別々に設定されるため、消さない
+        void ResetCurrentPipelineStateCache()
+        {
+            m_currentPipelineState.reset();
+        }
+
         void SetupPipeline(const std::weak_ptr<PipelineStateBase>& a_pipelineState)
         {
             const auto& l_directCommandList = this->GetREFCommandList();

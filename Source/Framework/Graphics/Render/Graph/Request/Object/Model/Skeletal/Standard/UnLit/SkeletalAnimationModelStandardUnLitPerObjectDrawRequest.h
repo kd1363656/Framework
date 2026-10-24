@@ -9,6 +9,8 @@ namespace FWK::Graphics
          SkeletalAnimationModelStandardUnLitPerObjectDrawRequest()          = default;
         ~SkeletalAnimationModelStandardUnLitPerObjectDrawRequest() override = default;
 
+        TypeAlias::StaticTypeID GetVALTargetMaterialStaticTypeID() const override { return StandardUnLitMaterial::GetREFTypeINFO().k_staticTypeID; }
+
         FWK_DEFINE_TYPE_INFO(SkeletalAnimationModelStandardUnLitPerObjectDrawRequest, SkeletalAnimationModelPerObjectDrawRequestBase)
     };
 }

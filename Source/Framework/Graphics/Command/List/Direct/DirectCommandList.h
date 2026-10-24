@@ -49,6 +49,20 @@ namespace FWK::Graphics
 
         void DispatchMesh(const UINT a_threadCountGroupX, const UINT a_threadCountGroupY, const UINT a_threadCountGroupZ) const;
 
+        // DirectCommandList上でComputeShaderを実行するための命令
+        // (GPUドリブン描画のカリングなど、描画の直前に計算を挟みたい場合に使う)
+        void SetupComputePipeline          (const std::weak_ptr<ComputePipelineState>& a_pipelineState);
+        void SetupComputeConstantBufferView(const D3D12_GPU_VIRTUAL_ADDRESS&           a_gpuVirtualAddress, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const;
+
+        void Dispatch(const UINT a_threadGroupCountX, const UINT a_threadGroupCountY, const UINT a_threadGroupCountZ) const;
+
+        void UAVResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource) const;
+
+        void ExecuteIndirect(const TypeAlias::ComPtr<ID3D12CommandSignature>& a_commandSignature,
+                             const UINT                                       a_maxCommandCount,
+                             const TypeAlias::ComPtr<ID3D12Resource2>&        a_argumentBuffer,
+                             const TypeAlias::ComPtr<ID3D12Resource2>&        a_countBuffer) const;
+
         static constexpr TypeAlias::Math::Color k_defaultBackBufferClearColor =
         {
             1.0F,
@@ -62,6 +76,9 @@ namespace FWK::Graphics
         void SetupRootSignature(ID3D12GraphicsCommandList6& a_commandList, ID3D12RootSignature& a_rootSignature) override;
 
     private:
+
+        static constexpr UINT64 k_indirectArgumentBufferOffset = 0ULL;
+        static constexpr UINT64 k_indirectCountBufferOffset    = 0ULL;
 
         static constexpr UINT k_emptySetupRenderTargetNUM  = 0U;
         static constexpr UINT k_singleSetupRenderTargetNUM = 1U;

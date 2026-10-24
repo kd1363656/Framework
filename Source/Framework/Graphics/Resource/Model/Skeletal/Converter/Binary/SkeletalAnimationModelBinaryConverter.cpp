@@ -9,12 +9,12 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
     l_modelData.m_boneList.clear          ();
     l_modelData.m_motionSequenceList.clear();
 
-    // .assetが存在しない、FBXより古い、元FBXが存在しない場合はfalse
-    // 呼び出し側でFBXから再読み込みして、.assetを再生成する
-    if (!CanLoadAsset(a_filePath)) { return false; }
+    // .skeletalModelが存在しない、FBXより古い、元FBXが存在しない場合はfalse
+    // 呼び出し側でFBXから再読み込みして、.skeletalModelを再生成する
+    if (!CanLoadAsset(a_filePath, k_skeletalModelAssetExtension)) { return false; }
 
-    // FBXと同名で拡張子だけ.assetにしたパスを作成し、読み込み用MemoryMappedFileを開く
-    if (const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath);
+    // FBXと同名で拡張子だけ.skeletalModelにしたパスを作成し、読み込み用MemoryMappedFileを開く
+    if (const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath, k_skeletalModelAssetExtension);
         !CreateReadMemoryMappedFile(l_modelAssetFilePath))
     {
         return false;
@@ -32,7 +32,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
         return false;
     }
 
-    // Model用.assertではないなら読み込まない
+    // Model用.skeletalModelではないなら読み込まない
     if (l_modelBinaryHeader.m_assetTypeID != k_modelAssetTypeID)
     {
         FailLoadAsset(l_modelData);
@@ -211,16 +211,16 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
     const auto& l_modelData = a_skeletalAnimationModelRecord.GetREFModelData();
 
     // SkeletalAnimationModelAssetはFBXから生成する想定
-    // 元FBXが存在しない場合、何から生成された.assetか判断できないので保存しない
+    // 元FBXが存在しない場合、何から生成された.skeletalModelか判断できないので保存しない
     FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "Assetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
-    // FBXと同じ場所・同じ名前で拡張子だけ.assetにした保存先を作る
-    const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath);
+    // FBXと同じ場所・同じ名前で拡張子だけ.skeletalModelにした保存先を作る
+    const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath, k_skeletalModelAssetExtension);
 
     // 保存に必要なファイルサイズを先に計算する
     const auto& l_modelAssetFileSize = CalculateAssetFileSize(l_modelData);
 
-    // Boneがないなど、保存できるデータがない場合は.asset化しない
+    // Boneがないなど、保存できるデータがない場合は.skeletalModel化しない
     FWK_ASSERT_RETURN_VALUE_IF(l_modelAssetFileSize == k_emptyAssetFileSize, "Assetへ保存するModelDataが空のため、バイナリーファイルの保存に失敗しました。", false);
 
     // 書き込み用MemoryMappedFileを作成する
@@ -409,7 +409,7 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateMo
 
 std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAssetFileSize(const Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData) const
 {
-    // Meshが一つもないModelDataは.asset化しない
+    // Meshが一つもないModelDataは.skeletalModel化しない
     if (a_modelData.m_modelMeshList.empty()) { return k_emptyAssetFileSize; }
 
     // Boneが一つもないModelDataは,asset化しない

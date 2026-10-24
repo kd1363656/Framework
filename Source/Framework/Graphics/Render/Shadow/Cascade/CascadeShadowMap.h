@@ -9,10 +9,23 @@ namespace FWK::Graphics
         struct CascadeData final
         {
             static constexpr float k_initialSplitDepth = 0.0F;
+            static constexpr float k_initialRadius     = 0.0F;
 
             Struct::CBModelCascadeShadowPass m_cbModelCascadeShadowPass = {};
 
-            float m_splitDepth = k_initialSplitDepth;
+            // 最後にシャドウマップを描いたときのカスケードの中心、半径、ライトの向き
+            // (描き直さないフレームでも、前回の結果を使い続けてよいかの判定に使う)
+            TypeAlias::Math::Vector3 m_renderedCascadeCenter  = TypeAlias::Math::Vector3::Zero;
+            TypeAlias::Math::Vector3 m_renderedLightDirection = TypeAlias::Math::Vector3::Zero;
+
+            float m_splitDepth            = k_initialSplitDepth;
+            float m_renderedCascadeRadius = k_initialRadius;
+
+            // このフレームでシャドウマップを描き直すか
+            bool m_isRenderRequired = true;
+
+            // 1度でもシャドウマップを描いたか
+            bool m_hasRendered = false;
         };
 
     public:
@@ -51,6 +64,10 @@ namespace FWK::Graphics
 
         const Struct::CBModelCascadeShadowPass* FetchPTRModelCascadeShadowPass(const UINT a_cascadeIndex) const;
 
+        // このフレームでシャドウマップを描き直す必要があるか
+        // (遠いカスケードは数フレームに1回だけ描き直し、それ以外のフレームは前回の結果を使う)
+        bool IsCascadeRenderRequired(const UINT a_cascadeIndex) const;
+
         const auto& GetREFDepthStencilTextureSettings() const { return m_depthStencilTextureSettings; }
 
         const auto& GetREFRenderArea() const { return m_renderArea; }
@@ -66,7 +83,31 @@ namespace FWK::Graphics
 
     private:
 
+        bool ShouldRenderCascade(const std::size_t              a_cascadeIndex,
+                                 const TypeAlias::Math::Vector3& a_cascadeCenter,
+                                 const float                     a_cascadeRadius,
+                                 const TypeAlias::Math::Vector3& a_lightDirection) const;
+
         static constexpr std::size_t k_frustumCornerCount = 8ULL;
+
+        // カスケードごとの描き直しの間隔(フレーム数)と、描き直すフレームのずらし量
+        // 近いカスケードは毎フレーム、遠いカスケードは影の細かさが目立たないため間隔を空ける
+        // (カスケード2は偶数フレーム、カスケード3は4フレームに1回の奇数フレームで描き、同じフレームに重ならないようにする)
+        static constexpr std::array<UINT64, Constant::k_cascadeShadowMapDefaultMAXCascadeCount> k_cascadeRenderIntervalList = { 1ULL, 1ULL, 2ULL, 4ULL };
+        static constexpr std::array<UINT64, Constant::k_cascadeShadowMapDefaultMAXCascadeCount> k_cascadeRenderPhaseList    = { 0ULL, 0ULL, 0ULL, 1ULL };
+
+        static constexpr UINT64 k_everyFrameRenderInterval = 1ULL;
+        static constexpr UINT64 k_initialFrameCount        = 0ULL;
+
+        // 前回描いたときから、カスケードの中心が半径のこの割合より大きく動いたら描き直す
+        // (動きが大きいと、前回のシャドウマップが今の範囲を覆いきれなくなるため)
+        static constexpr float k_cascadeReuseMAXMoveRatio = 0.05F;
+
+        // ライトの向きがほぼ同じとみなす内積の値(これより小さければ向きが変わったとみなして描き直す)
+        static constexpr float k_lightDirectionSameDotThreshold = 0.9999F;
+
+        // カスケードの半径が変わったとみなす差
+        static constexpr float k_cascadeRadiusChangeEpsilon = 0.001F;
 
         static constexpr std::array<TypeAlias::Math::Vector3, k_frustumCornerCount> k_ndcFrustumCornerList = { TypeAlias::Math::Vector3{ -1.0F, -1.0F, 0.0F },
                                                                                                                TypeAlias::Math::Vector3{  1.0F, -1.0F, 0.0F },
@@ -130,6 +171,9 @@ namespace FWK::Graphics
 
         float m_sampleDepthBias   = Constant::k_cascadeShadowMapDefaultSampleDepthBias;
         float m_maxShadowDistance = Constant::k_cascadeShadowMapDefaultMAXShadowDistance;
+
+        // Updateを呼んだ回数(カスケードを描き直すフレームの判定に使う)
+        UINT64 m_updateFrameCount = k_initialFrameCount;
 
         UINT m_resolution = Constant::k_cascadeShadowMapDefaultResolution;
     };

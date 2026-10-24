@@ -33,6 +33,12 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
     FWK_ASSERT_RETURN_IF(!l_staticModelCascadeShadowPerObjectDrawRequest,            "StaticModelCascadeShadowPerObjectDrawRequestを取得できないため、ModelCascadeShadowPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelCascadeShadowPerObjectDrawRequest, "SkeletalAnimationModelCascadeShadowPerObjectDrawRequestを取得できないため、ModelCascadeShadowPassを実行できません。");
 
+    // GPUスキニングで描画する大量のキャラクターの影(設定に無い場合は描画しない)
+    const auto& l_gpuSkinnedCascadeShadowPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest>().lock();
+
+    // カスケードごとに、GPUスキニングの描画コマンドを作れたか
+    std::array<bool, Constant::k_cascadeShadowMapDefaultMAXCascadeCount> l_isGPUSkinnedCulledList = {};
+
     auto& l_shadowContext    = a_renderer.GetMutableREFShadowContext        ();
     auto& l_cascadeShadowMap = l_shadowContext.GetMutableREFCascadeShadowMap();
 
@@ -43,6 +49,40 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
     const auto& l_renderArea                  = l_cascadeShadowMap.GetREFRenderArea                 ();
     const auto& l_depthStencilTextureSettings = l_cascadeShadowMap.GetREFDepthStencilTextureSettings();
 
+    // StaticModelのGPUドリブン描画のカリング
+    // Cascadeごとに、ライトから見える範囲に入っているMeshだけを選んで描画コマンドを作る
+    // ※ ComputeShader用のPipelineStateを使うため、Cascadeごとの描画ループより前にまとめて行う
+    for (UINT l_cascadeIndex = 0U; l_cascadeIndex < l_depthStencilTextureSettings.m_arraySize; ++l_cascadeIndex)
+    {
+        // このフレームで描き直さないカスケードはカリングも不要
+        if (!l_cascadeShadowMap.IsCascadeRenderRequired(l_cascadeIndex)) { continue; }
+
+        const auto* const l_cbModelCascadeShadowPass = l_cascadeShadowMap.FetchPTRModelCascadeShadowPass(l_cascadeIndex);
+
+        FWK_ASSERT_CONTINUE_IF(!l_cbModelCascadeShadowPass, "CBModelCascadeShadowPassを取得できないため、このCascadeのカリングを行えません。");
+
+        // ライトより手前にある物も影を落とすため、手前の平面では除外しない
+        auto l_cullingView = ModelGPUDrivenDrawer::BuildCullingView(l_cbModelCascadeShadowPass->m_viewProjectionMatrix, k_useNearPlaneForCulling);
+
+        // このカスケードのシャドウマップで、1メートルが何テクセルになるかを求める
+        // (カスケードの範囲の横幅をシャドウマップの横の解像度で割った値が、1テクセルの大きさになる)
+        const float l_orthographicWidth = l_cbModelCascadeShadowPass->m_orthographicMAX.x - l_cbModelCascadeShadowPass->m_orthographicMIN.x;
+
+        if (l_orthographicWidth > k_minOrthographicWidth)
+        {
+            l_cullingView.m_isOrthographicLOD             = true;
+            l_cullingView.m_orthographicTexelPerWorldUnit = l_renderArea.GetREFViewport().Width / l_orthographicWidth;
+        }
+
+        l_staticModelCascadeShadowPerObjectDrawRequest->DispatchGPUCulling(a_renderer, l_cascadeIndex, l_cullingView);
+
+        if (l_gpuSkinnedCascadeShadowPerObjectDrawRequest &&
+            l_cascadeIndex < l_isGPUSkinnedCulledList.size())
+        {
+            l_isGPUSkinnedCulledList[l_cascadeIndex] = l_gpuSkinnedCascadeShadowPerObjectDrawRequest->DispatchGPUCulling(a_renderer, l_cascadeIndex, l_cullingView);
+        }
+    }
+
     // ShadowMapの解像度に対応する
     // ViewportとScissorRectangleを設定する
     l_directCommandList.SetupRenderArea(l_renderArea);
@@ -51,6 +91,10 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
     // StaticModelとSkeletalAnimationModelのDepthを書き込む
     for (UINT l_cascadeIndex = 0U; l_cascadeIndex < l_depthStencilTextureSettings.m_arraySize; ++l_cascadeIndex)
     {
+        // 遠いカスケードは数フレームに1回だけ描き直す
+        // 描き直さないフレームは、シャドウマップを消さずに前回の結果をそのまま使う
+        if (!l_cascadeShadowMap.IsCascadeRenderRequired(l_cascadeIndex)) { continue; }
+
         const auto l_dsvDescriptorIndex = l_cascadeShadowMap.FetchVALCascadeDSVDescriptorIndex(l_cascadeIndex);
 
         FWK_ASSERT_RETURN_IF(l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "Cascadeに知王するDSVDescriptorIndexが無効なため、ModelCascadeShadowPassを実行できませんでした。");
@@ -79,8 +123,9 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
 
         FWK_ASSERT_RETURN_IF(!l_staticModelRootSignature, "StaticModelCascadeShadow用RootSignatureを取得できないため、ModelCascadeShadowPassを実行できません。");
 
-        // StaticModelShadowの定数バッファを書き込む
+        // StaticModelShadowの定数バッファを書き込み、このCascade用にカリングした描画コマンドをまとめて実行する
         l_directCommandList.SetupConstantBufferView                                 (l_gpuVirtualAddress, *l_staticModelRootSignature, Enum::RootParameterType::CBModelCascadeShadowPass);
+        l_staticModelCascadeShadowPerObjectDrawRequest->SetCurrentDrawCascadeIndex  (l_cascadeIndex);
         l_staticModelCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,          *l_staticModelRootSignature, *l_currentFrameResource);
 
         const auto& l_skeletalAnimationModelRootSignature = SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::SkeletalAnimationModelCascadeShadow).lock();
@@ -94,5 +139,28 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
         // SkeletalAnimationShadowの定数バッファを書き込む
         l_directCommandList.SetupConstantBufferView                                            (l_gpuVirtualAddress, *l_skeletalAnimationModelRootSignature, Enum::RootParameterType::CBModelCascadeShadowPass);
         l_skeletalAnimationModelCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,          *l_skeletalAnimationModelRootSignature, *l_currentFrameResource);
+
+        // GPUスキニングで描画する大量のキャラクターの影を、このCascade用にカリングした描画コマンドでまとめて描画する
+        // (同じRootSignatureのため、上で設定したCascadeの定数バッファはそのまま使われる)
+        if (!l_gpuSkinnedCascadeShadowPerObjectDrawRequest     ||
+            l_cascadeIndex >= l_isGPUSkinnedCulledList.size() ||
+            !l_isGPUSkinnedCulledList[l_cascadeIndex])
+        {
+            continue;
+        }
+
+        SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::SkeletalAnimationModelGPUSkinnedCascadeShadow);
+
+        l_gpuSkinnedCascadeShadowPerObjectDrawRequest->SetCurrentDrawCascadeIndex  (l_cascadeIndex);
+        l_gpuSkinnedCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer, *l_skeletalAnimationModelRootSignature, *l_currentFrameResource);
     }
+
+    // LOD適用後に描画命令を出した三角形数(全カスケードの合計)を計測用に記録する
+    const auto l_gpuSkinnedShadowTriangleCount = l_gpuSkinnedCascadeShadowPerObjectDrawRequest ? l_gpuSkinnedCascadeShadowPerObjectDrawRequest->GetVALSubmittedTriangleCount() : k_initialTriangleCount;
+
+    const auto l_shadowTriangleCount = l_staticModelCascadeShadowPerObjectDrawRequest->GetVALSubmittedTriangleCount           () +
+                                       l_skeletalAnimationModelCascadeShadowPerObjectDrawRequest->GetVALSubmittedTriangleCount() +
+                                       l_gpuSkinnedShadowTriangleCount;
+
+    a_renderer.GetMutableREFFrameProfiler().AddCounterSample(k_triangleCounterName, static_cast<double>(l_shadowTriangleCount));
 }

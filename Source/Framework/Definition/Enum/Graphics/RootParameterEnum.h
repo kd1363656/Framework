@@ -16,6 +16,8 @@ namespace FWK::Enum
         CBSkeletalAnimationMeshletBoundsUpdatePerObject,
         CBFinalColorPass,
         CBFinalPresentPass,
+        CBModelGPUDrivenCullingPass,
+        CBHierarchicalDepthBuildPass,
         Count,
     };
 
@@ -34,6 +36,8 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(RootParameterType::CBSkeletalAnimationMeshletBoundsUpdatePerObject),
         FWK_JSON_ENUM_VALUE(RootParameterType::CBFinalColorPass),
         FWK_JSON_ENUM_VALUE(RootParameterType::CBFinalPresentPass),
+        FWK_JSON_ENUM_VALUE(RootParameterType::CBModelGPUDrivenCullingPass),
+        FWK_JSON_ENUM_VALUE(RootParameterType::CBHierarchicalDepthBuildPass),
         FWK_JSON_ENUM_VALUE(RootParameterType::Count),
     )
 }

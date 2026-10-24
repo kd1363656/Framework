@@ -1,0 +1,3 @@
+[D3D12DebugLayerLog] Severity, ID, Description
+
+[Summary] WarningOrErrorMessageCount : 0

@@ -49,7 +49,6 @@ bool FWK::Graphics::RenderGraphFrameResource::Create(const Device&             a
 
     return true;
 }
-
 bool FWK::Graphics::RenderGraphFrameResource::Resize(const Device&              a_device,
                                                      const GPUMemoryAllocator&  a_gpuMemoryAllocator,
                                                      const Window::ClientSize&  a_clientSize,

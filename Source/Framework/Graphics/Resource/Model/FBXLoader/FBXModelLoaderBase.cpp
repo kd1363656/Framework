@@ -40,62 +40,68 @@ ufbx_scene* FWK::Graphics::FBXModelLoaderBase::LoadFBXScene(const std::filesyste
     return l_fbxScene;
 }
 
-void FWK::Graphics::FBXModelLoaderBase::ExtractModelMaterial(const ufbx_material* a_fbxMaterial, Struct::ModelMaterialAssetData& a_modelMaterialAssetData) const
+std::wstring FWK::Graphics::FBXModelLoaderBase::ExtractModelMaterial(const ufbx_material* a_fbxMaterial, const std::filesystem::path& a_modelFilePath) const
 {
-    a_modelMaterialAssetData = {};
+    // Materialが無い場合は、空のパス(デフォルトマテリアル)にする
+    if (!a_fbxMaterial) { return {}; }
 
-    if (!a_fbxMaterial) { return; }
+    StandardLitMaterial l_standardLitMaterial = {};
 
     // PBRのベースカラー係数。
-    a_modelMaterialAssetData.m_baseColorFactor = FetchBaseColorFactor(a_fbxMaterial->pbr.base_color);
+    l_standardLitMaterial.SetBaseColorFactor(FetchBaseColorFactor(a_fbxMaterial->pbr.base_color));
 
     // Roughnessは表面の粗さ。
     // 0に近いほど鏡のように鋭く反射し、1に近いほどぼやけた反射になる。
-    a_modelMaterialAssetData.m_roughnessFactor = FetchMaterialFactor(a_fbxMaterial->pbr.roughness, Struct::ModelMaterialAssetData::k_defaultModelMaterialRoughnessFactor);
+    l_standardLitMaterial.SetRoughnessFactor(FetchMaterialFactor(a_fbxMaterial->pbr.roughness, Constant::k_defaultStandardMaterialRoughnessFactor));
 
     // Metallicは金属度
     // 0なら非金属、1なら金属としてPBR計算する
-    a_modelMaterialAssetData.m_metallicFactor = FetchMaterialFactor(a_fbxMaterial->pbr.metalness, Struct::ModelMaterialAssetData::k_defaultModelMaterialMetallicFactor);
+    l_standardLitMaterial.SetMetallicFactor(FetchMaterialFactor(a_fbxMaterial->pbr.metalness, Constant::k_defaultStandardMaterialMetallicFactor));
 
     // ベースカラー
     {
         // BaseColorはPBRMaterialならpbr.base_color,
-        auto& l_textureFilePath = a_modelMaterialAssetData.m_baseColorTextureFilePath;
-
         // 通常のFBXMaterialならfbx.diffuse_colorに入っていることが多い
-        l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.base_color);
+        auto l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.base_color);
 
         if (l_textureFilePath.empty())
         {
             l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->fbx.diffuse_color);
         }
+
+        l_standardLitMaterial.SetBaseColorTextureFilePath(l_textureFilePath);
     }
 
     // 法線テクスチャ
     {
-        auto& l_textureFilePath = a_modelMaterialAssetData.m_normalTextureFilePath;
-
-        l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.normal_map);
+        auto l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.normal_map);
 
         if (l_textureFilePath.empty())
         {
             l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->fbx.normal_map);
         }
+
+        l_standardLitMaterial.SetNormalTextureFilePath(l_textureFilePath);
     }
 
     // ラフネステクスチャ
-    {
-        auto& l_textureFilePath = a_modelMaterialAssetData.m_roughnessTextureFilePath;
-
-        l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.roughness);
-    }
+    l_standardLitMaterial.SetRoughnessTextureFilePath(FetchMaterialTextureFilePath(a_fbxMaterial->pbr.roughness));
 
     // Metallicテクスチャ
-    {
-        auto& l_textureFilePath = a_modelMaterialAssetData.m_metallicTextureFilePath;
+    l_standardLitMaterial.SetMetallicTextureFilePath(FetchMaterialTextureFilePath(a_fbxMaterial->pbr.metalness));
 
-        l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.metalness);
+    // テクスチャのパスはモデルファイルからの相対パスのため、
+    // .materialファイルもモデルファイルと同じ場所へ保存すれば、そのまま.materialファイルからの相対パスとして使える
+    const auto l_materialFileName = l_standardLitMaterial.FetchVALFileName(CreateMaterialName(a_fbxMaterial, a_modelFilePath));
+    const auto l_materialFilePath = a_modelFilePath.parent_path() / l_materialFileName;
+
+    // 既にある.materialファイルは、Inspectorなどで編集した内容を消さないように上書きしない
+    if (!Utility::CanLoadFilePath(l_materialFilePath, Constant::k_materialExtension))
+    {
+        FWK_ASSERT_RETURN_VALUE_IF(!l_standardLitMaterial.SaveBinaryData(l_materialFilePath), ".materialファイルの保存に失敗しました。", {});
     }
+
+    return l_materialFileName;
 }
 
 void FWK::Graphics::FBXModelLoaderBase::DestroyFBXScene(ufbx_scene* a_fbxScene) const
@@ -218,7 +224,7 @@ std::wstring FWK::Graphics::FBXModelLoaderBase::FetchMaterialTextureFilePath(con
 
 FWK::TypeAlias::Math::Color FWK::Graphics::FBXModelLoaderBase::FetchBaseColorFactor(const ufbx_material_map& a_materialMap) const
 {
-    if (!a_materialMap.has_value) { return Struct::ModelMaterialAssetData::k_defaultModelMaterialBaseColorFactor; }
+    if (!a_materialMap.has_value) { return Constant::k_defaultStandardMaterialBaseColorFactor; }
 
     return TypeAlias::Math::Color
     {
@@ -272,4 +278,30 @@ ufbx_load_opts FWK::Graphics::FBXModelLoaderBase::CreateFBXLoadOptions() const
     l_loadOptions.geometry_transform_handling = UFBX_GEOMETRY_TRANSFORM_HANDLING_MODIFY_GEOMETRY;
 
     return l_loadOptions;
+}
+
+std::wstring FWK::Graphics::FBXModelLoaderBase::CreateMaterialName(const ufbx_material* a_fbxMaterial, const std::filesystem::path& a_modelFilePath) const
+{
+    auto l_fbxMaterialName = Utility::ConvertUFBXStringToWString(a_fbxMaterial->name);
+
+    if (l_fbxMaterialName.empty())
+    {
+        l_fbxMaterialName = k_defaultMaterialName;
+    }
+
+    // 別のモデルに同じ名前のMaterialがあっても別のファイルになるように、モデル名を先頭に付ける
+    auto l_materialName = a_modelFilePath.stem().wstring();
+
+    l_materialName += k_materialNameSeparator;
+    l_materialName += l_fbxMaterialName;
+
+    // ファイル名に使えない文字を置き換える
+    for (auto& l_character : l_materialName)
+    {
+        if (k_invalidFileNameCharacterList.find(l_character) == std::wstring_view::npos) { continue; }
+
+        l_character = k_invalidFileNameReplacementCharacter;
+    }
+
+    return l_materialName;
 }

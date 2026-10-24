@@ -15,14 +15,21 @@ namespace FWK::Graphics
 
         void AddDrawRequest(const std::shared_ptr<Struct::SkeletalAnimationModelPerObjectDrawRequestData>& a_drawRequestData);
 
+        // このフレームで描画命令を出した三角形の総数(LOD適用後、計測用)
+        auto GetVALSubmittedTriangleCount() const { return m_submittedTriangleCount; }
+
     private:
 
-        bool DispatchModelMesh(const DirectCommandList& a_directCommandList, const SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const;
+        bool DispatchModelMesh(const DirectCommandList& a_directCommandList, const UINT a_meshletCount) const;
 
         Utility::SmartPointerVectorList<std::weak_ptr<Struct::SkeletalAnimationModelPerObjectDrawRequestData>> m_forwardDrawRequestDataSmartPointerVectorList = {};
 
         static constexpr UINT k_defaultDispatchMeshThreadGroupCountY = 1U;
         static constexpr UINT k_defaultDispatchMeshThreadGroupCountZ = 1U;
+
+        static constexpr UINT64 k_initialSubmittedTriangleCount = 0ULL;
+
+        UINT64 m_submittedTriangleCount = k_initialSubmittedTriangleCount;
 
         FWK_DEFINE_TYPE_INFO(SkeletalAnimationModelPerObjectDrawRequestBase, DrawRequestPerObjectBase)
     };

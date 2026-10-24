@@ -12,6 +12,10 @@ namespace FWK::Graphics
 
         void SetSourceConstantBuffer(const std::shared_ptr<ConstantBufferType>& a_set) { m_sourceConstantBuffer = a_set; }
 
+        // 登録元の定数バッファ(カメラなど)の参照
+        // LOD選択などでカメラ情報を読み取るために公開している(読み取り専用)
+        const auto& GetREFSourceConstantBuffer() const { return m_sourceConstantBuffer; }
+
     protected:
 
         void UpdateConstantBuffer()
@@ -22,8 +26,6 @@ namespace FWK::Graphics
 
             m_constantBuffer = *l_source;
         }
-
-        const auto& GetREFSourceConstantBuffer() const { return m_sourceConstantBuffer; }
 
         const auto& GetREFConstantBuffer() const { return m_constantBuffer; }
 

@@ -87,8 +87,8 @@
                             "IsFixedSize": false,
                             "MIPLevels": 1,
                             "RenderGraphDepthStencilType": "RenderGraphDepthStencilType::SceneDepth",
-                            "ResourceFormat": "DXGI_FORMAT_D32_FLOAT",
-                            "SRVFormat": "DXGI_FORMAT_UNKNOWN",
+                            "ResourceFormat": "DXGI_FORMAT_R32_TYPELESS",
+                            "SRVFormat": "DXGI_FORMAT_R32_FLOAT",
                             "SampleCount": 1,
                             "SampleQuality": 0,
                             "StencilClearValue": 0,
@@ -127,6 +127,170 @@
             }
         },
         "PipelineStateMap": [
+            {
+                "PipelineState": {
+                    "BlendDesc": {
+                        "AlphaToCoverageEnable": 0,
+                        "IndependentBlendEnable": 0,
+                        "RenderTarget": [
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 15,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            }
+                        ]
+                    },
+                    "DSVFormat": "DXGI_FORMAT_UNKNOWN",
+                    "DepthStencilDesc": {
+                        "BackFace": {
+                            "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
+                            "StencilPassOp": "D3D12_STENCIL_OP_KEEP"
+                        },
+                        "DepthEnable": 0,
+                        "DepthFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
+                        "DepthWriteMask": "D3D12_DEPTH_WRITE_MASK_ZERO",
+                        "FrontFace": {
+                            "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
+                            "StencilPassOp": "D3D12_STENCIL_OP_KEEP"
+                        },
+                        "StencilEnable": 0,
+                        "StencilReadMask": 255,
+                        "StencilWriteMask": 255
+                    },
+                    "InputLayout": [],
+                    "PipelineStateFlags": 0,
+                    "PixelShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Shader/RenderTarget/Final/FinalPresent_PS.cso",
+                        "ShaderModelVersionName": "ps_6_6"
+                    },
+                    "PrimitiveTopologyType": "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",
+                    "RTVFormatList": [
+                        "DXGI_FORMAT_R8G8B8A8_UNORM"
+                    ],
+                    "RasterizerDesc": {
+                        "AntialiasedLineEnable": 0,
+                        "ConservativeRaster": "D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF",
+                        "CullMode": "D3D12_CULL_MODE_BACK",
+                        "DepthBias": 0,
+                        "DepthBiasClamp": 0.0,
+                        "DepthClipEnable": 1,
+                        "FillMode": "D3D12_FILL_MODE_SOLID",
+                        "ForcedSampleCount": 0,
+                        "FrontCounterClockwise": 0,
+                        "MultisampleEnable": 0,
+                        "SlopeScaledDepthBias": 0.0
+                    },
+                    "SampleDesc": {
+                        "Count": 1,
+                        "Quality": 0
+                    },
+                    "SampleMask": 4294967295,
+                    "UseRootSignatureType": "RootSignatureType::FinalColor",
+                    "VertexShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Shader/RenderTarget/FullScreenTriangle_VS.cso",
+                        "ShaderModelVersionName": "vs_6_6"
+                    }
+                },
+                "PipelineStateClassName": "StandardPipelineState",
+                "PipelineStateType": "PipelineStateType::FinalPresent"
+            },
             {
                 "PipelineState": {
                     "AmplificationShader": {
@@ -297,6 +461,11 @@
             },
             {
                 "PipelineState": {
+                    "AmplificationShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Shader/Model/Static/StaticModel_AS.cso",
+                        "ShaderModelVersionName": "as_6_6"
+                    },
                     "BlendDesc": {
                         "AlphaToCoverageEnable": 0,
                         "IndependentBlendEnable": 0,
@@ -307,11 +476,11 @@
                                 "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
                                 "DestBlend": "D3D12_BLEND_ZERO",
                                 "DestBlendAlpha": "D3D12_BLEND_ZERO",
-                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOp": "D3D12_LOGIC_OP_NOOP",
                                 "LogicOpEnable": 0,
                                 "RenderTargetWriteMask": 15,
-                                "SrcBlend": "D3D12_BLEND_ZERO",
-                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                                "SrcBlend": "D3D12_BLEND_ONE",
+                                "SrcBlendAlpha": "D3D12_BLEND_ONE"
                             },
                             {
                                 "BlendEnable": 0,
@@ -399,7 +568,7 @@
                             }
                         ]
                     },
-                    "DSVFormat": "DXGI_FORMAT_UNKNOWN",
+                    "DSVFormat": "DXGI_FORMAT_D32_FLOAT",
                     "DepthStencilDesc": {
                         "BackFace": {
                             "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
@@ -407,9 +576,9 @@
                             "StencilFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
                             "StencilPassOp": "D3D12_STENCIL_OP_KEEP"
                         },
-                        "DepthEnable": 0,
-                        "DepthFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
-                        "DepthWriteMask": "D3D12_DEPTH_WRITE_MASK_ZERO",
+                        "DepthEnable": 1,
+                        "DepthFunc": "D3D12_COMPARISON_FUNC_LESS_EQUAL",
+                        "DepthWriteMask": "D3D12_DEPTH_WRITE_MASK_ALL",
                         "FrontFace": {
                             "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
                             "StencilFailOp": "D3D12_STENCIL_OP_KEEP",
@@ -420,16 +589,20 @@
                         "StencilReadMask": 255,
                         "StencilWriteMask": 255
                     },
-                    "InputLayout": [],
+                    "MeshShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Shader/Model/Skeletal/GPUSkinning/Standard/Lit/SkeletalAnimationModelGPUSkinnedLit_MS.cso",
+                        "ShaderModelVersionName": "ms_6_6"
+                    },
                     "PipelineStateFlags": 0,
                     "PixelShader": {
                         "EntryPointName": "main",
-                        "FilePath": "Shader/RenderTarget/Final/FinalPresent_PS.cso",
+                        "FilePath": "Shader/Model/Standard/Lit/ModelStandardLit_PS.cso",
                         "ShaderModelVersionName": "ps_6_6"
                     },
                     "PrimitiveTopologyType": "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",
                     "RTVFormatList": [
-                        "DXGI_FORMAT_R8G8B8A8_UNORM"
+                        "DXGI_FORMAT_R16G16B16A16_FLOAT"
                     ],
                     "RasterizerDesc": {
                         "AntialiasedLineEnable": 0,
@@ -449,15 +622,178 @@
                         "Quality": 0
                     },
                     "SampleMask": 4294967295,
-                    "UseRootSignatureType": "RootSignatureType::FinalColor",
-                    "VertexShader": {
-                        "EntryPointName": "main",
-                        "FilePath": "Shader/RenderTarget/FullScreenTriangle_VS.cso",
-                        "ShaderModelVersionName": "vs_6_6"
-                    }
+                    "UseRootSignatureType": "RootSignatureType::ModelStandard"
                 },
-                "PipelineStateClassName": "StandardPipelineState",
-                "PipelineStateType": "PipelineStateType::FinalPresent"
+                "PipelineStateClassName": "MeshShaderPipelineState",
+                "PipelineStateType": "PipelineStateType::SkeletalAnimationModelGPUSkinnedLit"
+            },
+            {
+                "PipelineState": {
+                    "AmplificationShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Shader/Model/Static/StaticModel_AS.cso",
+                        "ShaderModelVersionName": "as_6_6"
+                    },
+                    "BlendDesc": {
+                        "AlphaToCoverageEnable": 0,
+                        "IndependentBlendEnable": 0,
+                        "RenderTarget": [
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_NOOP",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 15,
+                                "SrcBlend": "D3D12_BLEND_ONE",
+                                "SrcBlendAlpha": "D3D12_BLEND_ONE"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            }
+                        ]
+                    },
+                    "DSVFormat": "DXGI_FORMAT_D32_FLOAT",
+                    "DepthStencilDesc": {
+                        "BackFace": {
+                            "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
+                            "StencilPassOp": "D3D12_STENCIL_OP_KEEP"
+                        },
+                        "DepthEnable": 1,
+                        "DepthFunc": "D3D12_COMPARISON_FUNC_LESS_EQUAL",
+                        "DepthWriteMask": "D3D12_DEPTH_WRITE_MASK_ALL",
+                        "FrontFace": {
+                            "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
+                            "StencilPassOp": "D3D12_STENCIL_OP_KEEP"
+                        },
+                        "StencilEnable": 0,
+                        "StencilReadMask": 255,
+                        "StencilWriteMask": 255
+                    },
+                    "MeshShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Shader/Model/Static/Standard/UnLit/StaticModelStandardUnLit_MS.cso",
+                        "ShaderModelVersionName": "ms_6_6"
+                    },
+                    "PipelineStateFlags": 0,
+                    "PixelShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Shader/Model/Standard/UnLit/ModelStandardUnLit_PS.cso",
+                        "ShaderModelVersionName": "ps_6_6"
+                    },
+                    "PrimitiveTopologyType": "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",
+                    "RTVFormatList": [
+                        "DXGI_FORMAT_R16G16B16A16_FLOAT"
+                    ],
+                    "RasterizerDesc": {
+                        "AntialiasedLineEnable": 0,
+                        "ConservativeRaster": "D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF",
+                        "CullMode": "D3D12_CULL_MODE_BACK",
+                        "DepthBias": 0,
+                        "DepthBiasClamp": 0.0,
+                        "DepthClipEnable": 1,
+                        "FillMode": "D3D12_FILL_MODE_SOLID",
+                        "ForcedSampleCount": 0,
+                        "FrontCounterClockwise": 0,
+                        "MultisampleEnable": 0,
+                        "SlopeScaledDepthBias": 0.0
+                    },
+                    "SampleDesc": {
+                        "Count": 1,
+                        "Quality": 0
+                    },
+                    "SampleMask": 4294967295,
+                    "UseRootSignatureType": "RootSignatureType::ModelStandard"
+                },
+                "PipelineStateClassName": "MeshShaderPipelineState",
+                "PipelineStateType": "PipelineStateType::StaticModelUnLit"
             },
             {
                 "PipelineState": {
@@ -644,25 +980,20 @@
             },
             {
                 "PipelineState": {
-                    "AmplificationShader": {
-                        "EntryPointName": "main",
-                        "FilePath": "Shader/Model/Static/StaticModel_AS.cso",
-                        "ShaderModelVersionName": "as_6_6"
-                    },
                     "BlendDesc": {
                         "AlphaToCoverageEnable": 0,
                         "IndependentBlendEnable": 0,
                         "RenderTarget": [
                             {
-                                "BlendEnable": 0,
+                                "BlendEnable": 1,
                                 "BlendOp": "D3D12_BLEND_OP_ADD",
                                 "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
-                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlend": "D3D12_BLEND_INV_SRC_ALPHA",
                                 "DestBlendAlpha": "D3D12_BLEND_ZERO",
                                 "LogicOp": "D3D12_LOGIC_OP_NOOP",
                                 "LogicOpEnable": 0,
                                 "RenderTargetWriteMask": 15,
-                                "SrcBlend": "D3D12_BLEND_ONE",
+                                "SrcBlend": "D3D12_BLEND_SRC_ALPHA",
                                 "SrcBlendAlpha": "D3D12_BLEND_ONE"
                             },
                             {
@@ -751,7 +1082,7 @@
                             }
                         ]
                     },
-                    "DSVFormat": "DXGI_FORMAT_D32_FLOAT",
+                    "DSVFormat": "DXGI_FORMAT_UNKNOWN",
                     "DepthStencilDesc": {
                         "BackFace": {
                             "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
@@ -759,9 +1090,9 @@
                             "StencilFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
                             "StencilPassOp": "D3D12_STENCIL_OP_KEEP"
                         },
-                        "DepthEnable": 1,
-                        "DepthFunc": "D3D12_COMPARISON_FUNC_LESS_EQUAL",
-                        "DepthWriteMask": "D3D12_DEPTH_WRITE_MASK_ALL",
+                        "DepthEnable": 0,
+                        "DepthFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
+                        "DepthWriteMask": "D3D12_DEPTH_WRITE_MASK_ZERO",
                         "FrontFace": {
                             "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
                             "StencilFailOp": "D3D12_STENCIL_OP_KEEP",
@@ -772,15 +1103,11 @@
                         "StencilReadMask": 255,
                         "StencilWriteMask": 255
                     },
-                    "MeshShader": {
-                        "EntryPointName": "main",
-                        "FilePath": "Shader/Model/Static/Standard/UnLit/StaticModelStandardUnLit_MS.cso",
-                        "ShaderModelVersionName": "ms_6_6"
-                    },
+                    "InputLayout": [],
                     "PipelineStateFlags": 0,
                     "PixelShader": {
                         "EntryPointName": "main",
-                        "FilePath": "Shader/Model/Standard/UnLit/ModelStandardUnLit_PS.cso",
+                        "FilePath": "Shader/Sprite/Screen/SpriteScreen_PS.cso",
                         "ShaderModelVersionName": "ps_6_6"
                     },
                     "PrimitiveTopologyType": "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",
@@ -790,7 +1117,7 @@
                     "RasterizerDesc": {
                         "AntialiasedLineEnable": 0,
                         "ConservativeRaster": "D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF",
-                        "CullMode": "D3D12_CULL_MODE_BACK",
+                        "CullMode": "D3D12_CULL_MODE_NONE",
                         "DepthBias": 0,
                         "DepthBiasClamp": 0.0,
                         "DepthClipEnable": 1,
@@ -805,10 +1132,15 @@
                         "Quality": 0
                     },
                     "SampleMask": 4294967295,
-                    "UseRootSignatureType": "RootSignatureType::ModelStandard"
+                    "UseRootSignatureType": "RootSignatureType::SpriteScreen",
+                    "VertexShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Shader/Sprite/Screen/SpriteScreen_VS.cso",
+                        "ShaderModelVersionName": "vs_6_6"
+                    }
                 },
-                "PipelineStateClassName": "MeshShaderPipelineState",
-                "PipelineStateType": "PipelineStateType::StaticModelUnLit"
+                "PipelineStateClassName": "StandardPipelineState",
+                "PipelineStateType": "PipelineStateType::SpriteScreen"
             },
             {
                 "PipelineState": {
@@ -977,170 +1309,6 @@
                 },
                 "PipelineStateClassName": "MeshShaderPipelineState",
                 "PipelineStateType": "PipelineStateType::SkeletalAnimationModelLit"
-            },
-            {
-                "PipelineState": {
-                    "BlendDesc": {
-                        "AlphaToCoverageEnable": 0,
-                        "IndependentBlendEnable": 0,
-                        "RenderTarget": [
-                            {
-                                "BlendEnable": 1,
-                                "BlendOp": "D3D12_BLEND_OP_ADD",
-                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
-                                "DestBlend": "D3D12_BLEND_INV_SRC_ALPHA",
-                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
-                                "LogicOp": "D3D12_LOGIC_OP_NOOP",
-                                "LogicOpEnable": 0,
-                                "RenderTargetWriteMask": 15,
-                                "SrcBlend": "D3D12_BLEND_SRC_ALPHA",
-                                "SrcBlendAlpha": "D3D12_BLEND_ONE"
-                            },
-                            {
-                                "BlendEnable": 0,
-                                "BlendOp": "D3D12_BLEND_OP_ADD",
-                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
-                                "DestBlend": "D3D12_BLEND_ZERO",
-                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
-                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
-                                "LogicOpEnable": 0,
-                                "RenderTargetWriteMask": 0,
-                                "SrcBlend": "D3D12_BLEND_ZERO",
-                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
-                            },
-                            {
-                                "BlendEnable": 0,
-                                "BlendOp": "D3D12_BLEND_OP_ADD",
-                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
-                                "DestBlend": "D3D12_BLEND_ZERO",
-                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
-                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
-                                "LogicOpEnable": 0,
-                                "RenderTargetWriteMask": 0,
-                                "SrcBlend": "D3D12_BLEND_ZERO",
-                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
-                            },
-                            {
-                                "BlendEnable": 0,
-                                "BlendOp": "D3D12_BLEND_OP_ADD",
-                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
-                                "DestBlend": "D3D12_BLEND_ZERO",
-                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
-                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
-                                "LogicOpEnable": 0,
-                                "RenderTargetWriteMask": 0,
-                                "SrcBlend": "D3D12_BLEND_ZERO",
-                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
-                            },
-                            {
-                                "BlendEnable": 0,
-                                "BlendOp": "D3D12_BLEND_OP_ADD",
-                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
-                                "DestBlend": "D3D12_BLEND_ZERO",
-                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
-                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
-                                "LogicOpEnable": 0,
-                                "RenderTargetWriteMask": 0,
-                                "SrcBlend": "D3D12_BLEND_ZERO",
-                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
-                            },
-                            {
-                                "BlendEnable": 0,
-                                "BlendOp": "D3D12_BLEND_OP_ADD",
-                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
-                                "DestBlend": "D3D12_BLEND_ZERO",
-                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
-                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
-                                "LogicOpEnable": 0,
-                                "RenderTargetWriteMask": 0,
-                                "SrcBlend": "D3D12_BLEND_ZERO",
-                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
-                            },
-                            {
-                                "BlendEnable": 0,
-                                "BlendOp": "D3D12_BLEND_OP_ADD",
-                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
-                                "DestBlend": "D3D12_BLEND_ZERO",
-                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
-                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
-                                "LogicOpEnable": 0,
-                                "RenderTargetWriteMask": 0,
-                                "SrcBlend": "D3D12_BLEND_ZERO",
-                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
-                            },
-                            {
-                                "BlendEnable": 0,
-                                "BlendOp": "D3D12_BLEND_OP_ADD",
-                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
-                                "DestBlend": "D3D12_BLEND_ZERO",
-                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
-                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
-                                "LogicOpEnable": 0,
-                                "RenderTargetWriteMask": 0,
-                                "SrcBlend": "D3D12_BLEND_ZERO",
-                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
-                            }
-                        ]
-                    },
-                    "DSVFormat": "DXGI_FORMAT_UNKNOWN",
-                    "DepthStencilDesc": {
-                        "BackFace": {
-                            "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
-                            "StencilFailOp": "D3D12_STENCIL_OP_KEEP",
-                            "StencilFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
-                            "StencilPassOp": "D3D12_STENCIL_OP_KEEP"
-                        },
-                        "DepthEnable": 0,
-                        "DepthFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
-                        "DepthWriteMask": "D3D12_DEPTH_WRITE_MASK_ZERO",
-                        "FrontFace": {
-                            "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
-                            "StencilFailOp": "D3D12_STENCIL_OP_KEEP",
-                            "StencilFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
-                            "StencilPassOp": "D3D12_STENCIL_OP_KEEP"
-                        },
-                        "StencilEnable": 0,
-                        "StencilReadMask": 255,
-                        "StencilWriteMask": 255
-                    },
-                    "InputLayout": [],
-                    "PipelineStateFlags": 0,
-                    "PixelShader": {
-                        "EntryPointName": "main",
-                        "FilePath": "Shader/Sprite/Screen/SpriteScreen_PS.cso",
-                        "ShaderModelVersionName": "ps_6_6"
-                    },
-                    "PrimitiveTopologyType": "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",
-                    "RTVFormatList": [
-                        "DXGI_FORMAT_R16G16B16A16_FLOAT"
-                    ],
-                    "RasterizerDesc": {
-                        "AntialiasedLineEnable": 0,
-                        "ConservativeRaster": "D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF",
-                        "CullMode": "D3D12_CULL_MODE_NONE",
-                        "DepthBias": 0,
-                        "DepthBiasClamp": 0.0,
-                        "DepthClipEnable": 1,
-                        "FillMode": "D3D12_FILL_MODE_SOLID",
-                        "ForcedSampleCount": 0,
-                        "FrontCounterClockwise": 0,
-                        "MultisampleEnable": 0,
-                        "SlopeScaledDepthBias": 0.0
-                    },
-                    "SampleDesc": {
-                        "Count": 1,
-                        "Quality": 0
-                    },
-                    "SampleMask": 4294967295,
-                    "UseRootSignatureType": "RootSignatureType::SpriteScreen",
-                    "VertexShader": {
-                        "EntryPointName": "main",
-                        "FilePath": "Shader/Sprite/Screen/SpriteScreen_VS.cso",
-                        "ShaderModelVersionName": "vs_6_6"
-                    }
-                },
-                "PipelineStateClassName": "StandardPipelineState",
-                "PipelineStateType": "PipelineStateType::SpriteScreen"
             },
             {
                 "PipelineState": {
@@ -1502,6 +1670,32 @@
             },
             {
                 "PipelineState": {
+                    "ComputeShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Shader/Model/GPUDriven/ModelGPUDrivenCulling_CS.cso",
+                        "ShaderModelVersionName": "cs_6_6"
+                    },
+                    "PipelineStateFlags": 0,
+                    "UseRootSignatureType": "RootSignatureType::ModelGPUDrivenCulling"
+                },
+                "PipelineStateClassName": "ComputePipelineState",
+                "PipelineStateType": "PipelineStateType::ModelGPUDrivenCulling"
+            },
+            {
+                "PipelineState": {
+                    "ComputeShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Shader/Occlusion/HierarchicalDepthBuild_CS.cso",
+                        "ShaderModelVersionName": "cs_6_6"
+                    },
+                    "PipelineStateFlags": 0,
+                    "UseRootSignatureType": "RootSignatureType::HierarchicalDepthBuild"
+                },
+                "PipelineStateClassName": "ComputePipelineState",
+                "PipelineStateType": "PipelineStateType::HierarchicalDepthBuild"
+            },
+            {
+                "PipelineState": {
                     "AmplificationShader": {
                         "EntryPointName": "main",
                         "FilePath": "Shader/Model/Shadow/Cascade/ModelCascadeShadow_AS.cso",
@@ -1793,6 +1987,167 @@
                     },
                     "MeshShader": {
                         "EntryPointName": "main",
+                        "FilePath": "Shader/Model/Skeletal/GPUSkinning/Shadow/Cascade/SkeletalAnimationModelGPUSkinnedCascadeShadow_MS.cso",
+                        "ShaderModelVersionName": "ms_6_6"
+                    },
+                    "PipelineStateFlags": 0,
+                    "PrimitiveTopologyType": "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",
+                    "RTVFormatList": [],
+                    "RasterizerDesc": {
+                        "AntialiasedLineEnable": 0,
+                        "ConservativeRaster": "D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF",
+                        "CullMode": "D3D12_CULL_MODE_BACK",
+                        "DepthBias": 100,
+                        "DepthBiasClamp": 0.0,
+                        "DepthClipEnable": 1,
+                        "FillMode": "D3D12_FILL_MODE_SOLID",
+                        "ForcedSampleCount": 0,
+                        "FrontCounterClockwise": 0,
+                        "MultisampleEnable": 0,
+                        "SlopeScaledDepthBias": 1.0
+                    },
+                    "SampleDesc": {
+                        "Count": 1,
+                        "Quality": 0
+                    },
+                    "SampleMask": 4294967295,
+                    "UseRootSignatureType": "RootSignatureType::ModelCascadeShadow"
+                },
+                "PipelineStateClassName": "MeshShaderPipelineState",
+                "PipelineStateType": "PipelineStateType::SkeletalAnimationModelGPUSkinnedCascadeShadow"
+            },
+            {
+                "PipelineState": {
+                    "AmplificationShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Shader/Model/Shadow/Cascade/ModelCascadeShadow_AS.cso",
+                        "ShaderModelVersionName": "as_6_6"
+                    },
+                    "BlendDesc": {
+                        "AlphaToCoverageEnable": 0,
+                        "IndependentBlendEnable": 0,
+                        "RenderTarget": [
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            },
+                            {
+                                "BlendEnable": 0,
+                                "BlendOp": "D3D12_BLEND_OP_ADD",
+                                "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
+                                "DestBlend": "D3D12_BLEND_ZERO",
+                                "DestBlendAlpha": "D3D12_BLEND_ZERO",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
+                                "LogicOpEnable": 0,
+                                "RenderTargetWriteMask": 0,
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
+                            }
+                        ]
+                    },
+                    "DSVFormat": "DXGI_FORMAT_D32_FLOAT",
+                    "DepthStencilDesc": {
+                        "BackFace": {
+                            "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
+                            "StencilPassOp": "D3D12_STENCIL_OP_KEEP"
+                        },
+                        "DepthEnable": 1,
+                        "DepthFunc": "D3D12_COMPARISON_FUNC_LESS_EQUAL",
+                        "DepthWriteMask": "D3D12_DEPTH_WRITE_MASK_ALL",
+                        "FrontFace": {
+                            "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFailOp": "D3D12_STENCIL_OP_KEEP",
+                            "StencilFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
+                            "StencilPassOp": "D3D12_STENCIL_OP_KEEP"
+                        },
+                        "StencilEnable": 0,
+                        "StencilReadMask": 255,
+                        "StencilWriteMask": 255
+                    },
+                    "MeshShader": {
+                        "EntryPointName": "main",
                         "FilePath": "Shader/Model/Skeletal/Shadow/Cascade/SkeletalAnimationModelCascadeShadow_MS.cso",
                         "ShaderModelVersionName": "ms_6_6"
                     },
@@ -1869,6 +2224,12 @@
                     "DrawRequestPerObjectTypeName": "SkeletalAnimationModelCascadeShadowPerObjectDrawRequest"
                 },
                 {
+                    "DrawRequestPerObjectTypeName": "SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequest"
+                },
+                {
+                    "DrawRequestPerObjectTypeName": "SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest"
+                },
+                {
                     "DrawRequestPerObjectTypeName": "SpriteScreenPerObjectDrawRequest"
                 }
             ],
@@ -1906,6 +2267,28 @@
             ]
         },
         "RootSignatureMap": [
+            {
+                "RootSignature": {
+                    "RootParameterIndexMap": [
+                        {
+                            "Index": 0,
+                            "RootParameterType": "RootParameterType::CBModelGPUDrivenCullingPass"
+                        }
+                    ],
+                    "RootParameterList": [
+                        {
+                            "ParameterType": "D3D12_ROOT_PARAMETER_TYPE_CBV",
+                            "RegisterSpace": 0,
+                            "ShaderRegister": 0,
+                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_ALL"
+                        }
+                    ],
+                    "RootSignatureFlags": "D3D12_ROOT_SIGNATURE_FLAG_CBV_SRV_UAV_HEAP_DIRECTLY_INDEXED",
+                    "RootSignatureVersion": "D3D_ROOT_SIGNATURE_VERSION_1",
+                    "StaticSamplerDescList": []
+                },
+                "RootSignatureType": "RootSignatureType::ModelGPUDrivenCulling"
+            },
             {
                 "RootSignature": {
                     "RootParameterIndexMap": [
@@ -1959,7 +2342,7 @@
                     "RootParameterIndexMap": [
                         {
                             "Index": 0,
-                            "RootParameterType": "RootParameterType::CBFinalColorPass"
+                            "RootParameterType": "RootParameterType::CBHierarchicalDepthBuildPass"
                         }
                     ],
                     "RootParameterList": [
@@ -1967,30 +2350,14 @@
                             "ParameterType": "D3D12_ROOT_PARAMETER_TYPE_CBV",
                             "RegisterSpace": 0,
                             "ShaderRegister": 0,
-                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_PIXEL"
+                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_ALL"
                         }
                     ],
                     "RootSignatureFlags": "D3D12_ROOT_SIGNATURE_FLAG_CBV_SRV_UAV_HEAP_DIRECTLY_INDEXED",
                     "RootSignatureVersion": "D3D_ROOT_SIGNATURE_VERSION_1",
-                    "StaticSamplerDescList": [
-                        {
-                            "AddressU": "D3D12_TEXTURE_ADDRESS_MODE_CLAMP",
-                            "AddressV": "D3D12_TEXTURE_ADDRESS_MODE_CLAMP",
-                            "AddressW": "D3D12_TEXTURE_ADDRESS_MODE_CLAMP",
-                            "BorderColor": "D3D12_STATIC_BORDER_COLOR_OPAQUE_BLACK",
-                            "ComparisonFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
-                            "Filter": "D3D12_FILTER_MIN_MAG_MIP_LINEAR",
-                            "MIPLODBias": 0.0,
-                            "MaxAnisotropy": 1,
-                            "MaxLOD": 3.4028234663852886e+38,
-                            "MinLOD": 0.0,
-                            "RegisterSpace": 0,
-                            "ShaderRegister": 0,
-                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_PIXEL"
-                        }
-                    ]
+                    "StaticSamplerDescList": []
                 },
-                "RootSignatureType": "RootSignatureType::FinalColor"
+                "RootSignatureType": "RootSignatureType::HierarchicalDepthBuild"
             },
             {
                 "RootSignature": {
@@ -2074,6 +2441,44 @@
                     ]
                 },
                 "RootSignatureType": "RootSignatureType::ModelStandard"
+            },
+            {
+                "RootSignature": {
+                    "RootParameterIndexMap": [
+                        {
+                            "Index": 0,
+                            "RootParameterType": "RootParameterType::CBFinalColorPass"
+                        }
+                    ],
+                    "RootParameterList": [
+                        {
+                            "ParameterType": "D3D12_ROOT_PARAMETER_TYPE_CBV",
+                            "RegisterSpace": 0,
+                            "ShaderRegister": 0,
+                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_PIXEL"
+                        }
+                    ],
+                    "RootSignatureFlags": "D3D12_ROOT_SIGNATURE_FLAG_CBV_SRV_UAV_HEAP_DIRECTLY_INDEXED",
+                    "RootSignatureVersion": "D3D_ROOT_SIGNATURE_VERSION_1",
+                    "StaticSamplerDescList": [
+                        {
+                            "AddressU": "D3D12_TEXTURE_ADDRESS_MODE_CLAMP",
+                            "AddressV": "D3D12_TEXTURE_ADDRESS_MODE_CLAMP",
+                            "AddressW": "D3D12_TEXTURE_ADDRESS_MODE_CLAMP",
+                            "BorderColor": "D3D12_STATIC_BORDER_COLOR_OPAQUE_BLACK",
+                            "ComparisonFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
+                            "Filter": "D3D12_FILTER_MIN_MAG_MIP_LINEAR",
+                            "MIPLODBias": 0.0,
+                            "MaxAnisotropy": 1,
+                            "MaxLOD": 3.4028234663852886e+38,
+                            "MinLOD": 0.0,
+                            "RegisterSpace": 0,
+                            "ShaderRegister": 0,
+                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_PIXEL"
+                        }
+                    ]
+                },
+                "RootSignatureType": "RootSignatureType::FinalColor"
             },
             {
                 "RootSignature": {
@@ -2204,6 +2609,13 @@
         "DSVDescriptorPool": {
             "DescriptorHeapIndexAllocator": {
                 "Capacity": 10000
+            }
+        },
+        "MaterialSystem": {
+            "MaterialStorage": {
+                "StorageIDAllocator": {
+                    "StorageIDAllocatorCapacity": 10000
+                }
             }
         },
         "RTVDescriptorPool": {

@@ -35,11 +35,11 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
     l_staticModelRecord->SetStorageID     (l_allocateStorageID);
     l_staticModelRecord->SetReferenceCount(AssetRecordBase::k_initialAssetReferenceCount);
 
-    // .assetが存在していて、FBXより更新が古くなければ.assetを優先して読み込む
+    // .staticModelが存在していて、FBXより更新が古くなければ.staticModelを優先して読み込む
     // 失敗したらUFBXから読み込む
     if (!m_binaryConverter.LoadAsset(a_filePath, *l_staticModelRecord))
     {
-        // .assetが読み込めなければFBXモデルをロードする、失敗したらassert
+        // .staticModelが読み込めなければFBXモデルをロードする、失敗したらassert
         FWK_ASSERT_RETURN_VALUE_IF(!m_loader.LoadStaticModelFile(a_filePath, *l_staticModelRecord), "StaticModel読み込みに失敗したため、バッチモデル登録に失敗しました。", l_staticModelLoadResult);
 
         // モデルのメッシュレット生成などを行う
@@ -114,7 +114,6 @@ bool FWK::Graphics::StaticModelSystem::BuildStaticModelAssetData(const std::file
 
     return true;
 }
-
 void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>& a_staticModelRecord,
                                                                    const Device&                             a_device,
                                                                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
@@ -128,8 +127,8 @@ void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::sh
 
     Struct::StaticModelBatchUploadRecord l_staticModelBatchUploadRecord = {};
 
-    // マテリアルで使用するテクスチャを読み込む
-    m_materialRuntimTextureBuilder.BuildMaterialRuntimeTextures(a_filePath, *a_staticModelRecord);
+    // 各Meshが使うMaterialを読み込む(Materialが参照するTextureはMaterial自身が読み込む)
+    m_materialRuntimeBuilder.BuildMaterialRuntimeData(a_filePath, *a_staticModelRecord);
 
     // バッチアップロード用情報の作成
     if (!CreateStaticBatchUploadRecord(a_staticModelRecord,

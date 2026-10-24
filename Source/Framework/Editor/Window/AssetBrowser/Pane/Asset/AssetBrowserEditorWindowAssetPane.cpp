@@ -899,7 +899,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::
         l_popupDrawer.BeginPopup(l_contextMenuLabel);
     }
 }
-
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardDragDrop(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow)
 {
     // D&Dドラッグ元

@@ -53,7 +53,6 @@ FWK::Graphics::SkeletalAnimationModelRecord::ModelKeyFrame FWK::Graphics::Skelet
 
     return l_modelKeyFrame;
 }
-
 bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelBoneMotionTrack(const ufbx_baked_node*                                    a_fbxBakedNode,
                                                                                          const double&                                             a_animationDurationSecond,
                                                                                          const double&                                             a_animationFrameRate,
@@ -95,7 +94,6 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelBoneMot
 
     return true;
 }
-
 bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionSequenceFromBakedAnimation(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
                                                                                                           const ufbx_scene*                                          a_fbxScene,
                                                                                                           const ufbx_baked_anim*                                     a_fbxBakedAnimation,
@@ -145,7 +143,6 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionS
 
     return true;
 }
-
 bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionSequence(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
                                                                                         const ufbx_scene*                                          a_fbxScene,
                                                                                         const ufbx_anim_stack*                                     a_fbxAnimationStack,

@@ -63,6 +63,15 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&             a_device
                                                    "ダイレクトコマンドリストの作成処理に失敗しました。",
                                                    false);
 
+    // CPU、GPUの処理時間を計測するクラスの作成処理
+    // GPUは数フレーム遅れて実行されるため、フレームリソースの数だけ計測結果の置き場所を用意する
+    FWK_ASSERT_RETURN_VALUE_IF(!m_frameProfiler.Create(a_device,
+                                                       m_directCommandQueue,
+                                                       m_computeCommandQueue,
+                                                       m_frameResourceList.size()),
+                                                       "FrameProfilerの作成処理に失敗しました。",
+                                                       false);
+
     // ルートシグネチャの作成処理
     for (const auto& [l_type, l_rootSignature] : m_rootSignatureMap)
     {
@@ -102,7 +111,16 @@ void FWK::Graphics::Renderer::BeginFrame(const ResourceContext& a_resourceContex
 
     FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画開始処理に失敗しました。");
 
+    // GPUがこのフレームリソースを使い終わるまでCPUが待つ時間を計測する
+    // ここが長い場合は「GPUの処理が間に合っていない(GPUがボトルネック)」ことを表す
+    m_frameProfiler.BeginCPUScope(k_waitForGPUCPUScopeName);
+
     ResetCommandObjects(*l_currentFrameResource);
+
+    m_frameProfiler.EndCPUScope();
+
+    // 前回このフレームリソースで計測したGPUの処理時間を受け取り、今回の計測を開始する
+    m_frameProfiler.BeginFrame(m_currentFrameResourceIndex, m_directCommandList, m_computeCommandList);
 
     // GPUがこのフレームリソースを使い終わってから、
     // ConstantBufferUploaderの書き込みインデックスを先頭に戻す
@@ -135,6 +153,10 @@ void FWK::Graphics::Renderer::EndFrame()
     // DirectCommandListへ記録する
     m_renderGraph.EndFrame(*this);
 
+    // フレーム全体のGPU計測区間を閉じ、計測結果を読み戻す命令を積む
+    // CommandListをCloseした後は命令を積めないため、Closeより前に行う
+    m_frameProfiler.EndFrame(m_directCommandList, m_computeCommandList);
+
     // 各CommandListへの命令記録を終了する
     m_computeCommandList.Close();
     m_directCommandList.Close ();
@@ -163,7 +185,12 @@ void FWK::Graphics::Renderer::EndFrame()
     m_directCommandQueue.SignalAndTrackAllocator(*l_directCommandAllocator);
 
     // BackBufferを画面へ表示する
+    // 垂直同期を待つ場合はここでCPUが止まるため、待ち時間として別に計測する
+    m_frameProfiler.BeginCPUScope(k_presentCPUScopeName);
+
     m_swapChain.Present();
+
+    m_frameProfiler.EndCPUScope();
 
     // 次のフレームで使用するフレームリソースを決める
     DecideNextFrameUseFrameResource();

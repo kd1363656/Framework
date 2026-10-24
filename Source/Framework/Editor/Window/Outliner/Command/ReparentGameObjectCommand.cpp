@@ -1,8 +1,6 @@
 ﻿#include "ReparentGameObjectCommand.h"
 
-FWK::Editor::ReparentGameObjectCommand::ReparentGameObjectCommand(boost::uuids::uuid a_gameObjectUUID, 
-                                                                  boost::uuids::uuid a_beforeParentUUID,
-                                                                  boost::uuids::uuid a_afterParentUUID) :
+FWK::Editor::ReparentGameObjectCommand::ReparentGameObjectCommand(boost::uuids::uuid a_gameObjectUUID, boost::uuids::uuid a_beforeParentUUID, boost::uuids::uuid a_afterParentUUID) :
     m_gameObjectUUID  (std::move(a_gameObjectUUID)),
     m_beforeParentUUID(std::move(a_beforeParentUUID)),
     m_afterParentUUID (std::move(a_afterParentUUID))

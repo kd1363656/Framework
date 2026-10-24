@@ -6,12 +6,12 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
 
     l_staticModelData.m_modelMeshList.clear();
 
-    // .assetが存在しない/FBXより古い/元FBXが存在しない場合は、
+    // .staticModelが存在しない/FBXより古い/元FBXが存在しない場合は、
     // ここでは失敗扱いにして、呼び出し側でFBX読み込みへ進ませる
-    if (!CanLoadAsset(a_filePath)) { return false; }
+    if (!CanLoadAsset(a_filePath, k_staticModelAssetExtension)) { return false; }
 
     // 読み込み用MemoryMappedFileの作成
-    if (const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath);
+    if (const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath, k_staticModelAssetExtension);
         !CreateReadMemoryMappedFile(l_staticModelAssetFilePath))
     {
         return false;
@@ -29,7 +29,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
         return false;
     }
 
-    // Model用.assetではないなら読まない。
+    // Model用.staticModelではないなら読まない。
     if (l_modelBinaryHeader.m_assetTypeID != k_modelAssetTypeID)
     {
         FailLoadAsset(l_staticModelData);
@@ -45,7 +45,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
         return false;
     }
 
-    // Headerに保存されたファイルサイズと実際の.assetサイズが違う場合は、壊れた.asssetの可能性が高いため読み込まない。
+    // Headerに保存されたファイルサイズと実際の.staticModelサイズが違う場合は、壊れた.staticModelの可能性が高いため読み込まない。
     if (l_modelBinaryHeader.m_fileSize != GetVALMappedDataSize())
     {
         FailLoadAsset(l_staticModelData);
@@ -74,7 +74,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
         }
     }
 
-    // 現在のオフセット位置がファイルサイズと一致しなければ.assetファイルが壊れている可能性があるのでreturn
+    // 現在のオフセット位置がファイルサイズと一致しなければ.staticModelファイルが壊れている可能性があるのでreturn
     if (l_memoryReadOffset != l_modelBinaryHeader.m_fileSize)
     {
         FailLoadAsset(l_staticModelData);
@@ -92,16 +92,16 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveAsset(const Graphics::Stati
     auto& l_staticModelData = a_staticModelRecord.GetREFModelData();
 
     // StaticModelAssetの元になるFBXが存在しない場合、
-    // 何から生成された.assetなのか判断できないため保存しない
+    // 何から生成された.staticModelなのか判断できないため保存しない
     FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "Assetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
-    // FBXと同じ場所・同じ名前で拡張子だけ.assetにした保存先を作る
-    const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath);
+    // FBXと同じ場所・同じ名前で拡張子だけ.staticModelにした保存先を作る
+    const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath, k_staticModelAssetExtension);
 
     // StaticModelData全体を保存したときのファイルサイズを計算する
     const auto& l_modelAssetFileSize = CalculateAssetFileSize(l_staticModelData);
 
-    // Meshが一つもない、または保存できるデータがない場合は.asset化しない
+    // Meshが一つもない、または保存できるデータがない場合は.staticModel化しない
     FWK_ASSERT_RETURN_VALUE_IF(l_modelAssetFileSize == BinaryConverterBase::k_emptyAssetFileSize, "Assetへ保存するStaticModelDataが空のため、バイナリーファイルの保存に失敗しました。", false);
 
     // 書き込み用MemoryMappedFileを作成する
@@ -159,7 +159,7 @@ FWK::Converter::StaticModelBinaryConverter::ModelBinaryHeader FWK::Converter::St
 
 std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateAssetFileSize(const Graphics::StaticModelRecord::ModelData& a_modelData) const
 {
-    // Meshが一つもないStaticModelDataは.asset化しない
+    // Meshが一つもないStaticModelDataは.staticModel化しない
     if (a_modelData.m_modelMeshList.empty()) { return BinaryConverterBase::k_emptyAssetFileSize; }
 
     // ファイル先頭に置くStaticModel全体Header

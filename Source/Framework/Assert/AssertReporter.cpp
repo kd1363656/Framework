@@ -32,7 +32,10 @@ void FWK::AssertReporter::Report(const std::string_view& a_message, const std::s
     // AddLog()へ失敗した場所(a_location)をそのまま渡す
     if (m_isEditorLogEnabled)
     {
-        Editor::EditorManager::GetInstance().AddLog(a_location, k_editorLogColor, "[ASSERT]\n{}", a_message);
+        Editor::EditorManager::GetInstance().AddLog(a_location,
+                                                    k_editorLogColor,
+                                                    "[ASSERT]\n{}",
+                                                    a_message);
     }
 
     m_isReporting = false;

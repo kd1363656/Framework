@@ -20,6 +20,7 @@ bool FWK::Graphics::ResourceContext::PostDeserialize(const Device& a_device)
 
     // 作成したGPUMemoryAllocatorとUploadSystemを使用する
     FWK_ASSERT_RETURN_VALUE_IF(!m_textureSystem.Create(a_device, m_gpuMemoryAllocator, m_cbvSRVUAVDescriptorPool), "TextureSystemの作成処理に失敗しました。",                false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_materialSystem.Create(),                                                         "MaterialSystemの作成処理に失敗しました。",               false);
     FWK_ASSERT_RETURN_VALUE_IF(!m_staticModelSystem.Create(),                                                      "StaticModelSystemの作成処理に失敗しました。",            false);
     FWK_ASSERT_RETURN_VALUE_IF(!m_skeletalAnimationModelSystem.Create(),                                           "SkeletalAnimationModelSystemの作成処理に失敗しました。", false);
 
@@ -54,6 +55,23 @@ void FWK::Graphics::ResourceContext::ProcessPendingSkeletalAnimationModelUploads
 
     // GPUコピー完了後、RecordをAssetStorageへ正式登録する
     m_skeletalAnimationModelSystem.RegisterPendingSkeletalAnimationModels();
+}
+
+void FWK::Graphics::ResourceContext::ProcessPendingMaterialUploads(const Device& a_device, const TypeAlias::DirectCommandQueue& a_directCommandQueue)
+{
+    // Inspectorで値が変わったMaterialのGPUDataBufferを作り直し、アップロード待ちにする
+    m_materialSystem.RebuildDirtyMaterialGPUDataBuffers(a_device,
+                                                        m_gpuMemoryAllocator,
+                                                        a_directCommandQueue,
+                                                        m_cbvSRVUAVDescriptorPool,
+                                                        m_resourceReleaseContext);
+
+    // MaterialSystemにPending中のMaterialがあれば、
+    // UPLOADヒープからDEFAULTヒープへGPUDataBufferをコピーする
+    m_uploadSystem.SubmitPendingMaterialBatchIfNeededAndWait(m_materialSystem);
+
+    // GPUコピー完了後、MaterialをAssetStorageへ正式登録する
+    m_materialSystem.RegisterPendingMaterials();
 }
 
 void FWK::Graphics::ResourceContext::ReleaseCompletedDeferredResources(const TypeAlias::DirectCommandQueue& a_directCommandQueue)

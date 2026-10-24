@@ -16,7 +16,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::LoadSkeletalAnimationModelF
     FWK_ASSERT_RETURN_VALUE_IF(!l_fbxScene, "FBXシーンの読み込みに失敗したため、Modelファイルの読み込みに失敗しました。", false);
 
     // SkeletonとMeshをModelDataへ変換する
-    if (!ExtractModelData(l_fbxScene, l_modelData))
+    if (!ExtractModelData(l_fbxScene, a_filePath, l_modelData))
     {
         DestroyFBXScene(l_fbxScene);
 
@@ -33,7 +33,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::LoadSkeletalAnimationModelF
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, SkeletalAnimationModelRecord::ModelData& a_modelData) const
+bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, const std::filesystem::path& a_filePath, SkeletalAnimationModelRecord::ModelData& a_modelData) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene,                                                  "ufbx_sceneが無効のため、ModelDataの抽出に失敗しました。",            false);
     FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Constant::k_emptyUFBXElementCount, "FBXシーン内にNodeが存在しないため、ModelDataの抽出に失敗しました。", false);
@@ -62,7 +62,12 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx
 
         std::vector<SkeletalAnimationModelRecord::ModelMesh> l_modelMeshList = {};
 
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshList(l_boneNodeIndexMap, l_fbxNode, l_modelMeshList), "ufbx_nodeからModelMeshListの抽出に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshList(l_boneNodeIndexMap,
+                                                         l_fbxNode,
+                                                         a_filePath,
+                                                         l_modelMeshList),
+                                                         "ufbx_nodeからModelMeshListの抽出に失敗しました。",
+                                                         false);
 
         for (auto& l_modelMesh : l_modelMeshList)
         {
@@ -86,7 +91,10 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const ufbx_node* a_fbxNode, std::vector<SkeletalAnimationModelRecord::ModelMesh>& a_modelMeshList) const
+bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const std::unordered_map<const ufbx_node*, std::uint32_t>&  a_boneNodeIndexMap,
+                                                                          const ufbx_node*                                            a_fbxNode,
+                                                                          const std::filesystem::path&                                a_filePath,
+                                                                                std::vector<SkeletalAnimationModelRecord::ModelMesh>& a_modelMeshList) const
 {
     a_modelMeshList.clear();
 
@@ -133,16 +141,20 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
     {
         SkeletalAnimationModelRecord::ModelMesh l_modelMesh = {};
 
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(l_materialIndex, a_fbxNode, a_boneNodeIndexMap, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(l_materialIndex,
+                                                               a_fbxNode,
+                                                               a_boneNodeIndexMap,
+                                                               l_modelMesh),
+                                                               "Material別ModelMeshの抽出に失敗しました。",
+                                                               false);
 
         if (l_modelMesh.m_modelVertexList.empty()) { continue; }
         if (l_modelMesh.m_indexList.empty())       { continue; }
 
         const auto* l_fbxMaterial = l_fbxMesh->materials.data[l_materialIndex];
 
-        ExtractModelMaterial(l_fbxMaterial, l_modelMesh.m_modelMaterial.m_modelMaterialAssetData);
-
-        l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData = {};
+        // FBXのMaterialから.materialファイルを作り、そのパスだけをModelMeshへ設定する
+        l_modelMesh.m_modelMaterial.m_materialFilePath = ExtractModelMaterial(l_fbxMaterial, a_filePath);
 
         a_modelMeshList.emplace_back(std::move(l_modelMesh));
     }

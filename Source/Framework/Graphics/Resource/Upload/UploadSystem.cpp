@@ -113,6 +113,42 @@ void FWK::Graphics::UploadSystem::SubmitPendingSkeletalAnimationModelBatchIfNeed
     // CommandListを実行してコピー完了を待つ
     AfterSubmitResourceProcess(*l_copyCommandAllocator);
 }
+void FWK::Graphics::UploadSystem::SubmitPendingMaterialBatchIfNeededAndWait(const MaterialSystem& a_materialSystem)
+{
+    const auto& l_pendingMaterialBatchUploadRecordMap = a_materialSystem.GetREFPendingMaterialBatchUploadRecordMap();
+    const auto& l_pendingBufferUploadCommandList      = a_materialSystem.GetREFPendingBufferUploadCommandList     ();
+
+    if (l_pendingMaterialBatchUploadRecordMap.empty() &&
+        l_pendingBufferUploadCommandList.empty())
+    {
+        return;
+    }
+
+    const auto& l_copyCommandAllocator = FetchMutablePTRCopyCommandAllocator().lock();
+
+    FWK_ASSERT_RETURN_IF(!l_copyCommandAllocator, "使用可能なコピーコマンドアロケータが取得できず、Material用BufferResourceのバッチコピーに失敗しました。");
+
+    // CommandAllocatorとCommandListをリセットする
+    BeforSubmitResourceProcess(*l_copyCommandAllocator);
+
+    // 新しく読み込んだMaterialのGPUDataBuffer
+    for (const auto& [l_filePath, l_pendingMaterialBatchUploadRecord] : l_pendingMaterialBatchUploadRecordMap)
+    {
+        for (const auto& l_bufferUploadCommand : l_pendingMaterialBatchUploadRecord.m_bufferUploadCommandList)
+        {
+            RecordBufferCopy(l_bufferUploadCommand);
+        }
+    }
+
+    // デフォルトマテリアルと、Inspectorでの編集後に作り直したGPUDataBuffer
+    for (const auto& l_bufferUploadCommand : l_pendingBufferUploadCommandList)
+    {
+        RecordBufferCopy(l_bufferUploadCommand);
+    }
+
+    // CommandListを実行してコピー完了を待つ
+    AfterSubmitResourceProcess(*l_copyCommandAllocator);
+}
 
 nlohmann::json FWK::Graphics::UploadSystem::Serialize() const
 {

@@ -48,27 +48,36 @@ cbuffer CBModelPerObject : register(b1)
     row_major matrix g_worldMatrix;
     
     row_major matrix g_worldInverseTransposeMatrix;
-    
-    float4 g_baseColorFactor;
-    
-    float g_roughnessFactor;
-    float g_metallicFactor;
-    uint  g_baseColorTextureSRVDescriptorIndex;
-    uint  g_normalTextureSRVDescriptorIndex;
-    
-    uint g_metallicTextureSRVDescriptorIndex;
-    uint g_roughnessTextureSRVDescriptorIndex;
+
+    // g_materialBufferSRVDescriptorIndex : MaterialのGPUDataBuffer
+    // Materialの値(色やテクスチャ)はMaterialの種類ごとに違うため、PixelShaderが自身のMaterialの型として読む
+    uint g_materialBufferSRVDescriptorIndex;
     uint g_vertexBufferSRVDescriptorIndex;
     uint g_meshletBufferSRVDescriptorIndex;
-    
-    uint  g_uniqueVertexIndexBufferSRVDescriptorIndex;
+    uint g_uniqueVertexIndexBufferSRVDescriptorIndex;
+
     uint  g_primitiveIndexBufferSRVDescriptorIndex;
     uint  g_meshletBoundsBufferSRVDescriptorIndex;
     float g_worldMaxScale;
-    
-    float  g_worldOrientationSign;
-    uint   g_meshletCount;
-    float2 g_padding;
+    float g_worldOrientationSign;
+
+    // g_meshletOffset : 描画するLODのMeshletが、MeshletBufferの何番目から始まるか
+    // g_meshletCount  : そのLODのMeshlet数
+    // 全LODのMeshletは1つのBufferへ連結して入っているため、
+    // 「先頭番号 + 個数」で使う範囲を指定してLODを切り替える
+    uint  g_meshletCount;
+    uint  g_meshletOffset;
+    float g_padding;
+    float g_padding2;
+
+    // メッシュシェーダーの中でスキニングする場合に使う値
+    // g_skinningMatrixBufferSRVDescriptorIndex : 事前計算したスキニング行列のBuffer
+    // g_skinningMatrixOffset                   : このMesh、このコマのスキニング行列が始まる番号
+    // g_isGPUSkinning                          : 1ならスキニングする(Meshlet単位のカリングは、動いた形と合わないため行わない)
+    uint g_skinningMatrixBufferSRVDescriptorIndex;
+    uint g_skinningMatrixOffset;
+    uint g_isGPUSkinning;
+    uint g_skinningPadding;
 };
 
 // 三角形1個分のPrimitiveIndexをuint3で取得する

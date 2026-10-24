@@ -23,7 +23,7 @@ namespace FWK::Converter
 
         bool IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const;
         
-        std::filesystem::path CreateAssetFilePath(const std::filesystem::path& a_filePath) const;
+        std::filesystem::path CreateAssetFilePath(const std::filesystem::path& a_filePath, const std::filesystem::path& a_assetExtension) const;
 
         bool CreateReadMemoryMappedFile (const std::filesystem::path& a_filePath);
         bool CreateWriteMemoryMappedFile(const std::filesystem::path& a_filePath, const std::uint64_t& a_fileSize);
@@ -98,7 +98,8 @@ namespace FWK::Converter
         }
 
         bool TryReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_destinationString, std::uint64_t& a_memoryReadOffset) const;
-        
+        bool TryReadStringBinaryData (const std::uint64_t& a_stringBinaryFileSize,  std::string&  a_destinationString, std::uint64_t& a_memoryReadOffset) const;
+
         void WriteWStringBinaryData(const std::wstring& a_wString, std::uint64_t& a_memoryWriteOffset) const;
         void WriteStringBinaryData (const std::string&  a_string,  std::uint64_t& a_memoryWriteOffset) const;
 

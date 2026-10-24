@@ -65,7 +65,6 @@ void FWK::Graphics::DirectCommandList::SetupDepthStencil(const TypeAlias::DSVDes
                                             FALSE,
                                             &l_dsvHandle);
 }
-
 void FWK::Graphics::DirectCommandList::SetupRenderTargetAndDepthStencil(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
                                                                         const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool,
                                                                         const TypeAlias::DescriptorIndex    a_rtvDescriptorIndex,
@@ -200,7 +199,6 @@ void FWK::Graphics::DirectCommandList::DrawIndexedInstanced(const UINT a_indexCo
                                               a_baseVertexLocation,
                                               a_startInstanceLocation);
 }
-
 void FWK::Graphics::DirectCommandList::DrawInstanced(const UINT a_vertexCount,
                                                      const UINT a_instanceCount,
                                                      const UINT a_startVertexLocation,
@@ -228,6 +226,103 @@ void FWK::Graphics::DirectCommandList::DispatchMesh(const UINT a_threadCountGrou
     //              Y方向のグループ数、
     //              Z方向のグループ数);
     l_directCommandList->DispatchMesh(a_threadCountGroupX, a_threadCountGroupY, a_threadCountGroupZ);
+}
+
+void FWK::Graphics::DirectCommandList::SetupComputePipeline(const std::weak_ptr<ComputePipelineState>& a_pipelineState)
+{
+    const auto& l_directCommandList = GetREFCommandList();
+
+    FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、ComputePipelineの設定に失敗しました。");
+
+    const auto& l_pipelineState = a_pipelineState.lock();
+
+    FWK_ASSERT_RETURN_IF(!l_pipelineState, "ComputePipelineStateが無効なため、ComputePipelineの設定に失敗しました。");
+
+    const auto& l_rootSignature = l_pipelineState->GetREFUseRootSignature().lock();
+
+    FWK_ASSERT_RETURN_IF(!l_rootSignature, "ComputePipelineStateで使用するRootSignatureが無効なため、ComputePipelineの設定に失敗しました。");
+
+    const auto& l_d3dRootSignature = l_rootSignature->GetREFRootSignature ();
+    const auto& l_d3dPipelineState = l_pipelineState->GetREFPipelineState();
+
+    FWK_ASSERT_RETURN_IF(!l_d3dRootSignature, "RootSignatureが作成されておらず、ComputePipelineの設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(!l_d3dPipelineState, "PipelineStateが作成されておらず、ComputePipelineの設定に失敗しました。");
+
+    // ComputeShader用のRootSignatureは、描画用(Graphics)のRootSignatureとは別に設定される
+    // そのため、ここで設定しても描画用の定数バッファなどの設定は消えない
+    l_directCommandList->SetComputeRootSignature(l_d3dRootSignature.Get());
+
+    // PipelineStateは描画用とComputeShader用で共通の1つしか設定できないため、
+    // ここで上書きされた描画用PipelineStateを、次の描画で必ず設定し直すようにする
+    l_directCommandList->SetPipelineState(l_d3dPipelineState.Get());
+
+    ResetCurrentPipelineStateCache();
+}
+void FWK::Graphics::DirectCommandList::SetupComputeConstantBufferView(const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const
+{
+    const auto& l_directCommandList = GetREFCommandList();
+
+    FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、ComputeShader用定数バッファビュー設定に失敗しました。");
+
+    const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
+
+    FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、ComputeShader用定数バッファビュー設定に失敗しました。");
+
+    // SetComputeRootConstantBufferView(ルートパラメータ番号、定数バッファのGPUアドレス);
+    l_directCommandList->SetComputeRootConstantBufferView(l_rootParameterIndex, a_gpuVirtualAddress);
+}
+
+void FWK::Graphics::DirectCommandList::Dispatch(const UINT a_threadGroupCountX, const UINT a_threadGroupCountY, const UINT a_threadGroupCountZ) const
+{
+    const auto& l_directCommandList = GetREFCommandList();
+
+    FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、Dispatchに失敗しました。");
+
+    // Dispatch(X方向のGroup数、Y方向のGroup数、Z方向のGroup数);
+    l_directCommandList->Dispatch(a_threadGroupCountX, a_threadGroupCountY, a_threadGroupCountZ);
+}
+
+void FWK::Graphics::DirectCommandList::UAVResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource) const
+{
+    FWK_ASSERT_RETURN_IF(!a_resource, "UAVBarrierを設定するGPUResourceが無効です。");
+
+    const auto& l_directCommandList = GetREFCommandList();
+
+    FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、UAVBarrierの設定に失敗しました。");
+
+    // UAVBarrierは「このリソースへの書き込みが終わるまで、次の読み書きを待たせる」命令
+    const auto& l_resourceBarrier = CD3DX12_RESOURCE_BARRIER::UAV(a_resource.Get());
+
+    l_directCommandList->ResourceBarrier(k_singleSetupBarrierNUM, &l_resourceBarrier);
+}
+
+void FWK::Graphics::DirectCommandList::ExecuteIndirect(const TypeAlias::ComPtr<ID3D12CommandSignature>& a_commandSignature,
+                                                       const UINT                                       a_maxCommandCount,
+                                                       const TypeAlias::ComPtr<ID3D12Resource2>&        a_argumentBuffer,
+                                                       const TypeAlias::ComPtr<ID3D12Resource2>&        a_countBuffer) const
+{
+    FWK_ASSERT_RETURN_IF(!a_commandSignature, "CommandSignatureが無効なため、ExecuteIndirectに失敗しました。");
+    FWK_ASSERT_RETURN_IF(!a_argumentBuffer,   "描画コマンドのBufferが無効なため、ExecuteIndirectに失敗しました。");
+    FWK_ASSERT_RETURN_IF(!a_countBuffer,      "描画コマンド数のBufferが無効なため、ExecuteIndirectに失敗しました。");
+
+    const auto& l_directCommandList = GetREFCommandList();
+
+    FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、ExecuteIndirectに失敗しました。");
+
+    // GPU上のBufferに書かれた描画コマンドを、CPUを介さずにまとめて実行する
+    // 実行される数は「CountBufferに書かれた数」と「最大数」の小さい方になる
+    // ExecuteIndirect(コマンドの並びを表すCommandSignature、
+    //                 実行する最大コマンド数、
+    //                 描画コマンドが書かれたBuffer、
+    //                 そのBufferの読み始め位置(バイト)、
+    //                 実行するコマンド数が書かれたBuffer、
+    //                 そのBufferの読み始め位置(バイト));
+    l_directCommandList->ExecuteIndirect(a_commandSignature.Get(),
+                                         a_maxCommandCount,
+                                         a_argumentBuffer.Get(),
+                                         k_indirectArgumentBufferOffset,
+                                         a_countBuffer.Get(),
+                                         k_indirectCountBufferOffset);
 }
 
 void FWK::Graphics::DirectCommandList::SetupRootSignature(ID3D12GraphicsCommandList6& a_commandList, ID3D12RootSignature& a_rootSignature)

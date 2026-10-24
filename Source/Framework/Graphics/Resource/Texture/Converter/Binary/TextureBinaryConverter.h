@@ -30,6 +30,10 @@ namespace FWK::Converter
 
             // AlphaModeなどの追加情報
             std::uint32_t m_miscFlags2 = k_emptyTextureMiscFlags2;
+
+            // PNGをどの読み込み方法(Auto / SRGB / Linear)で読み込んだかを保存する
+            // Enumのまま保存すると型のサイズがコンパイラ依存になるため、整数値として保存する
+            std::uint32_t m_textureLoadColorSpace = static_cast<std::uint32_t>(Enum::TextureLoadColorSpace::Auto);
         };
 
         struct TextureBinarySubresourceHeader final
@@ -46,24 +50,35 @@ namespace FWK::Converter
          TextureBinaryConverter()          = default;
         ~TextureBinaryConverter() override = default;
 
-        bool LoadTextureAsset(const std::filesystem::path& a_filePath, DirectX::ScratchImage& a_scratchImage, DirectX::TexMetadata& a_texMetadata);
+        bool LoadTextureAsset(const std::filesystem::path&      a_filePath,
+                              const Enum::TextureLoadColorSpace a_textureLoadColorSpace,
+                                    DirectX::ScratchImage&      a_scratchImage,
+                                    DirectX::TexMetadata&       a_texMetadata);
 
-        bool SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage);
+        bool SaveTextureAsset(const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace, const DirectX::ScratchImage& a_scratchImage);
 
         static constexpr std::uint64_t k_defaultTexture2DArraySize = 1ULL;
         static constexpr std::uint64_t k_defaultTexture2DMIPLevels = 1ULL;
 
     private:
 
-        bool CanLoadTextureAsset(const std::filesystem::path& a_filePath) const;
+        bool CanLoadTextureAsset(const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace) const;
 
-        TextureBinaryHeader CreateTextureBinaryHeader(const DirectX::ScratchImage& a_scratchImage, const std::uint64_t& a_fileSize) const;
+        TextureBinaryHeader CreateTextureBinaryHeader(const DirectX::ScratchImage& a_scratchImage, const Enum::TextureLoadColorSpace a_textureLoadColorSpace, const std::uint64_t& a_fileSize) const;
 
         TextureBinarySubresourceHeader CreateTextureBinarySubresourceHeader(const DirectX::Image& a_image) const;
 
         DirectX::TexMetadata CreateTexMetadata(const TextureBinaryHeader& a_textureBinaryHeader) const;
 
         std::uint64_t CalculateTextureAssetFileSize(const DirectX::ScratchImage& a_scratchImage) const;
+
+        const std::filesystem::path& FetchREFTextureAssetExtension(const Enum::TextureLoadColorSpace a_textureLoadColorSpace) const;
+
+        // Textureのバイナリーファイル用拡張子
+        // 同じPNGでも読み込み方法によってピクセルの扱いが変わるため、読み込み方法ごとに別ファイルとして保存する
+        inline static const std::filesystem::path k_autoTextureAssetExtension   = ".AutoTexture";
+        inline static const std::filesystem::path k_srgbTextureAssetExtension   = ".SRGBTexture";
+        inline static const std::filesystem::path k_linearTextureAssetExtension = ".LinearTexture";
 
         static constexpr std::uint64_t k_emptyTextureDepth            = 0ULL;
         static constexpr std::uint64_t k_emptyTextureSubresourceCount = 0ULL;
@@ -80,6 +95,7 @@ namespace FWK::Converter
         static constexpr std::uint16_t k_textureAssetTypeID = 0x5458U;
 
         // ※ 注意 : TextureAssetとして保存する構造体が変化したらバージョンを上げる
-        static constexpr std::uint16_t k_textureAssetVersion = 1U;
+        // Version2 : Headerに読み込み方法(TextureLoadColorSpace)を追加
+        static constexpr std::uint16_t k_textureAssetVersion = 2U;
     };
 }

@@ -5,12 +5,24 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::BeginFrame()
     // DrawRequestDataの所有権が破棄されていた場合は、
     // 内部配列から期限切れのstd::weak_ptrを削除する
     m_forwardDrawRequestDataSmartPointerVectorList.RemoveExpiredElements();
+
+    // 描画した三角形数の計測をフレームごとにやり直す
+    m_submittedTriangleCount = k_initialSubmittedTriangleCount;
 }
 
 void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
 {
     const auto& l_directCommandList          = a_renderer.GetREFDirectCommandList                                  ();
     const auto& l_forwardDrawRequestDataList = m_forwardDrawRequestDataSmartPointerVectorList.GetREFElementDataList();
+
+    // カメラからの距離に応じてMeshごとのLOD(詳細度)を選ぶための準備
+    // カメラが無い場合はLODを選ばず、元の形(全Meshlet)を描画する
+    ModelLODSelector l_modelLODSelector = {};
+
+    const bool l_canSelectLOD = SetupModelLODSelector(a_renderer, ModelLODSelector::k_defaultMaxScreenSpaceErrorPixel, l_modelLODSelector);
+
+    // この描画申請で描画するMaterialの種類
+    const auto l_targetMaterialStaticTypeID = GetVALTargetMaterialStaticTypeID();
 
     for (const auto& l_drawRequestData : l_forwardDrawRequestDataList)
     {
@@ -59,17 +71,27 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
 
         for (auto l_modelMeshIndex = 0ULL; l_modelMeshIndex < l_modelMeshList.size(); ++l_modelMeshIndex)
         {
-            const auto& l_modelMesh                = l_modelMeshList[l_modelMeshIndex];
-            const auto& l_modelMeshletData         = l_modelMesh.m_modelMeshletData;
-            const auto& l_modelMeshRuntimeData     = l_modelMesh.m_modelMeshRuntimeData;
-            const auto& l_modelMaterialAssetData   = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
-            const auto& l_modelMaterialRuntimeData = l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData;
-            const auto& l_skinnedVertexBuffer      = l_skinnedVertexBufferList[l_modelMeshIndex];
-            const auto& l_meshletBoundsBuffer      = l_meshletBoundsBufferList[l_modelMeshIndex];
+            const auto& l_modelMesh            = l_modelMeshList[l_modelMeshIndex];
+            const auto& l_modelMeshletData     = l_modelMesh.m_modelMeshletData;
+            const auto& l_modelMeshRuntimeData = l_modelMesh.m_modelMeshRuntimeData;
+            const auto& l_modelMaterial        = l_modelMesh.m_modelMaterial;
+            const auto& l_material             = l_modelMaterial.m_material.GetREFMaterial().lock();
+            const auto& l_skinnedVertexBuffer  = l_skinnedVertexBufferList[l_modelMeshIndex];
+            const auto& l_meshletBoundsBuffer  = l_meshletBoundsBufferList[l_modelMeshIndex];
+
+            // この描画で扱わない種類のMaterialを使うMeshは描画しない(別のPassが描画する)
+            if (!Utility::IsDrawTargetMaterial(l_material, l_targetMaterialStaticTypeID)) { continue; }
 
             FWK_ASSERT_CONTINUE_IF(l_modelMeshletData.m_meshletList.empty(), "Meshletが存在しないため、Skeletal Animation Modelを描画できません。");
 
-            const auto l_meshletCount = static_cast<std::uint32_t>(l_modelMeshletData.m_meshletList.size());
+            // このMeshで使うLODを選ぶ
+            // LODが無い(又は選べない)場合は、Meshlet全体を元の形として描画する
+            // ※スキニング後の頂点は全LODで共有しているため、LODを切り替えても頂点はそのまま使える
+            const auto* const l_modelMeshLOD = l_canSelectLOD ? l_modelLODSelector.SelectPTRModelMeshLOD(l_modelMeshletData, l_drawRequest->m_worldMatrix, l_worldMaxScale) : nullptr;
+
+            const auto l_meshletOffset = l_modelMeshLOD ? l_modelMeshLOD->m_meshletOffset                      : Struct::ModelMeshLOD::k_initialMeshletOffset;
+            const auto l_meshletCount  = l_modelMeshLOD ? l_modelMeshLOD->m_meshletCount                       : static_cast<std::uint32_t>(l_modelMeshletData.m_meshletList.size());
+            const auto l_triangleCount = l_modelMeshLOD ? static_cast<UINT64>(l_modelMeshLOD->m_triangleCount) : static_cast<UINT64>(l_modelMesh.m_indexList.size() / Constant::k_triangleVertexCount);
 
             // Compute Shaderは処理完了後に、
             // SkinnedVertexBufferをNON_PIXEL_SHADER_RESOURCEへ遷移している
@@ -88,9 +110,10 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             l_cbModelPerObject.m_worldMaxScale               = l_worldMaxScale;
             l_cbModelPerObject.m_worldOrientationSign        = l_worldOrientationSign;
             l_cbModelPerObject.m_meshletCount                = l_meshletCount;
-            l_cbModelPerObject.m_baseColorFactor             = l_modelMaterialAssetData.m_baseColorFactor;
-            l_cbModelPerObject.m_metallicFactor              = l_modelMaterialAssetData.m_metallicFactor;
-            l_cbModelPerObject.m_roughnessFactor             = l_modelMaterialAssetData.m_roughnessFactor;
+            l_cbModelPerObject.m_meshletOffset               = l_meshletOffset;
+
+            // Materialの種類を知らなくても、GPUDataBufferの番号を渡すだけでシェーダー側が自身の型として読む
+            l_cbModelPerObject.m_materialBufferSRVDescriptorIndex = l_material->GetVALGPUDataBufferSRVDescriptorIndex();
 
             // Static Modelでは元頂点Bufferを設定するが、
             // Skeletal AnimationではComputeShaderが出力した
@@ -107,21 +130,6 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "PrimitiveIndexBufferのSRVDescriptorIndexが無効です。");
             FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBoundsBufferのSRVDescriptorIndexが無効です。");
 
-            const auto l_baseColorTextureSRVDescriptorIndex = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_baseColorTexture);
-            const auto l_normalTextureSRVDescriptorIndex    = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_normalTexture);
-            const auto l_metallicTextureSRVDescriptorIndex  = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_metallicTexture);
-            const auto l_roughnessTextureSRVDescriptorIndex = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_roughnessTexture);
-
-            FWK_ASSERT_CONTINUE_IF(l_baseColorTextureSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "BaseColorTextureのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_CONTINUE_IF(l_normalTextureSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "NormalTextureのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_CONTINUE_IF(l_metallicTextureSRVDescriptorIndex  == DescriptorHeap::k_invalidDescriptorIndex, "MetallicTextureのSRVDescriptorIndexが無効です。");
-            FWK_ASSERT_CONTINUE_IF(l_roughnessTextureSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RoughnessのSRVDescriptorIndexが無効です。");
-
-            l_cbModelPerObject.m_baseColorTextureSRVDescriptorIndex = l_baseColorTextureSRVDescriptorIndex;
-            l_cbModelPerObject.m_normalTextureSRVDescriptorIndex    = l_normalTextureSRVDescriptorIndex;
-            l_cbModelPerObject.m_metallicTextureSRVDescriptorIndex  = l_metallicTextureSRVDescriptorIndex;
-            l_cbModelPerObject.m_roughnessTextureSRVDescriptorIndex = l_roughnessTextureSRVDescriptorIndex;
-
             // モデル描画用定数のセット
             SetupConstantBuffer<ModelPerObjectDynamicConstantBufferUploader>(l_cbModelPerObject,
                                                                              a_rootSignature,
@@ -130,10 +138,12 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
                                                                              Enum::RootParameterType::CBModelPerObject);
 
             // 現在Meshの定数バッファを設定し終えたため、
-            // Meshが保持するMeshlet数だけMesh Shaderを起動する
-            const bool l_isDispatchModelMeshSuccess = DispatchModelMesh(l_directCommandList, l_modelMesh);
+            // 選んだLODのMeshlet数だけMesh Shaderを起動する
+            const bool l_isDispatchModelMeshSuccess = DispatchModelMesh(l_directCommandList, l_meshletCount);
 
             FWK_ASSERT_CONTINUE_IF(!l_isDispatchModelMeshSuccess, "Skeletal Animation ModelのMeshlet描画に失敗しました。");
+
+            m_submittedTriangleCount += l_triangleCount;
         }
     }
 }
@@ -145,19 +155,15 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::AddDrawReque
     m_forwardDrawRequestDataSmartPointerVectorList.Add(a_drawRequestData);
 }
 
-bool FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const
+bool FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const UINT a_meshletCount) const
 {
-    const auto& l_modelMeshletList = a_modelMesh.m_modelMeshletData.m_meshletList;
-
-    FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(), "Meshletが存在しないため、Skeletal Animation Modelを描画できません。", false);
-
-    const auto l_meshletCount = static_cast<UINT>(l_modelMeshletList.size());
+    FWK_ASSERT_RETURN_VALUE_IF(a_meshletCount == Constant::k_defaultMeshletCount, "Meshletが存在しないため、Skeletal Animation Modelを描画できません。", false);
 
     // 1つのAmplification Shader Groupが、最大32個のMeshletを並列に処理する
-    auto l_amplificationShaderGroupCount = l_meshletCount / Constant::k_meshletCountPerAmplificationShaderGroup;
+    auto l_amplificationShaderGroupCount = a_meshletCount / Constant::k_meshletCountPerAmplificationShaderGroup;
 
     // Meshlet数が32の倍数でない場合は、余ったMeshletを処理するGroupを一つ追加する
-    if (const auto l_meshletCountRemainder = l_meshletCount % Constant::k_meshletCountPerAmplificationShaderGroup;
+    if (const auto l_meshletCountRemainder = a_meshletCount % Constant::k_meshletCountPerAmplificationShaderGroup;
         l_meshletCountRemainder != Constant::k_noRemainder)
     {
         ++l_amplificationShaderGroupCount;

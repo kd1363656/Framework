@@ -77,7 +77,6 @@ void FWK::Converter::GameObjectPrefabJsonConverter::Load(const nlohmann::json& a
 
     a_prefab.SetJson(std::move(l_json));
 }
-
 bool FWK::Converter::GameObjectPrefabJsonConverter::Save(const std::filesystem::path&       a_filePath, 
                                                          const GameObject&                  a_gameObject,
                                                                SceneGameObjectPrefabSystem& a_prefabSystem, 

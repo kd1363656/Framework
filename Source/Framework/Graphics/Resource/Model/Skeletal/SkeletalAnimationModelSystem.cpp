@@ -37,7 +37,7 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
     l_skeletalAnimationModelRecord->SetStorageID     (l_allocateStorageID);
     l_skeletalAnimationModelRecord->SetReferenceCount(AssetRecordBase::k_initialAssetReferenceCount);
 
-    // 有効な.assetを読み込めなかった場合はFBXから作成する
+    // 有効な.skeletalModelを読み込めなかった場合はFBXから作成する
     if (!m_binaryConverter.LoadAsset(a_filePath, *l_skeletalAnimationModelRecord))
     {
         if (!m_loader.LoadSkeletalAnimationModelFile(a_filePath, *l_skeletalAnimationModelRecord))
@@ -112,12 +112,11 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelAss
     // 最適化済みの頂点とインデックスからMeshletDataを作成する
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshletBuilder.BuildModelRecordMeshletData(a_skeletalAnimationModelRecord), "SkeletalAnimationModelMeshletDataの作成に失敗しました。", false);
 
-    // 次回以降FBX解析を省略できるように.assetへ保存する
+    // 次回以降FBX解析を省略できるように.skeletalModelへ保存する
     FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveAsset(a_filePath, a_skeletalAnimationModelRecord), "SkeletalAnimationModelAssetの保存に失敗しました。", false);
 
     return true;
 }
-
 bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord,
                                                                                          const Device&                                        a_device,
                                                                                          const GPUMemoryAllocator&                            a_gpuMemoryAllocator,
@@ -129,8 +128,8 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelRun
 
     Struct::SkeletalAnimationModelBatchUploadRecord l_skeletalAnimationModelBatchUploadRecord = {};
 
-    // Materialが参照するTextureを読み込む
-    m_materialRuntimeTextureBuilder.BuildMaterialRuntimeTextures(a_filePath, *a_skeletalAnimationModelRecord);
+    // 各Meshが使うMaterialを読み込む(Materialが参照するTextureはMaterial自身が読み込む)
+    m_materialRuntimeBuilder.BuildMaterialRuntimeData(a_filePath, *a_skeletalAnimationModelRecord);
 
     // 共通MeshBufferとBonePaletteBufferのUploadCommandを作成する
     if (!CreateSkeletalAnimationModelBatchUploadRecord(a_skeletalAnimationModelRecord,

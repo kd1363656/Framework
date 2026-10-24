@@ -8,7 +8,6 @@ void FWK::GameObjectPrefab::Load(const std::filesystem::path& a_filePath)
 
     m_jsonConverter.Load(l_rootJson, *this);
 }
-
 bool FWK::GameObjectPrefab::Save(const std::filesystem::path&       a_filePath, 
                                  const boost::uuids::uuid&          a_prefabUUID, 
                                        SceneGameObjectPrefabSystem& a_prefabSystem,

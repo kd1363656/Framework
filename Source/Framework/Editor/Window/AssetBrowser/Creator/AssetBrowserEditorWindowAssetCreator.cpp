@@ -157,7 +157,6 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
 
     return l_result;
 }
-
 std::vector<FWK::Struct::AssetBrowserEditorWindowAssetCreationResult> FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreatePrefabFromGameObjectDrop(const std::weak_ptr<GameObject>&         a_droppedGameObject, 
                                                                                                                                                         const std::filesystem::path&             a_parentFolderPath, 
                                                                                                                                                                           Scene&                 a_scene,

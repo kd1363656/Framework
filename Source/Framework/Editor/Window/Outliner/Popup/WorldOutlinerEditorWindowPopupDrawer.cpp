@@ -108,7 +108,6 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawGameObjectPopup(cons
 
     ImGui::EndPopup();
 }
-
 void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawEmptySpacePopup(const std::string_view&          a_popupLabel, 
                                                                                   Scene&                     a_scene, 
                                                                                   WorldOutlinerEditorWindow& a_editorWindow, 
@@ -124,7 +123,10 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawEmptySpacePopup(cons
 
     // Clipboardが空ならPasteは無効化する
     if (const auto& l_clipboard = a_editorWindow.GetREFClipboard();
-        ImGui::MenuItem(k_pasteMenuLabel.data(), k_pasteShortcutLabel.data(), false, !l_clipboard.IsEmpty()))
+        ImGui::MenuItem(k_pasteMenuLabel.data(),
+                        k_pasteShortcutLabel.data(),
+                        false,
+                        !l_clipboard.IsEmpty()))
     {
               auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
         const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation             ();

@@ -27,13 +27,15 @@ float4 TransformModelLocalTangentToWorld(const float4 a_localTangent)
     return float4(normalize(l_worldTangent.xyz), a_localTangent.w * g_worldOrientationSign);
 }
 
-float4 FetchModelBaseColor(const float2 a_uv)
+// ベースカラーテクスチャの色に係数を掛けた色を取得する
+// テクスチャと係数はMaterialの種類ごとのデータから渡す
+float4 FetchModelBaseColor(const uint a_baseColorTextureSRVDescriptorIndex, const float4 a_baseColorFactor, const float2 a_uv)
 {
-    Texture2D<float4> l_baseColorTexture = ResourceDescriptorHeap[g_baseColorTextureSRVDescriptorIndex];
-    
+    Texture2D<float4> l_baseColorTexture = ResourceDescriptorHeap[a_baseColorTextureSRVDescriptorIndex];
+
     const float4 l_baseColorSample = l_baseColorTexture.Sample(g_textureSampler, a_uv);
-    
-    return l_baseColorSample * g_baseColorFactor;
+
+    return l_baseColorSample * a_baseColorFactor;
 }
 
 #endif // MODEL_STANDARD_HLSLI

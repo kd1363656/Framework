@@ -14,7 +14,9 @@
       <VariableName>%(Filename)</VariableName>
       <EnableDebuggingInformation Condition="'$(Configuration)' == 'Debug'">True</EnableDebuggingInformation>
       <EnableDebuggingInformation Condition="!('$(Configuration)' == 'Debug')">False</EnableDebuggingInformation>
-      <DisableOptimizations Condition="'$(Configuration)' == 'Debug'">True</DisableOptimizations>
+      <!--Debugでもシェーダーは最適化する(-Od無し)。最適化しないとGPU処理が数倍遅くなり、性能計測が実際と大きくずれるため-->
+      <!--デバッグ情報(-Zi)は残すので、PIXなどでのシェーダーデバッグは引き続き可能-->
+      <DisableOptimizations Condition="'$(Configuration)' == 'Debug'">False</DisableOptimizations>
       <DisableOptimizations Condition="!('$(Configuration)' == 'Debug')">False</DisableOptimizations>
       <CommandLineTemplate>dxc.exe [AllOptions] [Inputs]</CommandLineTemplate>
     </DXCTask>

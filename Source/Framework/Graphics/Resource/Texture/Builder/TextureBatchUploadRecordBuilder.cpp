@@ -193,7 +193,6 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(c
 
     return true;
 }
-
 bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const Device&                             a_device,
                                                                       const DirectX::TexMetadata&               a_texMetadata,
                                                                             TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,

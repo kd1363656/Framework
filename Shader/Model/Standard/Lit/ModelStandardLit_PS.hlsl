@@ -1,6 +1,7 @@
 ﻿#include "../ModelStandard.hlsli"
 #include "ModelStandardLit.hlsli"
 #include "../../Shadow/Cascade/CascadeShadowMapPass.hlsli"
+#include "../../../Material/Standard/Lit/StandardLitMaterial.hlsli"
 
 cbuffer CBLightPass : register(b2)
 {
@@ -269,9 +270,9 @@ float CalculateDisneyDiffuseFactor(const float a_normalDotView,
 // 頂点法線だけでは、面の細かい凹凸を表現できない。
 // NormalMapからTangent空間の法線を読み取り、
 // TBN行列でWorld空間の法線へ変換する
-float3 FetchWorldNormal(const MSOutputLit a_input)
+float3 FetchWorldNormal(const MSOutputLit a_input, const uint a_normalTextureSRVDescriptorIndex)
 {
-    Texture2D<float4> l_normalTexture = ResourceDescriptorHeap[g_normalTextureSRVDescriptorIndex];
+    Texture2D<float4> l_normalTexture = ResourceDescriptorHeap[a_normalTextureSRVDescriptorIndex];
     
     // MeshShaderから渡されたWorld空間の法線
     // 補間後の値なので、念のためnormalizeする
@@ -313,24 +314,27 @@ float3 FetchWorldNormal(const MSOutputLit a_input)
 
 float4 main(const MSOutputLit a_input) : SV_Target0
 {
-    Texture2D<float4> l_metallicTexture  = ResourceDescriptorHeap[g_metallicTextureSRVDescriptorIndex];
-    Texture2D<float4> l_roughnessTexture = ResourceDescriptorHeap[g_roughnessTextureSRVDescriptorIndex];
-    
+    // このMeshのMaterial(Lit描画に必要な値とテクスチャ)
+    const StandardLitMaterial l_material = FetchStandardLitMaterial(g_materialBufferSRVDescriptorIndex);
+
+    Texture2D<float4> l_metallicTexture  = ResourceDescriptorHeap[l_material.metallicTextureSRVDescriptorIndex];
+    Texture2D<float4> l_roughnessTexture = ResourceDescriptorHeap[l_material.roughnessTextureSRVDescriptorIndex];
+
     // BaseColor、非金属ではDiffuse色として使う
     // 金属ではSpecular反射色として使う
-    const float4 l_baseColor = FetchModelBaseColor(a_input.uv);
-    
+    const float4 l_baseColor = FetchModelBaseColor(l_material.baseColorTextureSRVDescriptorIndex, l_material.baseColorFactor, a_input.uv);
+
     // Metallic
     // 0.0Fに近いほど非金属、1.0Fに近いほど金属。
-    const float l_metallic = saturate(l_metallicTexture.Sample(g_textureSampler, a_input.uv).r * g_metallicFactor);
-    
+    const float l_metallic = saturate(l_metallicTexture.Sample(g_textureSampler, a_input.uv).r * l_material.metallicFactor);
+
     // Roughness
     // 低いほど鏡面反射が鋭く、高いほどぼやける
     // 0に近すぎるとSpecularが不安定になりやすいので最低値を持たせる
-    const float l_roughness = max(saturate(l_roughnessTexture.Sample(g_textureSampler, a_input.uv).r * g_roughnessFactor), k_minRoughnessForSpecularStability);
+    const float l_roughness = max(saturate(l_roughnessTexture.Sample(g_textureSampler, a_input.uv).r * l_material.roughnessFactor), k_minRoughnessForSpecularStability);
 
     // NormalMap込みのWorld空間法線
-    const float3 l_normal = FetchWorldNormal(a_input);
+    const float3 l_normal = FetchWorldNormal(a_input, l_material.normalTextureSRVDescriptorIndex);
 
     // Pixelからカメラへ向かう方向
     const float3 l_viewDirection = normalize(g_cameraWorldPosition - a_input.worldPosition);

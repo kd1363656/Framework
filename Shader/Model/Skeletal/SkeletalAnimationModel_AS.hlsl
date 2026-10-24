@@ -18,12 +18,15 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID,
     GroupMemoryBarrierWithGroupSync();
     
     // 1つのthreadが1つのMeshletを担当する
-    const uint l_meshletIndex   = a_dispatchThreadID.x;
-          bool l_shouldDispatch = false;
-    
+    // a_dispatchThreadID.xは「描画するLODの中で何番目のMeshletか」を表すため、
+    // LODの先頭番号を足して、全LODを連結したBuffer全体での番号へ変換する
+    const uint l_lodMeshletIndex = a_dispatchThreadID.x;
+    const uint l_meshletIndex    = g_meshletOffset + l_lodMeshletIndex;
+          bool l_shouldDispatch  = false;
+
     // 最後のASGroupで範囲外となるThreadは、
     // 動的MeshletBoundsBufferへアクセスさせない
-    if (l_meshletIndex < g_meshletCount)
+    if (l_lodMeshletIndex < g_meshletCount)
     {
         l_shouldDispatch = ShouldDispatchModelMeshlet(l_meshletIndex);
     }

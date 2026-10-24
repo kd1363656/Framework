@@ -35,6 +35,9 @@
 #include <any>
 #include <type_traits>
 #include <mutex>
+#include <chrono>
+#include <algorithm>
+#include <bit>
 
 //================================================
 // Boost

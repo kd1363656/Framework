@@ -43,6 +43,13 @@ namespace FWK::Graphics
 
         Factory         m_factory         = {};
         Device          m_device          = {};
+
+#if defined(_DEBUG)
+        // デバッグレイヤーの警告・エラーをファイルへ記録する
+        // (Rendererより先に宣言し、Rendererの終了処理中のメッセージも記録できるように後から破棄させる)
+        D3D12DebugMessageLogger m_d3d12DebugMessageLogger;
+#endif
+
         ResourceContext m_resourceContext = {};
         Renderer        m_renderer        = {};
 

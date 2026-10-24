@@ -21,6 +21,26 @@ FWK::Graphics::SkeletalAnimationModelStandardLitPass::~SkeletalAnimationModelSta
 
 void FWK::Graphics::SkeletalAnimationModelStandardLitPass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
+    // GPUスキニングで描画する大量のキャラクターのカリング
+    // カメラから見える範囲に入っているMeshだけを選び、LODを決めて描画コマンドを作る
+    // ※ ComputeShader用のPipelineStateを使うため、描画用PipelineStateを設定する前に行う
+    const auto& l_gpuSkinnedLitPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequest>().lock();
+
+    bool l_isGPUSkinnedCulled = false;
+
+    if (const auto& l_cameraPassDrawRequest = a_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>().lock();
+        l_cameraPassDrawRequest &&
+        l_gpuSkinnedLitPerObjectDrawRequest)
+    {
+        if (const auto& l_cbCameraPass = l_cameraPassDrawRequest->GetREFSourceConstantBuffer().lock();
+            l_cbCameraPass)
+        {
+            const auto& l_cullingView = ModelGPUDrivenDrawer::BuildCullingView(l_cbCameraPass->m_viewProjectionMatrix, k_useNearPlaneForCulling);
+
+            l_isGPUSkinnedCulled = l_gpuSkinnedLitPerObjectDrawRequest->DispatchGPUCulling(a_renderer, k_cameraViewIndex, l_cullingView);
+        }
+    }
+
     const auto& l_directCommandList    = a_renderer.GetREFDirectCommandList   ();
     const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (a_renderer, Enum::PipelineStateType::SkeletalAnimationModelLit).lock();
     const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock                                                              ();
@@ -44,4 +64,21 @@ void FWK::Graphics::SkeletalAnimationModelStandardLitPass::Execute(const Resourc
     // 登録されている各SkeletalAnimationModelについて
     // Model定数を設定してMeshShaderをDispatchする
     l_skeletalAnimationModelStandardLitPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer, *l_rootSignature, *l_currentFrameResource);
+
+    // LOD適用後に描画命令を出した三角形数を計測用に記録する
+    a_renderer.GetMutableREFFrameProfiler().AddCounterSample(k_triangleCounterName, static_cast<double>(l_skeletalAnimationModelStandardLitPerObjectDrawRequest->GetVALSubmittedTriangleCount()));
+
+    if (!l_gpuSkinnedLitPerObjectDrawRequest) { return; }
+
+    if (l_isGPUSkinnedCulled)
+    {
+        // GPUスキニング用のPipelineState(メッシュシェーダーの中でスキニングする)へ切り替えて、まとめて描画する
+        // RootSignatureは同じため、上で設定したカメラ、ライト、影の定数バッファはそのまま使われる
+        SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::SkeletalAnimationModelGPUSkinnedLit);
+
+        l_gpuSkinnedLitPerObjectDrawRequest->SetCurrentDrawViewIndex     (k_cameraViewIndex);
+        l_gpuSkinnedLitPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer, *l_rootSignature, *l_currentFrameResource);
+    }
+
+    a_renderer.GetMutableREFFrameProfiler().AddCounterSample(k_gpuSkinnedTriangleCounterName, static_cast<double>(l_gpuSkinnedLitPerObjectDrawRequest->GetVALSubmittedTriangleCount()));
 }

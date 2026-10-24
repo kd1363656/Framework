@@ -14,7 +14,6 @@ JPH::DebugRenderer::Batch FWK::Physics::PhysicsDebugTriangleBatch::Create(const 
 
     return l_batch;
 }
-
 JPH::DebugRenderer::Batch FWK::Physics::PhysicsDebugTriangleBatch::Create(const JPH::DebugRenderer::Vertex* a_vertexList,
                                                                           const int                         a_vertexCount,
                                                                           const JPH::uint32*                a_indexList,
@@ -63,7 +62,6 @@ void FWK::Physics::PhysicsDebugTriangleBatch::CopyTriangleList(const JPH::DebugR
     // 三角形情報をコピー
     m_triangleList.assign(a_triangleList, a_triangleList + a_triangleCount);
 }
-
 void FWK::Physics::PhysicsDebugTriangleBatch::CopyIndexedTriangleList(const JPH::DebugRenderer::Vertex* a_vertexList,
                                                                       const int                         a_vertexCount,
                                                                       const JPH::uint32*                a_indexList,

@@ -29,8 +29,11 @@ void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
     m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
-void FWK::Scene::PostDeserialize() const
+void FWK::Scene::PostDeserialize()
 {
+    // ※負荷テスト専用 : モデルを500体並べて描画する
+    SetupPerformanceTest();
+
     if (m_gameObjectExecutionLevelList.empty()) { return; }
 
     // ルートGameObjectのみを対象にする
@@ -65,6 +68,10 @@ void FWK::Scene::EarlyUpdate()
 
     // 追加要求があったゲームオブジェクトがあればここで追加
     AddPendingGameObjects();
+
+    // ※負荷テスト専用 : ウィンドウサイズが変わったらカメラの縦横比を合わせ、アニメーションの再生時刻を進める
+    UpdatePerformanceTestCameraAspectRatio();
+    UpdatePerformanceTestAnimationTime    ();
 
     for (const auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
     {
@@ -377,4 +384,342 @@ std::size_t FWK::Scene::CalculateGameObjectExecutionLevel(const std::weak_ptr<Ga
     }
     
     return l_executionLevel;
+}
+
+void FWK::Scene::SetupPerformanceTest()
+{
+    // 前回の負荷テストの描画申請データが残っていれば破棄する
+    // (描画申請側はweak_ptrで参照しているため、ここで破棄すれば自動的に描画対象から外れる)
+    m_performanceTestDrawRequestDataList.clear        ();
+    m_performanceTestSkeletalDrawRequestDataList.clear();
+
+    // StaticModelとSkeletalAnimationModelのキャッシュは拡張子(.staticModel / .skeletalModel)で別ファイルになったが、
+    // 負荷テストではモデルの種類ごとの負荷を測りたいので、一度に読み込むのはどちらか片方だけにする
+    switch (k_performanceTestModelKind)
+    {
+    case PerformanceTestModelKind::Static:
+        SetupPerformanceTestStaticModel();
+        break;
+
+    case PerformanceTestModelKind::SkeletalGPUSkinning:
+        SetupPerformanceTestSkeletalModel();
+        break;
+    }
+}
+
+void FWK::Scene::SetupPerformanceTestStaticModel()
+{
+    FWK_ASSERT_RETURN_IF(!m_performanceTestStaticModel.Load(k_performanceTestModelFilePath), "負荷テスト用モデルの読み込みに失敗しました。");
+
+    const auto& l_staticModelRecord = m_performanceTestStaticModel.GetREFStaticModelRecord().lock();
+
+    FWK_ASSERT_RETURN_IF(!l_staticModelRecord, "負荷テスト用モデルのStaticModelRecordが無効です。");
+
+    // モデルの大きさから、モデル同士の間隔とカメラの位置を決める
+    const auto l_layout = CalculatePerformanceTestLayout(l_staticModelRecord->GetREFModelData().m_modelMeshList);
+
+    FWK_ASSERT_RETURN_IF(l_layout.m_meshletCount == 0ULL || l_layout.m_spacing <= 0.0F, "負荷テスト用モデルに頂点が存在しません。");
+
+          auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance ();
+          auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer();
+    const auto& l_renderGraph     = l_renderer.GetREFRenderGraph           ();
+
+    // 通常描画(ライティングあり)と影描画の両方へ同じ描画申請データを登録する
+    const auto& l_litDrawRequest    = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardLitPerObjectDrawRequest>  ().lock();
+    const auto& l_shadowDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelCascadeShadowPerObjectDrawRequest>().lock();
+
+    FWK_ASSERT_RETURN_IF(!l_litDrawRequest,    "StaticModelStandardLitPerObjectDrawRequestが見つからないため、負荷テストを開始できません。");
+    FWK_ASSERT_RETURN_IF(!l_shadowDrawRequest, "StaticModelCascadeShadowPerObjectDrawRequestが見つからないため、負荷テストを開始できません。");
+
+    m_performanceTestDrawRequestDataList.reserve(k_performanceTestInstanceCountX * k_performanceTestInstanceCountZ);
+
+    for (std::size_t l_indexZ = 0ULL; l_indexZ < k_performanceTestInstanceCountZ; ++l_indexZ)
+    {
+        for (std::size_t l_indexX = 0ULL; l_indexX < k_performanceTestInstanceCountX; ++l_indexX)
+        {
+            auto l_drawRequestData = std::make_shared<Struct::StaticModelPerObjectDrawRequestData>();
+
+            l_drawRequestData->m_staticModelRecord           = l_staticModelRecord;
+            l_drawRequestData->m_worldMatrix                 = TypeAlias::Math::Matrix::CreateTranslation(CalculatePerformanceTestPosition(l_layout, l_indexX, l_indexZ));
+            l_drawRequestData->m_worldInverseTransposeMatrix = l_drawRequestData->m_worldMatrix.Invert().Transpose();
+            l_drawRequestData->m_worldMaxScale               = k_performanceTestWorldMaxScale;
+
+            l_litDrawRequest->AddDrawRequest   (l_drawRequestData);
+            l_shadowDrawRequest->AddDrawRequest(l_drawRequestData);
+
+            m_performanceTestDrawRequestDataList.emplace_back(l_drawRequestData);
+        }
+    }
+
+    // オクルージョンカリングの確認用 : 並びの手前に巨大なモデルを1体置き、後ろのモデルを隠す
+    // (通常の計測では使わないため、k_isPerformanceTestOccluderEnabledがtrueのときだけ置く)
+    if (k_isPerformanceTestOccluderEnabled)
+    {
+        const auto l_occluderScaleMatrix       = TypeAlias::Math::Matrix::CreateScale(k_performanceTestOccluderScale);
+        const auto l_occluderTranslationMatrix = TypeAlias::Math::Matrix::CreateTranslation(0.0F, -l_layout.m_boundsMIN.y * k_performanceTestOccluderScale, -l_layout.m_gridDepth * k_half);
+
+        auto l_drawRequestData = std::make_shared<Struct::StaticModelPerObjectDrawRequestData>();
+
+        l_drawRequestData->m_staticModelRecord           = l_staticModelRecord;
+        l_drawRequestData->m_worldMatrix                 = l_occluderScaleMatrix * l_occluderTranslationMatrix;
+        l_drawRequestData->m_worldInverseTransposeMatrix = l_drawRequestData->m_worldMatrix.Invert().Transpose();
+        l_drawRequestData->m_worldMaxScale               = k_performanceTestOccluderScale;
+
+        l_litDrawRequest->AddDrawRequest   (l_drawRequestData);
+        l_shadowDrawRequest->AddDrawRequest(l_drawRequestData);
+
+        m_performanceTestDrawRequestDataList.emplace_back(l_drawRequestData);
+    }
+
+    SetupPerformanceTestCamera  (l_layout);
+    AddPerformanceTestReportNote(l_layout);
+}
+
+void FWK::Scene::SetupPerformanceTestSkeletalModel()
+{
+    FWK_ASSERT_RETURN_IF(!m_performanceTestSkeletalAnimationModel.Load(k_performanceTestModelFilePath), "負荷テスト用SkeletalAnimationModelの読み込みに失敗しました。");
+
+    const auto& l_skeletalAnimationModelRecord = m_performanceTestSkeletalAnimationModel.GetREFSkeletalAnimationModelRecord().lock();
+
+    FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelRecord, "負荷テスト用モデルのSkeletalAnimationModelRecordが無効です。");
+
+    auto& l_modelData = l_skeletalAnimationModelRecord->GetMutableREFModelData();
+
+    // テスト用FBXにモーションが入っていない場合は、確認用のモーションを作って追加する
+    // ※ アニメーションのベイクは最初に描画されるときに行うため、ここで追加すればベイクに含まれる
+    if (l_modelData.m_motionSequenceList.empty())
+    {
+        AddPerformanceTestProceduralMotion(l_modelData);
+    }
+
+    const auto l_layout = CalculatePerformanceTestLayout(l_modelData.m_modelMeshList);
+
+    FWK_ASSERT_RETURN_IF(l_layout.m_meshletCount == 0ULL || l_layout.m_spacing <= 0.0F, "負荷テスト用モデルに頂点が存在しません。");
+
+          auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance ();
+          auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer();
+    const auto& l_renderGraph     = l_renderer.GetREFRenderGraph           ();
+
+    const auto& l_litDrawRequest    = l_renderGraph.FindVALDrawRequestPerObject<Graphics::SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequest>          ().lock();
+    const auto& l_shadowDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest>().lock();
+
+    FWK_ASSERT_RETURN_IF(!l_litDrawRequest,    "SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequestが見つからないため、負荷テストを開始できません。");
+    FWK_ASSERT_RETURN_IF(!l_shadowDrawRequest, "SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequestが見つからないため、負荷テストを開始できません。");
+
+    m_performanceTestSkeletalDrawRequestDataList.reserve(k_performanceTestInstanceCountX * k_performanceTestInstanceCountZ);
+
+    for (std::size_t l_indexZ = 0ULL; l_indexZ < k_performanceTestInstanceCountZ; ++l_indexZ)
+    {
+        for (std::size_t l_indexX = 0ULL; l_indexX < k_performanceTestInstanceCountX; ++l_indexX)
+        {
+            auto l_drawRequestData = std::make_shared<Struct::SkeletalAnimationModelGPUSkinnedDrawRequestData>();
+
+            const auto l_instanceIndex = m_performanceTestSkeletalDrawRequestDataList.size();
+
+            l_drawRequestData->m_skeletalAnimationModelRecord = l_skeletalAnimationModelRecord;
+            l_drawRequestData->m_worldMatrix                  = TypeAlias::Math::Matrix::CreateTranslation(CalculatePerformanceTestPosition(l_layout, l_indexX, l_indexZ));
+            l_drawRequestData->m_worldInverseTransposeMatrix  = l_drawRequestData->m_worldMatrix.Invert().Transpose();
+
+            // モデルごとに再生時刻をずらし、全員が同じ姿勢にならないようにする
+            // (std::fmod(割られる数, 割る数) : 浮動小数点の余りを求める)
+            l_drawRequestData->m_animationTimeSecond = std::fmod(static_cast<float>(l_instanceIndex) * k_performanceTestAnimationTimeOffsetSecond, k_performanceTestMotionDurationSecond);
+
+            l_litDrawRequest->AddDrawRequest   (l_drawRequestData);
+            l_shadowDrawRequest->AddDrawRequest(l_drawRequestData);
+
+            m_performanceTestSkeletalDrawRequestDataList.emplace_back(l_drawRequestData);
+        }
+    }
+
+    SetupPerformanceTestCamera  (l_layout);
+    AddPerformanceTestReportNote(l_layout);
+
+    auto& l_frameProfiler = l_renderer.GetMutableREFFrameProfiler();
+
+    l_frameProfiler.AddReportNote(std::format("SkeletalBoneCount        : {}", l_modelData.m_boneList.size()));
+    l_frameProfiler.AddReportNote(std::format("SkeletalMotionCount      : {}", l_modelData.m_motionSequenceList.size()));
+}
+
+void FWK::Scene::SetupPerformanceTestCamera(const PerformanceTestLayout& a_layout)
+{
+    // カメラは並びの手前・斜め上から全体を見下ろす位置に置く
+    // 手前のモデルは大きく、奥のモデルは小さく映るため、LODなどの効果を確認しやすい
+    const TypeAlias::Math::Vector3 l_cameraPosition =
+    {
+        0.0F,
+        a_layout.m_boundsSize.y * k_performanceTestCameraHeightScale,
+       -a_layout.m_gridDepth * k_half - a_layout.m_spacing * k_performanceTestCameraBackOffsetCount
+    };
+
+    const TypeAlias::Math::Vector3 l_cameraLookAtPosition =
+    {
+        0.0F,
+        a_layout.m_boundsSize.y * k_performanceTestCameraLookAtHeightScale,
+        0.0F
+    };
+
+    // XMMatrixLookAtLH(カメラの位置、注視点、カメラの上方向);
+    // 戻り値は「ワールド座標 → カメラから見た座標」へ変換するビュー行列なので、
+    // 逆行列にしてカメラ自身の姿勢と位置を表す行列にする
+    const TypeAlias::Math::Matrix l_viewMatrix   = DirectX::XMMatrixLookAtLH(l_cameraPosition, l_cameraLookAtPosition, TypeAlias::Math::Vector3::Up);
+    const TypeAlias::Math::Matrix l_cameraMatrix = l_viewMatrix.Invert();
+
+    // 一番遠いモデル(奥の角)まで映るようにFarClipを決める
+    const TypeAlias::Math::Vector3 l_farthestPosition =
+    {
+        a_layout.m_gridWidth * k_half,
+        0.0F,
+        a_layout.m_gridDepth * k_half
+    };
+
+    const float l_farClip  = TypeAlias::Math::Vector3::Distance(l_cameraPosition, l_farthestPosition) * k_performanceTestCameraFarClipScale;
+    const float l_nearClip = a_layout.m_boundsSize.y * k_performanceTestCameraNearClipScale;
+
+          auto& l_application = Application::GetInstance  ();
+    const auto& l_window      = l_application.GetREFWindow();
+
+    m_performanceTestCamera.Setup(l_cameraMatrix,
+                                  l_window.GetVALAspectRatio(),
+                                  Constant::k_cameraDefaultFOVYDegree,
+                                  l_farClip,
+                                  l_nearClip);
+
+    // シーンファイルのライトの向きが0の場合でも影とライティングが正しく計算されるように、既定のライトを使う
+    m_lightSystem.ApplyDefaultSettings();
+
+    auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance ();
+    auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer();
+    auto& l_frameProfiler   = l_renderer.GetMutableREFFrameProfiler  ();
+
+    l_frameProfiler.AddReportNote(std::format("CameraNearClip / FarClip : {:.3f} / {:.3f}", l_nearClip, l_farClip));
+}
+
+void FWK::Scene::AddPerformanceTestReportNote(const PerformanceTestLayout& a_layout) const
+{
+    // レポートへ負荷テストの条件を書き出す
+          auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance ();
+          auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer();
+          auto& l_frameProfiler   = l_renderer.GetMutableREFFrameProfiler  ();
+    const auto  l_instanceCount   = m_performanceTestDrawRequestDataList.size() + m_performanceTestSkeletalDrawRequestDataList.size();
+
+    const auto l_modelKindName = k_performanceTestModelKind == PerformanceTestModelKind::Static ? "Static" : "SkeletalGPUSkinning";
+
+    l_frameProfiler.AddReportNote(std::format("PerformanceTestModel     : {}", k_performanceTestModelFilePath.string()));
+    l_frameProfiler.AddReportNote(std::format("PerformanceTestModelKind : {}", l_modelKindName));
+    l_frameProfiler.AddReportNote(std::format("ModelMeshCount           : {}", a_layout.m_meshCount));
+    l_frameProfiler.AddReportNote(std::format("ModelTriangleCount       : {}", a_layout.m_triangleCount));
+    l_frameProfiler.AddReportNote(std::format("ModelMeshletCount        : {}", a_layout.m_meshletCount));
+    l_frameProfiler.AddReportNote(std::format("ModelBoundsSize          : ({:.3f}, {:.3f}, {:.3f})",
+                                              a_layout.m_boundsSize.x,
+                                              a_layout.m_boundsSize.y,
+                                              a_layout.m_boundsSize.z));
+    l_frameProfiler.AddReportNote(std::format("InstanceCount            : {}", l_instanceCount));
+    l_frameProfiler.AddReportNote(std::format("TotalTriangleCount       : {}", a_layout.m_triangleCount * l_instanceCount));
+
+    for (std::size_t l_lodIndex = 0ULL; l_lodIndex < a_layout.m_lodTriangleCountList.size(); ++l_lodIndex)
+    {
+        l_frameProfiler.AddReportNote(std::format("ModelTriangleCount LOD{}   : {}", l_lodIndex, a_layout.m_lodTriangleCountList[l_lodIndex]));
+    }
+}
+
+FWK::TypeAlias::Math::Vector3 FWK::Scene::CalculatePerformanceTestPosition(const PerformanceTestLayout& a_layout, const std::size_t a_indexX, const std::size_t a_indexZ) const
+{
+    // 並び全体の中心が原点に来るように配置し、モデルの足元(最も低い頂点)を地面(Y=0)に合わせる
+    return
+    {
+        static_cast<float>(a_indexX) * a_layout.m_spacing - a_layout.m_gridWidth * k_half,
+       -a_layout.m_boundsMIN.y,
+        static_cast<float>(a_indexZ) * a_layout.m_spacing - a_layout.m_gridDepth * k_half
+    };
+}
+
+void FWK::Scene::AddPerformanceTestProceduralMotion(Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData) const
+{
+    using ModelRecord = Graphics::SkeletalAnimationModelRecord;
+
+    ModelRecord::ModelMotionSequence l_motionSequence = {};
+
+    l_motionSequence.m_motionName     = L"PerformanceTestProceduralMotion";
+    l_motionSequence.m_durationSecond = k_performanceTestMotionDurationSecond;
+    l_motionSequence.m_frameRate      = ModelRecord::k_defaultAnimationFrameRate;
+
+    // PoseEvaluatorは「再生時刻 × FrameRate」番目のKeyFrameを読むため、KeyFrameはFrameRateの間隔で並べる
+    // 最後の時刻(= モーションの長さ)も含めるため+1する
+    const auto l_keyFrameCount = static_cast<std::size_t>(std::floor(k_performanceTestMotionDurationSecond * l_motionSequence.m_frameRate)) + 1ULL;
+
+    l_motionSequence.m_boneMotionTrackList.reserve(a_modelData.m_boneList.size());
+
+    for (std::size_t l_boneIndex = 0ULL; l_boneIndex < a_modelData.m_boneList.size(); ++l_boneIndex)
+    {
+        // バインドポーズ(元の姿勢)の拡大率、回転、位置を取り出す
+        // Decompose(拡大率, 回転, 位置) : 行列を3つの要素に分解する(分解できない行列ならfalse)
+        TypeAlias::Math::Vector3    l_bindScale       = TypeAlias::Math::Vector3::One;
+        TypeAlias::Math::Quaternion l_bindRotation    = TypeAlias::Math::Quaternion::Identity;
+        TypeAlias::Math::Vector3    l_bindTranslation = TypeAlias::Math::Vector3::Zero;
+
+        if (!a_modelData.m_boneList[l_boneIndex].m_bindPoseLocalMatrix.Decompose(l_bindScale, l_bindRotation, l_bindTranslation)) { continue; }
+
+        ModelRecord::ModelBoneMotionTrack l_boneMotionTrack = {};
+
+        l_boneMotionTrack.m_boneIndex = static_cast<std::uint32_t>(l_boneIndex);
+        l_boneMotionTrack.m_keyFrameList.reserve(l_keyFrameCount);
+
+        for (std::size_t l_keyFrameIndex = 0ULL; l_keyFrameIndex < l_keyFrameCount; ++l_keyFrameIndex)
+        {
+            const float l_timeSecond = std::min(static_cast<float>(l_keyFrameIndex) / l_motionSequence.m_frameRate, k_performanceTestMotionDurationSecond);
+
+            // モーションの長さで1周する正弦波で、ボーンごとにタイミングをずらして揺らす
+            // (最初と最後のKeyFrameが同じ角度になるため、ループ再生しても繋ぎ目が出ない)
+            const float l_phase = DirectX::XM_2PI * l_timeSecond / k_performanceTestMotionDurationSecond + static_cast<float>(l_boneIndex) * k_performanceTestMotionBonePhaseRadian;
+            const float l_angle = std::sin(l_phase) * k_performanceTestMotionAmplitudeRadian;
+
+            // CreateFromAxisAngle(回転軸, 角度) : 軸周りに回転するQuaternionを作る
+            // 「揺れの回転 → 元の回転」の順に掛け、ボーン自身の向きを基準に揺らす
+            const auto l_swingRotation = TypeAlias::Math::Quaternion::CreateFromAxisAngle(TypeAlias::Math::Vector3::UnitX, l_angle);
+
+            ModelRecord::ModelKeyFrame l_keyFrame = {};
+
+            l_keyFrame.m_scale       = l_bindScale;
+            l_keyFrame.m_rotation    = l_swingRotation * l_bindRotation;
+            l_keyFrame.m_translation = l_bindTranslation;
+            l_keyFrame.m_timeSecond  = l_timeSecond;
+
+            l_boneMotionTrack.m_keyFrameList.emplace_back(l_keyFrame);
+        }
+
+        l_motionSequence.m_boneMotionTrackList.emplace_back(std::move(l_boneMotionTrack));
+    }
+
+    a_modelData.m_motionSequenceList.emplace_back(std::move(l_motionSequence));
+}
+
+void FWK::Scene::UpdatePerformanceTestCameraAspectRatio()
+{
+          auto& l_application   = Application::GetInstance    ();
+    const auto& l_window        = l_application.GetREFWindow  ();
+    const auto& l_resizeRequest = l_window.GetREFResizeRequest();
+
+    if (!l_resizeRequest.m_isRequested ||
+         l_resizeRequest.m_isMinimized)
+    {
+        return;
+    }
+
+    m_performanceTestCamera.ApplyPerspectiveAspectRatio(l_window.GetVALAspectRatio());
+}
+
+void FWK::Scene::UpdatePerformanceTestAnimationTime()
+{
+    if (m_performanceTestSkeletalDrawRequestDataList.empty()) { return; }
+
+          auto& l_application   = Application::GetInstance             ();
+    const auto& l_fpsController = l_application.GetREFFPSController    ();
+    const float l_deltaTime     = l_fpsController.GetVALScaledDeltaTime();
+
+    // 再生時刻を進め、モーションの長さを超えたら先頭へ戻す(ループ再生)
+    // 実際に何コマ目を使うかは、描画申請側がベイク済みのコマ数から決める
+    for (const auto& l_drawRequestData : m_performanceTestSkeletalDrawRequestDataList)
+    {
+        l_drawRequestData->m_animationTimeSecond = std::fmod(l_drawRequestData->m_animationTimeSecond + l_deltaTime, k_performanceTestMotionDurationSecond);
+    }
 }

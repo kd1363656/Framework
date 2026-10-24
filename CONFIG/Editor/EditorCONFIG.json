@@ -42,15 +42,15 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Font\\Icon\\FontAwesome",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Font\\Icon",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Font\\Icon\\FontAwesome",
                             "IsOpen": false
                         },
                         {
@@ -76,6 +76,14 @@
                         {
                             "FilePath": "Asset\\Data\\Prefab\\Player",
                             "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Model",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Antike.fbm",
+                            "IsOpen": false
                         }
                     ],
                     "SelectionState": {

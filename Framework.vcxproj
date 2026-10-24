@@ -333,6 +333,24 @@ if "$(Configuration)"=="Debug" (
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Standard\Lit\SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequest.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\SkeletalAnimationModelGPUSkinnedPerObjectDrawRequestBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Baked\SkeletalAnimationBakedSkinning.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenTableBuilder.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenDrawer.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Occlusion\HierarchicalDepthTexture.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBHierarchicalDepthBuildPassStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\ModelGPUDrivenEnum.h" />
+    <ClInclude Include="Source\Framework\Graphics\Hardware\Debug\D3D12DebugMessageLogger.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\CommandSignature\ModelIndirectDispatchMeshCommandSignature.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicUploadStructuredBuffer.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\ModelGPUDrivenStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelGPUDrivenConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSelector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Profiler\FrameProfiler.h" />
+    <ClInclude Include="Source\Framework\Graphics\Profiler\GPUTimestampQueryRecorder.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\FrameProfilerStruct.h" />
     <ClInclude Include="..\Library\UFBX\INC\ufbx.h" />
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Application\Converter\Json\ApplicationJsonConverter.h" />
@@ -365,7 +383,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\AudioManagerConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstance2DConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstanceBaseConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Converter\BinaryConverterBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\MainMenu\MainMenuBarEditorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Style\EditorStyleConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Splitter\EditorWindowPainSplitter.h" />
@@ -704,7 +721,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Builder\ModelBatchUploadRecordBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Converter\Binary\ModelBinaryConverterBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialRuntimeTextureBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Meshlet\ModelMeshletBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Mesh\ModelMeshOptimizer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.h" />
@@ -822,8 +838,36 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h" />
     <ClInclude Include="Source\Framework\Window\Window.h" />
     <ClInclude Include="Source\PCH.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\MaterialConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StandardMaterialConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\StandardMaterialStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\MaterialSystemStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\MaterialSharedFactory.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialSystemJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\MaterialBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\MaterialSystem.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Material.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\StandardLitMaterial.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialInspector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\StandardUnLitMaterial.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialInspector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialRuntimeBuilder.h" />
+    <ClInclude Include="Source\Framework\Utility\Graphics\IsDrawTargetMaterialUtility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\SkeletalAnimationModelGPUSkinnedPerObjectDrawRequestBase.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Baked\SkeletalAnimationBakedSkinning.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenTableBuilder.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenDrawer.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Occlusion\HierarchicalDepthTexture.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Hardware\Debug\D3D12DebugMessageLogger.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\CommandSignature\ModelIndirectDispatchMeshCommandSignature.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicUploadStructuredBuffer.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSelector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Profiler\FrameProfiler.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Profiler\GPUTimestampQueryRecorder.cpp" />
     <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp">
       <ObjectFileName>$(IntDir)Library\UFBX\%(Filename).obj</ObjectFileName>
     </ClCompile>
@@ -1097,6 +1141,15 @@ if "$(Configuration)"=="Debug" (
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MultiThreaded</RuntimeLibrary>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreaded</RuntimeLibrary>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBinaryConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialSystemJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\MaterialBase.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\MaterialSystem.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Material.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\StandardLitMaterial.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialInspector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\StandardUnLitMaterial.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialInspector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt" />
@@ -1110,6 +1163,7 @@ if "$(Configuration)"=="Debug" (
     <None Include="CONFIG\Physics\PhysicsCONFIG.json" />
     <None Include="CONFIG\Window\WindowCONFIG.json" />
     <None Include="Shader\Camera\CameraPass.hlsli" />
+    <None Include="Shader\Model\GPUDriven\ModelGPUDriven.hlsli" />
     <None Include="Shader\Model\Model.hlsli" />
     <None Include="Shader\Model\ModelMeshlet.hlsli" />
     <None Include="Shader\Model\ModelMeshletCulling.hlsli" />
@@ -1117,6 +1171,7 @@ if "$(Configuration)"=="Debug" (
     <None Include="Shader\Model\Shadow\Cascade\ModelCascadeShadow.hlsli" />
     <None Include="Shader\Model\Shadow\Cascade\ModelCascadeShadowMeshletCulling.hlsli" />
     <None Include="Shader\Model\Skeletal\SkeletalAnimationModel.hlsli" />
+    <None Include="Shader\Model\Skeletal\GPUSkinning\SkeletalAnimationModelGPUSkinning.hlsli" />
     <None Include="Shader\Model\Standard\Lit\ModelStandardLit.hlsli" />
     <None Include="Shader\Model\Standard\ModelStandard.hlsli" />
     <None Include="Shader\Model\Standard\UnLit\ModelStandardUnLit.hlsli" />
@@ -1125,6 +1180,9 @@ if "$(Configuration)"=="Debug" (
     <None Include="Shader\RenderTarget\Final\FinalColor.hlsli" />
     <None Include="Shader\RenderTarget\FullScreenTriangle.hlsli" />
     <None Include="Shader\Sprite\Screen\SpriteScreen.hlsli" />
+    <None Include="Shader\Material\Material.hlsli" />
+    <None Include="Shader\Material\Standard\Lit\StandardLitMaterial.hlsli" />
+    <None Include="Shader\Material\Standard\UnLit\StandardUnLitMaterial.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Shader\Model\Shadow\Cascade\ModelCascadeShadow_AS.hlsl">
@@ -1134,6 +1192,14 @@ if "$(Configuration)"=="Debug" (
     <DXCTask Include="Shader\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadow_MS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Occlusion\HierarchicalDepthBuild_CS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Model\GPUDriven\ModelGPUDrivenCulling_CS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
     </DXCTask>
     <DXCTask Include="Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
@@ -1146,6 +1212,14 @@ if "$(Configuration)"=="Debug" (
     <DXCTask Include="Shader\Model\Skeletal\SkeletalAnimationVertexSkinning_CS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Model\Skeletal\GPUSkinning\Standard\Lit\SkeletalAnimationModelGPUSkinnedLit_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Model\Skeletal\GPUSkinning\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadow_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
     </DXCTask>
     <DXCTask Include="Shader\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLit_MS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
