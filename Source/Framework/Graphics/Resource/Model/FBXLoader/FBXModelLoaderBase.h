@@ -38,7 +38,6 @@ namespace FWK::Graphics
         // .materialファイル名に使う名前を作る(モデル名_Material名、ファイル名に使えない文字は置き換える)
         std::wstring CreateMaterialName(const ufbx_material* a_fbxMaterial, const std::filesystem::path& a_modelFilePath) const;
 
-        // ファイル名に使えない文字
         static constexpr std::wstring_view k_invalidFileNameCharacterList = L"<>:\"/\\|?*";
 
         static constexpr std::wstring_view k_materialNameSeparator = L"_";

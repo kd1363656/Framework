@@ -149,7 +149,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::MoveGameObjectSi
     a_scene.RebuildGameObjectExecutionLevelList();
 }
 
-void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CopySelectedGameObjects(const EditorGameObjectSelectionState& a_gameObjectSelectionState, WorldOutlinerEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CopySelectedGameObjects(const EditorGameObjectSelectionState& a_gameObjectSelectionState, TypeAlias::WorldOutlinerEditorWindowClipboard& a_clipboard) const
 {
     // 選択中のGameObjectのSceneInstanceUUIDを集める
     const auto& l_selectedList = a_gameObjectSelectionState.GetREFSelectedGameObjectList();
@@ -179,9 +179,9 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CopySelectedGame
     if (l_uuidList.empty()) { return; }
  
     // ClipboardへCopy種別で格納
-    a_clipboard.Apply(l_uuidList, Enum::WorldOutlinerClipboardOperationType::Copy);
+    a_clipboard.Apply(l_uuidList, Enum::EditorWindowClipboardOperationType::Copy);
 }
-void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CutSelectedGameObjects(WorldOutlinerEditorWindowClipboard& a_clipboard, EditorGameObjectSelectionState& a_gameObjectSelectionState) const
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CutSelectedGameObjects(TypeAlias::WorldOutlinerEditorWindowClipboard& a_clipboard, EditorGameObjectSelectionState& a_gameObjectSelectionState) const
 {
     // 選択中のGameObjectのSceneInstanceUUIDを集める
     const auto& l_selectedList = a_gameObjectSelectionState.GetREFSelectedGameObjectList();
@@ -212,7 +212,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CutSelectedGameO
  
     // ClipboardへCut種別で格納
     // CutはPaste時に元を破棄するため、ここでは破棄しない
-    a_clipboard.Apply(l_uuidList, Enum::WorldOutlinerClipboardOperationType::Cut);
+    a_clipboard.Apply(l_uuidList, Enum::EditorWindowClipboardOperationType::Cut);
  
     // CutしたGameObjectの選択を解除する
     // Paste時に別の場所へ移動した体になるため元の選択は意味を成さない
@@ -267,12 +267,12 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DuplicateSelecte
         a_gameObjectSelectionState.AddSelectedGameObject(l_duplicated);
     }
 }
-void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects(WorldOutlinerEditorWindowClipboard& a_clipboard, EditorGameObjectSelectionState& a_gameObjectSelectionState, Scene& a_scene) const
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects(TypeAlias::WorldOutlinerEditorWindowClipboard& a_clipboard, EditorGameObjectSelectionState& a_gameObjectSelectionState, Scene& a_scene) const
 {
      // クリップボードにゲームオブジェクトのUUIDがコピーされていなければreturn
     if (a_clipboard.IsEmpty()) { return; }
  
-    const auto& l_uuidList      = a_clipboard.GetREFGameObjectUUIDList();
+    const auto& l_uuidList      = a_clipboard.GetREFElementList();
     const auto  l_operationType = a_clipboard.GetVALOperationType     ();
  
     // PasteしたGameObjectを選択状態にするためのリスト
@@ -303,7 +303,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects
  
         // Cut操作なら元のGameObjectを破棄する
         // Clone後に破棄するためCloneには影響しない
-        if (l_operationType == Enum::WorldOutlinerClipboardOperationType::Cut)
+        if (l_operationType == Enum::EditorWindowClipboardOperationType::Cut)
         {
             l_sourceGameObject->Destroy();
         }
@@ -311,7 +311,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects
  
     // Cut操作の場合はClipboardをクリアする
     // Copy操作の場合は繰り返しPasteできるようクリアしない
-    if (l_operationType == Enum::WorldOutlinerClipboardOperationType::Cut)
+    if (l_operationType == Enum::EditorWindowClipboardOperationType::Cut)
     {
         a_clipboard.Clear();
     }

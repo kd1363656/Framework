@@ -10,7 +10,6 @@ namespace FWK::Physics
 
         class PhysicsCharacterVirtualInstance final : public JPH::CharacterVirtual
         {
-
         public:
 
             JPH_OVERRIDE_NEW_DELETE
@@ -63,8 +62,6 @@ namespace FWK::Physics
         float GetVALMaxSlopeAngleRadius        () const { return m_maxSlopeAngleRadians; }
 
         bool GetIsEnhancedInternalEdgeRemovalDisabled() const { return m_isEnhancedInternalEdgeRemovalDisabled; }
-
-        static constexpr float k_characterVirtualMovingTowardsGroundTolerance = 0.1F;
 
     protected:
 

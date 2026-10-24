@@ -44,7 +44,6 @@ namespace FWK::Converter
         static constexpr std::string_view k_primitiveTopologyTypeJsonKey = "PrimitiveTopologyType";
         static constexpr std::string_view k_sampleMaskJsonKey            = "SampleMask";
 
-        // RasterizerDesc
         static constexpr std::string_view k_fillModeJsonKey              = "FillMode";
         static constexpr std::string_view k_cullModeJsonKey              = "CullMode";
         static constexpr std::string_view k_frontCounterClockwiseJsonKey = "FrontCounterClockwise";
@@ -57,12 +56,10 @@ namespace FWK::Converter
         static constexpr std::string_view k_forcedSampleCountJsonKey     = "ForcedSampleCount";
         static constexpr std::string_view k_conservativeRasterJsonKey    = "ConservativeRaster";
 
-        // BlendDesc
         static constexpr std::string_view k_alphaToCoverageEnableJsonKey  = "AlphaToCoverageEnable";
         static constexpr std::string_view k_independentBlendEnableJsonKey = "IndependentBlendEnable";
         static constexpr std::string_view k_renderTargetJsonKey           = "RenderTarget";
 
-        // RenderTargetBlendDesc
         static constexpr std::string_view k_blendEnableJsonKey           = "BlendEnable";
         static constexpr std::string_view k_logicOPEnableJsonKey         = "LogicOpEnable";
         static constexpr std::string_view k_srcBlendJsonKey              = "SrcBlend";
@@ -74,7 +71,6 @@ namespace FWK::Converter
         static constexpr std::string_view k_logicOPJsonKey               = "LogicOp";
         static constexpr std::string_view k_renderTargetWriteMaskJsonKey = "RenderTargetWriteMask";
 
-        // DepthStencilDesc
         static constexpr std::string_view k_depthEnableJsonKey      = "DepthEnable";
         static constexpr std::string_view k_depthWriteMaskJsonKey   = "DepthWriteMask";
         static constexpr std::string_view k_depthFUNCJsonKey        = "DepthFunc";
@@ -84,13 +80,11 @@ namespace FWK::Converter
         static constexpr std::string_view k_frontFaceJsonKey        = "FrontFace";
         static constexpr std::string_view k_backFaceJsonKey         = "BackFace";
 
-        // DepthStencilOpDesc
         static constexpr std::string_view k_stencilFailOpJsonKey      = "StencilFailOp";
         static constexpr std::string_view k_stencilDepthFailOpJsonKey = "StencilDepthFailOp";
         static constexpr std::string_view k_stencilPassOpJsonKey      = "StencilPassOp";
         static constexpr std::string_view k_stencilFUNCJsonKey        = "StencilFunc";
 
-        // SampleDesc
         static constexpr std::string_view k_countJsonKey   = "Count";
         static constexpr std::string_view k_qualityJsonKey = "Quality";
 

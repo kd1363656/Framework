@@ -4,7 +4,7 @@ namespace FWK::Graphics
 {
     class DefaultTexture final
     {
-        using DefaultTextureColor = std::array<std::uint8_t, Converter::DefaultTextureJsonConverter::k_defaultTextureColorChannelCount>;
+        using DefaultTextureColor = std::array<std::uint8_t, Constant::k_defaultTextureColorChannelCount>;
 
     public:
 
@@ -47,12 +47,12 @@ namespace FWK::Graphics
         static constexpr std::size_t k_defaultTextureItemIndex  = 0ULL;
         static constexpr std::size_t k_defaultTextureSliceIndex = 0ULL;
 
-        std::array<std::uint8_t, Converter::DefaultTextureJsonConverter::k_defaultTextureColorChannelCount> m_color =
+        std::array<std::uint8_t, Constant::k_defaultTextureColorChannelCount> m_color =
         {
-            Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue,
-            Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue,
-            Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue,
-            Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue
+            Constant::k_maxDefaultTextureColorChannelValue,
+            Constant::k_maxDefaultTextureColorChannelValue,
+            Constant::k_maxDefaultTextureColorChannelValue,
+            Constant::k_maxDefaultTextureColorChannelValue
         };
 
         std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};

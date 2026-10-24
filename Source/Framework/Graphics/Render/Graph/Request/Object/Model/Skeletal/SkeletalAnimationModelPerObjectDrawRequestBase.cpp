@@ -19,7 +19,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
     // カメラが無い場合はLODを選ばず、元の形(全Meshlet)を描画する
     ModelLODSelector l_modelLODSelector = {};
 
-    const bool l_canSelectLOD = SetupModelLODSelector(a_renderer, ModelLODSelector::k_defaultMaxScreenSpaceErrorPixel, l_modelLODSelector);
+    const bool l_canSelectLOD = SetupModelLODSelector(a_renderer, Constant::k_defaultMaxScreenSpaceErrorPixel, l_modelLODSelector);
 
     // この描画申請で描画するMaterialの種類
     const auto l_targetMaterialStaticTypeID = GetVALTargetMaterialStaticTypeID();
@@ -89,7 +89,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             // ※スキニング後の頂点は全LODで共有しているため、LODを切り替えても頂点はそのまま使える
             const auto* const l_modelMeshLOD = l_canSelectLOD ? l_modelLODSelector.SelectPTRModelMeshLOD(l_modelMeshletData, l_drawRequest->m_worldMatrix, l_worldMaxScale) : nullptr;
 
-            const auto l_meshletOffset = l_modelMeshLOD ? l_modelMeshLOD->m_meshletOffset                      : Struct::ModelMeshLOD::k_initialMeshletOffset;
+            const auto l_meshletOffset = l_modelMeshLOD ? l_modelMeshLOD->m_meshletOffset                      : Constant::k_initialMeshLODMeshletOffset;
             const auto l_meshletCount  = l_modelMeshLOD ? l_modelMeshLOD->m_meshletCount                       : static_cast<std::uint32_t>(l_modelMeshletData.m_meshletList.size());
             const auto l_triangleCount = l_modelMeshLOD ? static_cast<UINT64>(l_modelMeshLOD->m_triangleCount) : static_cast<UINT64>(l_modelMesh.m_indexList.size() / Constant::k_triangleVertexCount);
 

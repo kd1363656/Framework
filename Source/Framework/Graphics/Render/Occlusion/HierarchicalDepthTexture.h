@@ -66,13 +66,11 @@ namespace FWK::Graphics
 
         Struct::GPUResource m_gpuResource = {};
 
-        // ミップ1段ごとの書き込み用ビュー(UAV)
         std::vector<TypeAlias::DescriptorIndex> m_uavDescriptorIndexList = {};
 
         // Hi-Z作成用の定数バッファ(フレームリソースごと、ミップ1段につき256byte)
         std::vector<UploadBuffer> m_buildPassConstantBufferList = {};
 
-        // 全ミップを読むためのビュー(SRV)
         TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 
         D3D12_RESOURCE_STATES m_currentResourceState = k_initialResourceState;

@@ -36,7 +36,7 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::Request(const std:
     // OpenPopup要求フラグを立てる
     // Requestは別ポップアップ内から呼ばれる可能性があるため
     // ここではOpenPopupを呼ばずDraw側で呼ぶ
-    l_deleteConfirmState.m_isOpenRequested = Struct::AssetBrowserEditorWindowDeleteConfirmState::k_initialIsOpenRequested;
+    l_deleteConfirmState.m_isOpenRequested = Constant::k_initialAssetBrowserDeleteConfirmIsOpenRequested;
 }
 
 void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::Draw(AssetBrowserEditorWindow& a_editorWindow) const

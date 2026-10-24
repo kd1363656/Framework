@@ -47,8 +47,8 @@ void FWK::Graphics::FrameProfiler::BeginFrame(const std::size_t a_frameIndex, co
     }
 
     // フレーム全体のGPU処理時間を計測するため、記録の先頭で区間を開く
-    m_directQueryRecorder.BeginScope (*l_directCommandList.Get(),  k_directQueueFrameScopeName);
-    m_computeQueryRecorder.BeginScope(*l_computeCommandList.Get(), k_computeQueueFrameScopeName);
+    m_directQueryRecorder.BeginScope (*l_directCommandList.Get(),  Constant::k_directQueueFrameScopeName);
+    m_computeQueryRecorder.BeginScope(*l_computeCommandList.Get(), Constant::k_computeQueueFrameScopeName);
 }
 
 void FWK::Graphics::FrameProfiler::BeginGPUScope(const DirectCommandList& a_directCommandList, const std::string_view a_name)
@@ -204,7 +204,7 @@ void FWK::Graphics::FrameProfiler::WriteStatisticsList(const std::vector<Profile
 {
     for (const auto& l_statistics : a_statisticsList)
     {
-        if (l_statistics.m_sampleCount == ProfileStatistics::k_initialSampleCount) { continue; }
+        if (l_statistics.m_sampleCount == k_initialSampleCount) { continue; }
 
         const double l_averageMS = l_statistics.m_totalMS / static_cast<double>(l_statistics.m_sampleCount);
 

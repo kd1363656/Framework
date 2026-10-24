@@ -10,7 +10,7 @@ void FWK::Graphics::DescriptorHeapIndexAllocator::Deserialize(const nlohmann::js
 bool FWK::Graphics::DescriptorHeapIndexAllocator::Create()
 {
     FWK_ASSERT_RETURN_VALUE_IF(m_capacity == DescriptorHeap::k_invalidDescriptorIndex, "無効なIndexを割り当てようとしており作成処理に失敗しました。",        false);
-    FWK_ASSERT_RETURN_VALUE_IF(m_capacity == DescriptorHeap::k_invalidDescriptorNUM,   "ディスクリプタの作成数が無効となっており、作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_capacity == Constant::k_invalidDescriptorNUM,   "ディスクリプタの作成数が無効となっており、作成処理に失敗しました。", false);
 
     m_nextIndex = k_initialNextIndex;
 

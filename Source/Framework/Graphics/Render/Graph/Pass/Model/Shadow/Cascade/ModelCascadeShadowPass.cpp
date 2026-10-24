@@ -117,7 +117,7 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
         // Uploader::Write内部でUploadBufferへmemcpyされる
         const auto& l_gpuVirtualAddress = l_modelCascadeShadowPassDynamicConstantBufferUploader->Write(*l_cbModelCascadeShadowPass);
 
-        FWK_ASSERT_RETURN_IF(l_gpuVirtualAddress == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "CBModelCascadeShadowPassをUploadBufferへ書き込めないため、ModelCascadeShadowPassを実行できません。");
+        FWK_ASSERT_RETURN_IF(l_gpuVirtualAddress == Constant::k_invalidDynamicBufferGPUVirtualAddress, "CBModelCascadeShadowPassをUploadBufferへ書き込めないため、ModelCascadeShadowPassを実行できません。");
 
         const auto& l_staticModelRootSignature = SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::StaticModelCascadeShadow).lock();
 

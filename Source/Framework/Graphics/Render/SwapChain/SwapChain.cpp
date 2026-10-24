@@ -258,8 +258,8 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
 
 bool FWK::Graphics::SwapChain::IsValidBackBufferSize(const Window::ClientSize& a_clientSize) const
 {
-    if (a_clientSize.m_width  == Window::k_invalidClientWidth ||
-        a_clientSize.m_height == Window::k_invalidClientHeight)
+    if (a_clientSize.m_width  == Constant::k_invalidClientWidth ||
+        a_clientSize.m_height == Constant::k_invalidClientHeight)
     {
         return false;
     }

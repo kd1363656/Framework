@@ -10,10 +10,10 @@ namespace FWK::Converter
     {
     private:
 
+        static constexpr std::uint16_t k_initialPadding = 0U;
+
         struct MaterialBinaryHeader final
         {
-            static constexpr std::uint16_t k_initialPadding = 0U;
-
             std::uint64_t m_fileSize     = k_emptyAssetFileSize;
             std::uint64_t m_typeNameSize = k_emptyTypeNameSize;
             std::uint32_t m_assetTypeID  = k_materialAssetTypeID;
@@ -73,7 +73,6 @@ namespace FWK::Converter
 
     private:
 
-        // .materialファイルであることを表すID('MATL')
         static constexpr std::uint32_t k_materialAssetTypeID = 0x4C54414DU;
 
         // 保存形式を変えた場合はバージョンを上げる

@@ -457,8 +457,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
 
     // 切り取り対象判定
     // クリップボードがCut操作で、かつこのファイルパスが含まれている場合
-    const bool l_isCutTarget = (l_clipboard.GetVALOperationType() == Enum::AssetBrowserFileClipboardOperationType::Cut) &&
-                               l_clipboard.Contains(a_filePath);
+    const bool l_isCutTarget = l_clipboard.IsCutTarget(a_filePath);
 
     // リネームモード判定
     // m_renameState.m_isActiveがtrueかつ対象パスがこのカードと一致するか
@@ -591,12 +590,12 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardBackground(const Im
     // この色が内側ボックスの周囲(上下左右)にリムとして残り
     // 選択時に青く光る
     // 色の優先基準 : 切り取り対象 > 選択中(AssetPaneがアクティブ) > 選択中(AssetPaneが非アクティブ) > ホバー > 通常
-    auto l_frameColor = ImGui::GetColorU32(k_cardDefaultGrayColor);
+    // 色はWorldOutlinerなど他のウィンドウのアイテムと同じ色(EditorStyleConstant.h)を使う
+    auto l_frameColor = ImGui::GetColorU32(Constant::k_imguiItemColor);
 
     if (a_isCutTarget)
     {
-        // Cut対象は選択色へ半分倍率を掛けて暗くした色を使う
-        l_frameColor = ImGui::GetColorU32(Constant::k_imguiItemSelectedColor * Constant::k_halfMagnification);
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiItemCutColor);
     }
     else if (a_isSelected &&
              a_isActivePane)

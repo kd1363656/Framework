@@ -53,7 +53,6 @@ namespace FWK::Graphics
 
         StandardLitMaterialInspector m_inspector = {};
 
-        // .materialファイルの場所を基準にした相対パス
         std::wstring m_baseColorTextureFilePath = {};
         std::wstring m_normalTextureFilePath    = {};
         std::wstring m_roughnessTextureFilePath = {};

@@ -13,10 +13,8 @@ namespace FWK::Graphics
 
     private:
 
-        // GPUドリブン描画のView番号(カメラは1つだけなので0番)
         static constexpr std::size_t k_cameraViewIndex = 0ULL;
 
-        // カメラのカリングでは、カメラより手前の物も除外する
         static constexpr bool k_useNearPlaneForCulling = true;
 
         FWK_DEFINE_TYPE_INFO(StaticModelStandardUnLitPass, RenderGraphPassBase)

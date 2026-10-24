@@ -82,9 +82,6 @@ namespace FWK
 
         std::string m_name = {};
 
-        // このゲームオブジェクトが子でPrefabの内部にある子である場合
-        // デシリアライズで復元時に子配列のどの部分に当たる子かを示すために
-        // boost::uuids::uuid m_prefabHierarchyNodeUUIDを使用
         boost::uuids::uuid m_prefabUUID              = {};
         boost::uuids::uuid m_prefabHierarchyNodeUUID = {};
         boost::uuids::uuid m_sceneInstanceUUID       = {};

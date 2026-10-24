@@ -85,7 +85,7 @@ bool FWK::Graphics::ModelGPUDrivenDrawer::DispatchCulling(Renderer& a_renderer, 
     const auto& l_screenRenderArea = a_renderer.GetREFScreenRenderArea();
     const auto& l_viewport         = l_screenRenderArea.GetREFViewport();
 
-    l_modelLODSelector.Setup(*l_cbCameraPass, l_viewport.Height, ModelLODSelector::k_defaultMaxScreenSpaceErrorPixel);
+    l_modelLODSelector.Setup(*l_cbCameraPass, l_viewport.Height, Constant::k_defaultMaxScreenSpaceErrorPixel);
 
     const bool l_isEarlyCulling = a_cullingView.m_cullingMode == Enum::ModelGPUDrivenCullingMode::Early;
     const bool l_isLateCulling  = a_cullingView.m_cullingMode == Enum::ModelGPUDrivenCullingMode::Late;
@@ -302,9 +302,9 @@ bool FWK::Graphics::ModelGPUDrivenDrawer::Create(const Renderer& a_renderer)
 
     for (auto& l_frameData : m_frameDataList)
     {
-        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_instanceBuffer.Create<Struct::SBModelGPUDrivenInstance>(l_device, k_maxInstanceCount, l_cbvSRVUAVDescriptorPool), "インスタンス用Bufferの作成に失敗しました。", false);
-        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_meshInfoBuffer.Create<Struct::SBModelGPUDrivenMeshInfo>(l_device, k_maxMeshInfoCount, l_cbvSRVUAVDescriptorPool), "Mesh情報用Bufferの作成に失敗しました。",       false);
-        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_lodBuffer.Create<Struct::ModelMeshLOD>             (l_device, k_maxLODCount,      l_cbvSRVUAVDescriptorPool), "LOD用Bufferの作成に失敗しました。",            false);
+        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_instanceBuffer.Create<Struct::SBModelGPUDrivenInstance>(l_device, Constant::k_modelGPUDrivenMaxInstanceCount, l_cbvSRVUAVDescriptorPool), "インスタンス用Bufferの作成に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_meshInfoBuffer.Create<Struct::SBModelGPUDrivenMeshInfo>(l_device, Constant::k_modelGPUDrivenMaxMeshInfoCount, l_cbvSRVUAVDescriptorPool), "Mesh情報用Bufferの作成に失敗しました。",       false);
+        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_lodBuffer.Create<Struct::ModelMeshLOD>             (l_device, Constant::k_modelGPUDrivenMaxLODCount,      l_cbvSRVUAVDescriptorPool), "LOD用Bufferの作成に失敗しました。",            false);
 
         FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_cullingPassConstantBuffer.Create(l_device, k_maxCullingDispatchCountPerFrame * k_cullingPassConstantBufferStride), "カリング用定数バッファの作成に失敗しました。", false);
 
@@ -383,7 +383,7 @@ bool FWK::Graphics::ModelGPUDrivenDrawer::CreateCounterReadbackBuffer(const Devi
 
 void FWK::Graphics::ModelGPUDrivenDrawer::ReadbackCounter(FrameData& a_frameData)
 {
-    if (a_frameData.m_writtenViewMask == FrameData::k_initialWrittenViewMask) { return; }
+    if (a_frameData.m_writtenViewMask == k_initialWrittenViewMask) { return; }
 
     // CPUが読む範囲(全Viewのカウンター)
     const D3D12_RANGE l_readRange =
@@ -394,7 +394,7 @@ void FWK::Graphics::ModelGPUDrivenDrawer::ReadbackCounter(FrameData& a_frameData
 
     void* l_mappedData = nullptr;
 
-    const auto l_hr = a_frameData.m_counterReadbackBuffer->Map(UploadBuffer::k_firstSubresourceIndex, &l_readRange, &l_mappedData);
+    const auto l_hr = a_frameData.m_counterReadbackBuffer->Map(Constant::k_firstSubresourceIndex, &l_readRange, &l_mappedData);
 
     FWK_ASSERT_RETURN_IF(FAILED(l_hr), "カウンター読み戻し用BufferのMapに失敗しました。");
 
@@ -405,7 +405,7 @@ void FWK::Graphics::ModelGPUDrivenDrawer::ReadbackCounter(FrameData& a_frameData
     // このフレームリソースで描画したViewのカウンターだけを合計する
     for (std::size_t l_viewIndex = 0ULL; l_viewIndex < k_maxViewCount; ++l_viewIndex)
     {
-        if ((a_frameData.m_writtenViewMask & (k_singleViewBit << l_viewIndex)) == FrameData::k_initialWrittenViewMask) { continue; }
+        if ((a_frameData.m_writtenViewMask & (k_singleViewBit << l_viewIndex)) == k_initialWrittenViewMask) { continue; }
 
         m_submittedTriangleCount += l_counterList[l_viewIndex * Constant::k_modelGPUDrivenCounterElementCount + k_triangleCountCounterIndex];
     }
@@ -417,9 +417,9 @@ void FWK::Graphics::ModelGPUDrivenDrawer::ReadbackCounter(FrameData& a_frameData
         k_bufferStartOffset
     };
 
-    a_frameData.m_counterReadbackBuffer->Unmap(UploadBuffer::k_firstSubresourceIndex, &l_writtenRange);
+    a_frameData.m_counterReadbackBuffer->Unmap(Constant::k_firstSubresourceIndex, &l_writtenRange);
 
-    a_frameData.m_writtenViewMask = FrameData::k_initialWrittenViewMask;
+    a_frameData.m_writtenViewMask = k_initialWrittenViewMask;
 }
 
 FWK::Struct::CBModelGPUDrivenCullingPass FWK::Graphics::ModelGPUDrivenDrawer::CreateCullingPass(const Struct::ModelGPUDrivenBatch&       a_modelBatch,

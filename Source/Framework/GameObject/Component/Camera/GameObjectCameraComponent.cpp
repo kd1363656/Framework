@@ -1,5 +1,4 @@
 ﻿#include "GameObjectCameraComponent.h"
-#include "../../../../Application/Application.h"
 
 void FWK::GameObjectCameraComponent::Deserialize(const nlohmann::json& a_rootJson)
 {
@@ -15,17 +14,18 @@ void FWK::GameObjectCameraComponent::PostDeserialize()
 
 void FWK::GameObjectCameraComponent::EarlyUpdate()
 {
-    const auto& l_application = Application::GetInstance    ();
-    const auto& l_window      = l_application.GetREFWindow  ();
+    // Viewportのサイズ変更はウィンドウのリサイズ申請を伴わないため、
+    // 出力先(Viewportまたはウィンドウ)のAspectRatioが変わったときのみに更新する
+    const auto& l_editorManager = Editor::EditorManager::GetInstance          ();
+    const float l_aspectRatio   = l_editorManager.FetchVALRenderOutputAspectRatio();
 
-    // リサイズ申請がされたときのみにアスペクト比率を更新する
-    if (const auto& l_resizeRequest = l_window.GetREFResizeRequest();
-        !l_resizeRequest.m_isRequested)
+    if (l_aspectRatio <= Constant::k_cameraInvalidAspectRatio ||
+        l_aspectRatio == m_camera.GetVALAspectRatio())
     {
         return;
     }
 
-    m_camera.SetAspectRatio(l_window.GetVALAspectRatio());
+    m_camera.ApplyPerspectiveAspectRatio(l_aspectRatio);
 }
 void FWK::GameObjectCameraComponent::PostLateUpdate()
 {

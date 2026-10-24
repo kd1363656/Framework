@@ -6,6 +6,10 @@ namespace FWK::Constant
     // HLSL側(ModelGPUDrivenCulling_CS.hlsl)のk_modelGPUDrivenCullingThreadCountXと必ず同じ値にする
     inline constexpr std::uint32_t k_modelGPUDrivenCullingThreadCount = 64U;
 
-    // GPUドリブン描画のカウンター(描画数、三角形数、オクルージョンカリングの候補数)の要素数
     inline constexpr std::uint32_t k_modelGPUDrivenCounterElementCount = 3U;
+
+    // 各Bufferに入れられる最大数(表を作る側は、この数を超えないようにする)
+    inline constexpr std::size_t k_modelGPUDrivenMaxInstanceCount = 4096ULL;
+    inline constexpr std::size_t k_modelGPUDrivenMaxMeshInfoCount = 1024ULL;
+    inline constexpr std::size_t k_modelGPUDrivenMaxLODCount      = 8192ULL;
 }

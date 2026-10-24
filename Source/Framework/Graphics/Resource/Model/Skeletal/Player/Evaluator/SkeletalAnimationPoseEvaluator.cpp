@@ -222,7 +222,7 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::CreateAnimationLookupData(Sk
         const auto& l_motionSequence      = l_motionSequenceList[l_motionIndex];
         const auto& l_boneMotionTrackList = l_motionSequence.m_boneMotionTrackList;
 
-        FWK_ASSERT_RETURN_VALUE_IF(l_motionSequence.m_durationSecond < SkeletalAnimationModelRecord::k_initialAnimationDurationSecond, "Motionの再生時間が0未満です。",                                         false);
+        FWK_ASSERT_RETURN_VALUE_IF(l_motionSequence.m_durationSecond < Constant::k_initialAnimationDurationSecond, "Motionの再生時間が0未満です。",                                         false);
         FWK_ASSERT_RETURN_VALUE_IF(l_boneMotionTrackList.empty(),                                                                      "BoneMotionTrackListが空です。",                                         false);
         FWK_ASSERT_RETURN_VALUE_IF(l_boneMotionTrackList.size() > static_cast<std::size_t>(std::numeric_limits<std::uint32_t>::max()), "BoneMotionTrackListの要素数がuint32_tで表現できる範囲を超えています。", false);
 
@@ -254,7 +254,7 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::CreateAnimationLookupData(Sk
             {
                 const auto l_keyFrameTimeSecond = l_keyFrameList[l_keyFrameIndex].m_timeSecond;
 
-                FWK_ASSERT_RETURN_VALUE_IF(l_keyFrameTimeSecond < SkeletalAnimationModelRecord::k_initialAnimationTimeSecond, "KeyFrameの時刻が0未満です。",                      false);
+                FWK_ASSERT_RETURN_VALUE_IF(l_keyFrameTimeSecond < Constant::k_initialAnimationTimeSecond, "KeyFrameの時刻が0未満です。",                      false);
                 FWK_ASSERT_RETURN_VALUE_IF(l_keyFrameTimeSecond > l_motionSequence.m_durationSecond,                          "KeyFrameの時刻がMotionの再生時間を超えています。", false);
             }
 
@@ -296,7 +296,7 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
 
     const auto& l_bindPoseLocalTransform = m_bindPoseLocalTransformList[a_boneIndex];
 
-    FWK_ASSERT_RETURN_VALUE_IF(a_timeSecond < SkeletalAnimationModelRecord::k_initialAnimationTimeSecond, "AnimationTimeSecondが0未満です。", l_bindPoseLocalTransform);
+    FWK_ASSERT_RETURN_VALUE_IF(a_timeSecond < Constant::k_initialAnimationTimeSecond, "AnimationTimeSecondが0未満です。", l_bindPoseLocalTransform);
 
     // Loopや再生時間内へのClampはAdvanceTime()で行う。
     FWK_ASSERT_RETURN_VALUE_IF(a_timeSecond                 > a_motionSequence.m_durationSecond,  "AnimationTimeSecondがMotionの再生時間を超えています。", l_bindPoseLocalTransform);

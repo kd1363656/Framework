@@ -26,7 +26,6 @@ namespace FWK::Graphics
 
     private:
 
-        // 描画コマンド1件に含まれる引数の数と、それぞれの並び順
         static constexpr std::size_t k_argumentDescCount               = 2ULL;
         static constexpr std::size_t k_constantBufferViewArgumentIndex = 0ULL;
         static constexpr std::size_t k_dispatchMeshArgumentIndex       = 1ULL;
@@ -35,7 +34,6 @@ namespace FWK::Graphics
 
         TypeAlias::ComPtr<ID3D12CommandSignature> m_commandSignature = nullptr;
 
-        // どのRootSignature用に作成したか(作り直しが必要か判定するため)
         const ID3D12RootSignature* m_createdRootSignature = nullptr;
     };
 }

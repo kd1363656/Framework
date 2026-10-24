@@ -47,8 +47,6 @@ namespace FWK::Graphics
         auto GetVALRTVDescriptorIndex() const { return m_rtvDescriptorIndex; }
         auto GetVALSRVDescriptorIndex() const { return m_srvDescriptorIndex; }
 
-        static constexpr DXGI_FORMAT k_defaultRenderTargetTextureFormat = DXGI_FORMAT_R16G16B16A16_FLOAT;
-
     private:
 
         bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT                                a_width, const UINT a_height);
@@ -69,13 +67,13 @@ namespace FWK::Graphics
         static constexpr UINT  k_mostDetailedMIP = 0U;
         static constexpr UINT  k_planeSlice      = 0U;
 
-        TypeAlias::Math::Color m_clearColor = DirectCommandList::k_defaultBackBufferClearColor;
+        TypeAlias::Math::Color m_clearColor = Constant::k_defaultBackBufferClearColor;
 
         Struct::GPUResource m_gpuResource = {};
 
         D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
 
-        DXGI_FORMAT m_format = k_defaultRenderTargetTextureFormat;
+        DXGI_FORMAT m_format = Constant::k_defaultRenderTargetTextureFormat;
 
         UINT m_width  = Constant::k_invalidTextureWidth;
         UINT m_height = Constant::k_invalidTextureHeight;

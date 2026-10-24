@@ -48,8 +48,12 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
         return;
     }
 
+    // RenderTargetTextureの解像度はウィンドウサイズのまま、カメラの投影だけをViewportのAspectRatioに合わせる
+    // (Textureへは横方向に縮んだ状態で描かれ、表示時にViewportの形へ引き伸ばされることで元の縦横比に戻る)
+    m_viewportAspectRatio = l_viewportSize.x / l_viewportSize.y;
+
     // RenderGraphで作成された最終カラーTextureを、ImGuiで表示できるTextureIDとして取得する
-    // 今回はRenderTargetTextureの解像度変更は行わなず、既存の描画結果をViewport内に拡縮表示する
+    // 今回はRenderTargetTextureの解像度変更は行わず、既存の描画結果をViewport内に拡縮表示する
     const auto l_viewportTextureID = FetchVALViewportTextureID();
 
     // 無効なテクスチャなのでreturn
@@ -138,6 +142,7 @@ void FWK::Editor::ViewportEditorWindow::DrawViewportTexture(const ImTextureID& a
 
     // 取得したTextureをViewportの表示領域いっぱいに描画する
     // a_viewportSizeにGetContentRegionAvailの値を渡しているため、Dockingの拡縮に追従する
+    // カメラはViewportのAspectRatioで投影しているため、ここで引き伸ばしても縦横比は崩れない
     ImGui::Image(a_textureID,
                  a_viewportSize,
                  l_uvMIN,

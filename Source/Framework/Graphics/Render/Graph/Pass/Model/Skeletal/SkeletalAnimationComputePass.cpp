@@ -225,7 +225,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const S
 
         const auto& l_gpuVirtualAddress = a_constantBufferUploader.Write(l_cbSkeletalAnimationVertexSkinningPerObject);
 
-        FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "SkeletalAnimationVertexSkinning用定数バッファの書き込みに失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == Constant::k_invalidDynamicBufferGPUVirtualAddress, "SkeletalAnimationVertexSkinning用定数バッファの書き込みに失敗しました。", false);
 
         a_computeCommandList.SetupConstantBufferView(l_gpuVirtualAddress, a_rootSignature, Enum::RootParameterType::CBSkeletalAnimationVertexSkinningPerObject);
 
@@ -315,7 +315,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(co
 
         const auto& l_gpuVirtualAddress = a_constantBufferUploader.Write(l_cbSkeletalAnimationMeshletBoundsUpdatePerObject);
 
-        FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "SkeletalAnimationMeshletBoundsUpdate用定数バッファの書き込みに失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == Constant::k_invalidDynamicBufferGPUVirtualAddress, "SkeletalAnimationMeshletBoundsUpdate用定数バッファの書き込みに失敗しました。", false);
 
         a_computeCommandList.SetupConstantBufferView(l_gpuVirtualAddress, a_rootSignature, Enum::RootParameterType::CBSkeletalAnimationMeshletBoundsUpdatePerObject);
 

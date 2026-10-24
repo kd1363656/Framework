@@ -36,7 +36,7 @@ namespace FWK::Graphics
 
                 // 描画するMeshが無い(表に入りきらない、又はこの描画で扱うMaterialのMeshが無い)モデルは描画しない
                 // 同じモデルの2体目以降で調べ直さないように、描画しないモデルとして覚えておく
-                if (l_modelBatch.m_meshCount == Struct::ModelGPUDrivenBatch::k_initialValue)
+                if (l_modelBatch.m_meshCount == Constant::k_initialGPUDrivenBatchValue)
                 {
                     m_modelBatchIndexMap.try_emplace(&a_modelRecord, k_skippedBatchIndex);
 
@@ -78,7 +78,7 @@ namespace FWK::Graphics
             auto& l_lodList      = m_frameTable.m_lodList;
 
             // 表に入りきらない場合はこのモデルを追加しない
-            if (l_meshInfoList.size() + l_modelMeshList.size() > ModelGPUDrivenDrawer::k_maxMeshInfoCount) { return; }
+            if (l_meshInfoList.size() + l_modelMeshList.size() > Constant::k_modelGPUDrivenMaxMeshInfoCount) { return; }
 
             a_modelBatch.m_meshInfoOffset = static_cast<std::uint32_t>(l_meshInfoList.size());
 
@@ -111,7 +111,7 @@ namespace FWK::Graphics
                 l_meshInfo.m_allTriangleCount = static_cast<std::uint32_t>(l_modelMesh.m_indexList.size() / Constant::k_triangleVertexCount);
 
                 // LODが表に入りきる場合だけLODを使う(入りきらなければ元の形で描画する)
-                if (l_lodList.size() + l_modelMeshletData.m_lodList.size() <= ModelGPUDrivenDrawer::k_maxLODCount)
+                if (l_lodList.size() + l_modelMeshletData.m_lodList.size() <= Constant::k_modelGPUDrivenMaxLODCount)
                 {
                     l_meshInfo.m_lodOffset = static_cast<std::uint32_t>(l_lodList.size());
                     l_meshInfo.m_lodCount  = static_cast<std::uint32_t>(l_modelMeshletData.m_lodList.size());
@@ -138,16 +138,12 @@ namespace FWK::Graphics
             a_modelBatch.m_meshCount = static_cast<std::uint32_t>(l_meshInfoList.size()) - a_modelBatch.m_meshInfoOffset;
         }
 
-        // 描画しないモデルを表す、まとまりの番号
         static constexpr std::size_t k_skippedBatchIndex = std::numeric_limits<std::size_t>::max();
 
-        // 作成中の表
         Struct::ModelGPUDrivenFrameTable m_frameTable = {};
 
-        // モデルの種類ごとのインスタンスの一時置き場(メモリ確保を減らすため使い回す)
         std::vector<std::vector<Struct::SBModelGPUDrivenInstance>> m_batchInstanceListList = {};
 
-        // モデル(Record)のアドレス → 表の中でのまとまりの番号
         std::unordered_map<const void*, std::size_t> m_modelBatchIndexMap = {};
 
         TypeAlias::StaticTypeID m_targetMaterialStaticTypeID = StaticTypeIDGenerator::k_invalidStaticTypeID;

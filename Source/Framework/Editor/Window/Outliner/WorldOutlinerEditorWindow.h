@@ -111,12 +111,13 @@ namespace FWK::Editor
         WorldOutlinerEditorWindowSelectionState      m_sceneSelectionState = {};
         WorldOutlinerEditorWindowGameObjectOperation m_gameObjectOperation = {};
         WorldOutlinerEditorWindowSceneOperation      m_sceneOperation      = {};
-        WorldOutlinerEditorWindowClipboard           m_clipboard           = {};
         WorldOutlinerEditorWindowAssetCreator        m_assetCreator        = {};
         WorldOutlinerEditorWindowPopupDrawer         m_popupDrawer         = {};
         WorldOutlinerEditorWindowShortcutHandler     m_shortcutHandler     = {};
- 
+
         Struct::WorldOutlinerEditorWindowRenameState m_renameState = {};
+
+        TypeAlias::WorldOutlinerEditorWindowClipboard m_clipboard = {};
         
         FWK_DEFINE_TYPE_INFO(WorldOutlinerEditorWindow, EditorWindowBase)
     };

@@ -17,23 +17,23 @@ namespace FWK::Graphics
     {
     private:
 
+        static constexpr UINT k_invalidQueryIndex = UINT_MAX;
+
         // 「Begin～End」の区間1つ分の記録
         struct ScopeRecord final
         {
-            static constexpr UINT k_invalidQueryIndex = UINT_MAX;
-
             std::string_view m_name = {};
 
             UINT m_beginQueryIndex = k_invalidQueryIndex;
             UINT m_endQueryIndex   = k_invalidQueryIndex;
         };
 
+        static constexpr UINT k_initialUsedQueryCount = 0U;
+
         // フレームリソース1つ分の記録
         // GPUは数フレーム遅れて実行するため、フレームリソースの数だけ記録を分けて持つ
         struct FrameRecord final
         {
-            static constexpr UINT k_initialUsedQueryCount = 0U;
-
             std::vector<ScopeRecord> m_scopeRecordList = {};
 
             TypeAlias::ComPtr<ID3D12Resource2> m_readbackBuffer = nullptr;
@@ -69,10 +69,8 @@ namespace FWK::Graphics
 
         static constexpr UINT64 k_invalidTimestampFrequency = 0ULL;
 
-        // 1フレームで記録できるタイムスタンプの最大数(区間1つにつきBegin、Endの2つ使う)
         static constexpr UINT k_maxQueryCountPerFrame = 512U;
 
-        // 区間1つで使うタイムスタンプの数(Begin、End)
         static constexpr UINT k_scopeQueryCount   = 2U;
         static constexpr UINT k_singleQueryCount  = 1U;
         static constexpr UINT k_queryHeapNodeMask = 0U;

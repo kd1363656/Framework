@@ -39,9 +39,6 @@ namespace FWK::Graphics
 
         bool IsUploaded() const { return m_isUploaded; }
 
-        // 1秒あたりのコマ数
-        static constexpr float k_bakeFrameRate = 30.0F;
-
     private:
 
         void BakeMotionFrame(const SkeletalAnimationModelRecord::ModelData& a_modelData, const std::vector<TypeAlias::Math::Matrix>& a_globalBoneMatrixList, const std::uint32_t a_frameIndex);
@@ -54,22 +51,18 @@ namespace FWK::Graphics
 
         static constexpr UINT64 k_bufferStartOffset = 0ULL;
 
-        // ベイクでは1つのモーションだけを計算するため、モーション同士の混ぜ合わせ(ブレンド)はしない
         static constexpr bool k_isBlending = false;
 
-        // モーションごとの、全モーションを通したコマ番号の開始位置とコマ数
         std::vector<std::uint32_t> m_motionFrameOffsetList = {};
         std::vector<std::uint32_t> m_motionFrameCountList  = {};
 
         // ベイクした行列(GPUへコピーした後は不要なので解放する)
         std::vector<TypeAlias::Math::Matrix> m_bakedSkinningMatrixList = {};
 
-        // Meshごとの「アニメーションで中心が動く最大距離」(カリング用の球を広げるために使う)
         std::vector<float> m_maxMoveDistanceList = {};
 
         Struct::ModelGPUDrivenSkinningInfo m_skinningInfo = {};
 
-        // GPUが読むスキニング行列のBufferと、そこへコピーするためのUploadBuffer
         DynamicRWStructuredBuffer m_skinningMatrixBuffer = {};
 
         UploadBuffer m_uploadBuffer = {};

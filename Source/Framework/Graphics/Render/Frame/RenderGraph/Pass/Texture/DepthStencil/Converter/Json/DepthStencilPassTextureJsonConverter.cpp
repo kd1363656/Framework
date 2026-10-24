@@ -6,12 +6,12 @@ void FWK::Converter::DepthStencilPassTextureJsonConverter::Deserialize(const nlo
 
     Struct::DepthStencilTextureSettings l_depthStencilTextureSettings = {};
 
-    l_depthStencilTextureSettings.m_resourceFormat    = a_rootJson.value(k_resourceFormatJsonKey,    Struct::DepthStencilTextureSettings::k_defaultResourceFormat);
-    l_depthStencilTextureSettings.m_dsvFormat         = a_rootJson.value(k_dsvFormatJsonKey,         Struct::DepthStencilTextureSettings::k_defaultDSVFormat);
-    l_depthStencilTextureSettings.m_srvFormat         = a_rootJson.value(k_srvFormatJsonKey,         Struct::DepthStencilTextureSettings::k_defaultSRVFormat);
+    l_depthStencilTextureSettings.m_resourceFormat    = a_rootJson.value(k_resourceFormatJsonKey,    Constant::k_defaultDepthStencilResourceFormat);
+    l_depthStencilTextureSettings.m_dsvFormat         = a_rootJson.value(k_dsvFormatJsonKey,         Constant::k_defaultDepthStencilDSVFormat);
+    l_depthStencilTextureSettings.m_srvFormat         = a_rootJson.value(k_srvFormatJsonKey,         Constant::k_defaultDepthStencilSRVFormat);
     l_depthStencilTextureSettings.m_depthClearValue   = a_rootJson.value(k_depthClearValueJsonKey,   Constant::k_defaultDepthClearValue);
-    l_depthStencilTextureSettings.m_arraySize         = a_rootJson.value(k_arraySizeJsonKey,         Struct::DepthStencilTextureSettings::k_defaultArraySize);
-    l_depthStencilTextureSettings.m_mipLevels         = a_rootJson.value(k_mipLevelsJsonKey,         Struct::DepthStencilTextureSettings::k_defaultMipLevels);
+    l_depthStencilTextureSettings.m_arraySize         = a_rootJson.value(k_arraySizeJsonKey,         Constant::k_defaultDepthStencilArraySize);
+    l_depthStencilTextureSettings.m_mipLevels         = a_rootJson.value(k_mipLevelsJsonKey,         Constant::k_defaultDepthStencilMipLevels);
     l_depthStencilTextureSettings.m_sampleCount       = a_rootJson.value(k_sampleCountJsonKey,       Constant::k_defaultSampleCount);
     l_depthStencilTextureSettings.m_sampleQuality     = a_rootJson.value(k_sampleQualityJsonKey,     Constant::k_defaultSampleQuality);
     l_depthStencilTextureSettings.m_stencilClearValue = a_rootJson.value(k_stencilClearValueJsonKey, Constant::k_defaultStencilClearValue);

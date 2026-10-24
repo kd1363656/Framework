@@ -30,10 +30,6 @@ namespace FWK::Graphics
 
         const auto& GetREFCreateCount() const { return m_createCount; }
 
-        static constexpr UINT64 k_invalidCreateCount = 0ULL;
-
-        static constexpr D3D12_GPU_VIRTUAL_ADDRESS k_invalidGPUVirtualAddress = 0ULL;
-
     protected:
 
         bool CreateUploadBuffer(const Device& a_device, const UINT64& a_alignment);
@@ -41,25 +37,25 @@ namespace FWK::Graphics
         template <typename Type>
         D3D12_GPU_VIRTUAL_ADDRESS WriteElementRange(const std::span<const Type>& a_elementRange)
         {
-            FWK_ASSERT_RETURN_VALUE_IF(a_elementRange.empty(), "ElementRangeが空のため、書き込み処理に失敗しました。", k_invalidGPUVirtualAddress);
+            FWK_ASSERT_RETURN_VALUE_IF(a_elementRange.empty(), "ElementRangeが空のため、書き込み処理に失敗しました。", Constant::k_invalidDynamicBufferGPUVirtualAddress);
 
             const auto& l_elementCount = a_elementRange.size();
 
             const auto& l_remainingElementCount = m_createCount - m_currentElementIndex;
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_elementCount > l_remainingElementCount, "ElementRangeが書き込み可能な残りElement数を超えているため、書き込み処理に失敗しました。", k_invalidGPUVirtualAddress);
-            FWK_ASSERT_RETURN_VALUE_IF(sizeof(Type)   > m_elementStrideSize,     "書き込みTypeのサイズがElementStrideSizeを超えているため、書き込み処理に失敗しました。",   k_invalidGPUVirtualAddress);
+            FWK_ASSERT_RETURN_VALUE_IF(l_elementCount > l_remainingElementCount, "ElementRangeが書き込み可能な残りElement数を超えているため、書き込み処理に失敗しました。", Constant::k_invalidDynamicBufferGPUVirtualAddress);
+            FWK_ASSERT_RETURN_VALUE_IF(sizeof(Type)   > m_elementStrideSize,     "書き込みTypeのサイズがElementStrideSizeを超えているため、書き込み処理に失敗しました。",   Constant::k_invalidDynamicBufferGPUVirtualAddress);
 
             FWK_ASSERT_RETURN_VALUE_IF(l_elementCount       > k_singleElementCount &&
                                        m_elementStrideSize != sizeof(Type),
                                        "複数Elementを連続書き込みできないElementStrideSizeのため、書き込み処理に失敗しました。",
-                                       k_invalidGPUVirtualAddress);
+                                       Constant::k_invalidDynamicBufferGPUVirtualAddress);
 
             const auto& l_startElementIndex = m_currentElementIndex;
 
             auto* const l_mappedData = m_uploadBuffer.FetchPTRMappedData();
 
-            FWK_ASSERT_RETURN_VALUE_IF(!l_mappedData, "Mapデータが無効のため、書き込み処理に失敗しました。", k_invalidGPUVirtualAddress);
+            FWK_ASSERT_RETURN_VALUE_IF(!l_mappedData, "Mapデータが無効のため、書き込み処理に失敗しました。", Constant::k_invalidDynamicBufferGPUVirtualAddress);
 
             const auto& l_byteOffset = l_startElementIndex * m_elementStrideSize;
             const auto& l_writeSize  = a_elementRange.size_bytes();

@@ -12,7 +12,7 @@ namespace FWK::Graphics
         void Reset(const TypeAlias::DirectCommandAllocator& a_directCommandAllocator);
 
         void SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex)                                                                                                const;
-        void ClearRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex, const TypeAlias::Math::Color& a_clearColor = DirectCommandList::k_defaultBackBufferClearColor) const;
+        void ClearRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex, const TypeAlias::Math::Color& a_clearColor = Constant::k_defaultBackBufferClearColor) const;
 
         void SetupDepthStencil(const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool, const TypeAlias::DescriptorIndex a_dsvDescriptorIndex) const;
 
@@ -62,14 +62,6 @@ namespace FWK::Graphics
                              const UINT                                       a_maxCommandCount,
                              const TypeAlias::ComPtr<ID3D12Resource2>&        a_argumentBuffer,
                              const TypeAlias::ComPtr<ID3D12Resource2>&        a_countBuffer) const;
-
-        static constexpr TypeAlias::Math::Color k_defaultBackBufferClearColor =
-        {
-            1.0F,
-            0.80F,
-            1.0F,
-            1.0F
-        };
 
     protected:
 

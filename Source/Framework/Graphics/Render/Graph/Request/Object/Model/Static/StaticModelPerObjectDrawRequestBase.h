@@ -36,7 +36,6 @@ namespace FWK::Graphics
 
         Utility::SmartPointerVectorList<std::weak_ptr<Struct::StaticModelPerObjectDrawRequestData>> m_forwardDrawRequestDataSmartPointerVectorList = {};
 
-        // 描画申請から1フレーム分の表を作るクラスと、それを使ってGPUドリブンで描画するクラス
         ModelGPUDrivenTableBuilder m_gpuDrivenTableBuilder = {};
         ModelGPUDrivenDrawer       m_gpuDrivenDrawer       = {};
 

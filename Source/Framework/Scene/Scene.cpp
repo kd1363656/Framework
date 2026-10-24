@@ -69,7 +69,7 @@ void FWK::Scene::EarlyUpdate()
     // 追加要求があったゲームオブジェクトがあればここで追加
     AddPendingGameObjects();
 
-    // ※負荷テスト専用 : ウィンドウサイズが変わったらカメラの縦横比を合わせ、アニメーションの再生時刻を進める
+    // ※負荷テスト専用 : 出力先(Viewportまたはウィンドウ)の縦横比が変わったらカメラの縦横比を合わせ、アニメーションの再生時刻を進める
     UpdatePerformanceTestCameraAspectRatio();
     UpdatePerformanceTestAnimationTime    ();
 
@@ -575,11 +575,10 @@ void FWK::Scene::SetupPerformanceTestCamera(const PerformanceTestLayout& a_layou
     const float l_farClip  = TypeAlias::Math::Vector3::Distance(l_cameraPosition, l_farthestPosition) * k_performanceTestCameraFarClipScale;
     const float l_nearClip = a_layout.m_boundsSize.y * k_performanceTestCameraNearClipScale;
 
-          auto& l_application = Application::GetInstance  ();
-    const auto& l_window      = l_application.GetREFWindow();
+    const auto& l_editorManager = Editor::EditorManager::GetInstance();
 
     m_performanceTestCamera.Setup(l_cameraMatrix,
-                                  l_window.GetVALAspectRatio(),
+                                  l_editorManager.FetchVALRenderOutputAspectRatio(),
                                   Constant::k_cameraDefaultFOVYDegree,
                                   l_farClip,
                                   l_nearClip);
@@ -641,7 +640,7 @@ void FWK::Scene::AddPerformanceTestProceduralMotion(Graphics::SkeletalAnimationM
 
     l_motionSequence.m_motionName     = L"PerformanceTestProceduralMotion";
     l_motionSequence.m_durationSecond = k_performanceTestMotionDurationSecond;
-    l_motionSequence.m_frameRate      = ModelRecord::k_defaultAnimationFrameRate;
+    l_motionSequence.m_frameRate      = Constant::k_defaultAnimationFrameRate;
 
     // PoseEvaluatorは「再生時刻 × FrameRate」番目のKeyFrameを読むため、KeyFrameはFrameRateの間隔で並べる
     // 最後の時刻(= モーションの長さ)も含めるため+1する
@@ -695,17 +694,18 @@ void FWK::Scene::AddPerformanceTestProceduralMotion(Graphics::SkeletalAnimationM
 
 void FWK::Scene::UpdatePerformanceTestCameraAspectRatio()
 {
-          auto& l_application   = Application::GetInstance    ();
-    const auto& l_window        = l_application.GetREFWindow  ();
-    const auto& l_resizeRequest = l_window.GetREFResizeRequest();
+    // Viewportのサイズ変更はウィンドウのリサイズ申請を伴わないため、
+    // 出力先のAspectRatioが変わったかどうかで更新を判断する
+    const auto& l_editorManager = Editor::EditorManager::GetInstance          ();
+    const float l_aspectRatio   = l_editorManager.FetchVALRenderOutputAspectRatio();
 
-    if (!l_resizeRequest.m_isRequested ||
-         l_resizeRequest.m_isMinimized)
+    if (l_aspectRatio <= Constant::k_cameraInvalidAspectRatio ||
+        l_aspectRatio == m_performanceTestCamera.GetVALAspectRatio())
     {
         return;
     }
 
-    m_performanceTestCamera.ApplyPerspectiveAspectRatio(l_window.GetVALAspectRatio());
+    m_performanceTestCamera.ApplyPerspectiveAspectRatio(l_aspectRatio);
 }
 
 void FWK::Scene::UpdatePerformanceTestAnimationTime()

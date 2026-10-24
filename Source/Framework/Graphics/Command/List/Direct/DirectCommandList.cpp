@@ -150,7 +150,7 @@ void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_V
 
     const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
-    FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、定数バッファビュー設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Constant::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、定数バッファビュー設定に失敗しました。");
 
     // RootSignature側でD3D12_ROOT_PARAMETER_TYPE_CBVにした場所へ、
     // UploadBuffer上の定数バッファ位置を直接結びつける
@@ -175,7 +175,7 @@ void FWK::Graphics::DirectCommandList::SetupVertexBufferView(const D3D12_VERTEX_
     const auto& l_directCommandList = GetREFCommandList();
 
     FWK_ASSERT_RETURN_IF(!l_directCommandList,                                                                       "ダイレクトコマンドリストが作成されておらず、VertexBufferViewの設定に失敗しました。");
-    FWK_ASSERT_RETURN_IF(a_vertexBufferView.BufferLocation == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "VertexBufferViewのGPU仮想アドレスが無効のため、VertexBufferViewの設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_vertexBufferView.BufferLocation == Constant::k_invalidDynamicBufferGPUVirtualAddress, "VertexBufferViewのGPU仮想アドレスが無効のため、VertexBufferViewの設定に失敗しました。");
     FWK_ASSERT_RETURN_IF(a_vertexBufferView.SizeInBytes    == k_invalidSizeInBytes,                                  "VertexBufferViewのSizeInBytes無効のため、VertexBufferViewの設定に失敗しました。");
 
     l_directCommandList->IASetVertexBuffers(k_vertexBufferViewStartSlot, k_vertexBufferViewCount, &a_vertexBufferView);
@@ -266,7 +266,7 @@ void FWK::Graphics::DirectCommandList::SetupComputeConstantBufferView(const D3D1
 
     const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
-    FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、ComputeShader用定数バッファビュー設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Constant::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、ComputeShader用定数バッファビュー設定に失敗しました。");
 
     // SetComputeRootConstantBufferView(ルートパラメータ番号、定数バッファのGPUアドレス);
     l_directCommandList->SetComputeRootConstantBufferView(l_rootParameterIndex, a_gpuVirtualAddress);

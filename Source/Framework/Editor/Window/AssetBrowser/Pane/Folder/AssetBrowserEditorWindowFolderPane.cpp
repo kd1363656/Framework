@@ -421,8 +421,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     }
 
     const auto& l_clipboard   = a_editorWindow.GetREFClipboard();
-    const bool  l_isCutTarget = (l_clipboard.GetVALOperationType() == Enum::AssetBrowserFileClipboardOperationType::Cut) &&
-                                 l_clipboard.Contains(a_currentFolderPath);
+    const bool  l_isCutTarget = l_clipboard.IsCutTarget       (a_currentFolderPath);
 
     // ハイライト強弱の制御
     // 描画先ペインがアクティブなら不透明の選択色
@@ -558,17 +557,15 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
 
             const ImVec2& l_iconPosition  = l_mousePosition + k_banIconOffset;
 
-            const auto& l_redColor = Constant::k_imguiDangerColor * Constant::k_imguiImVec4ToImU32;
+            // ImGui::GetColorU32でImVec4(0.0F～1.0F)の色をImDrawListが使うImU32(0～255を4つ詰めた値)へ変換する
+            const auto l_dangerColor = ImGui::GetColorU32(Constant::k_imguiDangerColor);
 
             // ImGui::GetFontSizeで現在のフォントサイズを取得
             // BanIconを赤色で描画して禁止を明示する
             l_foregroundDrawList->AddText(ImGui::GetFont(),
                                           ImGui::GetFontSize() * k_banIconSizeOffset,
                                           l_iconPosition,
-                                          IM_COL32(l_redColor.x, 
-                                                   l_redColor.y, 
-                                                   l_redColor.z, 
-                                                   l_redColor.w),
+                                          l_dangerColor,
                                           Constant::k_imguiFontAwesomeBanIcon.data(),
                                           Constant::k_imguiFontAwesomeBanIcon.data() + Constant::k_imguiFontAwesomeBanIcon.size());
         }

@@ -16,7 +16,7 @@ void FWK::Converter::CascadeShadowMapJsonConverter::Deserialize(const nlohmann::
     l_depthStencilTextureSettings.m_stencilClearValue = a_rootJson.value(k_stencilClearValueJsonKey, Constant::k_defaultStencilClearValue);
 
     l_depthStencilTextureSettings.m_arraySize = a_rootJson.value(k_maxCascadeCountJsonKey, Constant::k_cascadeShadowMapDefaultMAXCascadeCount);
-    l_depthStencilTextureSettings.m_mipLevels = a_rootJson.value(k_mipLevelsJsonKey,       Struct::DepthStencilTextureSettings::k_defaultMipLevels);
+    l_depthStencilTextureSettings.m_mipLevels = a_rootJson.value(k_mipLevelsJsonKey,       Constant::k_defaultDepthStencilMipLevels);
 
     l_depthStencilTextureSettings.m_sampleCount   = a_rootJson.value(k_sampleCountJsonKey,   Constant::k_defaultSampleCount);
     l_depthStencilTextureSettings.m_sampleQuality = a_rootJson.value(k_sampleQualityJsonKey, Constant::k_defaultSampleQuality);

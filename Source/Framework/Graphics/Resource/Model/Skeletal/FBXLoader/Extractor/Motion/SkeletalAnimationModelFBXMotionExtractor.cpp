@@ -62,7 +62,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelBoneMot
     a_modelBoneMotionTrack = {};
 
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxBakedNode,                                        "ModelBoneMotionTrackへ変換するufbx_baked_nodeがnullptrです。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_animationDurationSecond < SkeletalAnimationModelRecord::k_initialAnimationDurationSecond, "Animation再生時間が0未満です。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animationDurationSecond < Constant::k_initialAnimationDurationSecond, "Animation再生時間が0未満です。", false);
     FWK_ASSERT_RETURN_VALUE_IF(a_animationFrameRate <= k_invalidAnimationFrameRate,     "AnimationFrameRateが0以下です。", false);
 
     FWK_ASSERT_RETURN_VALUE_IF(a_fbxBakedNode->scale_keys.count == Constant::k_emptyUFBXElementCount,       "Bake済みScaleKeyが存在しません。",       false);
@@ -106,7 +106,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionS
     const auto& l_animationDurationSecond = a_fbxBakedAnimation->playback_duration;
     const auto& l_animationFrameRate      = static_cast<double>(a_modelMotionSequence.m_frameRate);
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_animationDurationSecond < SkeletalAnimationModelRecord::k_initialAnimationDurationSecond, "Bake済みAnimationの再生時間が0未満です。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_animationDurationSecond < Constant::k_initialAnimationDurationSecond, "Bake済みAnimationの再生時間が0未満です。", false);
 
     a_modelMotionSequence.m_durationSecond = static_cast<float>(l_animationDurationSecond);
 
@@ -159,7 +159,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionS
     // FBXにFrameRateが設定されていない場合はFrameworkの基底値を使用する
     if (l_animationFrameRate <= k_invalidAnimationFrameRate)
     {
-        l_animationFrameRate = static_cast<double>(SkeletalAnimationModelRecord::k_defaultAnimationFrameRate);
+        l_animationFrameRate = static_cast<double>(Constant::k_defaultAnimationFrameRate);
     }
 
     ufbx_bake_opts l_bakeOptions = {};

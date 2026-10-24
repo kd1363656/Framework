@@ -92,7 +92,6 @@ namespace FWK::Graphics
 
     private:
 
-        // クラス名の末尾に付いている文字列(ファイル名の先頭名を作る際に取り除く)
         static constexpr std::string_view k_classNameSuffix = "Material";
 
         static constexpr std::uint64_t k_initialMemoryOffset = 0ULL;

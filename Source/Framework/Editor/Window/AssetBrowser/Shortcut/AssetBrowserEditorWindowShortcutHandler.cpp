@@ -1,20 +1,22 @@
 ﻿#include "AssetBrowserEditorWindowShortcutHandler.h"
 
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vector<std::filesystem::path>& a_selectedFilePathList,
-                                                                  const std::filesystem::path&              a_selectedFilePath, 
-                                                                  const std::filesystem::path&              a_targetFilePath, 
+                                                                  const std::filesystem::path&              a_selectedFilePath,
+                                                                  const std::filesystem::path&              a_targetFilePath,
                                                                         AssetBrowserEditorWindow&           a_editorWindow) const
 {
     // アクティブPane無効の場合は何もしない
     if (const auto l_activePane = a_editorWindow.GetVALActivePane();
         l_activePane == Enum::AssetBrowserActivePaneType::Invalid)
     {
-        return; 
+        return;
     }
 
-    // ImGuiの入力状態を取得
-    // ImGui::GetIO()は現在のフレームの入力状態を持つImGuiIO構造体を返す
-    const auto& l_io = ImGui::GetIO();
+    // このフレームで押されたショートカットを取得する
+    // キーの割り当てはWorldOutlinerなど他のEditorWindowと共通(EditorWindowShortcutUtilityConstant.h)
+    const auto l_shortcutType = Utility::FetchVALPressedEditorWindowShortcut();
+
+    if (l_shortcutType == Enum::EditorWindowShortcutType::None) { return; }
 
     // 選択中のファイルがあるか
     const bool l_hasSelection = !a_selectedFilePathList.empty();
@@ -40,125 +42,117 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     const bool l_isRootFolder = a_targetFilePath == Constant::k_assetRootFolderPath;
 
     // 選択中リストにルートフォルダが含まれているかどうか
+    // ルートフォルダはコピー、切り取り、複製、削除できない
     const bool l_containsRoot = std::find(a_selectedFilePathList.begin(), a_selectedFilePathList.end(), Constant::k_assetRootFolderPath) != a_selectedFilePathList.end();
 
-    // 新規作成
-    // Ctrl + Shift + N : 新規フォルダ作成
-    // KeyCtrlとKeyShiftが両方trueで、Nキーが押された瞬間
-    // ImGui::IsKeyPressed()は押された瞬間trueを返す
-    // アクティブPaneと選択状態からコンテキストを判定し
-    // PopupDrawerの右クリックメニューと同じ挙動にする
-    // FolderPane : FolderPane_OnFolder
-    // AssetPane + 未選択       : AssetPane_OnEmpty
-    // AssetPane + フォルダ選択 : AssetPane_OnFolder
-    // AssetPane + ファイル選択 : AssetPane_OnfFile(作成不可)
-    Enum::AssetBrowserPopupContextType l_createFolderContext = Enum::AssetBrowserPopupContextType::FolderPane_OnFolder;
+    // 選択中のファイルに対して操作できるか(コピー、切り取り、複製、削除で共通の条件)
+    const bool l_canOperateSelection = l_hasSelection &&
+                                       !l_containsRoot;
 
-    if (a_editorWindow.GetVALActivePane() == Enum::AssetBrowserActivePaneType::AssetPane)
+    switch (l_shortcutType)
     {
-        if (a_selectedFilePathList.empty())
+    case Enum::EditorWindowShortcutType::CreateFolder:
+    {
+        // Ctrl + Shift + N : 新規フォルダ作成
+        // アクティブPaneと選択状態からコンテキストを判定し
+        // PopupDrawerの右クリックメニューと同じ挙動にする
+        // FolderPane : FolderPane_OnFolder
+        // AssetPane + 未選択       : AssetPane_OnEmpty
+        // AssetPane + フォルダ選択 : AssetPane_OnFolder
+        // AssetPane + ファイル選択 : AssetPane_OnfFile(作成不可)
+        Enum::AssetBrowserPopupContextType l_createFolderContext = Enum::AssetBrowserPopupContextType::FolderPane_OnFolder;
+
+        if (a_editorWindow.GetVALActivePane() == Enum::AssetBrowserActivePaneType::AssetPane)
         {
-            l_createFolderContext = Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
+            if (a_selectedFilePathList.empty())
+            {
+                l_createFolderContext = Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
+            }
+            else
+            {
+                std::error_code l_errorCode = {};
+
+                l_createFolderContext = std::filesystem::is_directory(a_selectedFilePath, l_errorCode) ? Enum::AssetBrowserPopupContextType::AssetPane_OnFolder : Enum::AssetBrowserPopupContextType::AssetPane_OnFile;
+            }
         }
-        else
+
+        // 作成可能か判定
+        // AssetPane_OnFile(ファイル選択中)は作成不可
+        // PopupDrawerのl_canCreateFolderと同じ条件
+        if (!l_isMultiSelection                                                              &&
+           (l_createFolderContext == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder ||
+            l_createFolderContext == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder  ||
+            l_createFolderContext == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty))
         {
-            std::error_code l_errorCode = {};
-
-            l_createFolderContext = std::filesystem::is_directory(a_selectedFilePath, l_errorCode) ? Enum::AssetBrowserPopupContextType::AssetPane_OnFolder : Enum::AssetBrowserPopupContextType::AssetPane_OnFile;
+            HandleCreateFolder(a_targetFilePath, l_createFolderContext, a_editorWindow);
         }
-    }
 
-    // 作成可能か判定
-    // AssetPane_OnFile(ファイル選択中)は作成不可
-    // PopupDrawerのl_canCreateFolderと同じ条件
-    if (l_io.KeyCtrl                                                                     &&
-        l_io.KeyShift                                                                    &&
-        ImGui::IsKeyPressed(ImGuiKey_N, false)                                           &&
-        !l_isMultiSelection                                                              &&
-       (l_createFolderContext == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder ||
-        l_createFolderContext == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder  ||
-        l_createFolderContext == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty))
-    {
-        HandleCreateFolder(a_targetFilePath, l_createFolderContext, a_editorWindow);
+        break;
     }
-
-    // 操作
-    // F2 : 名前変更
-    // 単一選択時のみ有効
-    // ImGuiKey_F2はF2キーを表す
-    if (l_isSingleSelection                     &&
-        !l_isRootFolder                         &&
-        ImGui::IsKeyPressed(ImGuiKey_F2, false) &&
-        !l_isMultiSelection)
+    case Enum::EditorWindowShortcutType::Rename:
     {
-        HandleRename(a_selectedFilePath, l_renameState);
+        // F2 : 名前変更(単一選択時のみ有効)
+        if (l_isSingleSelection &&
+            !l_isRootFolder)
+        {
+            HandleRename(a_selectedFilePath, l_renameState);
+        }
+
+        break;
     }
-
-    // Ctrl + C : コピー
-    // 選択中のファイルがある場合のみ
-    if (l_hasSelection  &&
-        !l_containsRoot &&
-        l_io.KeyCtrl    && 
-        ImGui::IsKeyPressed(ImGuiKey_C, false))
+    case Enum::EditorWindowShortcutType::Copy:
     {
-        HandleCopy(a_selectedFilePathList, l_fileOperation, l_clipboard);
+        // Ctrl + C : コピー
+        if (l_canOperateSelection) { HandleCopy(a_selectedFilePathList, l_fileOperation, l_clipboard); }
+
+        break;
     }
-
-    // Ctrl + X : 切り取り
-    // 選択中のファイルがある場合のみ
-    if (l_hasSelection  &&
-        !l_containsRoot &&
-        l_io.KeyCtrl    &&
-        ImGui::IsKeyPressed(ImGuiKey_X, false))
+    case Enum::EditorWindowShortcutType::Cut:
     {
-        HandleCut(a_selectedFilePathList, l_fileOperation, l_clipboard);
+        // Ctrl + X : 切り取り
+        if (l_canOperateSelection) { HandleCut(a_selectedFilePathList, l_fileOperation, l_clipboard); }
+
+        break;
     }
-
-    // Ctrl + V : 貼り付け
-    // クリップボードが空でない場合のみ
-    // 貼り付け先はa_targetFilePathではなく
-    // 現在参照中のフォルダを使用する
-    // Windows Explorerと同じく現在開いているフォルダへ張り付ける
-    if (l_canPaste   &&
-        l_io.KeyCtrl &&
-        ImGui::IsKeyPressed(ImGuiKey_V, false))
+    case Enum::EditorWindowShortcutType::Paste:
     {
-        HandlePaste(a_selectedFilePathList, l_fileOperation, l_clipboard);
+        // Ctrl + V : 貼り付け(クリップボードが空でない場合のみ)
+        // Windows Explorerと同じく現在開いているフォルダへ張り付ける
+        if (l_canPaste) { HandlePaste(a_selectedFilePathList, l_fileOperation, l_clipboard); }
+
+        break;
     }
-
-    // Ctrl + D : 複製
-    // 選択中のファイルがある場合のみ
-    if (l_hasSelection  &&
-        !l_containsRoot &&
-        l_io.KeyCtrl    &&
-        ImGui::IsKeyPressed(ImGuiKey_D, false))
+    case Enum::EditorWindowShortcutType::Duplicate:
     {
-        HandleDuplicate(a_selectedFilePathList, l_fileOperation);
+        // Ctrl + D : 複製
+        if (l_canOperateSelection) { HandleDuplicate(a_selectedFilePathList, l_fileOperation); }
+
+        break;
     }
-
-    // Del : 削除
-    // 選択中のファイルがある場合のみ
-    // ImGuiKey_DeleteはDeleteキーを表す
-    if (l_hasSelection  &&
-        !l_containsRoot &&
-        ImGui::IsKeyPressed(ImGuiKey_Delete, false))
+    case Enum::EditorWindowShortcutType::Delete:
     {
-        HandleDelete(a_selectedFilePathList, a_editorWindow);
+        // Delete : 削除(確認ダイアログを表示する)
+        if (l_canOperateSelection) { HandleDelete(a_selectedFilePathList, a_editorWindow); }
+
+        break;
+    }
+    default:
+    {
+        // SelectAllはPaneごとに対象が違うため、HandleFolderPane / HandleAssetPaneで処理する
+        break;
+    }
     }
 }
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(AssetBrowserEditorWindow& a_editorWindow)
 {
-    const auto& l_io         = ImGui::GetIO                          ();
-          auto& l_folderPane = a_editorWindow.GetMutableREFFolderPane();
+    auto& l_folderPane = a_editorWindow.GetMutableREFFolderPane();
 
     // Ctrl + A : 現在フォルダツリーで表示中のフォルダをすべて選択する
-    // ImGui::IsKeyPressed(ImGuiKey_A) : Aキーが押された瞬間か
     // FetchVALDisplayedFolderList()で表示中フォルダリストを取得し
     // SelectionState::SelectAllで全選択する
     // ルートフォルダ(Asset)も選択対象に含まれるが
     // 既存のHandle側でルートフォルダ含む場合は操作無効化されるため問題ない
-    if (l_io.KeyCtrl &&
-        ImGui::IsKeyPressed(ImGuiKey_A, false))
+    if (Utility::FetchVALPressedEditorWindowShortcut() == Enum::EditorWindowShortcutType::SelectAll)
     {
         // 表示中フォルダリストを取得
         // Assetルーっとから再帰的においているフォルダの子を収集し
@@ -174,15 +168,16 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(Asse
     }
 
     // 上下キーによる操作の反映
+    // Shift又はCtrlを押していれば範囲選択(WorldOutlinerと共通)
+    const bool l_isRangeSelection = Utility::IsEditorWindowRangeSelectionKeyDown();
+
     if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
     {
-        l_folderPane.MoveSelectionUp(a_editorWindow, l_io.KeyShift || 
-                                                     l_io.KeyCtrl);
+        l_folderPane.MoveSelectionUp(a_editorWindow, l_isRangeSelection);
     }
     else if (ImGui::IsKeyPressed(ImGuiKey_DownArrow))
     {
-        l_folderPane.MoveSelectionDown(a_editorWindow, l_io.KeyShift ||
-                                                       l_io.KeyCtrl);
+        l_folderPane.MoveSelectionDown(a_editorWindow, l_isRangeSelection);
     }
 
     // 右キー左キーによる操作の反映
@@ -204,14 +199,12 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(Asse
 
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleAssetPane(AssetBrowserEditorWindow& a_editorWindow)
 {
-    const auto& l_io        = ImGui::GetIO                         ();
-          auto& l_assetPane = a_editorWindow.GetMutableREFAssetPane();
+    auto& l_assetPane = a_editorWindow.GetMutableREFAssetPane();
 
-    // Ctrl + A : 表っ寺中のファイルをすべて選択
+    // Ctrl + A : 表示中のファイルをすべて選択
     // FetchVALDisplayedFilePathListで表示中リストを取得し
-    // SelectionState::SelectAddで全選択する
-    if (l_io.KeyCtrl &&
-        ImGui::IsKeyPressed(ImGuiKey_A, false))
+    // SelectionState::SelectAllで全選択する
+    if (Utility::FetchVALPressedEditorWindowShortcut() == Enum::EditorWindowShortcutType::SelectAll)
     {
         const auto& l_displayedFilePathList = l_assetPane.FetchVALDisplayedFilePathList(a_editorWindow);
 
@@ -221,12 +214,11 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleAssetPane(Asset
     }
 
     // 矢印キーによる操作
-    // グリッドレイアウト対応 
+    // グリッドレイアウト対応
     // ↑↓ : 1行分(CardsPerRow個)移動
     // ←→ : 1カード移動
-    // Ctrl / Shift押下時は範囲選択モード
-    const bool l_isRangeSelection = l_io.KeyShift ||
-                                    l_io.KeyCtrl;
+    // Shift又はCtrlを押していれば範囲選択(WorldOutlinerと共通)
+    const bool l_isRangeSelection = Utility::IsEditorWindowRangeSelectionKeyDown();
 
     if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
     {
@@ -262,9 +254,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleAssetPane(Asset
 
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const std::filesystem::path& a_parentFolderPath, const Enum::AssetBrowserPopupContextType a_contextType, AssetBrowserEditorWindow& a_editorWindow) const
 {
-    const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator     ();
-          auto& l_folderPane   = a_editorWindow.GetMutableREFFolderPane();
-          auto& l_renameState = a_editorWindow.GetMutableREFRenameState();
+    const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator      ();
+          auto& l_folderPane   = a_editorWindow.GetMutableREFFolderPane ();
+          auto& l_renameState  = a_editorWindow.GetMutableREFRenameState();
 
     // AssetCreator::CreateFolderでフォルダを作成
     // 戻り値がCreationResultに作成パスと成否が入っている
@@ -309,24 +301,8 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(co
     }
 
     // 作成成功時、名前変更モードへ移行
-    // PopupDrawer::StartRenameと同じ処理だが
     // ShortcutHandlerはPopupDrawerに依存せずに独自に名前変更モードを起動する
-    l_renameState.m_targetFilePath = l_result.m_createdFilePath;
-    l_renameState.m_isActive       = true;
-
-    // InputTextの初期値としてファイル名を設定
-    const auto& l_stem = l_result.m_createdFilePath.stem().string();
-
-    // バッファをゼロクリア
-    l_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
-
-    // ファイルっ名をバッファへコピー
-    const auto l_copySize = std::min(l_stem.size(), l_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
-
-    std::copy_n(l_stem.begin(), l_copySize, l_renameState.m_inputBuffer.begin());
-
-    // 初回フォーカス制御用フラグをリセット
-    l_renameState.m_isFocused = false;
+    HandleRename(l_result.m_createdFilePath, l_renameState);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleRename(const std::filesystem::path& a_targetFilePath, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
@@ -337,33 +313,28 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleRename(const st
     // 名前変更モードをアクティブにする
     a_renameState.m_isActive = true;
 
-    // InputTextの初期値としてファイル名を設定
-    const auto& l_stem = a_targetFilePath.stem().string();
+    // InputTextの初期値としてファイル名(拡張子なし)を設定
+    Utility::IMGUICopyStringToInputTextBuffer(a_targetFilePath.stem().string(), a_renameState.m_inputBuffer);
 
-    // バッファをゼロクリア
-    a_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
-
-    // ファイル名をバッファへコピー
-    const auto l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
-
-    std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());
+    // 初回フォーカス制御用フラグをリセット
+    a_renameState.m_isFocused = false;
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCopy(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCopy(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // FileOperation::Copyで選択中のファイルをクリップボードへコピー
     // コピー元ファイルは削除されない
     a_fileOperation.Copy(a_selectedFilePathList, a_clipboard);
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCut(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCut(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // FileOperation::Cutで選択中のファイルをクリップボードへ切り取り
     // 貼り付け時に元ファイルが削除される
     a_fileOperation.Cut(a_selectedFilePathList, a_clipboard);
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandlePaste(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandlePaste(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // FileOperation::Pasteでクリップボードのファイルを現在フォルダへ張り付け
-// Cutの場合は元ファイルを削除、Copyの場合は複製
+    // Cutの場合は元ファイルを削除、Copyの場合は複製
     a_fileOperation.Paste(a_selectedFilePathList, a_clipboard);
 }
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleDuplicate(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation) const

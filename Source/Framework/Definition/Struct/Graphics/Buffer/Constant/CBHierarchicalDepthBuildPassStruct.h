@@ -6,16 +6,14 @@ namespace FWK::Struct
     // ※ HLSL側と必ず同じ並びにする
     struct CBHierarchicalDepthBuildPass final
     {
-        static constexpr std::uint32_t k_initialValue = 0U;
-
         TypeAlias::DescriptorIndex m_sourceDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
-        std::uint32_t              m_isSourceDepthTexture  = k_initialValue;
-        std::uint32_t              m_sourceWidth           = k_initialValue;
-        std::uint32_t              m_sourceHeight          = k_initialValue;
+        std::uint32_t              m_isSourceDepthTexture  = Constant::k_initialCBHierarchicalDepthBuildPassValue;
+        std::uint32_t              m_sourceWidth           = Constant::k_initialCBHierarchicalDepthBuildPassValue;
+        std::uint32_t              m_sourceHeight          = Constant::k_initialCBHierarchicalDepthBuildPassValue;
 
         TypeAlias::DescriptorIndex m_destinationUAVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
-        std::uint32_t              m_padding                       = k_initialValue;
-        std::uint32_t              m_destinationWidth              = k_initialValue;
-        std::uint32_t              m_destinationHeight             = k_initialValue;
+        std::uint32_t              m_padding                       = Constant::k_initialCBHierarchicalDepthBuildPassValue;
+        std::uint32_t              m_destinationWidth              = Constant::k_initialCBHierarchicalDepthBuildPassValue;
+        std::uint32_t              m_destinationHeight             = Constant::k_initialCBHierarchicalDepthBuildPassValue;
     };
 }

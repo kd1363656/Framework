@@ -33,13 +33,11 @@ namespace FWK
 
         void OutputDebugReport(const std::string& a_report) const;
 
-        // 失敗をLogウィンドウで目立たせるための赤色
         static constexpr TypeAlias::Math::Color k_editorLogColor = { 1.00F,
                                                                      0.35F,
                                                                      0.35F,
                                                                      1.00F };
 
-        // UTF-8の文字列をOutputDebugStringW用のUTF-16へ変換する際に使う値
         static constexpr UINT k_reportCodePage = CP_UTF8;
 
         static constexpr DWORD k_reportMultiByteFlags = 0UL;
@@ -47,7 +45,6 @@ namespace FWK
         static constexpr int k_reportQueryBufferSize      = 0;
         static constexpr int k_reportInvalidConvertedSize = 0;
 
-        // 報告済みの場所(例 : "C:\...\UploadSystem.cpp:45")の一覧
         std::unordered_set<std::string> m_reportedSiteSet = {};
 
         bool m_isEditorLogEnabled = true;

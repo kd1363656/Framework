@@ -97,18 +97,18 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Delete(const std::vecto
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Copy(const std::vector<std::filesystem::path>& a_filePathList, AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Copy(const std::vector<std::filesystem::path>& a_filePathList, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // ClipboardへCopy操作として設定する
-    a_clipboard.Apply(a_filePathList, Enum::AssetBrowserFileClipboardOperationType::Copy);
+    a_clipboard.Apply(a_filePathList, Enum::EditorWindowClipboardOperationType::Copy);
 }
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Cut(const std::vector<std::filesystem::path>& a_filePathList, AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Cut(const std::vector<std::filesystem::path>& a_filePathList, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // ClipboardへCut操作として設定する
-    a_clipboard.Apply(a_filePathList, Enum::AssetBrowserFileClipboardOperationType::Cut);
+    a_clipboard.Apply(a_filePathList, Enum::EditorWindowClipboardOperationType::Cut);
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector<std::filesystem::path>& a_destinationFolderPathList, AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector<std::filesystem::path>& a_destinationFolderPathList, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // Clipboardが空なら何もしない
     if (a_clipboard.IsEmpty()) { return; }
@@ -119,9 +119,9 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector
     const auto l_operationType = a_clipboard.GetVALOperationType();
 
     // 走査種別がInvalidなら何もしない
-    if (l_operationType == Enum::AssetBrowserFileClipboardOperationType::Invalid) { return; }
+    if (l_operationType == Enum::EditorWindowClipboardOperationType::Invalid) { return; }
 
-    const auto& l_clipboardFilePathList = a_clipboard.GetREFFilePathList();
+    const auto& l_clipboardFilePathList = a_clipboard.GetREFElementList();
 
     // 全ての貼り付け先フォルダへ貼り付けを行ってから
     // Cut操作のコピー元削除とClipboardクリアを行う
@@ -216,7 +216,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector
     }
 
     // Cut操作以外はここで処理を終了
-    if (l_operationType != Enum::AssetBrowserFileClipboardOperationType::Cut) { return; }
+    if (l_operationType != Enum::EditorWindowClipboardOperationType::Cut) { return; }
 
     // クリップオードにコピーしたコピー元ファイルを削除する
     // 全フォルダへ貼り付けが終わった後に行う

@@ -43,7 +43,7 @@ FWK::Struct::MaterialLoadResult FWK::Graphics::MaterialSystem::LoadMaterialForBa
     // テクスチャは.materialファイルの場所を基準に読み込むため、先にファイルパスを設定する
     l_material->SetFilePath      (l_filePath.wstring());
     l_material->SetStorageID     (l_allocateStorageID);
-    l_material->SetReferenceCount(AssetRecordBase::k_initialAssetReferenceCount);
+    l_material->SetReferenceCount(Constant::k_initialAssetReferenceCount);
 
     l_material->BuildRuntimeResources();
 

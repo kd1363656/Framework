@@ -50,7 +50,6 @@ namespace FWK
 
     private:
 
-        // 文字列がキーのマップはjsonのシリアライズ時に使用
         TypeINFONameMap         m_typeINFONameMap         = {};
         TypeINFOStaticTypeIDMap m_typeINFOStaticTypeIDMap = {};
     };

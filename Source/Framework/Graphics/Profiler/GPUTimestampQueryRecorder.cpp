@@ -61,7 +61,7 @@ void FWK::Graphics::GPUTimestampQueryRecorder::BeginFrame(const std::size_t a_fr
     // 今回のフレームで使うために記録をリセットする
     l_frameRecord.m_scopeRecordList.clear();
 
-    l_frameRecord.m_usedQueryCount = FrameRecord::k_initialUsedQueryCount;
+    l_frameRecord.m_usedQueryCount = k_initialUsedQueryCount;
     l_frameRecord.m_isResolved     = false;
 
     m_openScopeIndexStack.clear();
@@ -103,7 +103,7 @@ void FWK::Graphics::GPUTimestampQueryRecorder::Resolve(ID3D12GraphicsCommandList
 {
     auto& l_frameRecord = m_frameRecordList[m_currentFrameIndex];
 
-    if (l_frameRecord.m_usedQueryCount == FrameRecord::k_initialUsedQueryCount) { return; }
+    if (l_frameRecord.m_usedQueryCount == k_initialUsedQueryCount) { return; }
 
     FWK_ASSERT_RETURN_IF(!m_queryHeap,                    "QueryHeapが作成されておらず、タイムスタンプの読み戻し命令に失敗しました。");
     FWK_ASSERT_RETURN_IF(!l_frameRecord.m_readbackBuffer, "読み戻し用バッファが作成されておらず、タイムスタンプの読み戻し命令に失敗しました。");
@@ -174,7 +174,7 @@ void FWK::Graphics::GPUTimestampQueryRecorder::CollectCompletedSampleList(const 
     void* l_mappedData = nullptr;
 
     // Map(サブリソース番号、CPUが読む範囲、CPUから見たアドレスの受け取り先);
-    const auto l_hr = a_frameRecord.m_readbackBuffer->Map(UploadBuffer::k_firstSubresourceIndex, &l_readRange, &l_mappedData);
+    const auto l_hr = a_frameRecord.m_readbackBuffer->Map(Constant::k_firstSubresourceIndex, &l_readRange, &l_mappedData);
 
     FWK_ASSERT_RETURN_IF(FAILED(l_hr), "読み戻し用バッファのMapに失敗しました。");
 
@@ -183,7 +183,7 @@ void FWK::Graphics::GPUTimestampQueryRecorder::CollectCompletedSampleList(const 
     for (const auto& l_scopeRecord : a_frameRecord.m_scopeRecordList)
     {
         // Endが記録されていない(閉じ忘れの)区間は計算できないので飛ばす
-        if (l_scopeRecord.m_endQueryIndex == ScopeRecord::k_invalidQueryIndex) { continue; }
+        if (l_scopeRecord.m_endQueryIndex == k_invalidQueryIndex) { continue; }
 
         const auto l_beginTimestamp = l_timestampList[l_scopeRecord.m_beginQueryIndex];
         const auto l_endTimestamp   = l_timestampList[l_scopeRecord.m_endQueryIndex];
@@ -207,7 +207,7 @@ void FWK::Graphics::GPUTimestampQueryRecorder::CollectCompletedSampleList(const 
         k_readbackBufferStartOffset
     };
 
-    a_frameRecord.m_readbackBuffer->Unmap(UploadBuffer::k_firstSubresourceIndex, &l_writtenRange);
+    a_frameRecord.m_readbackBuffer->Unmap(Constant::k_firstSubresourceIndex, &l_writtenRange);
 }
 
 UINT FWK::Graphics::GPUTimestampQueryRecorder::WriteTimestamp(ID3D12GraphicsCommandList6& a_commandList)

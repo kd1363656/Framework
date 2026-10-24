@@ -49,7 +49,7 @@ void FWK::Converter::TextureSystemJsonConverter::DeserializeDefaultTextureList(c
         const auto& l_defaultTextureType = l_json.value(k_defaultTextureTypeJsonKey, Enum::DefaultTextureType::Count);
 
         // デフォルトテクスチャタイプの値がDefaultTextureTypeのCountを超えていればreturn;
-        if (static_cast<std::size_t>(l_defaultTextureType) >= Graphics::TextureSystem::k_defaultTextureTypeCount) { continue; }
+        if (static_cast<std::size_t>(l_defaultTextureType) >= Constant::k_defaultTextureTypeCount) { continue; }
 
         auto l_defaultTexture = std::make_shared<Graphics::DefaultTexture>();
 

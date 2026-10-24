@@ -87,6 +87,8 @@ namespace FWK::Editor
 
         ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
+        float FetchVALRenderOutputAspectRatio() const;
+
         const auto& GetREFEditorWindowList() const { return m_editorWindowList; }
 
         const auto& GetREFMainMenuBar() const { return m_mainMenuBar; }

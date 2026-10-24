@@ -51,7 +51,7 @@ namespace FWK::Graphics
             BuildModelMeshBounds(a_modelMesh);
 
             // LOD0 : 元の形をそのままMeshlet化する(形の崩れは0)
-            FWK_ASSERT_RETURN_VALUE_IF(!AppendModelMeshLOD(a_modelMesh, a_modelMesh.m_indexList, Struct::ModelMeshLOD::k_initialSimplifyError), "LOD0のMeshletData作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(!AppendModelMeshLOD(a_modelMesh, a_modelMesh.m_indexList, Constant::k_initialMeshLODSimplifyError), "LOD0のMeshletData作成に失敗しました。", false);
 
             // LOD1以降 : 三角形数を半分ずつ減らした形を作り、Meshletを後ろへ連結していく
             BuildSimplifiedModelMeshLODList(a_modelMesh);
@@ -76,7 +76,7 @@ namespace FWK::Graphics
             l_modelMeshletData.m_boundsCenter = (l_boundsMIN + l_boundsMAX) * k_half;
 
             // 中心から一番遠い頂点までの距離を半径にする(全頂点が必ず球に入る)
-            float l_maxDistanceSquared = Struct::ModelMeshletData::k_initialBoundsRadius;
+            float l_maxDistanceSquared = Constant::k_initialMeshletDataBoundsRadius;
 
             for (const auto& l_modelVertex : a_modelMesh.m_modelVertexList)
             {
@@ -107,7 +107,7 @@ namespace FWK::Graphics
                 // これ以上三角形を減らしても効果が薄いので終了
                 if (l_targetTriangleCount < k_minLODTriangleCount) { break; }
 
-                float l_resultError = Struct::ModelMeshLOD::k_initialSimplifyError;
+                float l_resultError = Constant::k_initialMeshLODSimplifyError;
 
                 // 遠距離用のLODだけ、UVや法線の継ぎ目をまたいだ簡略化(Permissive)を許可する
                 const auto l_simplifyOptions = l_lodIndex >= k_firstPermissiveLODIndex ? k_farLODSimplifyOptions : k_lodSimplifyOptions;
@@ -437,10 +437,8 @@ namespace FWK::Graphics
 
         static constexpr float k_defaultMeshletConeWeight = 0.25F;
 
-        // LODを1段階進めるごとに、三角形数を元の何倍にするか(0.5倍 = 半分)
         static constexpr float k_lodTriangleReductionRatio = 0.5F;
 
-        // 簡略化しても前のLODの9割より減らなかった場合は、それ以上LODを作らない
         static constexpr float k_minLODReductionRequirementRatio = 0.9F;
 
         static constexpr float k_half = 0.5F;
@@ -457,15 +455,12 @@ namespace FWK::Graphics
             1.0F, 1.0F
         };
 
-        // LODの最大数(LOD0 ～ LOD8)
         static constexpr std::size_t k_maxLODCount = 9ULL;
 
         static constexpr std::size_t k_firstSimplifiedLODIndex = 1ULL;
 
-        // このLOD番号以降は、UVや法線の継ぎ目をまたいだ簡略化を許可する
         static constexpr std::size_t k_firstPermissiveLODIndex = 3ULL;
 
-        // 三角形がこの数より少なくなるLODは作らない
         static constexpr std::size_t k_minLODTriangleCount = 64ULL;
 
         static constexpr std::size_t k_emptyMeshletCount = 0ULL;
@@ -484,9 +479,6 @@ namespace FWK::Graphics
         static constexpr std::uint32_t k_secondPackedPrimitiveIndexShiftBit = k_secondPrimitiveVertexOffset * k_packedPrimitiveIndexBitCount;
         static constexpr std::uint32_t k_thirdPackedPrimitiveIndexShiftBit  = k_thirdPrimitiveVertexOffset  * k_packedPrimitiveIndexBitCount;
 
-        // meshopt_simplifyに渡すオプション(複数のフラグをビット演算でまとめている)
-        // k_lodSimplifyOptions    : 近距離～中距離用(継ぎ目を守る)
-        // k_farLODSimplifyOptions : 遠距離用(継ぎ目をまたいだ簡略化も許可する)
         static constexpr unsigned int k_lodSimplifyOptions    = meshopt_SimplifyErrorAbsolute | meshopt_SimplifyPrune;
         static constexpr unsigned int k_farLODSimplifyOptions = meshopt_SimplifyErrorAbsolute | meshopt_SimplifyPrune | meshopt_SimplifyPermissive;
     };

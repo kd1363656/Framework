@@ -47,8 +47,6 @@ namespace FWK::Graphics
 
         std::weak_ptr<Graphics::TextureRecord> FetchVALDefaultTextureRecord(const Enum::DefaultTextureType a_defaultTextureType) const;
 
-        static constexpr std::size_t k_defaultTextureTypeCount = static_cast<std::size_t>(Enum::DefaultTextureType::Count);
-
         const auto& GetREFPendingTextureBatchUploadRecordMap() const { return m_pendingTextureBatchUploadRecordMap; }
 
         const auto& GetREFDefaultTextureList() const { return m_defaultTextureList; }
@@ -75,7 +73,7 @@ namespace FWK::Graphics
 
         PendingTextureBatchUploadRecordMap m_pendingTextureBatchUploadRecordMap = {};
 
-        std::array<std::shared_ptr<DefaultTexture>, k_defaultTextureTypeCount> m_defaultTextureList = {};
+        std::array<std::shared_ptr<DefaultTexture>, Constant::k_defaultTextureTypeCount> m_defaultTextureList = {};
 
         AssetStorage<Graphics::TextureRecord> m_textureStorage = {};
 

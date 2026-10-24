@@ -36,7 +36,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
     // CPUOnlyに作成したSRVをShaderVisible側へコピーする
     FWK_ASSERT_RETURN_VALUE_IF(!a_cbvSRVUAVDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(a_device, l_textureRecord->GetVALSRVDescriptorIndex()), "CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、TextureSRV作成処理に失敗しました。", false);
 
-    l_textureRecord->SetReferenceCount(AssetRecordBase::k_initialAssetReferenceCount);
+    l_textureRecord->SetReferenceCount(Constant::k_initialAssetReferenceCount);
     l_textureRecord->SetStorageID     (a_storageID);
     l_textureRecord->SetFilePath      (a_filePath);
 
@@ -120,7 +120,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(c
     //                       サブリソースごとの1行当たりの有効データサイズの受取先
     //                       必要なUploadBufferサイズの受取先);
     l_device->GetCopyableFootprints(&l_textureResourceDesc,
-                                    UploadBuffer::k_firstSubresourceIndex,
+                                    Constant::k_firstSubresourceIndex,
                                     l_subresourceCount,
                                     k_uploadBufferBeginOffset,
                                     l_layoutList.data(),

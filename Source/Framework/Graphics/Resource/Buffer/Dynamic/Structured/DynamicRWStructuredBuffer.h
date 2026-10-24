@@ -39,7 +39,7 @@ namespace FWK::Graphics
             // TypeがMatrixで64bte、要素数が100個なら、64 * 100 = 6400byteのGPUBufferを作る
             const auto& l_bufferSize = l_structuredByteStride * l_elementCount;
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_bufferSize == UploadBuffer::k_invalidBufferSize, "DynamicRWStructuredBufferの作成サイズが0のため、作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_bufferSize == Constant::k_invalidUploadBufferSize, "DynamicRWStructuredBufferの作成サイズが0のため、作成に失敗しました。", false);
 
             // 失敗したときに、このクラスが中途半端な状態にならないように、
             // まずはローカル変数でGPUResourceを作る

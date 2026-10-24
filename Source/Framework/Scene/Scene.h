@@ -30,7 +30,6 @@ namespace FWK
             std::size_t m_meshletCount  = 0ULL;
             std::size_t m_maxLODCount   = 0ULL;
 
-            // LODごとのモデル1体分の三角形数
             std::vector<std::size_t> m_lodTriangleCountList = {};
         };
 
@@ -159,49 +158,35 @@ namespace FWK
             return l_layout;
         }
 
-        // 負荷テストで描画するモデル
         inline static const std::filesystem::path k_performanceTestModelFilePath = "Asset/Model/Antike.fbx";
 
-        // 負荷テストで並べるモデルの種類(計測したい方に書き換えてビルドする)
         static constexpr PerformanceTestModelKind k_performanceTestModelKind = PerformanceTestModelKind::Static;
 
-        // 確認用モーションの長さ(秒)、ボーンを回転させる最大角度(ラジアン)、
-        // ボーンごとに揺れるタイミングをずらす量(ラジアン)
         static constexpr float k_performanceTestMotionDurationSecond    = 2.0F;
         static constexpr float k_performanceTestMotionAmplitudeRadian   = 0.1F;
         static constexpr float k_performanceTestMotionBonePhaseRadian   = 0.5F;
 
-        // モデルごとにアニメーションの再生時刻をずらす量(秒)
-        // (全員が同じ動きをすると、確認しづらいため)
         static constexpr float k_performanceTestAnimationTimeOffsetSecond = 0.37F;
 
         static constexpr std::size_t k_initialExecutionLevel = 0ULL;
 
-        // 負荷テストで並べるモデルの数(横25体 × 奥20体 = 500体)
         static constexpr std::size_t k_performanceTestInstanceCountX = 25ULL;
         static constexpr std::size_t k_performanceTestInstanceCountZ = 20ULL;
 
-        // モデル同士の間隔(モデルの横幅の何倍空けるか)
         static constexpr float k_performanceTestInstanceSpacingScale = 1.5F;
 
-        // カメラの高さ(モデルの高さの何倍か)と、注視点の高さ(モデルの高さの何倍か)
         static constexpr float k_performanceTestCameraHeightScale       = 3.0F;
         static constexpr float k_performanceTestCameraLookAtHeightScale = 0.5F;
 
-        // カメラを列の手前から何体分下げるか
         static constexpr float k_performanceTestCameraBackOffsetCount = 2.0F;
 
-        // NearClipはモデルの高さの何倍、FarClipはカメラから一番遠いモデルまでの距離の何倍か
         static constexpr float k_performanceTestCameraNearClipScale = 0.01F;
         static constexpr float k_performanceTestCameraFarClipScale  = 1.5F;
 
-        // 拡大縮小をしないため、ワールド行列の最大拡大率は1倍
         static constexpr float k_performanceTestWorldMaxScale = 1.0F;
 
-        // オクルージョンカリング確認用の巨大なモデルの拡大率
         static constexpr float k_performanceTestOccluderScale = 12.0F;
 
-        // オクルージョンカリング確認用の巨大なモデルを置くか(通常の計測ではfalse)
         static constexpr bool k_isPerformanceTestOccluderEnabled = false;
 
         static constexpr float k_half = 0.5F;
@@ -223,7 +208,6 @@ namespace FWK
 
         Graphics::LightSystem m_lightSystem = {};
 
-        // 負荷テストで描画するモデルと、それを映すカメラ
         Graphics::StaticModel            m_performanceTestStaticModel            = {};
         Graphics::SkeletalAnimationModel m_performanceTestSkeletalAnimationModel = {};
         Graphics::Camera                 m_performanceTestCamera                 = {};

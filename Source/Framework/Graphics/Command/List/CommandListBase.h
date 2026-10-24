@@ -22,7 +22,7 @@ namespace FWK::Graphics
             //                   コマンドリスト作成時の追加オプション、
             //                   受け取りたいCOMインターフェース型のID、
             //                   作成結果のポインタを書き込むアドレス);
-            auto l_hr = l_device->CreateCommandList1(UploadBuffer::k_defaultGPUNodeMask,
+            auto l_hr = l_device->CreateCommandList1(Constant::k_defaultGPUNodeMask,
                                                      CommandType,
                                                      D3D12_COMMAND_LIST_FLAG_NONE,
                                                      IID_PPV_ARGS(m_commandList.ReleaseAndGetAddressOf()));
@@ -78,7 +78,7 @@ namespace FWK::Graphics
             const auto& l_copyCommandList = GetREFCommandList();
 
             FWK_ASSERT_RETURN_IF(!l_copyCommandList,                                "コピーコマンドリストが作成されておらず、バッファコピー処理に失敗しました。");
-            FWK_ASSERT_RETURN_IF(a_bufferSize == UploadBuffer::k_invalidBufferSize, "コピーするBufferサイズが0のため、バッファコピー処理に失敗しました。");
+            FWK_ASSERT_RETURN_IF(a_bufferSize == Constant::k_invalidUploadBufferSize, "コピーするBufferサイズが0のため、バッファコピー処理に失敗しました。");
 
             // CopyBufferRegion(コピー先BufferResource、
             //                  コピー先BufferResource内の書き込み開始Offset、

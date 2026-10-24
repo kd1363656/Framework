@@ -15,11 +15,11 @@ int WINAPI WinMain(_In_     HINSTANCE,
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
     // COMライブラリの初期化(WICやDXGI内部でも使用される)
-    if (FAILED(CoInitializeEx(nullptr, COINIT_MULTITHREADED))) { return Application::k_exitCodeCOMInitializeFailed; }
+    if (FAILED(CoInitializeEx(nullptr, COINIT_MULTITHREADED))) { return FWK::Constant::k_applicationExitCodeCOMInitializeFailed; }
 
     Application::GetInstance().Execute();
 
-    return Application::k_exitCodeSuccess;
+    return FWK::Constant::k_applicationExitCodeSuccess;
 }
 
 Application::Application() : 

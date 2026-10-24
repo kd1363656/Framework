@@ -114,7 +114,6 @@ namespace FWK::Graphics
 
         void SyncSpritePassDrawRequest();
 
-        // FrameProfilerで計測するCPU区間の名前
         static constexpr std::string_view k_waitForGPUCPUScopeName = "CPU : Wait For GPU (FrameResource)";
         static constexpr std::string_view k_presentCPUScopeName    = "CPU : Present";
 

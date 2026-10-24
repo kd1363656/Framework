@@ -67,12 +67,13 @@ namespace FWK::Editor
         AssetBrowserEditorWindowAssetPane  m_assetPane    = {};
         EditorWindowPaneSplitter           m_paneSplitter = {};
 
-        AssetBrowserEditorWindowClipboard          m_clipboard          = {};
         AssetBrowserEditorWindowFileOperation      m_fileOperation      = {};
         AssetBrowserEditorWindowShortcutHandler    m_shortcutHandler    = {};
         AssetBrowserEditorWindowPopupDrawer        m_popupDrawer        = {};
         AssetBrowserEditorWindowAssetCreator       m_assetCreator       = {};
         AssetBrowserEditorWindowDeleteConfirmPopup m_deleteConfirmPopup = {};
+
+        TypeAlias::AssetBrowserEditorWindowClipboard m_clipboard = {};
 
         std::filesystem::path m_currentSelectFolderPath = {};
 

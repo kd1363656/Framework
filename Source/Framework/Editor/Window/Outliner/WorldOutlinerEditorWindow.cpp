@@ -256,13 +256,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartSceneRename(const Scene& a_sce
     m_renameState.m_isSceneTarget    = true;
     m_renameState.m_targetGameObject = {};
  
-    // 現在の名前を入力バッファへ入れておく
-    const auto& l_name     = a_scene.GetREFName();
-    const auto  l_copySize = std::min          (l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
- 
-    std::memcpy(m_renameState.m_inputBuffer.data(), l_name.data(), l_copySize);
- 
-    m_renameState.m_inputBuffer[l_copySize] = Constant::k_nullCharacter;
+    // 現在の名前を入力バッファへ入れておく(AssetBrowserの名前変更と共通)
+    Utility::IMGUICopyStringToInputTextBuffer(a_scene.GetREFName(), m_renameState.m_inputBuffer);
 }
 void FWK::Editor::WorldOutlinerEditorWindow::StartGameObjectRename(const std::weak_ptr<GameObject>& a_gameObject)
 {
@@ -275,12 +270,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartGameObjectRename(const std::we
     m_renameState.m_isSceneTarget    = false;
     m_renameState.m_targetGameObject = l_gameObject;
  
-    const auto& l_name     = l_gameObject->GetREFName();
-    const auto  l_copySize = std::min                (l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
- 
-    std::memcpy(m_renameState.m_inputBuffer.data(), l_name.data(), l_copySize);
- 
-    m_renameState.m_inputBuffer[l_copySize] = Constant::k_nullCharacter;
+    // 現在の名前を入力バッファへ入れておく(AssetBrowserの名前変更と共通)
+    Utility::IMGUICopyStringToInputTextBuffer(l_gameObject->GetREFName(), m_renameState.m_inputBuffer);
 }
 void FWK::Editor::WorldOutlinerEditorWindow::StartRenameByCurrentSelection(const EditorManager& a_editorManager)
 {
@@ -558,11 +549,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
         l_textColor = l_prefabSystem.FindPTRPrefab(l_prefabUUID) ? k_prefabGameObjectTextColor : Constant::k_imguiDangerColor;
     }
 
+    const bool l_isCutTarget = m_clipboard.IsCutTarget(l_gameObject->GetREFSceneInstanceUUID());
+
     // Cut対象なら文字色を半透明にする
     // AssetBrowserと同じくテキスト色へ半分倍率を掛けて暗くする
     // 左クリックでの選択は可能なまま維持する(選択フラグには影響しない)
-    if (m_clipboard.Contains(l_gameObject->GetREFSceneInstanceUUID()) &&
-        m_clipboard.GetVALOperationType() == Enum::WorldOutlinerClipboardOperationType::Cut)
+    if (l_isCutTarget)
     {
         // 透明度含めすべて0.5を掛ける
         l_textColor *= Constant::k_halfMagnification;
@@ -572,9 +564,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
 
     // 選択中・ホバー中・Cut対象の背景色をエディタ共通ルールでPushする
     // 他ウィンドウのアイテムと同じ選択色で描画される
-    const bool l_isSelected  = l_gameObjectSelectionState.FindVALIsSelected(a_gameObject);
-    const bool l_isCutTarget = m_clipboard.Contains(l_gameObject->GetREFSceneInstanceUUID()) &&
-                               m_clipboard.GetVALOperationType() == Enum::WorldOutlinerClipboardOperationType::Cut;
+    const bool l_isSelected = l_gameObjectSelectionState.FindVALIsSelected(a_gameObject);
 
     Utility::IMGUIPushItemHighlightColors(l_isSelected, a_editorManager.GetVALCurrentActiveWindowStaticTpeID() == GetREFTypeINFO().k_staticTypeID, l_isCutTarget);
 
@@ -809,8 +799,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::w
         ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
     {
               auto* l_drawList = ImGui::GetWindowDrawList();
-        const auto& l_color    = Constant::k_imguiAccentColor * Constant::k_imguiImVec4ToImU32;
- 
+        const auto  l_color    = ImGui::GetColorU32      (Constant::k_imguiAccentColor);
+
         // InvisibleButtonの矩形を取得
         const auto& l_itemMIN = ImGui::GetItemRectMin();
         const auto& l_itemMAX = ImGui::GetItemRectMax();
@@ -820,12 +810,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::w
         const ImVec2& l_highlightMIN = { l_itemMIN.x, l_centerY - k_dropZoneHighlightHeight * Constant::k_halfMagnification };
         const ImVec2& l_highlightMAX = { l_itemMAX.x, l_centerY + k_dropZoneHighlightHeight * Constant::k_halfMagnification };
 
-        l_drawList->AddRectFilled(l_highlightMIN,
-                                  l_highlightMAX,
-                                  IM_COL32(l_color.x,
-                                           l_color.y,
-                                           l_color.z,
-                                           l_color.w));
+        l_drawList->AddRectFilled(l_highlightMIN, l_highlightMAX, l_color);
     }
  
     std::weak_ptr<GameObject> l_droppedGameObject = {};

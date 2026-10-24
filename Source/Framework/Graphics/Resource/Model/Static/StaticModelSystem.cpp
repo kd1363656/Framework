@@ -33,7 +33,7 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 
     l_staticModelRecord->SetFilePath      (a_filePath.wstring());
     l_staticModelRecord->SetStorageID     (l_allocateStorageID);
-    l_staticModelRecord->SetReferenceCount(AssetRecordBase::k_initialAssetReferenceCount);
+    l_staticModelRecord->SetReferenceCount(Constant::k_initialAssetReferenceCount);
 
     // .staticModelが存在していて、FBXより更新が古くなければ.staticModelを優先して読み込む
     // 失敗したらUFBXから読み込む

@@ -12,13 +12,13 @@ namespace FWK::Graphics
     {
     private:
 
+        static constexpr double k_initialTotalMS = 0.0;
+
+        static constexpr UINT64 k_initialSampleCount = 0ULL;
+
         // 同じ名前の区間の計測結果をまとめた統計
         struct ProfileStatistics final
         {
-            static constexpr double k_initialTotalMS = 0.0;
-
-            static constexpr UINT64 k_initialSampleCount = 0ULL;
-
             std::string_view m_name = {};
 
             double m_totalMS = k_initialTotalMS;
@@ -63,10 +63,6 @@ namespace FWK::Graphics
 
         void WriteReport() const;
 
-        // 計測区間の名前
-        static constexpr std::string_view k_directQueueFrameScopeName  = "GPU DirectQueue : Frame Total";
-        static constexpr std::string_view k_computeQueueFrameScopeName = "GPU ComputeQueue : Frame Total";
-
     private:
 
         void AddSample(const Struct::FrameProfileSample& a_sample, std::vector<ProfileStatistics>& a_statisticsList) const;
@@ -79,9 +75,6 @@ namespace FWK::Graphics
 
         static constexpr double k_targetFrameMS = 1000.0 / 60.0;
 
-        // 起動直後はモデルの読み込みなどで処理時間が大きくぶれるため、
-        // このフレーム数を過ぎてから集計を始める
-        // (負荷が高く数FPSしか出ない状態でも計測できるように、少なめにしている)
         static constexpr UINT64 k_warmupFrameCount = 30ULL;
 
         static constexpr UINT64 k_initialFrameCount = 0ULL;

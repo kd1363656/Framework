@@ -32,9 +32,6 @@ namespace FWK::Graphics
         float GetVALProjectionScale         () const { return m_projectionScale; }
         float GetVALMaxScreenSpaceErrorPixel() const { return m_maxScreenSpaceErrorPixel; }
 
-        // 画面上の誤差の許容値(ピクセル)の既定値
-        static constexpr float k_defaultMaxScreenSpaceErrorPixel = 1.0F;
-
     private:
 
         static constexpr float k_initialProjectionScale       = 0.0F;
@@ -47,7 +44,7 @@ namespace FWK::Graphics
         // 「距離1の位置で、ローカル座標の長さ1が画面上で何ピクセルになるか」
         // 画面上の誤差 = 簡略化誤差 × m_projectionScale ÷ 距離 で求められるように、事前に計算しておく
         float m_projectionScale          = k_initialProjectionScale;
-        float m_maxScreenSpaceErrorPixel = k_defaultMaxScreenSpaceErrorPixel;
+        float m_maxScreenSpaceErrorPixel = Constant::k_defaultMaxScreenSpaceErrorPixel;
         float m_nearClip                 = k_initialNearClip;
     };
 }

@@ -48,7 +48,7 @@ bool FWK::Graphics::SkeletalAnimationBakedSkinning::Create(SkeletalAnimationMode
     for (const auto& l_motionSequence : l_motionSequenceList)
     {
         // 0秒から最後の時刻までを、1秒あたり30コマで区切る(最後の時刻も含めるため+1する)
-        const auto l_frameCount = static_cast<std::uint32_t>(std::floor(l_motionSequence.m_durationSecond * k_bakeFrameRate)) + k_singleFrameCount;
+        const auto l_frameCount = static_cast<std::uint32_t>(std::floor(l_motionSequence.m_durationSecond * Constant::k_skeletalAnimationBakeFrameRate)) + k_singleFrameCount;
 
         m_motionFrameOffsetList.emplace_back(l_totalFrameCount);
         m_motionFrameCountList.emplace_back (l_frameCount);
@@ -77,13 +77,13 @@ bool FWK::Graphics::SkeletalAnimationBakedSkinning::Create(SkeletalAnimationMode
         for (std::uint32_t l_frameIndex = 0U; l_frameIndex < m_motionFrameCountList[l_motionIndex]; ++l_frameIndex)
         {
             // コマの時刻(最後のコマはモーションの長さを超えないようにする)
-            const float l_timeSecond = std::min(static_cast<float>(l_frameIndex) / k_bakeFrameRate, l_motionSequence.m_durationSecond);
+            const float l_timeSecond = std::min(static_cast<float>(l_frameIndex) / Constant::k_skeletalAnimationBakeFrameRate, l_motionSequence.m_durationSecond);
 
             // その時刻のボーンの姿勢(モデル全体から見た行列)を求める
             const bool l_isEvaluated = l_poseEvaluator.EvaluatePose(l_modelData,
                                                                     l_timeSecond,
-                                                                    SkeletalAnimationModelRecord::k_initialAnimationTimeSecond,
-                                                                    SkeletalAnimationPlayer::k_initialBlendWeight,
+                                                                    Constant::k_initialAnimationTimeSecond,
+                                                                    Constant::k_initialAnimationBlendWeight,
                                                                     l_motionIndex,
                                                                     SkeletalAnimationPoseEvaluator::k_invalidMotionIndex,
                                                                     k_isBlending,
@@ -175,7 +175,7 @@ std::uint32_t FWK::Graphics::SkeletalAnimationBakedSkinning::FetchVALFrameIndex(
     const auto l_frameCount  = m_motionFrameCountList[l_motionIndex];
 
     // 再生時刻をコマ番号に直し、モーションの最後まで行ったら最初に戻す(ループ再生)
-    const auto l_frameInMotion = static_cast<std::uint32_t>(std::max(a_animationTimeSecond, SkeletalAnimationModelRecord::k_initialAnimationTimeSecond) * k_bakeFrameRate) % l_frameCount;
+    const auto l_frameInMotion = static_cast<std::uint32_t>(std::max(a_animationTimeSecond, Constant::k_initialAnimationTimeSecond) * Constant::k_skeletalAnimationBakeFrameRate) % l_frameCount;
 
     return m_motionFrameOffsetList[l_motionIndex] + l_frameInMotion;
 }

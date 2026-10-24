@@ -170,7 +170,7 @@ void FWK::Graphics::Renderer::EndFrame()
 
     const auto& l_computeFenceValue = m_computeCommandQueue.FetchREFLastSignaledFenceValue();
 
-    FWK_ASSERT_RETURN_IF(l_computeFenceValue == Fence::k_unusedFenceValue, "ComputeQueueのFenceSignalに失敗したため、DirectQueueとの同期に失敗しました。");
+    FWK_ASSERT_RETURN_IF(l_computeFenceValue == Constant::k_unusedFenceValue, "ComputeQueueのFenceSignalに失敗したため、DirectQueueとの同期に失敗しました。");
 
     // DirectQueueへGPUWaitを登録する
     // CPUスレッドは停止せず、

@@ -13,10 +13,8 @@ namespace FWK::Graphics
 
     private:
 
-        // FrameProfilerへ記録する、描画した三角形数(全カスケードの合計)の名前
         static constexpr std::string_view k_triangleCounterName = "Triangles : Model CascadeShadow (All Cascades)";
 
-        // カスケードの範囲の横幅がこれ以下なら、テクセル基準のLOD選択を行わない(0除算を防ぐ)
         static constexpr float k_minOrthographicWidth = 0.0F;
 
         static constexpr UINT64 k_initialTriangleCount = 0ULL;

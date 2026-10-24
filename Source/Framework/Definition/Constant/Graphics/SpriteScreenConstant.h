@@ -14,14 +14,10 @@ namespace FWK::Constant
     inline constexpr float k_spriteUVRateTop    = 0.0F;
     inline constexpr float k_spriteUVRateBottom = 1.0F;
 
-    // 四角形の頂点数
     inline constexpr UINT k_spriteVertexCount = 4U;
 
-    // 四角形を構成する三角形の数
     inline constexpr UINT k_spritePrimitiveCount = 2U;
 
-    // SpriteScreen全体のIndex数
-    // 2Triangle * 3Index = 6Index
     inline constexpr UINT k_spriteIndexCount = k_spritePrimitiveCount * Constant::k_triangleVertexCount;
 
     inline constexpr UINT k_spriteDrawInstanceCount     = 1U;

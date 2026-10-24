@@ -15,10 +15,10 @@ namespace FWK::Editor
             RenameOldName,
         };
 
+        static constexpr std::int64_t k_initialCreationTime = 0LL;
+
         struct PendingFilePathChangeData final
         {
-            static constexpr std::int64_t k_initialCreationTime = 0LL;
-
             PendingFilePathChangeType m_type = PendingFilePathChangeType::Invalid;
 
             std::filesystem::path m_oldFilePath = {};

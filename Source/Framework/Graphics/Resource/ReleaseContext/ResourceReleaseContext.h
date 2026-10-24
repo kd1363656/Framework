@@ -8,7 +8,7 @@ namespace FWK::Graphics
 
         struct DeferredResourceReleaseRecordBase
         {
-            UINT64 m_retiredFenceValue = Fence::k_unusedFenceValue;
+            UINT64 m_retiredFenceValue = Constant::k_unusedFenceValue;
         };
 
         struct DescriptorIndexReleaseRecord final : public DeferredResourceReleaseRecordBase

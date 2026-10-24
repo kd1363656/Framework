@@ -62,10 +62,8 @@ namespace FWK::Graphics
 
         PendingMaterialBatchUploadRecordMap m_pendingMaterialBatchUploadRecordMap = {};
 
-        // デフォルトマテリアル、作り直したGPUDataBufferのUploadCommand一覧
         std::vector<StaticStructuredBuffer::BufferUploadCommand> m_pendingBufferUploadCommandList = {};
 
-        // 読み込んだ全てのMaterial(Inspectorで値が変わったかどうかの確認に使う)
         std::vector<std::weak_ptr<MaterialBase>> m_materialList = {};
 
         std::shared_ptr<MaterialBase> m_defaultMaterial = nullptr;

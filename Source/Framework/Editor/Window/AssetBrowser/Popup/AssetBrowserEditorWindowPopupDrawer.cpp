@@ -268,7 +268,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawRenameMenu(const std:
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCopyMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList, 
                                                                     const AssetBrowserEditorWindowFileOperation& a_fileOperation,
                                                                     const bool                                   a_hasSelection, 
-                                                                          AssetBrowserEditorWindowClipboard&     a_clipboard) const
+                                                                          TypeAlias::AssetBrowserEditorWindowClipboard&     a_clipboard) const
 {
     // ショートカット : Ctrl + C
     // 選択中のファイルがない場合はグレーアウト
@@ -288,7 +288,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCopyMenu(const std::v
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCutMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList, 
                                                                    const AssetBrowserEditorWindowFileOperation& a_fileOperation, 
                                                                    const bool                                   a_hasSelection,
-                                                                         AssetBrowserEditorWindowClipboard&     a_clipboard) const
+                                                                         TypeAlias::AssetBrowserEditorWindowClipboard&     a_clipboard) const
 {
     // ショートカット : Ctrl + X
     const auto& l_label = std::string{ k_imguiFontAwesomeCutIcon } + " " + std::string{ k_cutLabel };
@@ -306,7 +306,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCutMenu(const std::ve
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
                                                                      const AssetBrowserEditorWindowFileOperation& a_fileOperation, 
                                                                      const bool                                   a_canPaste, 
-                                                                           AssetBrowserEditorWindowClipboard&     a_clipboard) const
+                                                                           TypeAlias::AssetBrowserEditorWindowClipboard&     a_clipboard) const
 {
     // ショートカット : Ctrl + V
     // クリップボードが空の場合はグレーアウト
@@ -370,19 +370,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::StartRename(const std::fi
     // InputTextの初期値としてファイル名を設定
     // 例 "NewFolder"      -> "NewFolder"
     //    "NewPrefab.json" -> "NewPrefab"
-    const auto& l_stem = a_targetFilePath.stem().string();
-
-    // バッファをゼロクリア
-    // std::array::fillで全要求を'\0'にする
-    a_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
-
-    // ファイル名をバッファへコピー
-    // バッファサイズを超えないようにminで制限
-    // -1は終端null用
-    const auto l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
-
-    // std::copy_nで先頭からl_copySize分をコピー
-    std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());
+    // バッファの扱いはWorldOutlinerの名前変更と共通(IMGUICopyStringToInputTextBuffer)
+    Utility::IMGUICopyStringToInputTextBuffer(a_targetFilePath.stem().string(), a_renameState.m_inputBuffer);
 
     // 初回フォーカス制御フラグをリセット
     // m_isActiveがtrueになった直後はフォーカスされていない状態

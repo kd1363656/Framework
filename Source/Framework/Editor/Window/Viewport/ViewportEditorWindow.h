@@ -20,6 +20,8 @@ namespace FWK::Editor
 
         void SetupViewportTextureDescriptors();
 
+        float GetVALViewportAspectRatio() const { return m_viewportAspectRatio; }
+
     private:
 
         ImTextureID FetchVALViewportTextureID() const;
@@ -35,12 +37,14 @@ namespace FWK::Editor
         static constexpr float k_viewportUVMINY = 0.0F;
         static constexpr float k_viewportUVMAXX = 1.0F;
         static constexpr float k_viewportUVMAXY = 1.0F;
-        
+
         static constexpr ImTextureID k_invalidViewportTextureID = {};
 
         std::vector<TypeAlias::DescriptorIndex> m_imGuiSRVDescriptorIndexList = {};
 
         ViewportToolbar m_toolbar = {};
+
+        float m_viewportAspectRatio = Constant::k_viewportInvalidAspectRatio;
 
         FWK_DEFINE_TYPE_INFO(ViewportEditorWindow, EditorWindowBase)
     };

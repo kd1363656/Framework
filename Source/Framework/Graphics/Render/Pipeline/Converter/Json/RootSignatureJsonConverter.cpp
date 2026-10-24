@@ -63,7 +63,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterIndexMa
     for (const auto& l_json : a_rootJson)
     {
         const auto l_rootParameterType = l_json.value(k_rootParameterTypeJsonKey, Enum::RootParameterType::Invalid);
-        const auto l_index             = l_json.value(k_indexJsonKey,             k_invalidRootParameterIndex);
+        const auto l_index             = l_json.value(k_indexJsonKey,             Constant::k_invalidRootParameterIndex);
 
         l_rootParameterIndexMap.try_emplace(l_rootParameterType, l_index);
     }

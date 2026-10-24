@@ -36,7 +36,6 @@ namespace FWK::Graphics
 
         StandardUnLitMaterialInspector m_inspector = {};
 
-        // .materialファイルの場所を基準にした相対パス
         std::wstring m_baseColorTextureFilePath = {};
 
         TypeAlias::Math::Color m_baseColorFactor = Constant::k_defaultStandardMaterialBaseColorFactor;

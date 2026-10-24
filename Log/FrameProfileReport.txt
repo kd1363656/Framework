@@ -1,5 +1,5 @@
 [FrameProfileReport]
-MeasuredFrameCount : 736 (最初の30フレームは集計対象外)
+MeasuredFrameCount : 6205 (最初の30フレームは集計対象外)
 TargetFrameMS      : 16.667 (60FPS)
 
 [Note]
@@ -23,28 +23,28 @@ ModelTriangleCount LOD7   : 2225
 ModelTriangleCount LOD8   : 2101
 
 [CPU] Name, AverageMS, MINMS, MAXMS, SampleCount
-CPU : Present, 0.762, 0.179, 2.856, 736
-CPU : Graphics (BeginFrame ～ EndFrame), 5.936, 4.002, 13.991, 736
-CPU : Frame Total (Without FPS Sleep), 6.595, 4.163, 115.484, 737
-CPU : Scene Update, 0.031, 0.020, 0.660, 735
-CPU : Wait For GPU (FrameResource), 0.283, 0.169, 3.572, 735
+CPU : Present, 0.666, 0.197, 9.264, 6205
+CPU : Graphics (BeginFrame ～ EndFrame), 4.670, 3.822, 13.029, 6205
+CPU : Frame Total (Without FPS Sleep), 4.965, 3.888, 89.621, 6206
+CPU : Scene Update, 0.034, 0.024, 0.449, 6204
+CPU : Wait For GPU (FrameResource), 0.224, 0.123, 1.226, 6204
 
 [GPU] Name, AverageMS, MINMS, MAXMS, SampleCount
-GPU DirectQueue : Frame Total, 11.119, 8.238, 18.563, 736
-SkeletalAnimationComputePass, 0.000, 0.000, 0.001, 736
-ModelCascadeShadowPass, 6.409, 3.822, 8.426, 736
-StaticModelStandardUnLitPass, 0.005, 0.005, 0.006, 736
-StaticModelStandardLitPass, 4.555, 4.134, 11.169, 736
-SkeletalAnimationModelStandardUnLitPass, 0.000, 0.000, 0.001, 736
-SkeletalAnimationModelStandardLitPass, 0.000, 0.000, 0.001, 736
-ScreenSpritePass, 0.000, 0.000, 0.001, 736
-FinalColorPass, 0.025, 0.023, 0.248, 736
-PhysicsDebugPass, 0.000, 0.000, 0.001, 736
-FinalPresentPass, 0.030, 0.029, 0.038, 736
-GPU ComputeQueue : Frame Total, 0.001, 0.000, 0.013, 736
+GPU DirectQueue : Frame Total, 5.619, 1.810, 12.958, 6205
+SkeletalAnimationComputePass, 0.000, 0.000, 0.001, 6205
+ModelCascadeShadowPass, 3.397, 1.306, 10.887, 6205
+StaticModelStandardUnLitPass, 0.006, 0.005, 0.008, 6205
+StaticModelStandardLitPass, 2.057, 0.377, 3.596, 6205
+SkeletalAnimationModelStandardUnLitPass, 0.000, 0.000, 0.009, 6205
+SkeletalAnimationModelStandardLitPass, 0.000, 0.000, 0.001, 6205
+ScreenSpritePass, 0.000, 0.000, 0.537, 6205
+FinalColorPass, 0.027, 0.019, 0.497, 6205
+PhysicsDebugPass, 0.000, 0.000, 0.272, 6205
+FinalPresentPass, 0.033, 0.028, 0.543, 6205
+GPU ComputeQueue : Frame Total, 0.001, 0.000, 0.004, 6205
 
 [Counter] Name, Average, MIN, MAX, SampleCount
-Triangles : Model CascadeShadow (All Cascades), 6424033.000, 5008408.000, 7250908.000, 736
-Triangles : StaticModel Lit, 1782379.000, 1782379.000, 1782379.000, 736
-Triangles : SkeletalAnimationModel Lit, 0.000, 0.000, 0.000, 736
-Triangles : SkeletalAnimationModel GPUSkinned Lit, 0.000, 0.000, 0.000, 736
+Triangles : Model CascadeShadow (All Cascades), 5980532.771, 3748475.000, 9476377.000, 6205
+Triangles : StaticModel Lit, 1858922.007, 121991.000, 2124246.000, 6205
+Triangles : SkeletalAnimationModel Lit, 0.000, 0.000, 0.000, 6205
+Triangles : SkeletalAnimationModel GPUSkinned Lit, 0.000, 0.000, 0.000, 6205

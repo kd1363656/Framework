@@ -18,8 +18,6 @@ namespace FWK::Converter
 
         nlohmann::json Serialize(const Graphics::RootSignature& a_rootSignature) const;
 
-        static constexpr UINT k_invalidRootParameterIndex = UINT_MAX;
-
     private:
 
         void DeserializeRootParameterIndexMap(const nlohmann::json& a_rootJson, Graphics::RootSignature& a_rootSignature) const;
@@ -34,18 +32,15 @@ namespace FWK::Converter
 
         nlohmann::json SerializeDescriptorRangeList(const Struct::RootParameterRecord& a_rootParameterRecord) const;
 
-        // RootSignature
         static constexpr std::string_view k_rootParameterIndexMapJsonKey = "RootParameterIndexMap";
         static constexpr std::string_view k_rootParameterListJsonKey     = "RootParameterList";
         static constexpr std::string_view k_staticSamplerDescListJsonKey = "StaticSamplerDescList";
         static constexpr std::string_view k_rootSignatureFlagsJsonKey    = "RootSignatureFlags";
         static constexpr std::string_view k_rootSignatureVersionJsonKey  = "RootSignatureVersion";
 
-        // RootParameterIndexMap
         static constexpr std::string_view k_rootParameterTypeJsonKey = "RootParameterType";
         static constexpr std::string_view k_indexJsonKey             = "Index";
 
-        // RootParameter
         static constexpr std::string_view k_parameterTypeJsonKey       = "ParameterType";
         static constexpr std::string_view k_shaderVisibilityJsonKey    = "ShaderVisibility";
         static constexpr std::string_view k_descriptorRangeListJsonKey = "DescriptorRangeList";
@@ -53,7 +48,6 @@ namespace FWK::Converter
         static constexpr std::string_view k_registerSpaceJsonKey       = "RegisterSpace";
         static constexpr std::string_view k_num32BitValuesJsonKey      = "Num32BitValues";
 
-        // StaticSamplerDesc
         static constexpr std::string_view k_filterJsonKey         = "Filter";
         static constexpr std::string_view k_addressUJsonKey       = "AddressU";
         static constexpr std::string_view k_addressVJsonKey       = "AddressV";
@@ -65,7 +59,6 @@ namespace FWK::Converter
         static constexpr std::string_view k_minLODJsonKey         = "MinLOD";
         static constexpr std::string_view k_maxLODJsonKey         = "MaxLOD";
 
-        // DescriptorRange
         static constexpr std::string_view k_rangeTypeJsonKey                         = "RangeType";
         static constexpr std::string_view k_numDescriptorsJsonKey                    = "NumDescriptors";
         static constexpr std::string_view k_baseShaderRegisterJsonKey                = "BaseShaderRegister";

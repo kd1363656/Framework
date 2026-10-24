@@ -64,7 +64,7 @@ bool FWK::Graphics::GPUMemoryAllocator::CreateBufferResource(const UINT64&      
                                                                    Struct::GPUResource&  a_gpuResource) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_allocator,                                      "D3D12MAアロケータが作成されておらず、BufferResourceの作成に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == UploadBuffer::k_invalidBufferSize, "BufferResourceの作成サイズが0のため、BufferResourceの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == Constant::k_invalidUploadBufferSize, "BufferResourceの作成サイズが0のため、BufferResourceの作成に失敗しました。", false);
 
     D3D12MA::ALLOCATION_DESC l_allocationDesc = {};
 

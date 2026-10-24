@@ -15,7 +15,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
           std::error_code       l_errorCode   = {};
     const std::filesystem::path l_displayPath = std::filesystem::proximate(l_breadcrumbPath, std::filesystem::current_path(), l_errorCode);
 
-    ImGui::PushStyleColor(ImGuiCol_ChildBg, Constant::k_imguiDeepDarkColor);
+    // パンくずリストはUE5のパス表示と同じく入力欄と同じ暗さにする
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, Constant::k_imguiInputColor);
 
     // ImGui::GetTextLineHeight : 現在使用中のフォント1行分の高さを取得
     // パンくずリストを格納する子領域を作成

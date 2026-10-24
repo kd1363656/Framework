@@ -55,7 +55,7 @@ bool FWK::Graphics::DynamicRWStructuredBuffer::ReserveRelease(const UINT64& a_re
     FWK_ASSERT_RETURN_VALUE_IF(!GetREFBufferGPUResource().m_resource,                                  "DynamicRWStructuredBufferのGPUResourceが無効のため、遅延解放登録に失敗しました。",        false);
     FWK_ASSERT_RETURN_VALUE_IF(GetVALSRVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex, "DynamicRWStructuredBufferのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(m_uavDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex,       "DynamicRWStructuredBufferのUAVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue == Fence::k_unusedFenceValue,                       "FenceValueが無効のため、DynamicRWStructuredBufferの遅延解放登録に失敗しました。",         false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue == Constant::k_unusedFenceValue,                       "FenceValueが無効のため、DynamicRWStructuredBufferの遅延解放登録に失敗しました。",         false);
 
     // UAVDescirptorIndexの遅延解放Recordを作る
     ResourceReleaseContext::DescriptorIndexReleaseRecord l_uavDescriptorIndexReleaseRecord = {};

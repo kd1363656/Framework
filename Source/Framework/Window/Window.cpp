@@ -423,8 +423,8 @@ void FWK::Window::ApplyClientSizeFromWMSize(const ClientSize& a_clientSize, cons
         return;
     }
 
-    if (a_clientSize.m_width  == k_invalidClientWidth ||
-        a_clientSize.m_height == k_invalidClientHeight)
+    if (a_clientSize.m_width  == Constant::k_invalidClientWidth ||
+        a_clientSize.m_height == Constant::k_invalidClientHeight)
     {
         return;
     }
@@ -469,8 +469,8 @@ void FWK::Window::ApplyNormalWindowStyle()
     const auto l_saveWindowWidth  = static_cast<int>(m_normalWindowRECT.right  - m_normalWindowRECT.left);
     const auto l_saveWindowHeight = static_cast<int>(m_normalWindowRECT.bottom - m_normalWindowRECT.top);
 
-    if (const bool l_hasSavedWindowRECT = l_saveWindowWidth  > k_invalidClientWidth &&
-                                          l_saveWindowHeight > k_invalidClientWidth;
+    if (const bool l_hasSavedWindowRECT = l_saveWindowWidth  > Constant::k_invalidClientWidth &&
+                                          l_saveWindowHeight > Constant::k_invalidClientWidth;
         l_hasSavedWindowRECT)
     {
         // ボーダーレスフルスクリーンへ移る前の通常ウィンドウ位置へ戻す
@@ -550,8 +550,8 @@ void FWK::Window::StoreNormalWindowRECT()
 
 void FWK::Window::RequestResizeFromClientSize(const ClientSize& a_clientSize)
 {
-    if (a_clientSize.m_width  == k_invalidClientWidth ||
-        a_clientSize.m_height == k_invalidClientHeight)
+    if (a_clientSize.m_width  == Constant::k_invalidClientWidth ||
+        a_clientSize.m_height == Constant::k_invalidClientHeight)
     {
         return;
     }

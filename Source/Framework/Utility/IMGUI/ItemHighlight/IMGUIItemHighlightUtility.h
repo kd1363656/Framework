@@ -12,12 +12,9 @@ namespace FWK::Utility
         if (a_isCutTarget)
         {
             // Cut対象は選択状態より優先してCut色を使う
-            // Cut色は選択色へ半分倍率を掛けて暗くしたもの
-            const auto& l_cutColor = Constant::k_imguiItemSelectedColor * Constant::k_halfMagnification;
-
-            l_headerColor  = l_cutColor;
-            l_hoveredColor = l_cutColor;
-            l_activeColor  = l_cutColor;
+            l_headerColor  = Constant::k_imguiItemCutColor;
+            l_hoveredColor = Constant::k_imguiItemCutColor;
+            l_activeColor  = Constant::k_imguiItemCutColor;
         }
         else if (a_isSelected)
         {

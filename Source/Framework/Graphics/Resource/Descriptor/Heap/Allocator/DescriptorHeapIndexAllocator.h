@@ -22,8 +22,6 @@ namespace FWK::Graphics
 
         auto GetVALCapacity() const { return m_capacity; }
 
-        static constexpr TypeAlias::DescriptorIndex k_defaultCapacity = 10000U;
-
     private:
 
         bool IsInValidIndex(const TypeAlias::DescriptorIndex a_index) const;

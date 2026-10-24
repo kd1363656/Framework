@@ -12,10 +12,8 @@ namespace FWK::Struct
 
     struct MaterialBatchUploadRecord final
     {
-        // MaterialStorageへ登録するMaterial
         std::shared_ptr<Graphics::MaterialBase> m_material = nullptr;
 
-        // MaterialのGPUData用BufferResourceへコピーするためのUploadCommand一覧
         std::vector<Graphics::StaticStructuredBuffer::BufferUploadCommand> m_bufferUploadCommandList = {};
     };
 }

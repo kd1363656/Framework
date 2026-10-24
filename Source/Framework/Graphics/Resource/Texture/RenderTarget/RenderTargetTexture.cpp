@@ -80,8 +80,8 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
     const auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_format,
                                                              a_width,
                                                              a_height,
-                                                             Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
-                                                             Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels,
+                                                             Constant::k_defaultTexture2DArraySize,
+                                                             Constant::k_defaultTexture2DMIPLevels,
                                                              Constant::k_defaultSampleCount,
                                                              Constant::k_defaultSampleQuality,
                                                              D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
@@ -155,7 +155,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
     // PlaneSlice          : 通常カラーTextureなので0
     // ResourceMINLODCLAMP : 最小LOD制限
     l_srvDesc.Texture2D.MostDetailedMip     = k_mostDetailedMIP;
-    l_srvDesc.Texture2D.MipLevels           = Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels;
+    l_srvDesc.Texture2D.MipLevels           = Constant::k_defaultTexture2DMIPLevels;
     l_srvDesc.Texture2D.PlaneSlice          = k_planeSlice;
     l_srvDesc.Texture2D.ResourceMinLODClamp = k_resourceMINLODClamp;
 
@@ -183,7 +183,7 @@ bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UIN
     FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource,                                        "RenderTargetTextureのGPUResourceが無効のため、遅延解放登録に失敗しました。",        false);
     FWK_ASSERT_RETURN_VALUE_IF(m_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RenderTargetTextureのRTVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RenderTargetTextureのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Fence::k_unusedFenceValue,                "FenceValueが無効のため、RenderTargetTextureの遅延解放登録に失敗しました。",         false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Constant::k_unusedFenceValue,                "FenceValueが無効のため、RenderTargetTextureの遅延解放登録に失敗しました。",         false);
 
     ResourceReleaseContext::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
 

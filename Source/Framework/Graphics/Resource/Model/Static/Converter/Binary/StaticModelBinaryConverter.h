@@ -36,7 +36,6 @@ namespace FWK::Converter
         // SkeletalModelと同じFBXから作っても別ファイルになるように、モデルの種類ごとに拡張子を分ける
         inline static const std::filesystem::path k_staticModelAssetExtension = ".staticModel";
 
-        // 'S' = 0x53, 'T' = 0x54のため、0x5354で"ST"を表す
         static constexpr std::uint16_t k_modelAssetTypeID = 0x5354U;
 
         // ※ 注意 : Assetとして保存する構造体が変化したらバージョンを上げる

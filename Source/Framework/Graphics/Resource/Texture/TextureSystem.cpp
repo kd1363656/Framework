@@ -124,7 +124,7 @@ void FWK::Graphics::TextureSystem::ApplyDefaultTexture(const Enum::DefaultTextur
     FWK_ASSERT_RETURN_IF(!a_defaultTexture, "インスタンス化されておらず、無効なデフォルトテクスチャです。デフォルトテクスチャの反映に失敗しました。");
 
     // デフォルトテクスチャのイーナムの種類を超えていないかどうかを確認
-    FWK_ASSERT_RETURN_IF(l_index >= k_defaultTextureTypeCount,   "Enumの管理範囲を超えている値となっており、デフォルトテクスチャの反映に失敗しました。");
+    FWK_ASSERT_RETURN_IF(l_index >= Constant::k_defaultTextureTypeCount,   "Enumの管理範囲を超えている値となっており、デフォルトテクスチャの反映に失敗しました。");
     FWK_ASSERT_RETURN_IF(l_index >= m_defaultTextureList.size(), "要素数の管理範囲を超えている値となっており、デフォルトテクスチャの反映に失敗しました。");
 
     m_defaultTextureList[l_index] = a_defaultTexture;

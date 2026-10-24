@@ -21,12 +21,12 @@ namespace FWK::Graphics
     {
     private:
 
+        static constexpr std::uint32_t k_initialWrittenViewMask = 0U;
+
         // フレームリソース1つ分のデータ
         // CPUが書き込むBufferは、GPUが前のフレームで読んでいる最中に書き換えないようにフレームリソースの数だけ用意する
         struct FrameData final
         {
-            static constexpr std::uint32_t k_initialWrittenViewMask = 0U;
-
             DynamicUploadStructuredBuffer m_instanceBuffer = {};
             DynamicUploadStructuredBuffer m_meshInfoBuffer = {};
             DynamicUploadStructuredBuffer m_lodBuffer      = {};
@@ -34,7 +34,6 @@ namespace FWK::Graphics
             // カリング用ComputeShaderへ渡す定数バッファ(Dispatch1回につき256byteずつ使う)
             UploadBuffer m_cullingPassConstantBuffer = {};
 
-            // GPUが数えた描画数と三角形数をCPUが読むためのBuffer(Viewの数だけ並べる)
             TypeAlias::ComPtr<ID3D12Resource2> m_counterReadbackBuffer = nullptr;
 
             // どのViewのカウンターを書き込んだか(1ビットが1つのViewを表す)
@@ -52,7 +51,6 @@ namespace FWK::Graphics
             // オクルージョンカリング1回目で「隠れていた」組み合わせを記録するBuffer(1回目を行うViewだけ作成する)
             DynamicRWStructuredBuffer m_candidateBuffer = {};
 
-            // このフレームでカリング済み(描画コマンドが用意されている)か
             bool m_isCulled = false;
         };
 
@@ -80,11 +78,6 @@ namespace FWK::Graphics
         // GPUが数えた、描画した三角形の総数(数フレーム前の結果、計測用)
         auto GetVALSubmittedTriangleCount() const { return m_submittedTriangleCount; }
 
-        // 各Bufferに入れられる最大数(表を作る側は、この数を超えないようにする)
-        static constexpr std::size_t k_maxInstanceCount = 4096ULL;
-        static constexpr std::size_t k_maxMeshInfoCount = 1024ULL;
-        static constexpr std::size_t k_maxLODCount      = 8192ULL;
-
     private:
 
         bool Create(const Renderer& a_renderer);
@@ -109,7 +102,6 @@ namespace FWK::Graphics
 
         void TransitionBuffer(const DirectCommandList& a_directCommandList, DynamicRWStructuredBuffer& a_buffer, const D3D12_RESOURCE_STATES a_afterState) const;
 
-        // 各Bufferに入れられる最大数
         static constexpr std::size_t k_maxDrawCountPerView             = 32768ULL;
         static constexpr std::size_t k_maxCullingDispatchCountPerFrame = 256ULL;
         static constexpr std::size_t k_maxViewCount                    = 8ULL;
@@ -137,10 +129,8 @@ namespace FWK::Graphics
 
         static constexpr float k_minPlaneNormalLength = 0.0F;
 
-        // 影のLOD選択で許す形の崩れ(シャドウマップのテクセル数)
         static constexpr float k_shadowMaxErrorTexel = 1.0F;
 
-        // 影の描画で、これより小さい(テクセル数)部品は影を落とさないものとして描画しない
         static constexpr float k_shadowMinCasterSizeTexel = 1.0F;
 
         static constexpr UINT64 k_initialSubmittedTriangleCount = 0ULL;
@@ -161,7 +151,6 @@ namespace FWK::Graphics
 
         std::vector<ModelIndirectDispatchMeshCommandSignature> m_commandSignatureList = {};
 
-        // このフレームの表のうち、カリングのDispatchに必要な情報(モデルの種類ごとのまとまり)
         std::vector<Struct::ModelGPUDrivenBatch> m_modelBatchList = {};
 
         // カウンターを0に戻すためのコピー元(中身は常に0)
@@ -170,10 +159,8 @@ namespace FWK::Graphics
         std::size_t m_currentFrameIndex    = k_initialSize;
         std::size_t m_cullingDispatchCount = k_initialSize;
 
-        // 「インスタンス × Mesh」の組み合わせの総数(オクルージョンカリングの候補の最大数)
         std::size_t m_totalPairCount = k_initialSize;
 
-        // このフレームの表に入っているインスタンスの数(0なら描画する物が無い)
         std::size_t m_instanceCount = k_initialSize;
 
         UINT64 m_submittedTriangleCount = k_initialSubmittedTriangleCount;

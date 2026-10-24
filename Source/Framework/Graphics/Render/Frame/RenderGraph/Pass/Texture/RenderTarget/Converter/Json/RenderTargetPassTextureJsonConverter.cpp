@@ -6,7 +6,7 @@ void FWK::Converter::RenderTargetPassTextureJsonConverter::Deserialize(const nlo
 
     const auto& l_clearColor = Utility::DeserializeColor(a_rootJson, k_clearColorJsonKey);
 
-    const auto l_format = a_rootJson.value(k_formatJsonKey, Graphics::RenderTargetTexture::k_defaultRenderTargetTextureFormat);
+    const auto l_format = a_rootJson.value(k_formatJsonKey, Constant::k_defaultRenderTargetTextureFormat);
 
     const auto l_renderGraphRenderTargetType = a_rootJson.value(k_renderGraphRenderTargetTypeJsonKey, Enum::RenderGraphRenderTargetType::Invalid);
 

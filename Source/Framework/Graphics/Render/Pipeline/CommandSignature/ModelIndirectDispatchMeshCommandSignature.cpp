@@ -10,7 +10,7 @@ bool FWK::Graphics::ModelIndirectDispatchMeshCommandSignature::Create(const Devi
 
     const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(Enum::RootParameterType::CBModelPerObject);
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "RootSignatureにCBModelPerObjectが無いため、CommandSignatureの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_rootParameterIndex == Constant::k_invalidRootParameterIndex, "RootSignatureにCBModelPerObjectが無いため、CommandSignatureの作成に失敗しました。", false);
 
     // 描画コマンド1件に含まれる引数を、並んでいる順に指定する
     // D3D12_INDIRECT_ARGUMENT_TYPE_CONSTANT_BUFFER_VIEW : 定数バッファのGPUアドレス(RootSignatureの指定番号へ設定される)

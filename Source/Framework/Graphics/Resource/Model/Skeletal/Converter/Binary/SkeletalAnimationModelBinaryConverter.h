@@ -13,8 +13,8 @@ namespace FWK::Converter
             std::uint16_t m_assetTypeID = k_modelAssetTypeID;
 
             std::uint64_t m_modelMeshCount      = Constant::k_emptyModelMeshCount;
-            std::uint64_t m_boneCount           = k_emptyBoneCount;
-            std::uint64_t m_motionSequenceCount = k_emptyMotionSequenceCount;
+            std::uint64_t m_boneCount           = Constant::k_emptyBoneCount;
+            std::uint64_t m_motionSequenceCount = Constant::k_emptyMotionSequenceCount;
         };
 
         struct ModelBoneBinaryHeader final
@@ -26,8 +26,8 @@ namespace FWK::Converter
 
         struct ModelMotionSequenceBinaryHeader final
         {
-            float m_durationSecond = Graphics::SkeletalAnimationModelRecord::k_initialAnimationDurationSecond;
-            float m_frameRate      = Graphics::SkeletalAnimationModelRecord::k_defaultAnimationFrameRate;
+            float m_durationSecond = Constant::k_initialAnimationDurationSecond;
+            float m_frameRate      = Constant::k_defaultAnimationFrameRate;
 
             std::uint64_t m_motionNameSize = k_emptyMotionNameSize;
 
@@ -48,10 +48,6 @@ namespace FWK::Converter
 
         bool LoadAsset(const std::filesystem::path& a_filePath,       Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
         bool SaveAsset(const std::filesystem::path& a_filePath, const Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
-
-        static constexpr std::uint64_t k_emptyBonePaletteCount     = 0ULL;
-        static constexpr std::uint64_t k_emptyBoneCount            = 0ULL;
-        static constexpr std::uint64_t k_emptyMotionSequenceCount  = 0ULL;
 
     private:
 
@@ -84,7 +80,6 @@ namespace FWK::Converter
         // StaticModelと同じFBXから作っても別ファイルになるように、モデルの種類ごとに拡張子を分ける
         inline static const std::filesystem::path k_skeletalModelAssetExtension = ".skeletalModel";
 
-        // 'S' = 0x53、'A' = 0x41のため、0x5341で"SA"を表す
         static constexpr std::uint16_t k_modelAssetTypeID = 0x5341U;
 
         // Version2 : LOD一覧とMesh全体の囲み球を追加

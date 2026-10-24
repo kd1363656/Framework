@@ -24,5 +24,5 @@ bool FWK::Graphics::SkeletalAnimationBoneMatrixBufferUploader::Write(const std::
     // 毎回UploadBufferの先頭から上書きする。
     const std::span<const TypeAlias::Math::Matrix> l_boneMatrixRange = { a_boneMatrixList };
 
-    return WriteElementRange(l_boneMatrixRange) != k_invalidGPUVirtualAddress;
+    return WriteElementRange(l_boneMatrixRange) != Constant::k_invalidDynamicBufferGPUVirtualAddress;
 }

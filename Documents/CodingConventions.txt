@@ -968,6 +968,94 @@
 	// ファイルパス
 	inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Graphics/GraphicsCONFIG.json";
 }
+・ヘッダーの変数(メンバ変数、定数)にはコメントを書かない、ただし書かないと設計を壊してしまうものだけは書く
+{
+	理由 : 変数の意味は名前で表すべきで、名前を言い換えただけのコメントは読む量を増やし
+	変数を変更したときに古いまま残って間違った説明になりやすいから
+
+	コメントを書いてよいもの(消すと設計を壊す可能性があるもの)
+	・HLSL側など別の場所と値やレイアウトを一致させる必要がある(スレッド数、定数バッファのサイズ、Padding、要素番号)
+	・配置の制約がある(定数バッファは256byte単位など)
+	・宣言順に意味がある(破棄される順番に依存しているなど)
+	・保存形式に関わる(保存する構造体を変えたらバージョンを上げる、何を保存し何を保存しないか)
+	・値の決まりごと(nullptrの意味、0の意味、配列同士の番号の対応、並び順)
+	・所有権や寿命の理由(他がweak_ptrで参照するためここで所有する、など)
+
+	コメントを書かないもの
+	・名前を言い換えただけの説明(例 : // テクスチャの幅)
+	・用途の説明(例 : // FrameProfilerで計測する区間の名前)
+	・調整用の値の意味や理由(例 : // この値を超えたら描き直す)
+	・グループ分けのための見出し(例 : // RasterizerDesc)
+	・行末コメント(例 : = 1.0F; // 初期値)
+
+	例↓ だめな例
+	// 再生するモーションの番号
+	std::uint32_t m_motionIndex = Constant::k_defaultMotionIndex;
+
+	例↓ よい例
+	std::uint32_t m_motionIndex = Constant::k_defaultMotionIndex;
+
+	// HLSL側(HierarchicalDepthBuild_CS.hlsl)の1Groupあたりのスレッド数と同じ値にする
+	static constexpr UINT k_hierarchicalDepthBuildThreadCount = 8U;
+}
+・クラス、構造体のpublic(構造体のアクセス指定子なしの部分も含む)にstaticな値(定数、変数)を書くことを禁止する
+{
+	理由 : クラスの外から使われる定数がクラスの中に散らばっていると、どこに何の定数があるのか分からなくなり
+	同じ意味の定数が別々のクラスに重複して作られてしまうから(実際にk_unusedFenceValueなどが重複していた)
+
+	・外部に公開する定数はDefinition/Constantフィルターに共通定数ヘッダーを作成し、そこに書くことを義務付ける
+	  ファイル名は「定数を使うクラス名(又は構造体ヘッダー名) + Constant.h」とする
+	  例↓ Window.h → Definition/Constant/Window/WindowConstant.h
+	      ModelCommonStruct.h → Definition/Constant/Graphics/ModelCommonStructConstant.h
+	・共通定数ヘッダーではnamespace FWK::Constantの中にinline constexprで定義する
+	・名前空間スコープになるため、k_initialPaddingのような汎用的な名前は避け、何の定数か分かる名前にする
+	  例↓ k_initialPadding → k_initialCBModelPerObjectPadding
+	・Framework.hでは共通定数ヘッダーを、その定数を使うヘッダーより上でインクルードする
+	・クラスの中だけで使う定数は今まで通りprivateにstatic constexprで書いてよい
+	・privateで定義した構造体の中で使う定数は、構造体の中ではなく外側のクラスのprivate(構造体の定義より上)に書く
+	・例外 : TypeTraitのように、テンプレートの特殊化ごとに値を持たせるための静的メンバはそのまま書いてよい
+
+	例↓ だめな例
+	class Window final
+	{
+	public:
+
+		static constexpr UINT k_defaultWindowWidth = 1280U;
+	};
+
+	struct SpriteRECT final
+	{
+		static constexpr UINT k_defaultSpriteRECTX = 0U;
+
+		std::uint32_t m_x = k_defaultSpriteRECTX;
+	};
+
+	例↓ よい例
+	// Definition/Constant/Window/WindowConstant.h
+	namespace FWK::Constant
+	{
+		inline constexpr UINT k_defaultWindowWidth = 1280U;
+	}
+
+	// Definition/Struct/Graphics/SpriteRECTStruct.h
+	struct SpriteRECT final
+	{
+		std::uint32_t m_x = Constant::k_defaultSpriteRECTX;
+	};
+
+	// privateの構造体で使う定数
+	class FrameProfiler final
+	{
+	private:
+
+		static constexpr double k_initialTotalMS = 0.0;
+
+		struct ProfileStatistics final
+		{
+			double m_totalMS = k_initialTotalMS;
+		};
+	};
+}
 16.ブレース(波括弧)の位置について=============================================================================================================================
 ・関数・クラス・制御文の開きブレースは改行して次の行に書く(Allmanスタイル)
 {

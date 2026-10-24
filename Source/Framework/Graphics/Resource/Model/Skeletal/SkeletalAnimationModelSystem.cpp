@@ -35,7 +35,7 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
 
     l_skeletalAnimationModelRecord->SetFilePath      (a_filePath.wstring());
     l_skeletalAnimationModelRecord->SetStorageID     (l_allocateStorageID);
-    l_skeletalAnimationModelRecord->SetReferenceCount(AssetRecordBase::k_initialAssetReferenceCount);
+    l_skeletalAnimationModelRecord->SetReferenceCount(Constant::k_initialAssetReferenceCount);
 
     // 有効な.skeletalModelを読み込めなかった場合はFBXから作成する
     if (!m_binaryConverter.LoadAsset(a_filePath, *l_skeletalAnimationModelRecord))

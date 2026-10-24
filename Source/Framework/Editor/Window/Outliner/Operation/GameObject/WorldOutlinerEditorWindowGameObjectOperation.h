@@ -22,10 +22,10 @@ namespace FWK::Editor
                                               Scene&                     a_scene,
                                         const bool                       a_isMoveAfter) const;
 
-        void CopySelectedGameObjects     (const EditorGameObjectSelectionState&     a_gameObjectSelectionState, WorldOutlinerEditorWindowClipboard& a_clipboard)                                const;
-        void CutSelectedGameObjects      (      WorldOutlinerEditorWindowClipboard& a_clipboard,                EditorGameObjectSelectionState&     a_gameObjectSelectionState)                 const;
-        void DuplicateSelectedGameObjects(      EditorGameObjectSelectionState&     a_gameObjectSelectionState, Scene&                              a_scene)                                    const;
-        void PasteGameObjects            (      WorldOutlinerEditorWindowClipboard& a_clipboard,                EditorGameObjectSelectionState&     a_gameObjectSelectionState, Scene& a_scene) const;
+        void CopySelectedGameObjects     (const EditorGameObjectSelectionState&                a_gameObjectSelectionState, TypeAlias::WorldOutlinerEditorWindowClipboard& a_clipboard)                                const;
+        void CutSelectedGameObjects      (      TypeAlias::WorldOutlinerEditorWindowClipboard& a_clipboard,                EditorGameObjectSelectionState&                a_gameObjectSelectionState)                 const;
+        void DuplicateSelectedGameObjects(      EditorGameObjectSelectionState&                a_gameObjectSelectionState, Scene&                                         a_scene)                                    const;
+        void PasteGameObjects            (      TypeAlias::WorldOutlinerEditorWindowClipboard& a_clipboard,                EditorGameObjectSelectionState&                a_gameObjectSelectionState, Scene& a_scene) const;
 
     private:
     

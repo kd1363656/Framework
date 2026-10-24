@@ -7,7 +7,7 @@ void FWK::Graphics::ModelGPUDrivenTableBuilder::Clear()
     m_frameTable.m_meshInfoList.clear();
     m_frameTable.m_lodList.clear     ();
 
-    m_frameTable.m_totalPairCount = Struct::ModelGPUDrivenFrameTable::k_initialTotalPairCount;
+    m_frameTable.m_totalPairCount = Constant::k_initialGPUDrivenFrameTableTotalPairCount;
 
     m_modelBatchIndexMap.clear();
 
@@ -29,7 +29,7 @@ const FWK::Struct::ModelGPUDrivenFrameTable& FWK::Graphics::ModelGPUDrivenTableB
         const auto& l_batchInstanceList = m_batchInstanceListList [l_batchIndex];
 
         // インスタンスが表に入りきらない分は描画しない
-        const auto l_remainCount   = ModelGPUDrivenDrawer::k_maxInstanceCount - l_instanceList.size();
+        const auto l_remainCount   = Constant::k_modelGPUDrivenMaxInstanceCount - l_instanceList.size();
         const auto l_instanceCount = std::min(l_batchInstanceList.size(), l_remainCount);
 
         l_modelBatch.m_instanceOffset = static_cast<std::uint32_t>(l_instanceList.size());

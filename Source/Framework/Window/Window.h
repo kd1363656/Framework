@@ -8,23 +8,17 @@ namespace FWK
 
         struct ClientSize final
         {
-            UINT m_width  = k_defaultWindowWidth;
-            UINT m_height = k_defaultWindowHeight;
+            UINT m_width  = Constant::k_defaultWindowWidth;
+            UINT m_height = Constant::k_defaultWindowHeight;
         };
 
         struct ResizeRequest final
         {
-            ClientSize m_clientSize = { k_invalidClientWidth, k_invalidClientHeight };
+            ClientSize m_clientSize = { Constant::k_invalidClientWidth, Constant::k_invalidClientHeight };
 
             bool m_isRequested = false;
             bool m_isMinimized = false;
         };
-
-        static constexpr UINT k_defaultWindowWidth  = 1280U;
-        static constexpr UINT k_defaultWindowHeight = 720U;
-
-        static constexpr UINT k_invalidClientWidth  = 0U;
-        static constexpr UINT k_invalidClientHeight = 0U;
 
     public:
 
@@ -93,7 +87,6 @@ namespace FWK
 
         ClientSize FetchVALCurrentClientSize() const;
 
-        // ウィンドウのタイトルバー、最小化、最大化機能を持たせウィンドウのサイズ変更機能を除外したスタイル
         static constexpr std::wstring_view k_windowInstancePropertyName = L"GameWindowInstance";
 
         static constexpr LRESULT k_windowProcedureHandledResult = 0;
@@ -101,12 +94,8 @@ namespace FWK
         static constexpr LONG k_clientRECTLeft = 0L;
         static constexpr LONG k_clientRECTTop  = 0L;
 
-        // 通常ウィンドウ
-        // タイトルバー、幅、最小化、最大化を持つ
         static constexpr DWORD k_generalWindowStyle = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
 
-        // 枠なしウィンドウ
-        // ボーダーレスフルスクリーンで使う
         static constexpr DWORD k_borderlessFullScreenWindowStyle = WS_POPUP;
 
         static constexpr UINT k_windowStyle = CS_HREDRAW | CS_VREDRAW;

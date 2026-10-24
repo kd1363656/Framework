@@ -21,10 +21,10 @@ namespace FWK::Editor
 
         void Delete(const std::vector<std::filesystem::path>& a_filePathList) const;
 
-        void Copy(const std::vector<std::filesystem::path>& a_filePathList, AssetBrowserEditorWindowClipboard& a_clipboard) const;
-        void Cut (const std::vector<std::filesystem::path>& a_filePathList, AssetBrowserEditorWindowClipboard& a_clipboard) const;
+        void Copy(const std::vector<std::filesystem::path>& a_filePathList, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const;
+        void Cut (const std::vector<std::filesystem::path>& a_filePathList, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const;
 
-        void Paste(const std::vector<std::filesystem::path>& a_destinationFolderPathList, AssetBrowserEditorWindowClipboard& a_clipboard) const;
+        void Paste(const std::vector<std::filesystem::path>& a_destinationFolderPathList, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const;
 
         void Duplicate(const std::vector<std::filesystem::path>& a_filePathList) const;
 

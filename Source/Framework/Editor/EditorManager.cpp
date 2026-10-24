@@ -1,4 +1,5 @@
 ﻿#include "EditorManager.h"
+#include "../../Application/Application.h"
 
 FWK::Editor::EditorManager::EditorManager() :
     m_imGuiCBVSRVUAVDescriptorPool(),
@@ -81,8 +82,8 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
     l_io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     // スタイル設定
-    EditorStyle::ApplyFont           ();
-    EditorStyle::ApplySakuraDarkStyle();
+    EditorStyle::ApplyFont                 ();
+    EditorStyle::ApplyUnrealEngineDarkStyle();
 
     ImGui_ImplDX12_InitInfo l_initINFO = {};
 
@@ -285,6 +286,27 @@ ImTextureID FWK::Editor::EditorManager::FetchVALImGuiTextureID(const TypeAlias::
     const auto l_gpuDescriptorHandle = m_imGuiCBVSRVUAVDescriptorPool.FetchVALGPUDescriptorHandle(a_imGuiSRVDescriptorIndex);
 
     return l_gpuDescriptorHandle.ptr;
+}
+
+float FWK::Editor::EditorManager::FetchVALRenderOutputAspectRatio() const
+{
+          auto& l_application = Application::GetInstance  ();
+    const auto& l_window      = l_application.GetREFWindow();
+
+    // エディター非表示中は描画結果がウィンドウ全体へ出力されるため、ウィンドウのAspectRatioを使う
+    if (m_isDisableDrawEditor) { return l_window.GetVALAspectRatio(); }
+
+    const auto& l_viewportEditorWindow = FindVALWindowEditor<ViewportEditorWindow>().lock();
+
+    if (!l_viewportEditorWindow) { return l_window.GetVALAspectRatio(); }
+
+    // エディター表示中は描画結果がViewportの表示領域へ引き伸ばされるため、ViewportのAspectRatioを使う
+    // (Viewportがまだ一度も描画されていない場合は無効値なので、ウィンドウのAspectRatioで代用する)
+    const float l_viewportAspectRatio = l_viewportEditorWindow->GetVALViewportAspectRatio();
+
+    if (l_viewportAspectRatio <= Constant::k_viewportInvalidAspectRatio) { return l_window.GetVALAspectRatio(); }
+
+    return l_viewportAspectRatio;
 }
 
 void FWK::Editor::EditorManager::AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow)
