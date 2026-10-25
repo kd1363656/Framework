@@ -62,7 +62,7 @@ void FWK::Converter::TextureSystemJsonConverter::DeserializeDefaultTextureList(c
 
 nlohmann::json FWK::Converter::TextureSystemJsonConverter::SerializeDefaultTextureList(const Graphics::TextureSystem& a_textureSystem) const
 {
-    nlohmann::json l_rootJsonArray = nlohmann::json::array();
+    auto l_rootJsonArray = nlohmann::json::array();
 
     const auto& l_defaultTextureList = a_textureSystem.GetREFDefaultTextureList();
 

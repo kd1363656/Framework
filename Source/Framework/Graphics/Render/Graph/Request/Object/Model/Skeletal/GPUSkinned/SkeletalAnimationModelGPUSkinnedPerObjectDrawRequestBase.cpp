@@ -56,6 +56,12 @@ bool FWK::Graphics::SkeletalAnimationModelGPUSkinnedPerObjectDrawRequestBase::Di
 
             l_instance.m_animationFrameIndex = l_bakedSkinning->FetchVALFrameIndex(l_drawRequestData->m_motionIndex, l_drawRequestData->m_animationTimeSecond);
 
+            // このインスタンスだけのモーフのウェイトがあれば、表へ追加してその位置をインスタンスに持たせる
+            if (!l_drawRequestData->m_morphWeightList.empty())
+            {
+                l_instance.m_morphWeightOffset = AddMorphWeightList(*l_bakedSkinning, l_drawRequestData->m_morphWeightList);
+            }
+
             m_gpuDrivenTableBuilder.AddInstance(*l_skeletalAnimationModelRecord, l_instance, &l_bakedSkinning->GetREFSkinningInfo());
         }
 
@@ -81,4 +87,27 @@ std::shared_ptr<FWK::Graphics::SkeletalAnimationBakedSkinning> FWK::Graphics::Sk
     a_skeletalAnimationModelRecord.SetBakedSkinning(l_bakedSkinning);
 
     return l_bakedSkinning;
+}
+
+std::uint32_t FWK::Graphics::SkeletalAnimationModelGPUSkinnedPerObjectDrawRequestBase::AddMorphWeightList(const SkeletalAnimationBakedSkinning& a_bakedSkinning, const std::vector<float>& a_morphWeightList)
+{
+    const auto&         l_skinningInfo = a_bakedSkinning.GetREFSkinningInfo();
+    const std::uint32_t l_channelCount = l_skinningInfo.m_morphChannelCount;
+
+    // モーフを持たないモデルは、ウェイトを持たせない
+    if (l_channelCount == Constant::k_initialGPUDrivenSkinningInfoValue) { return Constant::k_invalidGPUDrivenMorphWeightOffset; }
+
+    // チャンネル数に合わせる(足りない分はウェイト0、多い分は使わない)
+    // 毎回メモリを確保しないように、作業用の配列を使い回す
+    m_morphWeightWorkList.assign(l_channelCount, Constant::k_initialModelMorphWeight);
+
+    const std::size_t l_copyCount = std::min(a_morphWeightList.size(), m_morphWeightWorkList.size());
+
+    for (std::uint32_t l_channelIndex = 0U; l_channelIndex < static_cast<std::uint32_t>(l_copyCount); ++l_channelIndex)
+    {
+        // エディターで設定したウェイトの範囲へ収める
+        m_morphWeightWorkList[l_channelIndex] = a_bakedSkinning.ClampMorphWeight(l_channelIndex, a_morphWeightList[l_channelIndex]);
+    }
+
+    return m_gpuDrivenTableBuilder.AddMorphWeightList(m_morphWeightWorkList);
 }

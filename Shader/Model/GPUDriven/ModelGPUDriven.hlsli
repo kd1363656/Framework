@@ -11,10 +11,12 @@ struct ModelGPUDrivenInstance
     row_major float4x4 worldInverseTransposeMatrix;
 
     // animationFrameIndex : スキニングするモデルの場合に使う、事前計算したアニメーションの何コマ目か
+    // morphWeightOffset   : このインスタンスだけのモーフのウェイトが、上書き用ウェイトBufferの何番目から始まるか
+    //                       無効値なら、ベイクしたウェイト(アニメーションのコマ番号の位置)を使う
     float worldMaxScale;
     float worldOrientationSign;
     uint  animationFrameIndex;
-    uint  padding;
+    uint  morphWeightOffset;
 };
 
 // CPUから送られる、Mesh1つ分の情報(モデル内の全インスタンスで共通)
@@ -44,8 +46,26 @@ struct ModelGPUDrivenMeshInfo
     // スキニング行列の番号 = アニメーションのコマ番号 × skinningPaletteStride + skinningPaletteBase + ボーンパレット番号
     uint skinningPaletteStride;
     uint skinningFrameCount;
-    uint padding;
-    uint padding2;
+    uint morphVertexRangeBufferSRVDescriptorIndex;
+    uint morphDeltaBufferSRVDescriptorIndex;
+
+    // モーフを持つMeshの場合に使う値(持たないMeshではmorphDeltaBufferSRVDescriptorIndexが無効)
+    // morphChannelListBufferSRVDescriptorIndex : このMeshが使うチャンネル番号の一覧(morphChannelListCount個)
+    // morphWeightBufferSRVDescriptorIndex      : ベイクしたウェイト(ウェイトの番号 = コマ番号 × morphWeightStride + チャンネル番号)
+    uint morphChannelListBufferSRVDescriptorIndex;
+    uint morphChannelListCount;
+    uint morphWeightBufferSRVDescriptorIndex;
+    uint morphWeightStride;
+
+    // morphLODTargetErrorBufferSRVDescriptorIndex : LODごと・ターゲットごとのモーフの崩れ
+    //                                               (番号 = LOD番号 × morphChannelListCount + ターゲット番号)
+    // lodSurfaceDeviationScale                    : LODで表面が実際にずれた量 ÷ LODの誤差 の最大値(覆われている頂点を奥へ押し出す距離に掛ける)
+    // lodCoveredLayerCountBufferSRVDescriptorIndex : 頂点ごとの覆われている層の数のBuffer
+    // padding2 : C++側と大きさを16byte単位で揃えるための詰め物
+    uint  morphLODTargetErrorBufferSRVDescriptorIndex;
+    float lodSurfaceDeviationScale;
+    uint  lodCoveredLayerCountBufferSRVDescriptorIndex;
+    uint  padding2;
 };
 
 // LOD1段階分の情報(C++のStruct::ModelMeshLODと同じ)
@@ -55,6 +75,10 @@ struct ModelGPUDrivenMeshLOD
     uint  meshletCount;
     uint  triangleCount;
     float simplifyError;
+
+    // 全ターゲットの中で、ウェイト1で効かせたときに一番大きい崩れ(モーフを持たないMeshは0)
+    // LODを選ぶときは、ターゲットごとの崩れ(morphLODTargetErrorBuffer)を使う
+    float morphError;
 };
 
 // 描画1回分の定数バッファの中身
@@ -78,15 +102,20 @@ struct ModelGPUDrivenDrawRecord
 
     uint  meshletCount;
     uint  meshletOffset;
-    float padding;
-    float padding2;
+    float lodCoveredLayerDepthOffset;
+    uint  lodCoveredLayerCountBufferSRVDescriptorIndex;
 
     uint skinningMatrixBufferSRVDescriptorIndex;
     uint skinningMatrixOffset;
     uint isGPUSkinning;
     uint skinningPadding;
 
-    uint4 recordPadding[4];
+    uint morphVertexRangeBufferSRVDescriptorIndex;
+    uint morphDeltaBufferSRVDescriptorIndex;
+    uint morphWeightBufferSRVDescriptorIndex;
+    uint morphWeightOffset;
+
+    uint4 recordPadding[3];
 };
 
 // ExecuteIndirectが1回分の描画として読む引数

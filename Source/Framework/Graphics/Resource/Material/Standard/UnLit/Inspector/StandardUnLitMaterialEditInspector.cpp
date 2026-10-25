@@ -1,6 +1,6 @@
-﻿#include "StandardUnLitMaterialInspector.h"
+﻿#include "StandardUnLitMaterialEditInspector.h"
 
-bool FWK::Graphics::StandardUnLitMaterialInspector::EditInspector(StandardUnLitMaterial& a_standardUnLitMaterial) const
+bool FWK::Graphics::StandardUnLitMaterialEditInspector::EditInspector(StandardUnLitMaterial& a_standardUnLitMaterial) const
 {
     bool l_isChanged = false;
 

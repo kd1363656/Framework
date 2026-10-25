@@ -7,12 +7,12 @@ namespace FWK::Graphics
 
 namespace FWK::Graphics
 {
-    class StandardUnLitMaterialInspector final
+    class StandardUnLitMaterialEditInspector final
     {
     public:
 
-         StandardUnLitMaterialInspector() = default;
-        ~StandardUnLitMaterialInspector() = default;
+         StandardUnLitMaterialEditInspector() = default;
+        ~StandardUnLitMaterialEditInspector() = default;
 
         // 値が変わった場合はtrueを返す
         bool EditInspector(StandardUnLitMaterial& a_standardUnLitMaterial) const;

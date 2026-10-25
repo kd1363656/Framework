@@ -14,11 +14,6 @@ namespace FWK
         // std::shared_ptr<Base> / std::unique_ptr<Base>が管理している実体型Baseを取り出す
         using BaseType = typename Type::element_type;
 
-        static constexpr bool k_isSupportedPTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Shared ||
-                                                 TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Unique;
-
-        static_assert(k_isSupportedPTR, "GenericFactoryはstd::shared_ptrまたはstd::unique_ptrだけに対応しています");
-
         friend class Utility::SingletonBase<GenericFactory<Type>>;
 
          GenericFactory()          = default;
@@ -55,7 +50,7 @@ namespace FWK
 
         // Typeがshared_ptrの場合にだけ使用可能になる。
         template <typename DerivedType>
-            requires (TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Shared)
+            requires Concept::IsSharedPTRConcept<Type>
         static Type CreateInstance()
         {
             return std::make_shared<DerivedType>();
@@ -63,11 +58,16 @@ namespace FWK
 
         // Typeがunique_ptrの場合にだけ使用可能になる。
         template <typename DerivedType>
-            requires (TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Unique)
+            requires Concept::IsUniquePTRConcept<Type>
         static Type CreateInstance()
         {
             return std::make_unique<DerivedType>();
         }
+
+        static constexpr bool k_isSupportedPTR = Concept::IsSharedPTRConcept<Type> ||
+                                                 Concept::IsUniquePTRConcept<Type>;
+
+        static_assert(k_isSupportedPTR, "GenericFactoryはstd::shared_ptrまたはstd::unique_ptrだけに対応しています");
 
         FactoryMap m_factoryMap = {};
     };

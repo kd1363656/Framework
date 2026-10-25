@@ -157,8 +157,8 @@ void FWK::Editor::LogEditorWindow::DrawLog()
     {
         for (int l_lineNUM = 0; l_lineNUM < m_textLineOffsets.Size; ++l_lineNUM)
         {
-            const char* l_lineStart = l_buffer + m_textLineOffsets[l_lineNUM];
-            const char* l_lineEnd   = (l_lineNUM + k_nextLineIndexOffset < m_textLineOffsets.Size) ? (l_buffer + m_textLineOffsets[l_lineNUM + k_nextLineIndexOffset] + k_excludeNewLineOffset) : l_bufferEnd;
+            const auto* l_lineStart = l_buffer + m_textLineOffsets[l_lineNUM];
+            const auto* l_lineEnd   = (l_lineNUM + k_nextLineIndexOffset < m_textLineOffsets.Size) ? (l_buffer + m_textLineOffsets[l_lineNUM + k_nextLineIndexOffset] + k_excludeNewLineOffset) : l_bufferEnd;
 
             // フィルター条件に合わない行はスキップ
             if (!m_textFilter.PassFilter(l_lineStart , l_lineEnd)) { continue; }
@@ -190,8 +190,8 @@ void FWK::Editor::LogEditorWindow::DrawLog()
         {
             for (int l_lineNUM = l_clipper.DisplayStart; l_lineNUM < l_clipper.DisplayEnd; l_lineNUM++)
             {
-                const char* l_lineStart = l_buffer + m_textLineOffsets[l_lineNUM];
-                const char* l_lineEnd   = (l_lineNUM + k_nextLineIndexOffset < m_textLineOffsets.Size) ? (l_buffer + m_textLineOffsets[l_lineNUM + k_nextLineIndexOffset] + k_excludeNewLineOffset) : l_bufferEnd;
+                const auto* l_lineStart = l_buffer + m_textLineOffsets[l_lineNUM];
+                const auto* l_lineEnd   = (l_lineNUM + k_nextLineIndexOffset < m_textLineOffsets.Size) ? (l_buffer + m_textLineOffsets[l_lineNUM + k_nextLineIndexOffset] + k_excludeNewLineOffset) : l_bufferEnd;
 
                 const auto& l_textColor = m_textLineColorList[static_cast<std::size_t>(l_lineNUM)];
 

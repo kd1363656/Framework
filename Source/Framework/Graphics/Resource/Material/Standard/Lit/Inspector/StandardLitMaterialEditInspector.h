@@ -7,12 +7,14 @@ namespace FWK::Graphics
 
 namespace FWK::Graphics
 {
-    class StandardLitMaterialInspector final
+    // StandardLitMaterial固有の値をInspectorで編集するクラス
+    // 型名、ファイルパス、保存ボタンの表示はMaterialBaseEditInspectorが行う
+    class StandardLitMaterialEditInspector final
     {
     public:
 
-         StandardLitMaterialInspector() = default;
-        ~StandardLitMaterialInspector() = default;
+         StandardLitMaterialEditInspector() = default;
+        ~StandardLitMaterialEditInspector() = default;
 
         // 値が変わった場合はtrueを返す
         bool EditInspector(StandardLitMaterial& a_standardLitMaterial) const;

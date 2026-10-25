@@ -26,6 +26,10 @@ namespace FWK::Struct
     {
         std::weak_ptr<Graphics::SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = {};
 
+        // このインスタンスだけのモーフのウェイト(番号 = モデルのチャンネル番号、SkeletalAnimationModelRecord::FindVALMorphChannelIndexで探す)
+        // 空の場合は、モーションにベイクしたウェイト(アニメーションが無いチャンネルはエディターで設定した既定のウェイト)を使う
+        std::vector<float> m_morphWeightList = {};
+
         TypeAlias::Math::Matrix m_worldMatrix                 = TypeAlias::Math::Matrix::Identity;
         TypeAlias::Math::Matrix m_worldInverseTransposeMatrix = TypeAlias::Math::Matrix::Identity;
 

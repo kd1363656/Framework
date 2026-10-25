@@ -16,6 +16,13 @@ namespace FWK::Constant
     inline constexpr std::uint32_t k_initialMeshLODTriangleCount = 0U;
 
     inline constexpr float k_initialMeshLODSimplifyError = 0.0F;
+    inline constexpr float k_initialMeshLODMorphError    = 0.0F;
 
     inline constexpr float k_initialMeshletDataBoundsRadius = 0.0F;
+
+    inline constexpr float k_initialLODSurfaceDeviationScale = 1.0F;
+    inline constexpr float k_maxLODSurfaceDeviationScale     = 4.0F;
+
+    // HLSL側(Model.hlsliのk_modelMaxLODCoveredLayerCount)と同じ値にする
+    inline constexpr std::uint32_t k_maxLODCoveredLayerCount = 2U;
 }

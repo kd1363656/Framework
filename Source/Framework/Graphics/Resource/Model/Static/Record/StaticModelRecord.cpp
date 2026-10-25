@@ -19,6 +19,10 @@ bool FWK::Graphics::StaticModelRecord::ReserveRelease(const UINT64& a_retiredFen
         FWK_ASSERT_RETURN_VALUE_IF(!l_uniqueVertexIndexBuffer.ReserveRelease(a_retiredFenceValue, a_resourceReleaseContext), "StaticModelRecordのUniqueVertexIndexBufferを遅延解放Queueへ登録できませんでした。", false);
         FWK_ASSERT_RETURN_VALUE_IF(!l_primitiveIndexBuffer.ReserveRelease   (a_retiredFenceValue, a_resourceReleaseContext), "StaticModelRecordのPrimitiveIndexBufferを遅延解放Queueへ登録できませんでした。",    false);
         FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBoundsBuffer.ReserveRelease    (a_retiredFenceValue, a_resourceReleaseContext), "StaticModelRecordのMeshletBoundsBufferを遅延解放Queueへ登録できませんでした。",     false);
+
+        auto& l_lodCoveredLayerCountBuffer = l_modelMeshRuntimeData.m_lodCoveredLayerCountBuffer;
+
+        FWK_ASSERT_RETURN_VALUE_IF(!l_lodCoveredLayerCountBuffer.ReserveRelease(a_retiredFenceValue, a_resourceReleaseContext), "StaticModelRecordのLODCoveredLayerCountBufferを遅延解放Queueへ登録できませんでした。", false);
     }
 
     return true;

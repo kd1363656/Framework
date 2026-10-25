@@ -20,11 +20,11 @@ void FWK::AssertReporter::Report(const std::string_view& a_message, const std::s
 
     // 例 : [ASSERT][C:\...\UploadSystem.cpp : 45][関数名]
     //      TextureRecordが無効になっているため、このテクスチャのコピーをスキップしました。
-    const std::string l_report = std::format("[ASSERT][{} : {}][{}]\n{}\n",
-                                             a_location.file_name(),
-                                             a_location.line(),
-                                             a_location.function_name(),
-                                             a_message);
+    const auto& l_report = std::format("[ASSERT][{} : {}][{}]\n{}\n",
+                                       a_location.file_name(),
+                                       a_location.line(),
+                                       a_location.function_name(),
+                                       a_message);
 
     OutputDebugReport(l_report);
 
@@ -32,10 +32,12 @@ void FWK::AssertReporter::Report(const std::string_view& a_message, const std::s
     // AddLog()へ失敗した場所(a_location)をそのまま渡す
     if (m_isEditorLogEnabled)
     {
-        Editor::EditorManager::GetInstance().AddLog(a_location,
-                                                    k_editorLogColor,
-                                                    "[ASSERT]\n{}",
-                                                    a_message);
+        auto& l_editorManager = Editor::EditorManager::GetInstance();
+        
+        l_editorManager.AddLog(a_location,
+                               k_editorLogColor,
+                               "[ASSERT]\n{}",
+                               a_message);
     }
 
     m_isReporting = false;

@@ -381,7 +381,7 @@ void FWK::Editor::EditorManager::DrawDockingSpace() const
     // DockSpace全体を包むルートウィンドウ(親ウィンドウ)を画面サイズで作成
     ImGuiWindowFlags l_windowFlag = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
-    const ImGuiViewport* l_viewPort = ImGui::GetMainViewport();
+    const auto* l_viewPort = ImGui::GetMainViewport();
 
     // メインウィンドウを取得してサイズ、描画位置を現在のウィンドウサイズに合わせる
     ImGui::SetNextWindowPos     (l_viewPort->WorkPos);
@@ -409,8 +409,8 @@ void FWK::Editor::EditorManager::DrawDockingSpace() const
     ImGui::PopStyleVar(k_dockingStyleVarPopCount);
 
     // "DockSpace"の作成
-    ImGuiID l_dockSpaceID = ImGui::GetID(k_dockingSpaceName);
-    ImVec2  l_size        = {};
+    auto   l_dockSpaceID = ImGui::GetID(k_dockingSpaceName);
+    ImVec2 l_size        = {};
 
     ImGui::DockSpace(l_dockSpaceID, l_size, ImGuiDockNodeFlags_None);
     ImGui::End      ();

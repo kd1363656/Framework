@@ -1,5 +1,10 @@
 ﻿#include "StandardLitMaterial.h"
 
+bool FWK::Graphics::StandardLitMaterial::Deserialize(const nlohmann::json& a_rootJson)
+{
+    return m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
 void FWK::Graphics::StandardLitMaterial::BuildRuntimeResources()
 {
     // テクスチャが見つからない場合は、種類ごとのデフォルトテクスチャになる
@@ -32,46 +37,25 @@ bool FWK::Graphics::StandardLitMaterial::CreateGPUDataBuffer(const Device&      
                                           a_cbvSRVUAVDescriptorPool);
 }
 
-std::uint64_t FWK::Graphics::StandardLitMaterial::CalculateBinaryPayloadSize(const Converter::MaterialBinaryConverter& a_materialBinaryConverter) const
+nlohmann::json FWK::Graphics::StandardLitMaterial::Serialize() const
 {
-    auto l_payloadSize = a_materialBinaryConverter.CalculateSingleSize<TypeAlias::Math::Color>();
-
-    l_payloadSize += a_materialBinaryConverter.CalculateSingleSize<float>();
-    l_payloadSize += a_materialBinaryConverter.CalculateSingleSize<float>();
-
-    l_payloadSize += a_materialBinaryConverter.CalculateWStringSize(m_baseColorTextureFilePath);
-    l_payloadSize += a_materialBinaryConverter.CalculateWStringSize(m_normalTextureFilePath);
-    l_payloadSize += a_materialBinaryConverter.CalculateWStringSize(m_roughnessTextureFilePath);
-    l_payloadSize += a_materialBinaryConverter.CalculateWStringSize(m_metallicTextureFilePath);
-
-    return l_payloadSize;
+    return m_jsonConverter.Serialize(*this);
 }
-void FWK::Graphics::StandardLitMaterial::WriteBinaryPayload(const Converter::MaterialBinaryConverter& a_materialBinaryConverter, std::uint64_t& a_memoryWriteOffset) const
-{
-    a_materialBinaryConverter.WriteSingle(m_baseColorFactor, a_memoryWriteOffset);
-    a_materialBinaryConverter.WriteSingle(m_roughnessFactor, a_memoryWriteOffset);
-    a_materialBinaryConverter.WriteSingle(m_metallicFactor,  a_memoryWriteOffset);
 
-    a_materialBinaryConverter.WriteWString(m_baseColorTextureFilePath, a_memoryWriteOffset);
-    a_materialBinaryConverter.WriteWString(m_normalTextureFilePath,    a_memoryWriteOffset);
-    a_materialBinaryConverter.WriteWString(m_roughnessTextureFilePath, a_memoryWriteOffset);
-    a_materialBinaryConverter.WriteWString(m_metallicTextureFilePath,  a_memoryWriteOffset);
+std::uint64_t FWK::Graphics::StandardLitMaterial::CalculateBinaryPayloadSize(const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter) const
+{
+    return m_binaryConverter.CalculatePayloadSize(*this, a_materialBaseBinaryConverter);
 }
-bool FWK::Graphics::StandardLitMaterial::ReadBinaryPayload(const Converter::MaterialBinaryConverter& a_materialBinaryConverter, std::uint64_t& a_memoryReadOffset)
+void FWK::Graphics::StandardLitMaterial::WriteBinaryPayload(const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter, std::uint64_t& a_memoryWriteOffset) const
 {
-    if (!a_materialBinaryConverter.TryReadSingle(m_baseColorFactor, a_memoryReadOffset)) { return false; }
-    if (!a_materialBinaryConverter.TryReadSingle(m_roughnessFactor, a_memoryReadOffset)) { return false; }
-    if (!a_materialBinaryConverter.TryReadSingle(m_metallicFactor,  a_memoryReadOffset)) { return false; }
-
-    if (!a_materialBinaryConverter.TryReadWString(m_baseColorTextureFilePath, a_memoryReadOffset)) { return false; }
-    if (!a_materialBinaryConverter.TryReadWString(m_normalTextureFilePath,    a_memoryReadOffset)) { return false; }
-    if (!a_materialBinaryConverter.TryReadWString(m_roughnessTextureFilePath, a_memoryReadOffset)) { return false; }
-    if (!a_materialBinaryConverter.TryReadWString(m_metallicTextureFilePath,  a_memoryReadOffset)) { return false; }
-
-    return true;
+    m_binaryConverter.WritePayload(*this, a_materialBaseBinaryConverter, a_memoryWriteOffset);
+}
+bool FWK::Graphics::StandardLitMaterial::ReadBinaryPayload(const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter, std::uint64_t& a_memoryReadOffset)
+{
+    return m_binaryConverter.ReadPayload(*this, a_materialBaseBinaryConverter, a_memoryReadOffset);
 }
 
 bool FWK::Graphics::StandardLitMaterial::EditInspectorParameter()
 {
-    return m_inspector.EditInspector(*this);
+    return m_editInspector.EditInspector(*this);
 }

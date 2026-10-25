@@ -37,7 +37,7 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
 
     // 現在のViewportウィンドウ内で、実際に画像を表示できる領域サイズを取得する
     // Dockingでウィンドウサイズが変わると、この値も変わる
-    const ImVec2& l_viewportSize = ImGui::GetContentRegionAvail();
+    const auto& l_viewportSize = ImGui::GetContentRegionAvail();
 
     if (l_viewportSize.x <= k_minViewportSize ||
         l_viewportSize.y <= k_minViewportSize)

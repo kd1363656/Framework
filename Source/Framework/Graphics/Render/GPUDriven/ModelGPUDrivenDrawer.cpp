@@ -39,6 +39,9 @@ void FWK::Graphics::ModelGPUDrivenDrawer::UploadFrameTable(const Renderer& a_ren
     FWK_ASSERT_RETURN_IF(!l_frameData.m_instanceBuffer.Write(a_frameTable.m_instanceList), "インスタンス情報の書き込みに失敗しました。");
     FWK_ASSERT_RETURN_IF(!l_frameData.m_meshInfoBuffer.Write(a_frameTable.m_meshInfoList), "Mesh情報の書き込みに失敗しました。");
     FWK_ASSERT_RETURN_IF(!l_frameData.m_lodBuffer.Write     (a_frameTable.m_lodList),      "LOD情報の書き込みに失敗しました。");
+
+    // インスタンスごとに上書きするモーフのウェイトを書き込む(上書きするインスタンスが無ければ何も書かない)
+    FWK_ASSERT_RETURN_IF(!l_frameData.m_morphWeightBuffer.Write(a_frameTable.m_morphWeightList), "モーフのウェイトの書き込みに失敗しました。");
 }
 
 bool FWK::Graphics::ModelGPUDrivenDrawer::DispatchCulling(Renderer& a_renderer, const std::size_t a_viewIndex, const Struct::ModelGPUDrivenCullingView& a_cullingView)
@@ -305,6 +308,7 @@ bool FWK::Graphics::ModelGPUDrivenDrawer::Create(const Renderer& a_renderer)
         FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_instanceBuffer.Create<Struct::SBModelGPUDrivenInstance>(l_device, Constant::k_modelGPUDrivenMaxInstanceCount, l_cbvSRVUAVDescriptorPool), "インスタンス用Bufferの作成に失敗しました。", false);
         FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_meshInfoBuffer.Create<Struct::SBModelGPUDrivenMeshInfo>(l_device, Constant::k_modelGPUDrivenMaxMeshInfoCount, l_cbvSRVUAVDescriptorPool), "Mesh情報用Bufferの作成に失敗しました。",       false);
         FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_lodBuffer.Create<Struct::ModelMeshLOD>             (l_device, Constant::k_modelGPUDrivenMaxLODCount,      l_cbvSRVUAVDescriptorPool), "LOD用Bufferの作成に失敗しました。",            false);
+        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_morphWeightBuffer.Create<float>(l_device, Constant::k_modelGPUDrivenMaxMorphWeightCount, l_cbvSRVUAVDescriptorPool), "モーフのウェイト用Bufferの作成に失敗しました。", false);
 
         FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_cullingPassConstantBuffer.Create(l_device, k_maxCullingDispatchCountPerFrame * k_cullingPassConstantBufferStride), "カリング用定数バッファの作成に失敗しました。", false);
 
@@ -458,6 +462,9 @@ FWK::Struct::CBModelGPUDrivenCullingPass FWK::Graphics::ModelGPUDrivenDrawer::Cr
     l_cullingPass.m_instanceBufferSRVDescriptorIndex        = a_frameData.m_instanceBuffer.GetVALSRVDescriptorIndex      ();
     l_cullingPass.m_meshInfoBufferSRVDescriptorIndex        = a_frameData.m_meshInfoBuffer.GetVALSRVDescriptorIndex      ();
     l_cullingPass.m_lodBufferSRVDescriptorIndex             = a_frameData.m_lodBuffer.GetVALSRVDescriptorIndex           ();
+
+    l_cullingPass.m_morphOverrideWeightBufferSRVDescriptorIndex = a_frameData.m_morphWeightBuffer.GetVALSRVDescriptorIndex();
+
     l_cullingPass.m_drawRecordBufferUAVDescriptorIndex      = a_viewData.m_drawRecordBuffer.GetVALUAVDescriptorIndex     ();
     l_cullingPass.m_indirectCommandBufferUAVDescriptorIndex = a_viewData.m_indirectCommandBuffer.GetVALUAVDescriptorIndex();
     l_cullingPass.m_counterBufferUAVDescriptorIndex         = a_viewData.m_counterBuffer.GetVALUAVDescriptorIndex        ();

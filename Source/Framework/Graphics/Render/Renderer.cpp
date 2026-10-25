@@ -1,5 +1,19 @@
 ﻿#include "Renderer.h"
 
+FWK::Graphics::Renderer::~Renderer()
+{
+    // メンバ変数は宣言と逆の順番で破棄されるため、
+    // CommandQueueより後に宣言しているFrameProfiler(QueryHeap、ReadbackBuffer)やRenderGraphは、
+    // CommandQueueのデストラクタでGPU完了を待つより先に解放されてしまう。
+    // GPUがまだそれらを使う命令を実行中の場合、
+    // 「実行中の命令が参照しているオブジェクトを解放した」とD3D12デバッグレイヤーに警告されるため、
+    // メンバの破棄が始まる前に両方のCommandQueueのGPU処理完了を待つ
+    //
+    // DirectQueueはComputeQueueの完了をGPU上で待ってから実行するため、Compute → Directの順で待つ
+    if (m_computeCommandQueue.GetREFCommandQueue()) { m_computeCommandQueue.WaitForGPUIdleIfNeeded(); }
+    if (m_directCommandQueue.GetREFCommandQueue ()) { m_directCommandQueue.WaitForGPUIdleIfNeeded (); }
+}
+
 void FWK::Graphics::Renderer::INIT()
 {
     if (m_cbSpritePass) { return; }

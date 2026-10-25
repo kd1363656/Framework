@@ -27,8 +27,12 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::ExtractModelMotion
                                                               "ufbx_anim_stackからModelMotionSequenceの作成に失敗しました。",
                                                               false);
 
-        // Skeleton内のBoneを動かさないAnimationStackは保存しない
-        if (l_modelMotionSequence.m_boneMotionTrackList.empty()) { continue; }
+        // Skeleton内のBoneも、ブレンドシェイプのウェイトも動かさないAnimationStackは保存しない
+        if (l_modelMotionSequence.m_boneMotionTrackList.empty() &&
+            l_modelMotionSequence.m_morphWeightTrackList.empty())
+        {
+            continue;
+        }
 
         a_modelMotionSequenceList.emplace_back(std::move(l_modelMotionSequence));
     }
@@ -69,24 +73,17 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelBoneMot
     FWK_ASSERT_RETURN_VALUE_IF(a_fbxBakedNode->rotation_keys.count == Constant::k_emptyUFBXElementCount,    "Bake済みRotationKeyが存在しません。",    false);
     FWK_ASSERT_RETURN_VALUE_IF(a_fbxBakedNode->translation_keys.count == Constant::k_emptyUFBXElementCount, "Bake済みTranslationKeyが存在しません。", false);
 
-    const auto& l_animationFrameCount = static_cast<std::uint64_t>(std::ceil(a_animationDurationSecond * a_animationFrameRate));
-    const auto& l_keyFrameCount       = l_animationFrameCount + k_animationTerminalKeyFrameCount;
+    // モーフのウェイトと同じ時刻で取り出せるように、取り出す時刻の一覧は共通の関数で作る
+    // (最後の時刻がAnimation終了時間を超える場合は終了時間へ固定される)
+    const auto& l_keyFrameTimeSecondList = Utility::CreateAnimationSampleTimeSecondList(a_animationDurationSecond, a_animationFrameRate);
 
     a_modelBoneMotionTrack.m_boneIndex = a_boneIndex;
 
     a_modelBoneMotionTrack.m_keyFrameList.clear  ();
-    a_modelBoneMotionTrack.m_keyFrameList.reserve(l_keyFrameCount);
+    a_modelBoneMotionTrack.m_keyFrameList.reserve(l_keyFrameTimeSecondList.size());
 
-    for (auto l_keyFrameIndex = 0ULL; l_keyFrameIndex < l_keyFrameCount; ++l_keyFrameIndex)
+    for (const auto l_keyFrameTimeSecond : l_keyFrameTimeSecondList)
     {
-        double l_keyFrameTimeSecond = static_cast<double>(l_keyFrameIndex) / a_animationFrameRate;
-
-        // 最後のSampleがAnimation終了時間を超える場合は終了時間へ固定する
-        if (l_keyFrameTimeSecond > a_animationDurationSecond)
-        {
-            l_keyFrameTimeSecond = a_animationDurationSecond;
-        }
-
         auto l_modelKeyFrame = CreateModelKeyFrame(a_fbxBakedNode, l_keyFrameTimeSecond);
 
         a_modelBoneMotionTrack.m_keyFrameList.emplace_back(l_modelKeyFrame);
@@ -140,6 +137,15 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionS
 
         a_modelMotionSequence.m_boneMotionTrackList.emplace_back(std::move(l_modelBoneMotionTrack));
     }
+
+    // ボーンと同じ時刻で、ブレンドシェイプのウェイトの変化を取り出す
+    FWK_ASSERT_RETURN_VALUE_IF(!m_morphExtractor.ExtractModelMorphWeightTrackList(a_fbxScene,
+                                                                                  a_fbxBakedAnimation,
+                                                                                  l_animationDurationSecond,
+                                                                                  l_animationFrameRate,
+                                                                                  a_modelMotionSequence.m_morphWeightTrackList),
+                                                                                  "Bake済みAnimationからモーフのウェイトの取り出しに失敗しました。",
+                                                                                  false);
 
     return true;
 }

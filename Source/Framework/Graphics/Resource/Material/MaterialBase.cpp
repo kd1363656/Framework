@@ -1,77 +1,39 @@
 ﻿#include "MaterialBase.h"
 
-bool FWK::Graphics::MaterialBase::SaveBinaryData(const std::filesystem::path& a_filePath) const
-{
-    Converter::MaterialBinaryConverter l_materialBinaryConverter = {};
-
-    const auto& l_typeINFO = GetREFRuntimeTypeINFO();
-
-    const auto l_payloadSize = CalculateBinaryPayloadSize(l_materialBinaryConverter);
-
-    auto l_memoryWriteOffset = k_initialMemoryOffset;
-
-    // ヘッダーと型名 -> Payloadの順に書き込む
-    FWK_ASSERT_RETURN_VALUE_IF(!l_materialBinaryConverter.BeginWrite(a_filePath,
-                                                                     l_typeINFO.k_name,
-                                                                     l_payloadSize,
-                                                                     l_memoryWriteOffset),
-                                                                     ".materialファイルの書き込みを開始できず、Materialの保存に失敗しました。",
-                                                                     false);
-
-    WriteBinaryPayload(l_materialBinaryConverter, l_memoryWriteOffset);
-
-    return l_materialBinaryConverter.EndWrite(l_memoryWriteOffset);
-}
 bool FWK::Graphics::MaterialBase::LoadBinaryData(const std::filesystem::path& a_filePath)
 {
-    Converter::MaterialBinaryConverter l_materialBinaryConverter = {};
+    // BinaryConverterは読み込み中のファイルを持つため、読み込みごとに作る
+    Converter::MaterialBaseBinaryConverter l_materialBaseBinaryConverter = {};
 
-    const auto& l_typeINFO = GetREFRuntimeTypeINFO();
+    return l_materialBaseBinaryConverter.Load(*this, a_filePath);
+}
 
-    std::string l_typeName = {};
-
-    auto l_memoryReadOffset = k_initialMemoryOffset;
-
-    if (!l_materialBinaryConverter.BeginRead(a_filePath, l_typeName, l_memoryReadOffset)) { return false; }
-
-    // 別の型のMaterialとして保存されたファイルは読み込まない
-    if (l_typeName != l_typeINFO.k_name ||
-        !ReadBinaryPayload(l_materialBinaryConverter, l_memoryReadOffset))
-    {
-        l_materialBinaryConverter.EndRead(l_memoryReadOffset);
-
-        return false;
-    }
-
-    return l_materialBinaryConverter.EndRead(l_memoryReadOffset);
+bool FWK::Graphics::MaterialBase::Deserialize(const nlohmann::json& a_rootJson)
+{
+    return m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
 void FWK::Graphics::MaterialBase::EditInspector()
 {
-    const auto& l_typeINFO = GetREFRuntimeTypeINFO();
-    const auto& l_filePath = GetREFFilePath       ();
-
-    ImGui::Text(k_typeNameLabel.data(), l_typeINFO.k_name.data());
-    ImGui::Text(k_filePathLabel.data(), Utility::WStringToString(l_filePath).c_str());
-
-    // 値が変わったら、次のフレームでGPUDataBufferを作り直す
-    if (EditInspectorParameter())
-    {
-        m_isGPUDataDirty = true;
-    }
-
-    // ファイルを持たないMaterial(デフォルトマテリアル)は保存しない
-    if (l_filePath.empty()) { return; }
-
-    if (ImGui::Button(k_saveButtonLabel.data()))
-    {
-        FWK_ASSERT_RETURN_IF(!SaveBinaryData(l_filePath), "Materialの保存に失敗しました。");
-    }
+    m_editInspector.EditInspector(*this);
 }
 
 bool FWK::Graphics::MaterialBase::ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext)
 {
     return m_gpuDataBuffer.ReserveRelease(a_retiredFenceValue, a_resourceReleaseContext);
+}
+
+bool FWK::Graphics::MaterialBase::SaveBinaryData(const std::filesystem::path& a_filePath) const
+{
+    // BinaryConverterは書き込み中のファイルを持つため、保存ごとに作る
+    Converter::MaterialBaseBinaryConverter l_materialBaseBinaryConverter = {};
+
+    return l_materialBaseBinaryConverter.Save(*this, a_filePath);
+}
+
+nlohmann::json FWK::Graphics::MaterialBase::Serialize() const
+{
+    return m_jsonConverter.Serialize(*this);
 }
 
 std::string_view FWK::Graphics::MaterialBase::FetchVALFilePrefix() const

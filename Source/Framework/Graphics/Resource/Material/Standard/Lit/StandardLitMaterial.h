@@ -11,12 +11,22 @@ namespace FWK::Graphics
          StandardLitMaterial()          = default;
         ~StandardLitMaterial() override = default;
 
+        bool Deserialize(const nlohmann::json& a_rootJson) override;
+
         void BuildRuntimeResources() override;
 
         bool CreateGPUDataBuffer(const Device&                                                   a_device,
                                  const GPUMemoryAllocator&                                       a_gpuMemoryAllocator,
                                        std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
                                        TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool) override;
+
+        nlohmann::json Serialize() const override;
+
+        std::uint64_t CalculateBinaryPayloadSize(const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter)                                          const override;
+        void          WriteBinaryPayload        (const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter, std::uint64_t& a_memoryWriteOffset) const override;
+        bool          ReadBinaryPayload         (const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter, std::uint64_t& a_memoryReadOffset)        override;
+
+        bool EditInspectorParameter() override;
 
         void SetBaseColorFactor(const TypeAlias::Math::Color& a_set) { m_baseColorFactor = a_set; }
 
@@ -40,18 +50,15 @@ namespace FWK::Graphics
 
     private:
 
-        std::uint64_t CalculateBinaryPayloadSize(const Converter::MaterialBinaryConverter& a_materialBinaryConverter)                                          const override;
-        void          WriteBinaryPayload        (const Converter::MaterialBinaryConverter& a_materialBinaryConverter, std::uint64_t& a_memoryWriteOffset) const override;
-        bool          ReadBinaryPayload         (const Converter::MaterialBinaryConverter& a_materialBinaryConverter, std::uint64_t& a_memoryReadOffset)        override;
-
-        bool EditInspectorParameter() override;
-
         Texture m_baseColorTexture = {};
         Texture m_normalTexture    = {};
         Texture m_roughnessTexture = {};
         Texture m_metallicTexture  = {};
 
-        StandardLitMaterialInspector m_inspector = {};
+        StandardLitMaterialEditInspector m_editInspector = {};
+
+        Converter::StandardLitMaterialBinaryConverter m_binaryConverter = {};
+        Converter::StandardLitMaterialJsonConverter   m_jsonConverter   = {};
 
         std::wstring m_baseColorTextureFilePath = {};
         std::wstring m_normalTextureFilePath    = {};

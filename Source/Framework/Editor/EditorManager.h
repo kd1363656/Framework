@@ -51,13 +51,13 @@ namespace FWK::Editor
             // std::make_format_args(...)はstd::vformatに渡すための「フォーマット用引数リスト」を作成する。
             // a_args...は、受け取った可変長引数を1つずつ展開してstd::make_format_argsに渡している。
             // 最終的にl_messageには、"HP = 100, Name = Player"のような文字列が入る
-            const std::string l_message = std::vformat(a_format, std::make_format_args(a_args...));
+            const auto& l_message = std::vformat(a_format, std::make_format_args(a_args...));
 
-            const std::string& l_formattedLog = std::format("[{} : {}][{}]\n{}\n",
-                                                            a_location.file_name(),
-                                                            a_location.line(),
-                                                            a_location.function_name(),
-                                                            l_message);
+            const auto& l_formattedLog = std::format("[{} : {}][{}]\n{}\n",
+                                                     a_location.file_name(),
+                                                     a_location.line(),
+                                                     a_location.function_name(),
+                                                     l_message);
 
             // 呼びだし元情報をつけてログ本文を記述
             m_logEditorWindow.AddLog(a_textColor, l_formattedLog);

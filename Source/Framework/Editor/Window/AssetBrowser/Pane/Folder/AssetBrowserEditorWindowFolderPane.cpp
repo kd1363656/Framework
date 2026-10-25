@@ -555,7 +555,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
             // マウスカーソルに重ねないようにオフセットを掛ける
             const auto& l_mousePosition = ImGui::GetMousePos();
 
-            const ImVec2& l_iconPosition  = l_mousePosition + k_banIconOffset;
+            const auto& l_iconPosition = l_mousePosition + k_banIconOffset;
 
             // ImGui::GetColorU32でImVec4(0.0F～1.0F)の色をImDrawListが使うImU32(0～255を4つ詰めた値)へ変換する
             const auto l_dangerColor = ImGui::GetColorU32(Constant::k_imguiDangerColor);

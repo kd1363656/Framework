@@ -36,6 +36,16 @@ namespace FWK::Graphics
         struct ModelMeshRuntimeData final : public Struct::ModelMeshRuntimeDataBase
         {
             Graphics::StaticStructuredBuffer m_bonePaletteBuffer = {};
+
+            // モーフを持つMeshだけ作成する(持たないMeshでは作成しない)
+            // m_morphVertexRangeBuffer    : 頂点ごとの移動量の範囲(Struct::ModelMorphVertexRange)
+            // m_morphDeltaBuffer          : GPU用に詰めた移動量(Struct::SBModelMorphVertexDelta)
+            // m_morphChannelListBuffer    : このMeshが使うチャンネル番号の一覧(LODを選ぶときに、効いているウェイトを調べるために使う)
+            // m_morphLODTargetErrorBuffer : LODごと・ターゲットごとのモーフの崩れ(ModelMorphData::m_lodTargetMorphErrorList)
+            Graphics::StaticStructuredBuffer m_morphVertexRangeBuffer    = {};
+            Graphics::StaticStructuredBuffer m_morphDeltaBuffer          = {};
+            Graphics::StaticStructuredBuffer m_morphChannelListBuffer    = {};
+            Graphics::StaticStructuredBuffer m_morphLODTargetErrorBuffer = {};
         };
 
         struct ModelMesh final
@@ -58,6 +68,8 @@ namespace FWK::Graphics
             Struct::ModelMaterial m_modelMaterial = {};
 
             Struct::ModelMeshletData m_modelMeshletData = {};
+
+            Struct::ModelMorphData m_modelMorphData = {};
 
             ModelMeshRuntimeData m_modelMeshRuntimeData = {};
         };
@@ -91,6 +103,8 @@ namespace FWK::Graphics
         {
             std::vector<ModelBoneMotionTrack> m_boneMotionTrackList = {};
 
+            std::vector<Struct::ModelMorphWeightTrack> m_morphWeightTrackList = {};
+
             std::wstring m_motionName = {};
 
             float m_durationSecond = Constant::k_initialAnimationDurationSecond;
@@ -114,6 +128,10 @@ namespace FWK::Graphics
             std::vector<ModelBone> m_boneList = {};
 
             std::vector<ModelMotionSequence> m_motionSequenceList = {};
+
+            // モーフのチャンネル名の一覧(同じ名前のターゲットをモデル全体で1つにまとめた物、番号 = チャンネル番号)
+            // ※ 読み込んだ後に作り、バイナリーファイルには保存しない
+            std::vector<std::wstring> m_morphChannelNameList = {};
         };
 
     public:
@@ -129,11 +147,20 @@ namespace FWK::Graphics
         // 初めて使われるときに作成し、このモデルを使う全ての描画で共有する
         void SetBakedSkinning(const std::shared_ptr<SkeletalAnimationBakedSkinning>& a_set) { m_bakedSkinning = a_set; }
 
+        void SetMorphSetting(SkeletalAnimationModelMorphSetting&& a_set) { m_morphSetting = std::move(a_set); }
+
+        // 名前が一致するモーフのチャンネル番号を探す(無い場合はConstant::k_invalidModelMorphTargetIndex)
+        std::uint32_t FindVALMorphChannelIndex(const std::wstring& a_channelName) const;
+
         const auto& GetREFModelData() const { return m_modelData; }
 
         const auto& GetREFBakedSkinning() const { return m_bakedSkinning; }
 
+        const auto& GetREFMorphSetting() const { return m_morphSetting; }
+
         auto& GetMutableREFModelData() { return m_modelData; }
+
+        auto& GetMutableREFMorphSetting() { return m_morphSetting; }
 
         static constexpr std::uint32_t k_invalidBoneIndex    = std::numeric_limits<std::uint32_t>::max();
         static constexpr std::uint32_t k_invalidPaletteIndex = std::numeric_limits<std::uint32_t>::max();
@@ -141,6 +168,8 @@ namespace FWK::Graphics
     private:
 
         ModelData m_modelData = {};
+
+        SkeletalAnimationModelMorphSetting m_morphSetting = {};
 
         std::shared_ptr<SkeletalAnimationBakedSkinning> m_bakedSkinning = nullptr;
     };

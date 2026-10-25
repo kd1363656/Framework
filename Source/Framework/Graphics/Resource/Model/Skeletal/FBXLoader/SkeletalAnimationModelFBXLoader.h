@@ -64,5 +64,6 @@ namespace FWK::Graphics
 
         SkeletalAnimationModelFBXSkeletonExtractor m_skeletonExtractor = {};
         SkeletalAnimationModelFBXMotionExtractor   m_motionExtractor   = {};
+        SkeletalAnimationModelFBXMorphExtractor    m_morphExtractor    = {};
     };
 }

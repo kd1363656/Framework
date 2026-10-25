@@ -25,6 +25,8 @@ namespace FWK::Graphics
             auto& l_primitiveIndexBuffer    = a_modelMeshRuntimeData.m_primitiveIndexBuffer;
             auto& l_meshletBoundsBuffer     = a_modelMeshRuntimeData.m_meshletBoundsBuffer;
 
+            auto& l_lodCoveredLayerCountBuffer = a_modelMeshRuntimeData.m_lodCoveredLayerCountBuffer;
+
             // 頂点バッファーストラクチャードバッファーの作成
             FWK_ASSERT_RETURN_VALUE_IF(!l_vertexBuffer.Create(a_modelMesh.m_modelVertexList,
                                                               a_device,
@@ -70,6 +72,15 @@ namespace FWK::Graphics
                                                                      a_cbvSRVUAVDescriptorPool),
                                                                      "MeshletBoundsBuffer用StructuredBufferの作成に失敗しました。",
                                                                      false);
+
+            // 頂点ごとの覆われている層の数のストラクチャードバッファーの作成(LODで覆われている頂点を沈めるために、メッシュシェーダーが読む)
+            FWK_ASSERT_RETURN_VALUE_IF(!l_lodCoveredLayerCountBuffer.Create(l_modelMeshletData.m_lodCoveredLayerCountList,
+                                                                            a_device,
+                                                                            a_gpuMemoryAllocator,
+                                                                            a_bufferUploadCommandList,
+                                                                            a_cbvSRVUAVDescriptorPool),
+                                                                            "LODCoveredLayerCountBuffer用StructuredBufferの作成に失敗しました。",
+                                                                            false);
 
             return true;
         }

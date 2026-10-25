@@ -37,8 +37,15 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
     l_skeletalAnimationModelRecord->SetStorageID     (l_allocateStorageID);
     l_skeletalAnimationModelRecord->SetReferenceCount(Constant::k_initialAssetReferenceCount);
 
-    // 有効な.skeletalModelを読み込めなかった場合はFBXから作成する
-    if (!m_binaryConverter.LoadAsset(a_filePath, *l_skeletalAnimationModelRecord))
+    // エディターで編集するモーフの設定(.morph)を読み込む(無い場合は空のまま)
+    SkeletalAnimationModelMorphSetting l_morphSetting = {};
+
+    const bool l_hasMorphSettingFile = l_morphSetting.LoadBinaryData(a_filePath);
+
+    // 有効な.skeletalModelを読み込めなかった場合、
+    // 又は.skeletalModelを作ったときのLOD保護が今の設定と違う場合はFBXから作成する
+    if (!m_binaryConverter.LoadAsset(a_filePath, *l_skeletalAnimationModelRecord) ||
+        !IsMorphLODProtectionApplied(*l_skeletalAnimationModelRecord, l_morphSetting))
     {
         if (!m_loader.LoadSkeletalAnimationModelFile(a_filePath, *l_skeletalAnimationModelRecord))
         {
@@ -47,13 +54,27 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
             FWK_ASSERT_RETURN_VALUE("SkeletalAnimationModelのFBX読み込みに失敗しました。", l_skeletalAnimationModelLoadResult);
         }
 
-        if (!BuildSkeletalAnimationModelAssetData(a_filePath, *l_skeletalAnimationModelRecord))
+        if (!BuildSkeletalAnimationModelAssetData(a_filePath, l_morphSetting, *l_skeletalAnimationModelRecord))
         {
             m_modelStorage.ReleaseStorageID(l_allocateStorageID);
 
             FWK_ASSERT_RETURN_VALUE("SkeletalAnimationModelのAssetData構築に失敗しました。", l_skeletalAnimationModelLoadResult);
         }
     }
+
+    // まだ設定が無いターゲットの設定を既定値で追加し、.morphファイルが無い、又は追加した場合は保存する
+    // (エディターで編集できるように、モーフを持つモデルには必ず.morphファイルを用意する)
+    if (UpdateMorphSetting(*l_skeletalAnimationModelRecord, l_morphSetting) ||
+        (!l_hasMorphSettingFile && !l_morphSetting.GetREFTargetSettingList().empty()))
+    {
+        FWK_ASSERT_RETURN_VALUE_IF(!l_morphSetting.SaveBinaryData(a_filePath), "モーフの設定(.morph)の保存に失敗しました。", l_skeletalAnimationModelLoadResult);
+    }
+
+    l_skeletalAnimationModelRecord->SetMorphSetting(std::move(l_morphSetting));
+
+    // モーフのチャンネル(同じ名前のターゲットをモデル全体で1つにまとめた物)を決める
+    // バイナリーファイルには保存しないため、FBXから作った場合もバイナリーファイルから読んだ場合も、GPUへ送る前にここで作る
+    m_morphBuilder.BuildModelRecordMorphChannel(*l_skeletalAnimationModelRecord);
 
     // TextureとGPUBuffer用UploadCommandを作成する
     FWK_ASSERT_RETURN_VALUE_IF(!BuildSkeletalAnimationModelRuntimeData(l_skeletalAnimationModelRecord,
@@ -104,10 +125,21 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::SubtractSkeletalAnimationModel
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelAssetData(const std::filesystem::path& a_filePath, SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord)
+bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelAssetData(const std::filesystem::path& a_filePath, const SkeletalAnimationModelMorphSetting& a_morphSetting, SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord)
 {
     // 頂点とインデックスをGPUで扱いやすい配置へ最適化する
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshOptimizer.OptimizeModelRecord(a_skeletalAnimationModelRecord), "SkeletalAnimationModelMeshの最適化に失敗しました。", false);
+
+    // FBX内の頂点番号ごとの移動量を、並び替えた後の頂点ごとの移動量へ変換する
+    FWK_ASSERT_RETURN_VALUE_IF(!m_morphBuilder.BuildModelRecordMorphData(a_skeletalAnimationModelRecord), "SkeletalAnimationModelのモーフのデータ作成に失敗しました。", false);
+
+    // LODを作る前に、エディターで設定したLOD保護を各ターゲットへ写す
+    auto& l_modelData = a_skeletalAnimationModelRecord.GetMutableREFModelData();
+
+    for (auto& l_modelMesh : l_modelData.m_modelMeshList)
+    {
+        a_morphSetting.ApplyLODProtection(l_modelMesh.m_modelMorphData.m_targetList);
+    }
 
     // 最適化済みの頂点とインデックスからMeshletDataを作成する
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshletBuilder.BuildModelRecordMeshletData(a_skeletalAnimationModelRecord), "SkeletalAnimationModelMeshletDataの作成に失敗しました。", false);
@@ -173,6 +205,30 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::CreateSkeletalAnimationModelBa
                                                                                                          false);
 
     return true;
+}
+
+bool FWK::Graphics::SkeletalAnimationModelSystem::UpdateMorphSetting(const SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord, SkeletalAnimationModelMorphSetting& a_morphSetting) const
+{
+    const auto& l_modelData = a_skeletalAnimationModelRecord.GetREFModelData();
+
+    bool l_isAdded = false;
+
+    for (const auto& l_modelMesh : l_modelData.m_modelMeshList)
+    {
+        l_isAdded = a_morphSetting.AddMissingTargetSetting(l_modelMesh.m_modelMorphData.m_targetList) || l_isAdded;
+    }
+
+    return l_isAdded;
+}
+
+bool FWK::Graphics::SkeletalAnimationModelSystem::IsMorphLODProtectionApplied(const SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord, const SkeletalAnimationModelMorphSetting& a_morphSetting) const
+{
+    const auto& l_modelData = a_skeletalAnimationModelRecord.GetREFModelData();
+
+    return std::ranges::all_of(l_modelData.m_modelMeshList, [&a_morphSetting](const SkeletalAnimationModelRecord::ModelMesh& a_modelMesh)
+    {
+        return a_morphSetting.IsLODProtectionApplied(a_modelMesh.m_modelMorphData.m_targetList);
+    });
 }
 
 bool FWK::Graphics::SkeletalAnimationModelSystem::TryResolveCachedSkeletalAnimationModelResult(const std::filesystem::path& a_filePath, Struct::SkeletalAnimationModelLoadResult& a_skeletalAnimationModelLoadResult)

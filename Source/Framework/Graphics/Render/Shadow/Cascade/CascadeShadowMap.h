@@ -6,8 +6,6 @@ namespace FWK::Graphics
     {
     private:
 
-        static constexpr float k_initialSplitDepth = 0.0F;
-
         struct CascadeData final
         {
             Struct::CBModelCascadeShadowPass m_cbModelCascadeShadowPass = {};
@@ -114,6 +112,7 @@ namespace FWK::Graphics
 
         static constexpr float k_invalidClipDistance = 0.0F;
         static constexpr float k_initialSplitRatio   = 0.0F;
+        static constexpr float k_initialSplitDepth   = 0.0F;
         static constexpr float k_minSampleDepthBias  = 0.0F;
 
         static constexpr float k_lightViewDistanceScale = 2.0F;

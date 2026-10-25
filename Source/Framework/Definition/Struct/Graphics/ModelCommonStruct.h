@@ -69,6 +69,12 @@ namespace FWK::Struct
         // 元の形からどれだけ形が崩れたか(モデルのローカル座標での距離)
         // 描画時にこの値を画面上のピクセル数へ換算し、1ピクセル程度以下ならこのLODを使う
         float m_simplifyError = Constant::k_initialMeshLODSimplifyError;
+
+        // モーフ(ブレンドシェイプ)のターゲット1つをウェイト1で効かせたときに、このLODで起きる崩れ(モデルのローカル座標での距離)
+        // モーフの崩れはウェイトに比例するため、描画時は「m_simplifyError + m_morphError × モーフのウェイト」でLODを選ぶ
+        // (モーフを持たないMeshは0)
+        // ※ GPUへそのまま送るため、HLSL側(ModelGPUDriven.hlsliのModelGPUDrivenMeshLOD)と同じ並びにする
+        float m_morphError = Constant::k_initialMeshLODMorphError;
     };
 
     // 1つのModelMeshが持つMeshlet関連データ一式
@@ -92,9 +98,20 @@ namespace FWK::Struct
         // LOD一覧(m_lodList[0]が元の形、番号が大きいほど三角形が少ない)
         std::vector<ModelMeshLOD> m_lodList = {};
 
+        // 頂点ごとの「外側に重なっている別のMeshの数」(ModelLODLayerDetectorが自動で求める。要素数は頂点数、上限はConstant::k_maxLODCoveredLayerCount)
+        // LODを描くときに、覆われている頂点だけを「この数 × LODの許容誤差」だけカメラから見て奥へ押し出し、
+        // 重なっている服と肌などが簡略化で前後に入れ替わって透けるのを防ぐ(視線の上で動かすので、形や輪郭は変わらない)
+        // ※ バイナリーファイルに保存するため、変えた場合はモデルのAssetVersionを上げる
+        std::vector<std::uint32_t> m_lodCoveredLayerCountList = {};
+
         TypeAlias::Math::Vector3 m_boundsCenter = {};
 
         float m_boundsRadius = Constant::k_initialMeshletDataBoundsRadius;
+
+        // LODで表面が実際にずれた量 ÷ meshoptimizerが求めた誤差(LODの選び方で使う誤差)の、モデル全体での最大値(1～4)
+        // meshoptimizerの誤差は実際のずれより小さく出ることがあるため、覆われている頂点を奥へ押し出す距離に掛けて足りなくならないようにする
+        // ※ バイナリーファイルに保存するため、変えた場合はモデルのAssetVersionを上げる
+        float m_lodSurfaceDeviationScale = Constant::k_initialLODSurfaceDeviationScale;
     };
 
     struct ModelMeshRuntimeDataBase
@@ -117,5 +134,7 @@ namespace FWK::Struct
         Graphics::StaticStructuredBuffer m_primitiveIndexBuffer = {};
 
         Graphics::StaticStructuredBuffer m_meshletBoundsBuffer = {};
+
+        Graphics::StaticStructuredBuffer m_lodCoveredLayerCountBuffer = {};
     };
 }

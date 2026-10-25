@@ -17,12 +17,38 @@ static const float k_gpuSkinningMINBoneWeight         = 0.0F;
 static const float k_gpuSkinningPositionElementW      = 1.0F;
 static const float k_gpuSkinningDirectionElementW     = 0.0F;
 
+// C++側のDescriptorHeap::k_invalidDescriptorIndexと同じ値(無効なDescriptorの番号)
+static const uint k_gpuSkinningInvalidDescriptorIndex = 0xFFFFFFFFU;
+
+// halfを2つ詰めたuintから、1つ目(下位16bit)と2つ目(上位16bit)を取り出すための値
+static const uint k_gpuSkinningLowerHalfMask      = 0xFFFFU;
+static const uint k_gpuSkinningUpperHalfShiftBits = 16U;
+
+static const float k_gpuSkinningEmptyMorphWeight = 0.0F;
+
 // ベイクしたスキニング行列1つ分
 // StructuredBufferの行列は、そのままだと列優先(column_major)として読まれるため、
 // C++のMatrix(行優先)と同じ並びとして読めるようにrow_majorを指定した構造体で包む
 struct GPUSkinningMatrixElement
 {
     row_major float4x4 skinningMatrix;
+};
+
+// 頂点1つの、モーフの移動量の範囲(C++のStruct::ModelMorphVertexRangeと同じ並び)
+struct GPUSkinningMorphVertexRange
+{
+    uint deltaOffset;
+    uint deltaCount;
+};
+
+// 頂点1つが受けるモーフのチャンネル1つ分の移動量(C++のStruct::SBModelMorphVertexDeltaと同じ並び)
+// 読む量を減らすため、移動量はhalf(16bitの浮動小数点数)を2つずつuintへ詰めている
+struct GPUSkinningMorphVertexDelta
+{
+    uint deltaPositionXY;
+    uint deltaPositionZNormalX;
+    uint deltaNormalYZ;
+    uint channelIndex;
 };
 
 // スキニング後の頂点
@@ -44,6 +70,59 @@ float3 NormalizeGPUSkinnedDirection(const float3 a_direction, const float3 a_fal
     return a_direction * rsqrt(l_lengthSquared);
 }
 
+// halfを2つ詰めたuintから、1つ目(下位16bit)を取り出してfloatにする
+// f16tof32 : uintの下位16bitをhalfとして読み、floatへ変換するHLSLの関数
+float UnpackGPUSkinningLowerHalf(const uint a_packedHalf2)
+{
+    return f16tof32(a_packedHalf2 & k_gpuSkinningLowerHalfMask);
+}
+
+// halfを2つ詰めたuintから、2つ目(上位16bit)を取り出してfloatにする
+float UnpackGPUSkinningUpperHalf(const uint a_packedHalf2)
+{
+    return f16tof32(a_packedHalf2 >> k_gpuSkinningUpperHalfShiftBits);
+}
+
+// 頂点にモーフを足す(元の位置 + 移動量 × ウェイト を、効いている全てのチャンネルについて合計する)
+// モーフを持たないMeshや、ウェイトが無い場合は何もしない
+// ※ スキニングはモーフした後の形に対して行う(表情を付けた顔が、首の動きに合わせて動く)
+void ApplyGPUSkinningMorph(const uint a_vertexIndex, inout float3 a_position, inout float3 a_normal)
+{
+    if (g_morphDeltaBufferSRVDescriptorIndex  == k_gpuSkinningInvalidDescriptorIndex ||
+        g_morphWeightBufferSRVDescriptorIndex == k_gpuSkinningInvalidDescriptorIndex)
+    {
+        return;
+    }
+
+    StructuredBuffer<GPUSkinningMorphVertexRange> l_morphVertexRangeBuffer = ResourceDescriptorHeap[g_morphVertexRangeBufferSRVDescriptorIndex];
+    StructuredBuffer<GPUSkinningMorphVertexDelta> l_morphDeltaBuffer       = ResourceDescriptorHeap[g_morphDeltaBufferSRVDescriptorIndex];
+    StructuredBuffer<float>                       l_morphWeightBuffer      = ResourceDescriptorHeap[g_morphWeightBufferSRVDescriptorIndex];
+
+    // この頂点の移動量が、移動量リストの何番目から何個あるか(影響を受けない頂点は0個)
+    const GPUSkinningMorphVertexRange l_morphVertexRange = l_morphVertexRangeBuffer[a_vertexIndex];
+
+    for (uint l_deltaIndex = l_morphVertexRange.deltaOffset; l_deltaIndex < l_morphVertexRange.deltaOffset + l_morphVertexRange.deltaCount; ++l_deltaIndex)
+    {
+        const GPUSkinningMorphVertexDelta l_morphDelta = l_morphDeltaBuffer[l_deltaIndex];
+
+        const float l_morphWeight = l_morphWeightBuffer[g_morphWeightOffset + l_morphDelta.channelIndex];
+
+        // ウェイトが0のチャンネルは形を変えないので読み飛ばす(表情を付けていないときは、ほぼ全て読み飛ばされる)
+        if (l_morphWeight == k_gpuSkinningEmptyMorphWeight) { continue; }
+
+        const float3 l_deltaPosition = float3(UnpackGPUSkinningLowerHalf(l_morphDelta.deltaPositionXY),
+                                              UnpackGPUSkinningUpperHalf(l_morphDelta.deltaPositionXY),
+                                              UnpackGPUSkinningLowerHalf(l_morphDelta.deltaPositionZNormalX));
+
+        const float3 l_deltaNormal = float3(UnpackGPUSkinningUpperHalf(l_morphDelta.deltaPositionZNormalX),
+                                            UnpackGPUSkinningLowerHalf(l_morphDelta.deltaNormalYZ),
+                                            UnpackGPUSkinningUpperHalf(l_morphDelta.deltaNormalYZ));
+
+        a_position += l_deltaPosition * l_morphWeight;
+        a_normal   += l_deltaNormal   * l_morphWeight;
+    }
+}
+
 // 頂点番号の頂点を読み、最大4本のボーンの影響を重み付きで合計して変形する
 // (従来のComputeShader(SkeletalAnimationVertexSkinning_CS.hlsl)と同じ計算)
 GPUSkinnedVertex LoadGPUSkinnedVertex(const uint a_vertexIndex)
@@ -51,7 +130,16 @@ GPUSkinnedVertex LoadGPUSkinnedVertex(const uint a_vertexIndex)
     StructuredBuffer<SkeletalAnimationModelVertex> l_vertexBuffer         = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
     StructuredBuffer<GPUSkinningMatrixElement>     l_skinningMatrixBuffer = ResourceDescriptorHeap[g_skinningMatrixBufferSRVDescriptorIndex];
 
-    const SkeletalAnimationModelVertex l_sourceVertex = l_vertexBuffer[a_vertexIndex];
+    SkeletalAnimationModelVertex l_sourceVertex = l_vertexBuffer[a_vertexIndex];
+
+    // スキニングの前にモーフを足す
+    // 法線が変わると接線と直角でなくなるため、接線から法線の向きの成分を取り除いて直角に戻す(グラム・シュミットの直交化)
+    const float3 l_originalNormal = l_sourceVertex.normal;
+
+    ApplyGPUSkinningMorph(a_vertexIndex, l_sourceVertex.position, l_sourceVertex.normal);
+
+    l_sourceVertex.normal      = NormalizeGPUSkinnedDirection(l_sourceVertex.normal, l_originalNormal);
+    l_sourceVertex.tangent.xyz = NormalizeGPUSkinnedDirection(l_sourceVertex.tangent.xyz - l_sourceVertex.normal * dot(l_sourceVertex.normal, l_sourceVertex.tangent.xyz), l_sourceVertex.tangent.xyz);
 
     const uint4 l_bonePaletteIndexList = uint4(l_sourceVertex.bonePaletteIndexZero,
                                                l_sourceVertex.bonePaletteIndexOne,

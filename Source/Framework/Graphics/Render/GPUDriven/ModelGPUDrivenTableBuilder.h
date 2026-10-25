@@ -61,6 +61,10 @@ namespace FWK::Graphics
         // 追加したインスタンスを、同じモデルが連続して並ぶように1本の表へまとめて返す
         const Struct::ModelGPUDrivenFrameTable& Build();
 
+        // インスタンスごとに上書きするモーフのウェイト(チャンネル数分)を表へ追加し、表の中での開始位置を返す
+        // 表に入りきらない場合は無効値を返す(そのインスタンスはベイクしたウェイトを使う)
+        std::uint32_t AddMorphWeightList(const std::vector<float>& a_morphWeightList);
+
         // ワールド行列から、インスタンスの共通部分(行列、拡大率、裏返り)を作る
         Struct::SBModelGPUDrivenInstance CreateInstance(const TypeAlias::Math::Matrix& a_worldMatrix, const TypeAlias::Math::Matrix& a_worldInverseTransposeMatrix) const;
 
@@ -68,6 +72,33 @@ namespace FWK::Graphics
         void SetTargetMaterialStaticTypeID(const TypeAlias::StaticTypeID a_set) { m_targetMaterialStaticTypeID = a_set; }
 
     private:
+
+        template <typename ModelMeshType>
+        void SetModelMeshMorphInfo(const ModelMeshType& a_modelMesh, const Struct::ModelGPUDrivenSkinningInfo* a_skinningInfo, Struct::SBModelGPUDrivenMeshInfo& a_meshInfo) const
+        {
+            // モーフのデータを持たないModelMesh(StaticModelなど)では何もしない(SRVの番号は無効値のまま)
+            if constexpr (Concept::IsModelMorphMeshConcept<ModelMeshType>)
+            {
+                const auto& l_modelMorphData       = a_modelMesh.m_modelMorphData;
+                const auto& l_modelMeshRuntimeData = a_modelMesh.m_modelMeshRuntimeData;
+
+                // モーフを持たないMesh、又はウェイトをベイクしていない(スキニングしない)場合はモーフを行わない
+                if (l_modelMorphData.m_targetList.empty() ||
+                    !a_skinningInfo)
+                {
+                    return;
+                }
+
+                a_meshInfo.m_morphVertexRangeBufferSRVDescriptorIndex = l_modelMeshRuntimeData.m_morphVertexRangeBuffer.GetVALSRVDescriptorIndex();
+                a_meshInfo.m_morphDeltaBufferSRVDescriptorIndex       = l_modelMeshRuntimeData.m_morphDeltaBuffer.GetVALSRVDescriptorIndex      ();
+                a_meshInfo.m_morphChannelListBufferSRVDescriptorIndex = l_modelMeshRuntimeData.m_morphChannelListBuffer.GetVALSRVDescriptorIndex();
+                a_meshInfo.m_morphChannelListCount                    = static_cast<std::uint32_t>(l_modelMorphData.m_targetChannelIndexList.size());
+                a_meshInfo.m_morphWeightBufferSRVDescriptorIndex      = a_skinningInfo->m_morphWeightBufferSRVDescriptorIndex;
+                a_meshInfo.m_morphWeightStride                        = a_skinningInfo->m_morphChannelCount;
+
+                a_meshInfo.m_morphLODTargetErrorBufferSRVDescriptorIndex = l_modelMeshRuntimeData.m_morphLODTargetErrorBuffer.GetVALSRVDescriptorIndex();
+            }
+        }
 
         template <typename ModelRecordType>
         void AppendModelMeshInfo(const ModelRecordType& a_modelRecord, const Struct::ModelGPUDrivenSkinningInfo* a_skinningInfo, Struct::ModelGPUDrivenBatch& a_modelBatch)
@@ -97,6 +128,10 @@ namespace FWK::Graphics
 
                 l_meshInfo.m_boundsCenter = l_modelMeshletData.m_boundsCenter;
                 l_meshInfo.m_boundsRadius = l_modelMeshletData.m_boundsRadius;
+
+                // LODで覆われている頂点を沈めるための、ずれの倍率と、頂点ごとの覆われている層の数
+                l_meshInfo.m_lodSurfaceDeviationScale                     = l_modelMeshletData.m_lodSurfaceDeviationScale;
+                l_meshInfo.m_lodCoveredLayerCountBufferSRVDescriptorIndex = l_modelMeshRuntimeData.m_lodCoveredLayerCountBuffer.GetVALSRVDescriptorIndex();
 
                 // Materialの種類を知らなくても、GPUDataBufferの番号を渡すだけでシェーダー側が自身の型として読む
                 l_meshInfo.m_materialBufferSRVDescriptorIndex = l_material->GetVALGPUDataBufferSRVDescriptorIndex();
@@ -130,6 +165,9 @@ namespace FWK::Graphics
                     l_meshInfo.m_skinningPaletteStride                  = a_skinningInfo->m_paletteStride;
                     l_meshInfo.m_skinningFrameCount                     = a_skinningInfo->m_frameCount;
                 }
+
+                // モーフを持つMeshの場合は、モーフ用Bufferの場所とベイクしたウェイトの場所を設定する
+                SetModelMeshMorphInfo(l_modelMesh, a_skinningInfo, l_meshInfo);
 
                 l_meshInfoList.emplace_back(l_meshInfo);
             }

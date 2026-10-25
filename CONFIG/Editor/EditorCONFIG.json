@@ -31,15 +31,15 @@
                         "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset",
+                "CurrentSelectFolderPath": "Asset\\Data\\Prefab\\Player",
                 "EditorWindowPaneSplitter": {
-                    "PrimaryPaneSize": 100.0
+                    "PrimaryPaneSize": 491.0
                 },
                 "FolderPane": {
                     "FolderOpenStateMap": [
                         {
                             "FilePath": "Asset",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Font\\Icon\\FontAwesome",
@@ -51,7 +51,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Font",
@@ -67,7 +67,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Scene\\Title",
@@ -87,10 +87,10 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset",
+                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Player",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset"
+                                "SelectedFilePath": "Asset\\Data\\Prefab\\Player"
                             }
                         ]
                     }

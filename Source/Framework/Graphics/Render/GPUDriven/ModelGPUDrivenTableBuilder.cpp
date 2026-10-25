@@ -7,6 +7,8 @@ void FWK::Graphics::ModelGPUDrivenTableBuilder::Clear()
     m_frameTable.m_meshInfoList.clear();
     m_frameTable.m_lodList.clear     ();
 
+    m_frameTable.m_morphWeightList.clear();
+
     m_frameTable.m_totalPairCount = Constant::k_initialGPUDrivenFrameTableTotalPairCount;
 
     m_modelBatchIndexMap.clear();
@@ -41,6 +43,20 @@ const FWK::Struct::ModelGPUDrivenFrameTable& FWK::Graphics::ModelGPUDrivenTableB
     }
 
     return m_frameTable;
+}
+
+std::uint32_t FWK::Graphics::ModelGPUDrivenTableBuilder::AddMorphWeightList(const std::vector<float>& a_morphWeightList)
+{
+    auto& l_morphWeightList = m_frameTable.m_morphWeightList;
+
+    // 表に入りきらない場合は追加しない
+    if (l_morphWeightList.size() + a_morphWeightList.size() > Constant::k_modelGPUDrivenMaxMorphWeightCount) { return Constant::k_invalidGPUDrivenMorphWeightOffset; }
+
+    const auto l_morphWeightOffset = static_cast<std::uint32_t>(l_morphWeightList.size());
+
+    l_morphWeightList.insert(l_morphWeightList.end(), a_morphWeightList.begin(), a_morphWeightList.end());
+
+    return l_morphWeightOffset;
 }
 
 FWK::Struct::SBModelGPUDrivenInstance FWK::Graphics::ModelGPUDrivenTableBuilder::CreateInstance(const TypeAlias::Math::Matrix& a_worldMatrix, const TypeAlias::Math::Matrix& a_worldInverseTransposeMatrix) const

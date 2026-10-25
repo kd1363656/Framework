@@ -538,6 +538,8 @@ void FWK::Scene::SetupPerformanceTestSkeletalModel()
 
     l_frameProfiler.AddReportNote(std::format("SkeletalBoneCount        : {}", l_modelData.m_boneList.size()));
     l_frameProfiler.AddReportNote(std::format("SkeletalMotionCount      : {}", l_modelData.m_motionSequenceList.size()));
+
+    AddPerformanceTestMorphReportNote(*l_skeletalAnimationModelRecord);
 }
 
 void FWK::Scene::SetupPerformanceTestCamera(const PerformanceTestLayout& a_layout)
@@ -562,7 +564,7 @@ void FWK::Scene::SetupPerformanceTestCamera(const PerformanceTestLayout& a_layou
     // 戻り値は「ワールド座標 → カメラから見た座標」へ変換するビュー行列なので、
     // 逆行列にしてカメラ自身の姿勢と位置を表す行列にする
     const TypeAlias::Math::Matrix l_viewMatrix   = DirectX::XMMatrixLookAtLH(l_cameraPosition, l_cameraLookAtPosition, TypeAlias::Math::Vector3::Up);
-    const TypeAlias::Math::Matrix l_cameraMatrix = l_viewMatrix.Invert();
+    const auto&                   l_cameraMatrix = l_viewMatrix.Invert();
 
     // 一番遠いモデル(奥の角)まで映るようにFarClipを決める
     const TypeAlias::Math::Vector3 l_farthestPosition =
@@ -618,6 +620,72 @@ void FWK::Scene::AddPerformanceTestReportNote(const PerformanceTestLayout& a_lay
     for (std::size_t l_lodIndex = 0ULL; l_lodIndex < a_layout.m_lodTriangleCountList.size(); ++l_lodIndex)
     {
         l_frameProfiler.AddReportNote(std::format("ModelTriangleCount LOD{}   : {}", l_lodIndex, a_layout.m_lodTriangleCountList[l_lodIndex]));
+    }
+
+    l_frameProfiler.AddReportNote(std::format("LODCoveredVertexCount    : {}",     a_layout.m_lodCoveredVertexCount));
+    l_frameProfiler.AddReportNote(std::format("LODSurfaceDeviationScale : {:.3f}", a_layout.m_lodSurfaceDeviationScale));
+}
+void FWK::Scene::AddPerformanceTestMorphReportNote(const Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord) const
+{
+    const auto& l_modelData    = a_skeletalAnimationModelRecord.GetREFModelData   ();
+    const auto& l_morphSetting = a_skeletalAnimationModelRecord.GetREFMorphSetting();
+
+    std::size_t l_morphMeshCount          = 0ULL;
+    std::size_t l_morphTargetCount        = 0ULL;
+    std::size_t l_maxMeshMorphTargetCount = 0ULL;
+    std::size_t l_morphVertexDeltaCount   = 0ULL;
+    std::size_t l_morphWeightTrackCount   = 0ULL;
+
+    for (const auto& l_modelMesh : l_modelData.m_modelMeshList)
+    {
+        const auto& l_modelMorphData = l_modelMesh.m_modelMorphData;
+
+        if (l_modelMorphData.m_targetList.empty()) { continue; }
+
+        ++l_morphMeshCount;
+
+        l_morphTargetCount       += l_modelMorphData.m_targetList.size     ();
+        l_morphVertexDeltaCount  += l_modelMorphData.m_vertexDeltaList.size();
+        l_maxMeshMorphTargetCount = std::max(l_maxMeshMorphTargetCount, l_modelMorphData.m_targetList.size());
+    }
+
+    for (const auto& l_modelMotionSequence : l_modelData.m_motionSequenceList)
+    {
+        l_morphWeightTrackCount += l_modelMotionSequence.m_morphWeightTrackList.size();
+    }
+
+          auto& l_graphicsManager   = Graphics::GraphicsManager::GetInstance  ();
+          auto& l_renderer          = l_graphicsManager.GetMutableREFRenderer ();
+          auto& l_frameProfiler     = l_renderer.GetMutableREFFrameProfiler   ();
+    const auto& l_targetSettingList = l_morphSetting.GetREFTargetSettingList();
+
+    l_frameProfiler.AddReportNote(std::format("MorphMeshCount           : {}", l_morphMeshCount));
+    l_frameProfiler.AddReportNote(std::format("MorphTargetCount         : {} (MAX {} / Mesh)", l_morphTargetCount, l_maxMeshMorphTargetCount));
+    l_frameProfiler.AddReportNote(std::format("MorphTargetSettingCount  : {}", l_targetSettingList.size()));
+    l_frameProfiler.AddReportNote(std::format("MorphVertexDeltaCount    : {}", l_morphVertexDeltaCount));
+    l_frameProfiler.AddReportNote(std::format("MorphWeightTrackCount    : {}", l_morphWeightTrackCount));
+
+    // LODの段階ごとに、モーフを持つMeshの「形の崩れ」と「モーフの崩れ(ウェイト1)」の最大値を書く
+    std::vector<std::pair<float, float>> l_lodErrorList = {};
+
+    for (const auto& l_modelMesh : l_modelData.m_modelMeshList)
+    {
+        if (l_modelMesh.m_modelMorphData.m_targetList.empty()) { continue; }
+
+        const auto& l_lodList = l_modelMesh.m_modelMeshletData.m_lodList;
+
+        l_lodErrorList.resize(std::max(l_lodErrorList.size(), l_lodList.size()));
+
+        for (std::size_t l_lodIndex = 0ULL; l_lodIndex < l_lodList.size(); ++l_lodIndex)
+        {
+            l_lodErrorList[l_lodIndex].first  = std::max(l_lodErrorList[l_lodIndex].first,  l_lodList[l_lodIndex].m_simplifyError);
+            l_lodErrorList[l_lodIndex].second = std::max(l_lodErrorList[l_lodIndex].second, l_lodList[l_lodIndex].m_morphError);
+        }
+    }
+
+    for (std::size_t l_lodIndex = 0ULL; l_lodIndex < l_lodErrorList.size(); ++l_lodIndex)
+    {
+        l_frameProfiler.AddReportNote(std::format("MorphMesh LOD{} Error      : Simplify {:.4f} / Morph {:.4f}", l_lodIndex, l_lodErrorList[l_lodIndex].first, l_lodErrorList[l_lodIndex].second));
     }
 }
 

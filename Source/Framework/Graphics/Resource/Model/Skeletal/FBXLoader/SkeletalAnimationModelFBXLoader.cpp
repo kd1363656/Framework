@@ -352,6 +352,16 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
 
     l_boneIndexPaletteIndexMap.reserve(l_fbxSkinDeformer->clusters.count);
 
+    const bool l_hasMorph = m_morphExtractor.HasMorph(l_fbxMesh);
+
+    a_modelMesh.m_modelMorphData = {};
+
+    // ブレンドシェイプを持つMeshは、全ターゲットの名前と移動量を取り出しておく
+    if (l_hasMorph)
+    {
+        FWK_ASSERT_RETURN_VALUE_IF(!m_morphExtractor.ExtractModelMorphSource(l_fbxMesh, a_modelMesh.m_modelMorphData), "Material別ModelMeshのモーフの取り出しに失敗しました。", false);
+    }
+
     for (auto l_faceIndex = 0ULL; l_faceIndex < l_fbxMesh->faces.count; ++l_faceIndex)
     {
         const auto& l_fbxFace = l_fbxMesh->faces.data[l_faceIndex];
@@ -400,6 +410,13 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
                 // 現在は重複頂点を削除せずに三角形頂点をそのまま追加する
                 a_modelMesh.m_modelVertexList.emplace_back(l_modelVertex);
                 a_modelMesh.m_indexList.emplace_back      (static_cast<std::uint32_t>(a_modelMesh.m_indexList.size()));
+
+                // ブレンドシェイプの移動量は「FBX内の頂点番号」ごとに保存されているため、
+                // 頂点ごとにFBX内の頂点番号を覚えておく(後で頂点ごとの移動量へ変換するときに使う)
+                if (l_hasMorph)
+                {
+                    a_modelMesh.m_modelMorphData.m_sourceVertexIndexList.emplace_back(l_fbxMesh->vertex_indices.data[l_fbxVertexIndex]);
+                }
             }
         }
     }

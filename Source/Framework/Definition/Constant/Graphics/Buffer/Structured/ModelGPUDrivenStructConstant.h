@@ -5,12 +5,15 @@ namespace FWK::Constant
     inline constexpr float k_initialGPUDrivenInstanceWorldMaxScale = 1.0F;
 
     inline constexpr std::uint32_t k_initialGPUDrivenInstanceAnimationFrameIndex = 0U;
-    inline constexpr std::uint32_t k_initialGPUDrivenInstancePadding             = 0U;
+    inline constexpr std::uint32_t k_invalidGPUDrivenMorphWeightOffset           = std::numeric_limits<std::uint32_t>::max();
 
     inline constexpr float k_initialGPUDrivenMeshInfoBoundsRadius = 0.0F;
 
-    inline constexpr std::uint32_t k_initialGPUDrivenMeshInfoCount   = 0U;
+    inline constexpr std::uint32_t k_initialGPUDrivenMeshInfoCount = 0U;
+
     inline constexpr std::uint32_t k_initialGPUDrivenMeshInfoPadding = 0U;
+
+    inline constexpr float k_initialGPUDrivenMeshInfoLODSurfaceDeviationScale = 1.0F;
 
     inline constexpr std::uint32_t k_initialGPUDrivenSkinningInfoValue = 0U;
 

@@ -50,7 +50,7 @@ void FWK::Editor::EditorStyle::ApplyFont()
 
 void FWK::Editor::EditorStyle::ApplyStyleSize()
 {
-    ImGuiStyle& l_style = ImGui::GetStyle();
+    auto& l_style = ImGui::GetStyle();
 
     // ImGui::Begin()で作られる通常ウィンドウ内部の余白。
     // Hierarchy、Inspector、Consoleなどのパネル内の詰まり具合に影響する。
@@ -104,7 +104,7 @@ void FWK::Editor::EditorStyle::ApplyStyleSize()
 }
 void FWK::Editor::EditorStyle::ApplyStyleColor()
 {
-    ImGuiStyle& l_style = ImGui::GetStyle();
+    auto& l_style = ImGui::GetStyle();
 
     auto* const l_colorList = l_style.Colors;
 

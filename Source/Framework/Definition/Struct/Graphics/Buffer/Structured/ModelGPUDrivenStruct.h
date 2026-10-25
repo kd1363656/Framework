@@ -16,10 +16,12 @@ namespace FWK::Struct
         TypeAlias::Math::Matrix m_worldMatrix                 = TypeAlias::Math::Matrix::Identity;
         TypeAlias::Math::Matrix m_worldInverseTransposeMatrix = TypeAlias::Math::Matrix::Identity;
 
+        // m_morphWeightOffset : このインスタンスだけのモーフのウェイトが、上書き用ウェイトBufferの何番目から始まるか
+        //                       無効値なら、ベイクしたウェイト(アニメーションのコマ番号の位置)を使う
         float         m_worldMaxScale        = Constant::k_initialGPUDrivenInstanceWorldMaxScale;
         float         m_worldOrientationSign = Constant::k_normalModelWorldOrientationSign;
         std::uint32_t m_animationFrameIndex  = Constant::k_initialGPUDrivenInstanceAnimationFrameIndex;
-        std::uint32_t m_padding              = Constant::k_initialGPUDrivenInstancePadding;
+        std::uint32_t m_morphWeightOffset    = Constant::k_invalidGPUDrivenMorphWeightOffset;
     };
 
     // CPUからGPUへ送る、Mesh1つ分の情報(モデル内の全インスタンスで共通)
@@ -46,13 +48,31 @@ namespace FWK::Struct
 
         // スキニングするモデルの場合に使う値(スキニングしないモデルではm_skinningMatrixBufferSRVDescriptorIndexが無効)
         // スキニング行列の番号 = アニメーションのコマ番号 × m_skinningPaletteStride + m_skinningPaletteBase + ボーンパレット番号
-        std::uint32_t m_skinningPaletteStride = Constant::k_initialGPUDrivenMeshInfoCount;
-        std::uint32_t m_skinningFrameCount    = Constant::k_initialGPUDrivenMeshInfoCount;
-        std::uint32_t m_padding               = Constant::k_initialGPUDrivenMeshInfoPadding;
-        std::uint32_t m_padding2              = Constant::k_initialGPUDrivenMeshInfoPadding;
+        std::uint32_t              m_skinningPaletteStride                    = Constant::k_initialGPUDrivenMeshInfoCount;
+        std::uint32_t              m_skinningFrameCount                       = Constant::k_initialGPUDrivenMeshInfoCount;
+        TypeAlias::DescriptorIndex m_morphVertexRangeBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+        TypeAlias::DescriptorIndex m_morphDeltaBufferSRVDescriptorIndex       = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+
+        // モーフを持つMeshの場合に使う値(持たないMeshではm_morphDeltaBufferSRVDescriptorIndexが無効)
+        // m_morphChannelListBufferSRVDescriptorIndex : このMeshが使うチャンネル番号の一覧(m_morphChannelListCount個)
+        // m_morphWeightBufferSRVDescriptorIndex      : ベイクしたウェイト(ウェイトの番号 = コマ番号 × m_morphWeightStride + チャンネル番号)
+        TypeAlias::DescriptorIndex m_morphChannelListBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+        std::uint32_t              m_morphChannelListCount                    = Constant::k_initialGPUDrivenMeshInfoCount;
+        TypeAlias::DescriptorIndex m_morphWeightBufferSRVDescriptorIndex      = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+        std::uint32_t              m_morphWeightStride                        = Constant::k_initialGPUDrivenMeshInfoCount;
+
+        // m_morphLODTargetErrorBufferSRVDescriptorIndex : LODごと・ターゲットごとのモーフの崩れ
+        //                                                 (番号 = LOD番号 × m_morphChannelListCount + ターゲット番号)
+        // m_lodSurfaceDeviationScale                    : LODで表面が実際にずれた量の倍率(ModelMeshletData::m_lodSurfaceDeviationScaleと同じ値)
+        // m_lodCoveredLayerCountBufferSRVDescriptorIndex : 頂点ごとの覆われている層の数のBuffer
+        // m_padding2 : HLSL側と大きさを16byte単位で揃えるための詰め物
+        TypeAlias::DescriptorIndex m_morphLODTargetErrorBufferSRVDescriptorIndex  = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+        float                      m_lodSurfaceDeviationScale                     = Constant::k_initialGPUDrivenMeshInfoLODSurfaceDeviationScale;
+        TypeAlias::DescriptorIndex m_lodCoveredLayerCountBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+        std::uint32_t              m_padding2                                     = Constant::k_initialGPUDrivenMeshInfoPadding;
     };
 
-    static_assert(sizeof(SBModelGPUDrivenMeshInfo) == 80ULL, "SBModelGPUDrivenMeshInfoのサイズがHLSL側と一致しません。");
+    static_assert(sizeof(SBModelGPUDrivenMeshInfo) == 112ULL, "SBModelGPUDrivenMeshInfoのサイズがHLSL側と一致しません。");
 
     // スキニングするモデルの、Meshごとの追加情報(ModelGPUDrivenTableBuilderへ渡す)
     struct ModelGPUDrivenSkinningInfo final
@@ -62,9 +82,11 @@ namespace FWK::Struct
         std::vector<float> m_boundsRadiusList = {};
 
         TypeAlias::DescriptorIndex m_skinningMatrixBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+        TypeAlias::DescriptorIndex m_morphWeightBufferSRVDescriptorIndex    = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 
-        std::uint32_t m_paletteStride = Constant::k_initialGPUDrivenSkinningInfoValue;
-        std::uint32_t m_frameCount    = Constant::k_initialGPUDrivenSkinningInfoValue;
+        std::uint32_t m_paletteStride     = Constant::k_initialGPUDrivenSkinningInfoValue;
+        std::uint32_t m_frameCount        = Constant::k_initialGPUDrivenSkinningInfoValue;
+        std::uint32_t m_morphChannelCount = Constant::k_initialGPUDrivenSkinningInfoValue;
     };
 
     // 1種類のモデルをまとめた単位
@@ -84,6 +106,9 @@ namespace FWK::Struct
         std::vector<SBModelGPUDrivenInstance> m_instanceList = {};
         std::vector<SBModelGPUDrivenMeshInfo> m_meshInfoList = {};
         std::vector<ModelMeshLOD>             m_lodList      = {};
+
+        // インスタンスごとに上書きするモーフのウェイト(SBModelGPUDrivenInstance::m_morphWeightOffsetの位置から、チャンネル数分並ぶ)
+        std::vector<float> m_morphWeightList = {};
 
         std::size_t m_totalPairCount = Constant::k_initialGPUDrivenFrameTableTotalPairCount;
     };
@@ -152,12 +177,13 @@ namespace FWK::Struct
         TypeAlias::DescriptorIndex m_candidateBufferUAVDescriptorIndex        = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
         TypeAlias::DescriptorIndex m_candidateCounterBufferUAVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 
-        // m_isOrthographicLOD     : 影(平行投影)用のLOD選択をするか(1ならm_lodProjectionScaleは「1メートルあたりのテクセル数」)
-        // m_minProjectedSizeTexel : 影の描画で、これより小さい(テクセル数)部品は描画しない
-        std::uint32_t m_maxCandidateCount     = Constant::k_initialGPUDrivenCullingPassUIntValue;
-        std::uint32_t m_isOrthographicLOD     = Constant::k_initialGPUDrivenCullingPassUIntValue;
-        float         m_minProjectedSizeTexel = Constant::k_initialGPUDrivenCullingPassFloatValue;
-        std::uint32_t m_padding               = Constant::k_initialGPUDrivenCullingPassUIntValue;
+        // m_isOrthographicLOD                            : 影(平行投影)用のLOD選択をするか(1ならm_lodProjectionScaleは「1メートルあたりのテクセル数」)
+        // m_minProjectedSizeTexel                        : 影の描画で、これより小さい(テクセル数)部品は描画しない
+        // m_morphOverrideWeightBufferSRVDescriptorIndex : インスタンスごとに上書きするモーフのウェイトのBuffer
+        std::uint32_t              m_maxCandidateCount                           = Constant::k_initialGPUDrivenCullingPassUIntValue;
+        std::uint32_t              m_isOrthographicLOD                           = Constant::k_initialGPUDrivenCullingPassUIntValue;
+        float                      m_minProjectedSizeTexel                       = Constant::k_initialGPUDrivenCullingPassFloatValue;
+        TypeAlias::DescriptorIndex m_morphOverrideWeightBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
     };
 
     static_assert(sizeof(CBModelGPUDrivenCullingPass) == Constant::k_cbModelGPUDrivenCullingPassByteSize, "CBModelGPUDrivenCullingPassのサイズがHLSL側の定数バッファと一致しません。");

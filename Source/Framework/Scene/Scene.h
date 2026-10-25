@@ -31,6 +31,10 @@ namespace FWK
             std::size_t m_maxLODCount   = 0ULL;
 
             std::vector<std::size_t> m_lodTriangleCountList = {};
+
+            std::size_t m_lodCoveredVertexCount = 0ULL;
+
+            float m_lodSurfaceDeviationScale = 0.0F;
         };
 
     public:
@@ -99,6 +103,9 @@ namespace FWK
         void UpdatePerformanceTestCameraAspectRatio ();
         void UpdatePerformanceTestAnimationTime     ();
 
+        // 負荷テスト用モデルのモーフ(ブレンドシェイプ)の数をレポートへ書く
+        void AddPerformanceTestMorphReportNote(const Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord) const;
+
         // 並びの何番目かから、モデルを置く位置を求める
         TypeAlias::Math::Vector3 CalculatePerformanceTestPosition(const PerformanceTestLayout& a_layout, const std::size_t a_indexX, const std::size_t a_indexZ) const;
 
@@ -112,7 +119,7 @@ namespace FWK
         {
             PerformanceTestLayout l_layout = {};
 
-            TypeAlias::Math::Vector3 l_boundsMAX = TypeAlias::Math::Vector3(-std::numeric_limits<float>::max());
+            auto l_boundsMAX = TypeAlias::Math::Vector3(-std::numeric_limits<float>::max());
 
             l_layout.m_boundsMIN = TypeAlias::Math::Vector3(std::numeric_limits<float>::max());
             l_layout.m_meshCount = a_modelMeshList.size();
@@ -128,6 +135,11 @@ namespace FWK
                 l_layout.m_triangleCount += l_modelMesh.m_indexList.size() / Constant::k_triangleVertexCount;
                 l_layout.m_meshletCount  += l_modelMesh.m_modelMeshletData.m_meshletList.size();
                 l_layout.m_maxLODCount    = std::max(l_layout.m_maxLODCount, l_modelMesh.m_modelMeshletData.m_lodList.size());
+
+                // 他のMeshに覆われていて、LODを描くときに内側へ沈める頂点の数
+                l_layout.m_lodCoveredVertexCount += static_cast<std::size_t>(std::ranges::count_if(l_modelMesh.m_modelMeshletData.m_lodCoveredLayerCountList, [](const std::uint32_t a_coveredLayerCount) { return a_coveredLayerCount != 0U; }));
+
+                l_layout.m_lodSurfaceDeviationScale = l_modelMesh.m_modelMeshletData.m_lodSurfaceDeviationScale;
             }
 
             // 頂点が無い場合は、大きさ0のまま返す(呼び出し側でエラーにする)

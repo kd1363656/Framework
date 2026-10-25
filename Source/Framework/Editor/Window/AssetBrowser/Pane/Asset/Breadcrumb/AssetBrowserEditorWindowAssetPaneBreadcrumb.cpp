@@ -12,8 +12,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
     // std::filesystem::pathのイテレータは絶対パスの場合
     // ルート名(C:)の次にルートディレクトリ(/)をから文字列の要素として返す
     // proximateで"C:/.../Asset/" -> "Asset/"に変換する
-          std::error_code       l_errorCode   = {};
-    const std::filesystem::path l_displayPath = std::filesystem::proximate(l_breadcrumbPath, std::filesystem::current_path(), l_errorCode);
+          std::error_code l_errorCode   = {};
+    const auto&           l_displayPath = std::filesystem::proximate(l_breadcrumbPath, std::filesystem::current_path(), l_errorCode);
 
     // パンくずリストはUE5のパス表示と同じく入力欄と同じ暗さにする
     ImGui::PushStyleColor(ImGuiCol_ChildBg, Constant::k_imguiInputColor);

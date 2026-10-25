@@ -191,6 +191,14 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
                 return false;
             }
         }
+
+        // モーフのウェイトのアニメーションを読み込む
+        if (!TryReadModelMorphWeightTrackListBinaryData(l_modelMotionSequenceBinaryHeader.m_morphWeightTrackCount, l_modelMotionSequence.m_morphWeightTrackList, l_memoryReadOffset))
+        {
+            FailLoadAsset(l_modelData);
+
+            return false;
+        }
     }
 
     // 最後まで読み込んだ位置がHeaderのファイルサイズと一致しないなら、
@@ -277,6 +285,9 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
             // KeyFrame配列
             WriteBinaryData(l_modelBoneMotionTrackBinaryHeader.m_keyFrameCount, l_modelBoneMotionTrack.m_keyFrameList.data(), l_memoryWriteOffset);
         }
+
+        // モーフのウェイトのアニメーション
+        WriteModelMorphWeightTrackListBinaryData(l_modelMotionSequence.m_morphWeightTrackList, l_memoryWriteOffset);
     }
 
     // 計算したファイルサイズと実際に書き込んだサイズが一致するか確認する
@@ -334,7 +345,8 @@ FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelMotionSequenceBinary
     l_modelMotionSequenceBinaryHeader.m_durationSecond       = a_modelMotionSequence.m_durationSecond;
     l_modelMotionSequenceBinaryHeader.m_frameRate            = a_modelMotionSequence.m_frameRate;
     l_modelMotionSequenceBinaryHeader.m_motionNameSize       = CalculateWStringBinaryFileSize                  (a_modelMotionSequence.m_motionName);
-    l_modelMotionSequenceBinaryHeader.m_boneMotionTrackCount = a_modelMotionSequence.m_boneMotionTrackList.size();
+    l_modelMotionSequenceBinaryHeader.m_boneMotionTrackCount  = a_modelMotionSequence.m_boneMotionTrackList.size ();
+    l_modelMotionSequenceBinaryHeader.m_morphWeightTrackCount = a_modelMotionSequence.m_morphWeightTrackList.size();
 
     return l_modelMotionSequenceBinaryHeader;
 }
@@ -374,6 +386,9 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::TryReadModelMeshBina
     // 構成されたBonePaletteを読み込む。
     if (!TryReadBinaryDataList(l_bonePaletteCount, a_modelMesh.m_bonePaletteList, a_memoryReadOffset)) { return false; }
 
+    // モーフ(ブレンドシェイプ)のデータを読み込む
+    if (!TryReadModelMorphDataBinaryData(a_modelMesh.m_modelVertexList.size(), a_modelMesh.m_modelMorphData, a_memoryReadOffset)) { return false; }
+
     return IsValidModelMesh(a_modelMesh, a_boneCount);
 }
 
@@ -391,6 +406,9 @@ void FWK::Converter::SkeletalAnimationModelBinaryConverter::WriteModelMeshBinary
 
     // Mesh固有のInverseBindPose配列を書き込む
     WriteBinaryData(l_bonePaletteCount, a_modelMesh.m_bonePaletteList.data(), a_memoryWriteOffset);
+
+    // モーフ(ブレンドシェイプ)のデータを書き込む
+    WriteModelMorphDataBinaryData(a_modelMesh.m_modelMorphData, a_memoryWriteOffset);
 }
 
 std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateModelMeshBinaryFileSize(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const
@@ -403,6 +421,9 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateMo
 
     // このMeshが実際に使用するBoneだけを保持する
     l_modelMeshBinaryFileSize += CalculateBinaryDataSize<Graphics::SkeletalAnimationModelRecord::ModelBonePaletteElement>(a_modelMesh.m_bonePaletteList.size());
+
+    // モーフ(ブレンドシェイプ)のデータ
+    l_modelMeshBinaryFileSize += CalculateModelMorphDataBinaryFileSize(a_modelMesh.m_modelMorphData);
 
     return l_modelMeshBinaryFileSize;
 }
@@ -465,6 +486,9 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
             // KeyFrame配列
             l_modelAssetFileSize += CalculateBinaryDataSize<Graphics::SkeletalAnimationModelRecord::ModelKeyFrame>(l_modelBoneMotionTrack.m_keyFrameList.size());
         }
+
+        // モーフのウェイトのアニメーション
+        l_modelAssetFileSize += CalculateModelMorphWeightTrackListBinaryFileSize(l_modelMotionSequence.m_morphWeightTrackList);
     }
 
     return l_modelAssetFileSize;
@@ -497,6 +521,176 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::IsValidModelMesh(con
         if (l_modelVertex.m_bonePaletteIndexOne   >= l_bonePaletteCount) { return false; }
         if (l_modelVertex.m_bonePaletteIndexTwo   >= l_bonePaletteCount) { return false; }
         if (l_modelVertex.m_bonePaletteIndexThree >= l_bonePaletteCount) { return false; }
+    }
+
+    return IsValidModelMorphData(a_modelMesh.m_modelMorphData, a_modelMesh.m_modelVertexList.size(), a_modelMesh.m_modelMeshletData.m_lodList.size());
+}
+
+bool FWK::Converter::SkeletalAnimationModelBinaryConverter::TryReadModelMorphDataBinaryData(const std::size_t a_vertexCount, Struct::ModelMorphData& a_modelMorphData, std::uint64_t& a_memoryReadOffset) const
+{
+    a_modelMorphData = {};
+
+    ModelMorphDataBinaryHeader l_modelMorphDataBinaryHeader = {};
+
+    if (!TryReadSingleBinaryData(l_modelMorphDataBinaryHeader, a_memoryReadOffset)) { return false; }
+
+    // 移動量の範囲は「無し(モーフを持たないMesh)」か「頂点数と同じ数」のどちらか
+    if (l_modelMorphDataBinaryHeader.m_vertexRangeCount != k_emptyMorphVertexRangeCount &&
+        l_modelMorphDataBinaryHeader.m_vertexRangeCount != a_vertexCount)
+    {
+        return false;
+    }
+
+    // ターゲット一覧を読み込む(名前以外の情報 -> 名前の順)
+    a_modelMorphData.m_targetList.resize(l_modelMorphDataBinaryHeader.m_targetCount);
+
+    for (auto& l_target : a_modelMorphData.m_targetList)
+    {
+        ModelMorphTargetBinaryHeader l_modelMorphTargetBinaryHeader = {};
+
+        if (!TryReadSingleBinaryData (l_modelMorphTargetBinaryHeader, a_memoryReadOffset))                                         { return false; }
+        if (!TryReadWStringBinaryData(l_modelMorphTargetBinaryHeader.m_targetNameSize, l_target.m_targetName, a_memoryReadOffset)) { return false; }
+
+        l_target.m_lodProtection = l_modelMorphTargetBinaryHeader.m_lodProtection;
+    }
+
+    // 頂点ごとの移動量の範囲と、移動量本体は固定長structなので、まとめて読み込める
+    if (!TryReadBinaryDataList(l_modelMorphDataBinaryHeader.m_vertexRangeCount, a_modelMorphData.m_vertexRangeList, a_memoryReadOffset)) { return false; }
+    if (!TryReadBinaryDataList(l_modelMorphDataBinaryHeader.m_vertexDeltaCount, a_modelMorphData.m_vertexDeltaList, a_memoryReadOffset)) { return false; }
+
+    // LODごと・ターゲットごとのモーフの崩れ
+    if (!TryReadBinaryDataList(l_modelMorphDataBinaryHeader.m_lodTargetMorphErrorCount, a_modelMorphData.m_lodTargetMorphErrorList, a_memoryReadOffset)) { return false; }
+
+    return true;
+}
+
+void FWK::Converter::SkeletalAnimationModelBinaryConverter::WriteModelMorphDataBinaryData(const Struct::ModelMorphData& a_modelMorphData, std::uint64_t& a_memoryWriteOffset) const
+{
+    ModelMorphDataBinaryHeader l_modelMorphDataBinaryHeader = {};
+
+    l_modelMorphDataBinaryHeader.m_targetCount      = a_modelMorphData.m_targetList.size     ();
+    l_modelMorphDataBinaryHeader.m_vertexRangeCount = a_modelMorphData.m_vertexRangeList.size();
+    l_modelMorphDataBinaryHeader.m_vertexDeltaCount = a_modelMorphData.m_vertexDeltaList.size();
+
+    l_modelMorphDataBinaryHeader.m_lodTargetMorphErrorCount = a_modelMorphData.m_lodTargetMorphErrorList.size();
+
+    WriteBinaryData(k_singleBinaryElementCount, &l_modelMorphDataBinaryHeader, a_memoryWriteOffset);
+
+    // ターゲット一覧(名前以外の情報 -> 名前の順に書き込む)
+    for (const auto& l_target : a_modelMorphData.m_targetList)
+    {
+        ModelMorphTargetBinaryHeader l_modelMorphTargetBinaryHeader = {};
+
+        l_modelMorphTargetBinaryHeader.m_targetNameSize = CalculateWStringBinaryFileSize(l_target.m_targetName);
+        l_modelMorphTargetBinaryHeader.m_lodProtection  = l_target.m_lodProtection;
+
+        WriteBinaryData       (k_singleBinaryElementCount, &l_modelMorphTargetBinaryHeader, a_memoryWriteOffset);
+        WriteWStringBinaryData(l_target.m_targetName,                                       a_memoryWriteOffset);
+    }
+
+    // 頂点ごとの移動量の範囲と、移動量本体
+    WriteBinaryData(l_modelMorphDataBinaryHeader.m_vertexRangeCount, a_modelMorphData.m_vertexRangeList.data(), a_memoryWriteOffset);
+    WriteBinaryData(l_modelMorphDataBinaryHeader.m_vertexDeltaCount, a_modelMorphData.m_vertexDeltaList.data(), a_memoryWriteOffset);
+
+    // LODごと・ターゲットごとのモーフの崩れ
+    WriteBinaryData(l_modelMorphDataBinaryHeader.m_lodTargetMorphErrorCount, a_modelMorphData.m_lodTargetMorphErrorList.data(), a_memoryWriteOffset);
+}
+
+std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateModelMorphDataBinaryFileSize(const Struct::ModelMorphData& a_modelMorphData) const
+{
+    auto l_modelMorphDataBinaryFileSize = CalculateBinaryDataSize<ModelMorphDataBinaryHeader>(k_singleBinaryElementCount);
+
+    for (const auto& l_target : a_modelMorphData.m_targetList)
+    {
+        l_modelMorphDataBinaryFileSize += CalculateBinaryDataSize<ModelMorphTargetBinaryHeader>(k_singleBinaryElementCount);
+        l_modelMorphDataBinaryFileSize += CalculateWStringBinaryFileSize                       (l_target.m_targetName);
+    }
+
+    l_modelMorphDataBinaryFileSize += CalculateBinaryDataSize<Struct::ModelMorphVertexRange>(a_modelMorphData.m_vertexRangeList.size());
+    l_modelMorphDataBinaryFileSize += CalculateBinaryDataSize<Struct::ModelMorphVertexDelta>(a_modelMorphData.m_vertexDeltaList.size());
+    l_modelMorphDataBinaryFileSize += CalculateBinaryDataSize<float>                        (a_modelMorphData.m_lodTargetMorphErrorList.size());
+
+    return l_modelMorphDataBinaryFileSize;
+}
+
+bool FWK::Converter::SkeletalAnimationModelBinaryConverter::TryReadModelMorphWeightTrackListBinaryData(const std::uint64_t& a_morphWeightTrackCount, std::vector<Struct::ModelMorphWeightTrack>& a_modelMorphWeightTrackList, std::uint64_t& a_memoryReadOffset) const
+{
+    a_modelMorphWeightTrackList.clear ();
+    a_modelMorphWeightTrackList.resize(a_morphWeightTrackCount);
+
+    for (auto& l_modelMorphWeightTrack : a_modelMorphWeightTrackList)
+    {
+        ModelMorphWeightTrackBinaryHeader l_modelMorphWeightTrackBinaryHeader = {};
+
+        // Track単位Header -> ターゲット名 -> KeyFrame配列の順に読み込む
+        if (!TryReadSingleBinaryData (l_modelMorphWeightTrackBinaryHeader, a_memoryReadOffset))                                                         { return false; }
+        if (!TryReadWStringBinaryData(l_modelMorphWeightTrackBinaryHeader.m_targetNameSize, l_modelMorphWeightTrack.m_targetName, a_memoryReadOffset))  { return false; }
+        if (!TryReadBinaryDataList   (l_modelMorphWeightTrackBinaryHeader.m_keyFrameCount, l_modelMorphWeightTrack.m_keyFrameList, a_memoryReadOffset)) { return false; }
+    }
+
+    return true;
+}
+
+void FWK::Converter::SkeletalAnimationModelBinaryConverter::WriteModelMorphWeightTrackListBinaryData(const std::vector<Struct::ModelMorphWeightTrack>& a_modelMorphWeightTrackList, std::uint64_t& a_memoryWriteOffset) const
+{
+    for (const auto& l_modelMorphWeightTrack : a_modelMorphWeightTrackList)
+    {
+        ModelMorphWeightTrackBinaryHeader l_modelMorphWeightTrackBinaryHeader = {};
+
+        l_modelMorphWeightTrackBinaryHeader.m_targetNameSize = CalculateWStringBinaryFileSize       (l_modelMorphWeightTrack.m_targetName);
+        l_modelMorphWeightTrackBinaryHeader.m_keyFrameCount  = l_modelMorphWeightTrack.m_keyFrameList.size();
+
+        // Track単位Header -> ターゲット名 -> KeyFrame配列の順に書き込む
+        WriteBinaryData       (k_singleBinaryElementCount,                          &l_modelMorphWeightTrackBinaryHeader,          a_memoryWriteOffset);
+        WriteWStringBinaryData(l_modelMorphWeightTrack.m_targetName,                                                               a_memoryWriteOffset);
+        WriteBinaryData       (l_modelMorphWeightTrackBinaryHeader.m_keyFrameCount, l_modelMorphWeightTrack.m_keyFrameList.data(), a_memoryWriteOffset);
+    }
+}
+
+std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateModelMorphWeightTrackListBinaryFileSize(const std::vector<Struct::ModelMorphWeightTrack>& a_modelMorphWeightTrackList) const
+{
+    std::uint64_t l_binaryFileSize = k_emptyAssetFileSize;
+
+    for (const auto& l_modelMorphWeightTrack : a_modelMorphWeightTrackList)
+    {
+        l_binaryFileSize += CalculateBinaryDataSize<ModelMorphWeightTrackBinaryHeader>(k_singleBinaryElementCount);
+        l_binaryFileSize += CalculateWStringBinaryFileSize                            (l_modelMorphWeightTrack.m_targetName);
+        l_binaryFileSize += CalculateBinaryDataSize<Struct::ModelMorphWeightKeyFrame>  (l_modelMorphWeightTrack.m_keyFrameList.size());
+    }
+
+    return l_binaryFileSize;
+}
+
+bool FWK::Converter::SkeletalAnimationModelBinaryConverter::IsValidModelMorphData(const Struct::ModelMorphData& a_modelMorphData, const std::size_t a_vertexCount, const std::size_t a_lodCount) const
+{
+    const auto& l_targetList              = a_modelMorphData.m_targetList;
+    const auto& l_vertexRangeList         = a_modelMorphData.m_vertexRangeList;
+    const auto& l_vertexDeltaList         = a_modelMorphData.m_vertexDeltaList;
+    const auto& l_lodTargetMorphErrorList = a_modelMorphData.m_lodTargetMorphErrorList;
+
+    // モーフを持たないMeshは、全てのリストが空
+    if (l_targetList.empty())
+    {
+        return l_vertexRangeList.empty() &&
+               l_vertexDeltaList.empty() &&
+               l_lodTargetMorphErrorList.empty();
+    }
+
+    if (l_vertexRangeList.size() != a_vertexCount) { return false; }
+
+    // ターゲットごとの崩れは、LODの段階ごとにターゲット数分ある
+    if (l_lodTargetMorphErrorList.size() != a_lodCount * l_targetList.size()) { return false; }
+
+    for (const auto& l_vertexRange : l_vertexRangeList)
+    {
+        // 範囲が移動量リストの外を指していないか(足し算の桁あふれを避けるため、引き算で比べる)
+        if (l_vertexRange.m_deltaOffset > l_vertexDeltaList.size())                             { return false; }
+        if (l_vertexRange.m_deltaCount  > l_vertexDeltaList.size() - l_vertexRange.m_deltaOffset) { return false; }
+    }
+
+    for (const auto& l_vertexDelta : l_vertexDeltaList)
+    {
+        if (l_vertexDelta.m_targetIndex >= l_targetList.size()) { return false; }
     }
 
     return true;

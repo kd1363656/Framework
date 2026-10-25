@@ -105,7 +105,7 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::EvaluatePose(const SkeletalA
 
         // Motionが存在しない場合や、
         // BoneMotionTrackが存在しない場合に使用する初期値。
-        LocalTransform l_localTransform = m_bindPoseLocalTransformList[l_boneIndex];
+        auto l_localTransform = m_bindPoseLocalTransformList[l_boneIndex];
 
         // Motionが存在しない場合や、
         // BoneMotionTrackが存在しない場合に使用する初期値。

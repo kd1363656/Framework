@@ -15,8 +15,6 @@ namespace FWK::Editor
             RenameOldName,
         };
 
-        static constexpr std::int64_t k_initialCreationTime = 0LL;
-
         struct PendingFilePathChangeData final
         {
             PendingFilePathChangeType m_type = PendingFilePathChangeType::Invalid;
@@ -62,6 +60,8 @@ namespace FWK::Editor
         void StoreFilePathChange(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath, const bool a_isDirectory);
 
         static constexpr std::chrono::milliseconds k_pendingFilePathChangeGracePeriod = std::chrono::milliseconds{ 250LL };
+
+        static constexpr std::int64_t k_initialCreationTime = 0LL;
 
         static constexpr std::size_t k_notificationBufferByteSize = 64ULL * 1024ULL;
         static constexpr std::size_t k_initialBufferOffset        = 0ULL;

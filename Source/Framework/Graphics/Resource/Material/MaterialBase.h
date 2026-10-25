@@ -9,6 +9,10 @@ namespace FWK::Graphics
     // ・描画側はMaterialの型を知らなくても、GPUDataBufferのSRVDescriptorIndexをシェーダーへ渡すだけでよい
     //   (シェーダー側が自身の型のStructuredBufferとして読む)ため、ダウンキャストを必要としない
     // ・どのPassで描画するかは、型ごとのStaticTypeIDで判定する
+    // ・保存、読み込み、Inspectorの処理は、コンポーネントと同じようにクラスを分けている
+    //   バイナリ(.material) : MaterialBaseBinaryConverter + 派生クラスごとのBinaryConverter
+    //   json                : MaterialBaseJsonConverter   + 派生クラスごとのJsonConverter
+    //   Inspector           : MaterialBaseEditInspector   + 派生クラスごとのEditInspector
     class MaterialBase : public AssetRecordBase
     {
     public:
@@ -22,13 +26,14 @@ namespace FWK::Graphics
         MaterialBase& operator=(const MaterialBase&)           = delete;
         MaterialBase& operator=(      MaterialBase&&) noexcept = default;
 
-        // .materialファイルへの保存、読み込み
-        // ファイルの先頭には自身の型名を保存し、読み込み時に型名が自身と違えば失敗する
-        bool SaveBinaryData(const std::filesystem::path& a_filePath) const;
+        // .materialファイルからの読み込み
+        // ファイルの先頭に保存された型名が自身と違えば失敗する
         bool LoadBinaryData(const std::filesystem::path& a_filePath);
 
+        // jsonに保存された型名が自身と違えば失敗する
+        virtual bool Deserialize(const nlohmann::json& a_rootJson);
+
         // 型名、ファイルパスの表示と、派生クラスごとの値の編集を行う
-        // 値が変わった場合はGPUDataBufferの作り直しが必要になるため、作り直し待ちの状態にする
         void EditInspector();
 
         // テクスチャなど、実行時に必要なリソースを読み込む
@@ -43,6 +48,24 @@ namespace FWK::Graphics
         // GPUDataBufferを遅延解放へ積む
         // 参照数が0になった時に加え、Inspectorでの編集後にGPUDataBufferを作り直す時にも使う
         bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
+
+        // .materialファイルへの保存
+        // ファイルの先頭には自身の型名を保存する
+        bool SaveBinaryData(const std::filesystem::path& a_filePath) const;
+
+        virtual nlohmann::json Serialize() const;
+
+        // Payload(派生クラス固有のデータ)の保存サイズ計算、書き込み、読み込み
+        // MaterialBaseBinaryConverterが型を知らずに呼べるように仮想関数にしている
+        // 派生クラスは、自身のBinaryConverterへ処理を任せる
+        virtual std::uint64_t CalculateBinaryPayloadSize(const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter)                                          const = 0;
+        virtual void          WriteBinaryPayload        (const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter, std::uint64_t& a_memoryWriteOffset) const = 0;
+        virtual bool          ReadBinaryPayload         (const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter, std::uint64_t& a_memoryReadOffset)        = 0;
+
+        // 派生クラスごとの値の編集、値が変わった場合はtrueを返す
+        // MaterialBaseEditInspectorが型を知らずに呼べるように仮想関数にしている
+        // 派生クラスは、自身のEditInspectorへ処理を任せる
+        virtual bool EditInspectorParameter() = 0;
 
         // 型名からMaterialの先頭名を取得する(例 : StandardLitMaterial -> StandardLit)
         std::string_view FetchVALFilePrefix() const;
@@ -59,14 +82,6 @@ namespace FWK::Graphics
         bool IsGPUDataDirty() const { return m_isGPUDataDirty; }
 
     protected:
-
-        // Payload(派生クラス固有のデータ)の保存サイズ計算、書き込み、読み込み
-        virtual std::uint64_t CalculateBinaryPayloadSize(const Converter::MaterialBinaryConverter& a_materialBinaryConverter)                                          const = 0;
-        virtual void          WriteBinaryPayload        (const Converter::MaterialBinaryConverter& a_materialBinaryConverter, std::uint64_t& a_memoryWriteOffset) const = 0;
-        virtual bool          ReadBinaryPayload         (const Converter::MaterialBinaryConverter& a_materialBinaryConverter, std::uint64_t& a_memoryReadOffset)        = 0;
-
-        // 派生クラスごとの値の編集、値が変わった場合はtrueを返す
-        virtual bool EditInspectorParameter() = 0;
 
         template <typename GPUDataType>
         bool CreateGPUDataBufferFromGPUData(const GPUDataType&                                              a_gpuData,
@@ -94,13 +109,11 @@ namespace FWK::Graphics
 
         static constexpr std::string_view k_classNameSuffix = "Material";
 
-        static constexpr std::uint64_t k_initialMemoryOffset = 0ULL;
-
-        static constexpr std::string_view k_typeNameLabel   = "Type : %s";
-        static constexpr std::string_view k_filePathLabel   = "File : %s";
-        static constexpr std::string_view k_saveButtonLabel = "Save";
-
         StaticStructuredBuffer m_gpuDataBuffer = {};
+
+        MaterialBaseEditInspector m_editInspector = {};
+
+        Converter::MaterialBaseJsonConverter m_jsonConverter = {};
 
         bool m_isGPUDataDirty = false;
 

@@ -12,4 +12,6 @@ namespace FWK::Constant
     inline constexpr std::size_t k_modelGPUDrivenMaxInstanceCount = 4096ULL;
     inline constexpr std::size_t k_modelGPUDrivenMaxMeshInfoCount = 1024ULL;
     inline constexpr std::size_t k_modelGPUDrivenMaxLODCount      = 8192ULL;
+
+    inline constexpr std::size_t k_modelGPUDrivenMaxMorphWeightCount = 65536ULL;
 }

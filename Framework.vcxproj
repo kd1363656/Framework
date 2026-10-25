@@ -333,6 +333,22 @@ if "$(Configuration)"=="Debug" (
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\ModelMorphGPUStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Meshlet\Morph\ModelMorphLODEvaluator.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder\SkeletalAnimationModelMorphBuilder.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Morph\SkeletalAnimationModelFBXMorphExtractor.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\SkeletalAnimationModelMorphSetting.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Inspector\SkeletalAnimationModelMorphSettingEditInspector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Json\SkeletalAnimationModelMorphSettingJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Binary\SkeletalAnimationModelMorphSettingBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelMorphSettingStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelMorphSettingConstant.h" />
+    <ClInclude Include="Source\Framework\Utility\Graphics\AnimationSampleTimeUtility.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Graphics\AnimationSampleTimeUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Concept\Graphics\IsModelMorphMeshConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelMorphStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMorphStructConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\ModelMorphEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Standard\Lit\SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\SkeletalAnimationModelGPUSkinnedPerObjectDrawRequestBase.h" />
@@ -348,6 +364,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\ModelGPUDrivenStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelGPUDrivenConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSelector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODLayerDetector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSurfaceSearcher.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelLODSurfaceStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelLODSurfaceStructConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Profiler\FrameProfiler.h" />
     <ClInclude Include="Source\Framework\Graphics\Profiler\GPUTimestampQueryRecorder.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\FrameProfilerStruct.h" />
@@ -840,15 +860,21 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\StandardMaterialStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\MaterialSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\MaterialSharedFactory.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBaseBinaryConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Material\MaterialBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialBaseJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Inspector\MaterialBaseEditInspector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Binary\StandardLitMaterialBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Json\StandardLitMaterialJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Binary\StandardUnLitMaterialBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Json\StandardUnLitMaterialJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Material\MaterialSystem.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Material\Material.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\StandardLitMaterial.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialInspector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialEditInspector.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\StandardUnLitMaterial.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialInspector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialEditInspector.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialRuntimeBuilder.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsDrawTargetMaterialUtility.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Application\ApplicationConstant.h" />
@@ -896,6 +922,13 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\IMGUI\String\IMGUIInputTextBufferUtility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Meshlet\Morph\ModelMorphLODEvaluator.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder\SkeletalAnimationModelMorphBuilder.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Morph\SkeletalAnimationModelFBXMorphExtractor.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\SkeletalAnimationModelMorphSetting.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Inspector\SkeletalAnimationModelMorphSettingEditInspector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Json\SkeletalAnimationModelMorphSettingJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Binary\SkeletalAnimationModelMorphSettingBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\SkeletalAnimationModelGPUSkinnedPerObjectDrawRequestBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Baked\SkeletalAnimationBakedSkinning.cpp" />
@@ -906,6 +939,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\CommandSignature\ModelIndirectDispatchMeshCommandSignature.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicUploadStructuredBuffer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSelector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODLayerDetector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSurfaceSearcher.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Profiler\FrameProfiler.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Profiler\GPUTimestampQueryRecorder.cpp" />
     <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp">
@@ -1179,15 +1214,21 @@ if "$(Configuration)"=="Debug" (
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MultiThreaded</RuntimeLibrary>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreaded</RuntimeLibrary>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBinaryConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBaseBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\MaterialBase.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialBaseJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Inspector\MaterialBaseEditInspector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Binary\StandardLitMaterialBinaryConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Json\StandardLitMaterialJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Binary\StandardUnLitMaterialBinaryConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Json\StandardUnLitMaterialJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\MaterialSystem.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\Material.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\StandardLitMaterial.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialInspector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialEditInspector.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\StandardUnLitMaterial.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialInspector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialEditInspector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt" />

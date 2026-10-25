@@ -1,16 +1,19 @@
 ﻿#pragma once
 
+namespace FWK::Graphics
+{
+    class MaterialBase;
+}
+
 namespace FWK::Converter
 {
-    // .materialファイルの読み書きを行うクラス
+    // MaterialBaseの.materialファイルの保存、読み込みを行うクラス
     // ファイルの先頭にはヘッダーとMaterialの型名を保存し、
-    // その後に続くPayload(Material固有のデータ)は各Material自身が読み書きする
-    // ※ PayloadはMaterialBaseの派生クラスから読み書きするため、読み書き用の関数を公開している
-    class MaterialBinaryConverter final : public BinaryConverterBase
+    // その後に続くPayload(派生クラス固有のデータ)は、派生クラスごとのBinaryConverter
+    // (例 : StandardLitMaterialBinaryConverter)が、このクラスの読み書き用の関数を使って読み書きする
+    class MaterialBaseBinaryConverter final : public BinaryConverterBase
     {
     private:
-
-        static constexpr std::uint16_t k_initialPadding = 0U;
 
         struct MaterialBinaryHeader final
         {
@@ -23,26 +26,18 @@ namespace FWK::Converter
 
     public:
 
-         MaterialBinaryConverter()          = default;
-        ~MaterialBinaryConverter() override = default;
+         MaterialBaseBinaryConverter()          = default;
+        ~MaterialBaseBinaryConverter() override = default;
+
+        // ヘッダーと型名 -> Payloadの順に、Materialを.materialファイルへ保存する
+        bool Save(const Graphics::MaterialBase& a_materialBase, const std::filesystem::path& a_filePath);
+
+        // .materialファイルからMaterialを読み込む
+        // ファイルに保存された型名がMaterial自身の型名と違う場合は失敗する
+        bool Load(Graphics::MaterialBase& a_materialBase, const std::filesystem::path& a_filePath);
 
         // ファイルに保存されている型名だけを読み込む(どの型のMaterialを作るか決めるために使う)
         bool TryReadTypeName(const std::filesystem::path& a_filePath, std::string& a_typeName);
-
-        // ファイルを開いてヘッダーと型名を読み込む
-        // 続けてPayloadを読む場合は、a_memoryReadOffsetをそのまま使う
-        bool BeginRead(const std::filesystem::path& a_filePath, std::string& a_typeName, std::uint64_t& a_memoryReadOffset);
-
-        // Payloadのサイズ分を含めたファイルを作成し、ヘッダーと型名を書き込む
-        bool BeginWrite(const std::filesystem::path& a_filePath,
-                        const std::string_view&      a_typeName,
-                        const std::uint64_t&         a_payloadSize,
-                              std::uint64_t&         a_memoryWriteOffset);
-
-        // 読み込み、書き込みを終える
-        // ファイルサイズと最後に読み書きした位置が一致しなければ、壊れたファイルとして失敗を返す
-        bool EndRead (const std::uint64_t& a_memoryReadOffset);
-        bool EndWrite(const std::uint64_t& a_memoryWriteOffset);
 
         template <typename Type>
         bool TryReadSingle(Type& a_destinationData, std::uint64_t& a_memoryReadOffset) const
@@ -73,10 +68,27 @@ namespace FWK::Converter
 
     private:
 
+        // ファイルを開いてヘッダーと型名を読み込む
+        // 続けてPayloadを読む場合は、a_memoryReadOffsetをそのまま使う
+        bool BeginRead(const std::filesystem::path& a_filePath, std::string& a_typeName, std::uint64_t& a_memoryReadOffset);
+
+        // Payloadのサイズ分を含めたファイルを作成し、ヘッダーと型名を書き込む
+        bool BeginWrite(const std::filesystem::path& a_filePath,
+                        const std::string_view&      a_typeName,
+                        const std::uint64_t&         a_payloadSize,
+                              std::uint64_t&         a_memoryWriteOffset);
+
+        // 読み込み、書き込みを終える
+        // ファイルサイズと最後に読み書きした位置が一致しなければ、壊れたファイルとして失敗を返す
+        bool EndRead (const std::uint64_t& a_memoryReadOffset);
+        bool EndWrite(const std::uint64_t& a_memoryWriteOffset);
+
         static constexpr std::uint32_t k_materialAssetTypeID = 0x4C54414DU;
 
         // 保存形式を変えた場合はバージョンを上げる
         static constexpr std::uint16_t k_materialAssetVersion = 1U;
+
+        static constexpr std::uint16_t k_initialPadding = 0U;
 
         static constexpr std::uint64_t k_emptyTypeNameSize          = 0ULL;
         static constexpr std::uint64_t k_emptyWStringBinaryFileSize = 0ULL;

@@ -1,6 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Source\Framework\Definition\Concept\Graphics">
+      <UniqueIdentifier>{a646416b-aa28-480f-9675-f72188da6aa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility\Graphics">
+      <UniqueIdentifier>{1e4f4b7d-201b-440e-a553-54c605d1cfc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph">
+      <UniqueIdentifier>{7b82a4a8-4817-409d-be07-f1d9faa72898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter">
+      <UniqueIdentifier>{c9757589-a39f-4739-8d3a-b8699da9540b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Binary">
+      <UniqueIdentifier>{ec9a1024-140a-4b28-802e-99ec8e3b7a85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Json">
+      <UniqueIdentifier>{c23281c2-b397-461e-9878-45185b26a3a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Inspector">
+      <UniqueIdentifier>{a759cbfa-f217-477b-983a-376eb27fe57d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Morph">
+      <UniqueIdentifier>{eff6825d-4c42-4667-9cfb-d7ded88d561b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Meshlet\Morph">
+      <UniqueIdentifier>{aa707805-4e60-44a5-86ef-a1225ba2c894}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Scene\Changer\Converter\Json">
       <UniqueIdentifier>{2153964d-d73a-4495-a697-1d05f4e9b0ed}</UniqueIdentifier>
     </Filter>
@@ -1561,6 +1588,27 @@
     <Filter Include="Source\Framework\Graphics\Resource\Material\Converter\Json">
       <UniqueIdentifier>{7d542b3f-0b3b-4eae-a28b-d90823abd6b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Inspector">
+      <UniqueIdentifier>{ef47c7d9-2fff-4255-bb74-53b0f634d04b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter">
+      <UniqueIdentifier>{bd2ff65c-9d86-46dd-a6bf-c653a732921d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Binary">
+      <UniqueIdentifier>{8f721f30-bebf-4041-b779-1fd165fa35b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Json">
+      <UniqueIdentifier>{41cb5303-1eea-4fea-94c0-652623668e21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter">
+      <UniqueIdentifier>{8f9c80ab-f26c-4422-b944-705cf2f1e619}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Binary">
+      <UniqueIdentifier>{03a57f61-96a0-46be-8372-ea5e1e1ff374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Json">
+      <UniqueIdentifier>{5a0e2193-bf18-4011-9eb7-383faf16790e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Material\Standard">
       <UniqueIdentifier>{e8a6a1c4-c824-449c-9068-32c1c1c924b4}</UniqueIdentifier>
     </Filter>
@@ -1596,6 +1644,54 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\ModelMorphGPUStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Structured</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Meshlet\Morph\ModelMorphLODEvaluator.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Meshlet\Morph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder\SkeletalAnimationModelMorphBuilder.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Morph\SkeletalAnimationModelFBXMorphExtractor.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Morph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\SkeletalAnimationModelMorphSetting.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Morph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Inspector\SkeletalAnimationModelMorphSettingEditInspector.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Json\SkeletalAnimationModelMorphSettingJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Binary\SkeletalAnimationModelMorphSettingBinaryConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelMorphSettingStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelMorphSettingConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Graphics\AnimationSampleTimeUtility.h">
+      <Filter>Source\Framework\Utility\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Graphics\AnimationSampleTimeUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\Graphics\IsModelMorphMeshConcept.h">
+      <Filter>Source\Framework\Definition\Concept\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelMorphStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMorphStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\ModelMorphEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade</Filter>
     </ClInclude>
@@ -1640,6 +1736,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSelector.h">
       <Filter>Source\Framework\Graphics\Resource\Model\LOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODLayerDetector.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\LOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSurfaceSearcher.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\LOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelLODSurfaceStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelLODSurfaceStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Profiler\FrameProfiler.h">
       <Filter>Source\Framework\Graphics\Profiler</Filter>
@@ -3117,7 +3225,7 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\MaterialSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBinaryConverter.h">
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBaseBinaryConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Material\Converter\Binary</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialSystemJsonConverter.h">
@@ -3125,6 +3233,24 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Material\MaterialBase.h">
       <Filter>Source\Framework\Graphics\Resource\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialBaseJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Inspector\MaterialBaseEditInspector.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Binary\StandardLitMaterialBinaryConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Json\StandardLitMaterialJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Binary\StandardUnLitMaterialBinaryConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Json\StandardUnLitMaterialJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Material\MaterialSystem.h">
       <Filter>Source\Framework\Graphics\Resource\Material</Filter>
@@ -3135,13 +3261,13 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\StandardLitMaterial.h">
       <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialInspector.h">
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialEditInspector.h">
       <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\StandardUnLitMaterial.h">
       <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialInspector.h">
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialEditInspector.h">
       <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialRuntimeBuilder.h">
@@ -3281,6 +3407,27 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Meshlet\Morph\ModelMorphLODEvaluator.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Meshlet\Morph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder\SkeletalAnimationModelMorphBuilder.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Morph\SkeletalAnimationModelFBXMorphExtractor.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Morph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\SkeletalAnimationModelMorphSetting.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Morph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Inspector\SkeletalAnimationModelMorphSettingEditInspector.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Json\SkeletalAnimationModelMorphSettingJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Binary\SkeletalAnimationModelMorphSettingBinaryConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Binary</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade</Filter>
     </ClCompile>
@@ -3309,6 +3456,12 @@
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSelector.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\LOD</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODLayerDetector.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\LOD</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSurfaceSearcher.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\LOD</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Profiler\FrameProfiler.cpp">
@@ -4061,7 +4214,7 @@
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Command</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBinaryConverter.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Binary\MaterialBaseBinaryConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Material\Converter\Binary</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialSystemJsonConverter.cpp">
@@ -4069,6 +4222,24 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\MaterialBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Converter\Json\MaterialBaseJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Inspector\MaterialBaseEditInspector.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Binary\StandardLitMaterialBinaryConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Json\StandardLitMaterialJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Binary\StandardUnLitMaterialBinaryConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Json\StandardUnLitMaterialJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\MaterialSystem.cpp">
       <Filter>Source\Framework\Graphics\Resource\Material</Filter>
@@ -4079,13 +4250,13 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\StandardLitMaterial.cpp">
       <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialInspector.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialEditInspector.cpp">
       <Filter>Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\StandardUnLitMaterial.cpp">
       <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialInspector.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialEditInspector.cpp">
       <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector</Filter>
     </ClCompile>
   </ItemGroup>

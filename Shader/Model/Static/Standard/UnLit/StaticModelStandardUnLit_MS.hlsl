@@ -33,7 +33,7 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         // 取得した頂点番号から頂点情報を取得
         const StaticModelVertex l_staticModelVertex = l_staticModelVertexBuffer[l_modelVertexIndex];
         
-        const float3 l_worldPosition          = TransformModelLocalPositionToWorld(l_staticModelVertex.position);
+        const float3 l_worldPosition          = ApplyModelLODCoveredLayerDepthOffset(TransformModelLocalPositionToWorld(l_staticModelVertex.position), l_modelVertexIndex);
         const float4 l_viewProjectionPosition = mul                               (float4(l_worldPosition, k_modelPositionElementW), g_viewProjectionMatrix);
         
         a_vertexList[l_vertexIndex].position = l_viewProjectionPosition;

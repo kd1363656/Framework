@@ -8,4 +8,6 @@ void FWK::Graphics::ModelBatchUploadRecordBuilder::ReleaseModelMeshRuntimeData(S
     a_modelMeshRuntimeData.m_uniqueVertexIndexBuffer.Release();
     a_modelMeshRuntimeData.m_primitiveIndexBuffer.Release   ();
     a_modelMeshRuntimeData.m_meshletBoundsBuffer.Release    ();
+
+    a_modelMeshRuntimeData.m_lodCoveredLayerCountBuffer.Release();
 }

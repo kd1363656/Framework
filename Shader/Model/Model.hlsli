@@ -15,6 +15,14 @@ static const float k_modelMirroredWorldOrientationSign = -1.0F;
 // sqrt(1.0 + tanFOV * tanFOV)の1.0部分。
 static const float k_modelFrustumPlaneNormalBaseLength = 1.0F;
 
+// C++側のConstant::k_maxLODCoveredLayerCountと同じ値にする(頂点ごとの覆われている層の数の上限)
+static const uint k_modelMaxLODCoveredLayerCount = 2U;
+
+// C++側のDescriptorHeap::k_invalidDescriptorIndexと同じ値(無効なDescriptorの番号)
+static const uint k_modelInvalidDescriptorIndex = 0xFFFFFFFFU;
+
+static const float k_modelEmptyLODCoveredLayerDepthOffset = 0.0F;
+
 static const uint k_modelMeshShaderThreadCountX = 32U;
 static const uint k_modelMeshShaderThreadCountY = 1U;
 static const uint k_modelMeshShaderThreadCountZ = 1U;
@@ -61,14 +69,16 @@ cbuffer CBModelPerObject : register(b1)
     float g_worldMaxScale;
     float g_worldOrientationSign;
 
-    // g_meshletOffset : 描画するLODのMeshletが、MeshletBufferの何番目から始まるか
-    // g_meshletCount  : そのLODのMeshlet数
+    // g_meshletOffset    : 描画するLODのMeshletが、MeshletBufferの何番目から始まるか
+    // g_meshletCount     : そのLODのMeshlet数
     // 全LODのMeshletは1つのBufferへ連結して入っているため、
     // 「先頭番号 + 個数」で使う範囲を指定してLODを切り替える
+    // g_lodCoveredLayerDepthOffset                    : 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離(ワールド座標。0以上)
+    // g_lodCoveredLayerCountBufferSRVDescriptorIndex : 頂点ごとの覆われている層の数のBuffer
     uint  g_meshletCount;
     uint  g_meshletOffset;
-    float g_padding;
-    float g_padding2;
+    float g_lodCoveredLayerDepthOffset;
+    uint  g_lodCoveredLayerCountBufferSRVDescriptorIndex;
 
     // メッシュシェーダーの中でスキニングする場合に使う値
     // g_skinningMatrixBufferSRVDescriptorIndex : 事前計算したスキニング行列のBuffer
@@ -78,6 +88,14 @@ cbuffer CBModelPerObject : register(b1)
     uint g_skinningMatrixOffset;
     uint g_isGPUSkinning;
     uint g_skinningPadding;
+
+    // メッシュシェーダーの中でモーフする場合に使う値(モーフを持たないMeshではg_morphDeltaBufferSRVDescriptorIndexが無効)
+    // g_morphWeightBufferSRVDescriptorIndex : ウェイトのBuffer(ベイクした物か、インスタンスごとに上書きする物)
+    // g_morphWeightOffset                   : このインスタンスのウェイトが始まる番号(ウェイトの番号 = g_morphWeightOffset + チャンネル番号)
+    uint g_morphVertexRangeBufferSRVDescriptorIndex;
+    uint g_morphDeltaBufferSRVDescriptorIndex;
+    uint g_morphWeightBufferSRVDescriptorIndex;
+    uint g_morphWeightOffset;
 };
 
 // 三角形1個分のPrimitiveIndexをuint3で取得する

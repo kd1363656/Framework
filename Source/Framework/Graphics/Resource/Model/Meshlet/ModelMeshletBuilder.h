@@ -16,19 +16,28 @@ namespace FWK::Graphics
 
             FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.empty(), "ModelDataのMeshリストが空のため、ModelMeshletDataの作成に失敗しました。", false);
 
-            for (auto& l_modelMesh : l_modelMeshList)
+            // Meshごと・LODごとの、簡略化で表面がずれた量(全てのMeshを作ってから、ずれの倍率を決める)
+            std::vector<std::vector<Struct::ModelLODSurfaceDeviation>> l_lodSurfaceDeviationListList(l_modelMeshList.size());
+
+            for (std::size_t l_meshIndex = 0ULL; l_meshIndex < l_modelMeshList.size(); ++l_meshIndex)
             {
                 // StaticModelRecord内の全StaticModelMeshに対して、
                 // MeshShader用のStaticModelMeshletDataを作成する
-                FWK_ASSERT_RETURN_VALUE_IF(!BuildModelMeshletData(l_modelMesh), "ModelMeshのModelMeshletData作成に失敗しました。", false);
+                FWK_ASSERT_RETURN_VALUE_IF(!BuildModelMeshletData(l_modelMeshList[l_meshIndex], l_lodSurfaceDeviationListList[l_meshIndex]), "ModelMeshのModelMeshletData作成に失敗しました。", false);
             }
+
+            // 頂点ごとに「外側に重なっている別のMeshの数」を求める
+            // 描画時に覆われている頂点だけを奥へ押し出し、重なっているMesh同士がLODで前後に入れ替わらないようにするため
+            m_lodLayerDetector.DetectModelMeshLayer(l_modelMeshList);
+
+            ApplyModelMeshLODSurfaceDeviationScale(l_lodSurfaceDeviationListList, l_modelMeshList);
 
             return true;
         }
 
     private:
 
-        bool BuildModelMeshletData(typename ModelRecordType::ModelMesh& a_modelMesh) const
+        bool BuildModelMeshletData(typename ModelRecordType::ModelMesh& a_modelMesh, std::vector<Struct::ModelLODSurfaceDeviation>& a_lodSurfaceDeviationList) const
         {
             // 頂点数とインデックス数のチェック
             FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_modelVertexList.size() == Constant::k_emptyModelVertexCount, "ModelMeshの頂点数が0のため、MeshletData作成に失敗しました。",         false);
@@ -47,14 +56,32 @@ namespace FWK::Graphics
             l_modelMeshletData.m_meshletBoundsList.clear    ();
             l_modelMeshletData.m_lodList.clear              ();
 
+            a_lodSurfaceDeviationList.clear();
+
             // LOD選択でカメラからの距離を求めるために、Mesh全体を囲む球を求める
             BuildModelMeshBounds(a_modelMesh);
 
+            // LODで消えた頂点が、LODのどの三角形の上に描かれるかを探すためのデータを作る
+            // (形のずれと、モーフの崩れを測るときに使う)
+            Struct::ModelLODSurfaceSearchData l_surfaceSearchData = {};
+
+            BuildModelLODSurfaceSearchData(a_modelMesh, l_surfaceSearchData);
+
             // LOD0 : 元の形をそのままMeshlet化する(形の崩れは0)
-            FWK_ASSERT_RETURN_VALUE_IF(!AppendModelMeshLOD(a_modelMesh, a_modelMesh.m_indexList, Constant::k_initialMeshLODSimplifyError), "LOD0のMeshletData作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(!AppendModelMeshLOD(a_modelMesh,
+                                                           a_modelMesh.m_indexList,
+                                                           Constant::k_initialMeshLODSimplifyError,
+                                                           Constant::k_initialMeshLODMorphError),
+                                                           "LOD0のMeshletData作成に失敗しました。",
+                                                           false);
+
+            // LOD0は元の形なので、どのターゲットの崩れも、表面のずれも0
+            ResetModelMeshLODTargetMorphError(a_modelMesh);
+
+            a_lodSurfaceDeviationList.emplace_back();
 
             // LOD1以降 : 三角形数を半分ずつ減らした形を作り、Meshletを後ろへ連結していく
-            BuildSimplifiedModelMeshLODList(a_modelMesh);
+            BuildSimplifiedModelMeshLODList(a_modelMesh, l_surfaceSearchData, a_lodSurfaceDeviationList);
 
             return true;
         }
@@ -64,8 +91,8 @@ namespace FWK::Graphics
             auto& l_modelMeshletData = a_modelMesh.m_modelMeshletData;
 
             // 全頂点を囲む箱(AABB)の中心を球の中心にする
-            TypeAlias::Math::Vector3 l_boundsMIN = TypeAlias::Math::Vector3( std::numeric_limits<float>::max());
-            TypeAlias::Math::Vector3 l_boundsMAX = TypeAlias::Math::Vector3(-std::numeric_limits<float>::max());
+            auto l_boundsMIN = TypeAlias::Math::Vector3( std::numeric_limits<float>::max());
+            auto l_boundsMAX = TypeAlias::Math::Vector3(-std::numeric_limits<float>::max());
 
             for (const auto& l_modelVertex : a_modelMesh.m_modelVertexList)
             {
@@ -86,7 +113,34 @@ namespace FWK::Graphics
             l_modelMeshletData.m_boundsRadius = std::sqrt(l_maxDistanceSquared);
         }
 
-        void BuildSimplifiedModelMeshLODList(typename ModelRecordType::ModelMesh& a_modelMesh) const
+        void BuildModelLODSurfaceSearchData(const typename ModelRecordType::ModelMesh& a_modelMesh, Struct::ModelLODSurfaceSearchData& a_surfaceSearchData) const
+        {
+            // 頂点の元の位置と法線(長さ1)だけを並べる
+            std::vector<TypeAlias::Math::Vector3> l_vertexPositionList = {};
+            std::vector<TypeAlias::Math::Vector3> l_vertexNormalList   = {};
+
+            l_vertexPositionList.reserve(a_modelMesh.m_modelVertexList.size());
+            l_vertexNormalList.reserve  (a_modelMesh.m_modelVertexList.size());
+
+            for (const auto& l_modelVertex : a_modelMesh.m_modelVertexList)
+            {
+                auto l_normal = l_modelVertex.m_normal;
+
+                l_normal.Normalize();
+
+                l_vertexPositionList.emplace_back(l_modelVertex.m_position);
+                l_vertexNormalList.emplace_back  (l_normal);
+            }
+
+            m_lodSurfaceSearcher.BuildSearchData(a_modelMesh.m_indexList,
+                                                 l_vertexPositionList,
+                                                 l_vertexNormalList,
+                                                 a_surfaceSearchData);
+        }
+
+        void BuildSimplifiedModelMeshLODList(      typename ModelRecordType::ModelMesh&           a_modelMesh,
+                                             const Struct::ModelLODSurfaceSearchData&             a_surfaceSearchData,
+                                                   std::vector<Struct::ModelLODSurfaceDeviation>& a_lodSurfaceDeviationList) const
         {
             const auto& l_sourceIndexList = a_modelMesh.m_indexList;
 
@@ -97,6 +151,17 @@ namespace FWK::Graphics
 
             auto  l_previousIndexCount = l_sourceIndexList.size();
             float l_targetRatio        = k_lodTriangleReductionRatio;
+
+            // モーフを持つMeshは、LODごとにモーフの崩れを測るための情報を作る(持たない場合はnullptr)
+            Struct::ModelMorphLODData l_modelMorphLODData = {};
+
+            const auto* l_modelMorphLODDataPTR = BuildModelMorphLODData(a_modelMesh, l_modelMorphLODData) ? &l_modelMorphLODData : nullptr;
+
+            // LODごとの、ターゲットごとのモーフの崩れ(作業用。LODを作るたびに書き直す)
+            std::vector<float> l_targetMorphErrorList = {};
+
+            // LOD保護が「固定」のターゲットで動く頂点を、簡略化で動かさないための印(無い場合はnullptr)
+            const auto* l_vertexLockData = l_modelMorphLODDataPTR && l_modelMorphLODDataPTR->m_hasLockVertex ? l_modelMorphLODDataPTR->m_vertexLockList.data() : nullptr;
 
             for (std::size_t l_lodIndex = k_firstSimplifiedLODIndex; l_lodIndex < k_maxLODCount; ++l_lodIndex)
             {
@@ -113,6 +178,7 @@ namespace FWK::Graphics
                 const auto l_simplifyOptions = l_lodIndex >= k_firstPermissiveLODIndex ? k_farLODSimplifyOptions : k_lodSimplifyOptions;
 
                 auto l_simplifiedIndexCount = SimplifyModelMesh(a_modelMesh,
+                                                                l_vertexLockData,
                                                                 l_targetIndexCount,
                                                                 l_simplifyOptions,
                                                                 l_simplifiedIndexList,
@@ -123,6 +189,7 @@ namespace FWK::Graphics
                     !IsEnoughLODReduction(l_simplifiedIndexCount, l_previousIndexCount))
                 {
                     l_simplifiedIndexCount = SimplifyModelMesh(a_modelMesh,
+                                                               l_vertexLockData,
                                                                l_targetIndexCount,
                                                                k_farLODSimplifyOptions,
                                                                l_simplifiedIndexList,
@@ -143,14 +210,93 @@ namespace FWK::Graphics
                                             l_lodIndexList.size(),
                                             a_modelMesh.m_modelVertexList.size());
 
-                if (!AppendModelMeshLOD(a_modelMesh, l_lodIndexList, l_resultError)) { break; }
+                // モーフを持つMeshは、このLODでターゲットごとに「ウェイト1で効かせたときの崩れ」を測る
+                // 形の崩れとは別に持ち、描画時に「形の崩れ + Σ(ターゲットのウェイト × そのターゲットの崩れ)」でLODを選ぶ
+                // (モーフを効かせていないモデルは、モーフを持たないモデルと同じ距離でLODを切り替えられる)
+                l_targetMorphErrorList.clear();
+
+                const float l_morphError = l_modelMorphLODDataPTR ? CalculateLODMorphError(a_modelMesh, a_surfaceSearchData, l_lodIndexList, l_targetMorphErrorList) : Constant::k_initialMeshLODMorphError;
+
+                if (!AppendModelMeshLOD(a_modelMesh,
+                                        l_lodIndexList,
+                                        l_resultError,
+                                        l_morphError))
+                {
+                    break;
+                }
+
+                AppendModelMeshLODTargetMorphError(a_modelMesh, l_targetMorphErrorList);
+
+                // このLODで、表面が元の表面より内側へ沈んだ量と外側へ出た量を測る
+                // (meshoptimizerの誤差は法線やUVのずれも含むため形のずれより大きく、頂点をずらす量に使うと服が太って見える)
+                a_lodSurfaceDeviationList.emplace_back(m_lodSurfaceSearcher.CalculateLODSurfaceDeviation(a_surfaceSearchData, l_lodIndexList));
 
                 l_previousIndexCount  = l_simplifiedIndexCount;
                 l_targetRatio        *= k_lodTriangleReductionRatio;
             }
         }
 
+        bool BuildModelMorphLODData(const typename ModelRecordType::ModelMesh& a_modelMesh, Struct::ModelMorphLODData& a_modelMorphLODData) const
+        {
+            // モーフのデータを持たないModelMesh(StaticModelなど)では何もしない
+            if constexpr (Concept::IsModelMorphMeshConcept<typename ModelRecordType::ModelMesh>)
+            {
+                const auto& l_modelMorphData = a_modelMesh.m_modelMorphData;
+
+                if (l_modelMorphData.m_targetList.empty()) { return false; }
+
+                return m_morphLODEvaluator.Build(l_modelMorphData, a_modelMorphLODData);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        float CalculateLODMorphError(const typename ModelRecordType::ModelMesh& a_modelMesh,
+                                     const Struct::ModelLODSurfaceSearchData&   a_surfaceSearchData,
+                                     const std::vector<std::uint32_t>&          a_lodIndexList,
+                                           std::vector<float>&                  a_targetMorphErrorList) const
+        {
+            if constexpr (Concept::IsModelMorphMeshConcept<typename ModelRecordType::ModelMesh>)
+            {
+                return m_morphLODEvaluator.CalculateLODMorphError(a_modelMesh.m_modelMorphData,
+                                                                  a_surfaceSearchData,
+                                                                  a_lodIndexList,
+                                                                  a_targetMorphErrorList);
+            }
+            else
+            {
+                return Constant::k_initialMeshLODMorphError;
+            }
+        }
+
+        // LOD0の分(全ターゲット0)だけを入れた状態に戻す(モーフを持たないModelMeshでは何もしない)
+        void ResetModelMeshLODTargetMorphError(typename ModelRecordType::ModelMesh& a_modelMesh) const
+        {
+            if constexpr (Concept::IsModelMorphMeshConcept<typename ModelRecordType::ModelMesh>)
+            {
+                auto& l_modelMorphData = a_modelMesh.m_modelMorphData;
+
+                l_modelMorphData.m_lodTargetMorphErrorList.assign(l_modelMorphData.m_targetList.size(), Constant::k_initialMeshLODMorphError);
+            }
+        }
+
+        // 作ったLOD1段階分の、ターゲットごとの崩れを後ろへ追加する(モーフを持たないModelMeshでは何もしない)
+        void AppendModelMeshLODTargetMorphError(typename ModelRecordType::ModelMesh& a_modelMesh, const std::vector<float>& a_targetMorphErrorList) const
+        {
+            if constexpr (Concept::IsModelMorphMeshConcept<typename ModelRecordType::ModelMesh>)
+            {
+                auto& l_modelMorphData = a_modelMesh.m_modelMorphData;
+
+                if (l_modelMorphData.m_targetList.empty()) { return; }
+
+                l_modelMorphData.m_lodTargetMorphErrorList.insert(l_modelMorphData.m_lodTargetMorphErrorList.end(), a_targetMorphErrorList.begin(), a_targetMorphErrorList.end());
+            }
+        }
+
         std::size_t SimplifyModelMesh(const typename ModelRecordType::ModelMesh& a_modelMesh,
+                                      const unsigned char*                       a_vertexLockData,
                                       const std::size_t                          a_targetIndexCount,
                                       const unsigned int                         a_simplifyOptions,
                                             std::vector<std::uint32_t>&          a_simplifiedIndexList,
@@ -180,7 +326,7 @@ namespace FWK::Graphics
             //                                頂点1個分のbyteサイズ、
             //                                属性ごとの重み、
             //                                属性の数、
-            //                                動かしてはいけない頂点の印(今回は無し)、
+            //                                動かしてはいけない頂点の印(LOD保護が「固定」のモーフターゲットを持つMeshだけ、無ければnullptr)、
             //                                目標インデックス数、
             //                                許容する誤差(今回は三角形数で止めたいので上限なし)、
             //                                オプション、
@@ -202,7 +348,7 @@ namespace FWK::Graphics
                                                   l_modelVertexSize,
                                                   k_simplifyAttributeWeightList.data(),
                                                   k_simplifyAttributeWeightList.size(),
-                                                  nullptr,
+                                                  a_vertexLockData,
                                                   a_targetIndexCount,
                                                   std::numeric_limits<float>::max(),
                                                   a_simplifyOptions,
@@ -216,7 +362,10 @@ namespace FWK::Graphics
                    static_cast<float>(a_simplifiedIndexCount) <= static_cast<float>(a_previousIndexCount) * k_minLODReductionRequirementRatio;
         }
 
-        bool AppendModelMeshLOD(typename ModelRecordType::ModelMesh& a_modelMesh, const std::vector<std::uint32_t>& a_indexList, const float a_simplifyError) const
+        bool AppendModelMeshLOD(      typename ModelRecordType::ModelMesh& a_modelMesh,
+                                const std::vector<std::uint32_t>&          a_indexList,
+                                const float                                a_simplifyError,
+                                const float                                a_morphError) const
         {
             auto& l_modelMeshletData = a_modelMesh.m_modelMeshletData;
 
@@ -390,10 +539,46 @@ namespace FWK::Graphics
             l_modelMeshLOD.m_meshletCount  = static_cast<std::uint32_t>(l_meshletCount);
             l_modelMeshLOD.m_triangleCount = static_cast<std::uint32_t>(a_indexList.size() / Constant::k_triangleVertexCount);
             l_modelMeshLOD.m_simplifyError = a_simplifyError;
+            l_modelMeshLOD.m_morphError    = a_morphError;
 
             l_modelMeshletData.m_lodList.emplace_back(l_modelMeshLOD);
 
             return true;
+        }
+
+        template <typename ModelMeshListType>
+        void ApplyModelMeshLODSurfaceDeviationScale(const std::vector<std::vector<Struct::ModelLODSurfaceDeviation>>& a_lodSurfaceDeviationListList, ModelMeshListType& a_modelMeshList) const
+        {
+            // 覆われている頂点は、覆う側のLODが沈んだ分と、自分のLODが外へ出た分を足した距離より奥へ押し出す必要がある
+            // LODは「meshoptimizerの誤差が許容値以下」で選ぶため、実際のずれ ÷ その誤差 の最大値を求め、押し出す距離に掛ける
+            // (覆う側は別のMeshなので、モデル全体で1つの値にする)
+            float l_lodSurfaceDeviationScale = Constant::k_initialLODSurfaceDeviationScale;
+
+            for (std::size_t l_meshIndex = 0ULL; l_meshIndex < a_modelMeshList.size(); ++l_meshIndex)
+            {
+                const auto& l_lodList                 = a_modelMeshList[l_meshIndex].m_modelMeshletData.m_lodList;
+                const auto& l_lodSurfaceDeviationList = a_lodSurfaceDeviationListList[l_meshIndex];
+
+                for (std::size_t l_lodIndex = 0ULL; l_lodIndex < l_lodList.size() && l_lodIndex < l_lodSurfaceDeviationList.size(); ++l_lodIndex)
+                {
+                    const float l_simplifyError = l_lodList[l_lodIndex].m_simplifyError;
+
+                    // LOD0(誤差0)は元の形なので比べない
+                    if (l_simplifyError <= Constant::k_initialMeshLODSimplifyError) { continue; }
+
+                    const auto& l_lodSurfaceDeviation = l_lodSurfaceDeviationList[l_lodIndex];
+
+                    l_lodSurfaceDeviationScale = std::max(l_lodSurfaceDeviationScale, (l_lodSurfaceDeviation.m_sinkDistance + l_lodSurfaceDeviation.m_bulgeDistance) / l_simplifyError);
+                }
+            }
+
+            // 細かい部品で極端な値になっても押し出しすぎないように、上限で止める
+            l_lodSurfaceDeviationScale = std::min(l_lodSurfaceDeviationScale, Constant::k_maxLODSurfaceDeviationScale);
+
+            for (auto& l_modelMesh : a_modelMeshList)
+            {
+                l_modelMesh.m_modelMeshletData.m_lodSurfaceDeviationScale = l_lodSurfaceDeviationScale;
+            }
         }
 
         bool PackPrimitiveIndexList(const std::vector<std::uint8_t>& a_sourcePrimitiveIndexList, const std::size_t& a_usedPrimitiveIndexCount, std::vector<std::uint32_t>& a_packedPrimitiveIndexList) const
@@ -481,5 +666,11 @@ namespace FWK::Graphics
 
         static constexpr unsigned int k_lodSimplifyOptions    = meshopt_SimplifyErrorAbsolute | meshopt_SimplifyPrune;
         static constexpr unsigned int k_farLODSimplifyOptions = meshopt_SimplifyErrorAbsolute | meshopt_SimplifyPrune | meshopt_SimplifyPermissive;
+
+        ModelMorphLODEvaluator m_morphLODEvaluator = {};
+
+        ModelLODLayerDetector m_lodLayerDetector = {};
+
+        ModelLODSurfaceSearcher m_lodSurfaceSearcher = {};
     };
 }

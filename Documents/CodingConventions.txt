@@ -209,6 +209,72 @@
 	
 	float l_num = 0.0F;
 }
+・戻り値から型が推測できるローカル変数はauto / const auto&で定義し、型を明示しない
+{
+	理由 : 型名は戻り値(関数側)を見れば分かるので、ローカル変数側で同じ型名を繰り返す必要がないから
+	また、const付きの大きな型を値で受けると無駄なコピーが発生するのを防ぐため
+
+	対象となる型
+	・std::が付く型(std::string、std::filesystem::path、std::vector、std::shared_ptrなど)
+	・usingで定義した型エイリアス(TypeAlias::Math::Vector3、TypeAlias::ComPtrなど)
+	・クラス、構造体、Enum(外部ライブラリのもの(nlohmann::json、ImVec2、JPH::Vec3など)も含む)
+
+	「戻り値から型が推測できる」とは
+	・関数(メンバ関数、演算子、std::format、std::make_shared等も含む)の戻り値をそのまま受け取る場合
+	・Type(...)やType{...}のように右辺に型名が書かれている場合
+	※戻り値と変数の型が違う(暗黙の型変換をしている)場合は対象外で、型を明示する
+	例↓ XMMATRIX → Matrix、const char* → std::string、nanoseconds → duration<float>への変換など
+
+	const付きの場合
+	・型のサイズが8バイト以上 → 必ずconst auto&
+	・型のサイズが8バイト未満(多くのEnumなど) → const auto
+	理由 : 8バイト以上の値はコピーより参照のほうが軽く、戻り値が一時オブジェクトでも
+	const参照で受ければ寿命が延びるので安全に使えるから
+
+	constなしの場合
+	・値で受けていたものはauto、参照(&)で受けていたものはauto&にする
+	※const auto&に変えると値が変更できなくなり、auto&は一時オブジェクトを受け取れないため
+	　値で受けていたものを参照に変えてはいけない(コピーして書き換える処理が壊れる)
+
+	組み込み型のエイリアス(UINT、DWORD、ImGuiID、std::uint32_t、std::size_tなど)の場合
+	・ゲッター(Get～、Fetch～)の戻り値を受け取る場合 → auto / const auto(参照にはしない)
+	・それ以外(ヘッダーなどで型を明示する必要がある場合や、ゲッター以外の関数の戻り値など) → 型を明示する
+	例↓
+	const auto l_style     = FetchVALWindowStyle();
+	const auto l_errorCode = GetLastError();
+
+	ポインタの場合
+	・auto* / const auto* に統一する(後ろconstがある場合はauto* const / const auto* const)
+	例↓
+	const auto* l_viewPort  = ImGui::GetMainViewport();
+	const auto* l_lineStart = l_buffer + l_offset;
+
+	typedefされた生ポインタ(HINSTANCE、HMONITOR、HWNDなどのハンドル)の場合
+	・*が型名に含まれないため、auto / const auto で受け取る
+	例↓
+	const auto l_hInstance = FetchVALInstanceHandle();
+	const auto l_monitor   = MonitorFromWindow(m_hwnd, MONITOR_DEFAULTTONEAREST);
+
+	対象外
+	・組み込み型(float、int、boolなど)
+	・テンプレート引数の型(PayloadTypeなど、戻り値の型と一致するとは限らないもの)
+	・= {}、= nullptr、= 定数 のように戻り値以外で初期化するもの
+	・別の変数をコピーして初期化するもの
+
+	例↓ だめな例
+	const std::string           l_report      = std::format("{}", a_message);
+	const std::filesystem::path l_displayPath = std::filesystem::proximate(a_path);
+	const Enum::WindowStyle     l_style       = a_rootJson.value(k_styleKey, Enum::WindowStyle::Normal);
+	      nlohmann::json        l_rootJson    = nlohmann::json::array();
+	      ImGuiStyle&           l_imguiStyle  = ImGui::GetStyle();
+
+	例↓ よい例
+	const auto& l_report      = std::format("{}", a_message);
+	const auto& l_displayPath = std::filesystem::proximate(a_path);
+	const auto  l_style       = a_rootJson.value(k_styleKey, Enum::WindowStyle::Normal);
+	      auto  l_rootJson    = nlohmann::json::array();
+	      auto& l_imguiStyle  = ImGui::GetStyle();
+}
 ・配列の[]の位置を揃える
 {
 	例↓

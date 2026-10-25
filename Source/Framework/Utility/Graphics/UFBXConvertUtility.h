@@ -25,7 +25,10 @@ namespace FWK::Utility
 
         l_string.assign(a_fbxString.data, a_fbxString.length);
 
-        return std::filesystem::path(l_string).wstring();
+        // ufbxの文字列はUTF-8で入っているため、UTF-8としてUTF-16(std::wstring)へ変換する
+        // ※ std::filesystem::path(std::string)はWindowsの既定の文字コード(Shift-JISなど)として読むため、
+        //   日本語の名前(ブレンドシェイプ名など)で文字化けや例外が起きていた
+        return Utility::StringToWString(l_string);
     }
 
     inline TypeAlias::Math::Matrix ConvertUFBXMatrixToMatrix(const ufbx_matrix& a_fbxMatrix)

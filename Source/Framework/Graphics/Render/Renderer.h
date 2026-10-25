@@ -12,7 +12,7 @@ namespace FWK::Graphics
     public:
 
          Renderer() = default;
-        ~Renderer() = default;
+        ~Renderer();
 
         void INIT       ();
         void Deserialize(const nlohmann::json& a_rootJson);

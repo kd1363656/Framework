@@ -36,6 +36,6 @@ namespace FWK::Graphics
 
         static constexpr double k_invalidAnimationFrameRate = 0.0;
 
-        static constexpr std::uint64_t k_animationTerminalKeyFrameCount = 1ULL;
+        SkeletalAnimationModelFBXMorphExtractor m_morphExtractor = {};
     };
 }

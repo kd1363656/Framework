@@ -12,10 +12,6 @@ namespace FWK::Graphics
     {
     private:
 
-        static constexpr double k_initialTotalMS = 0.0;
-
-        static constexpr UINT64 k_initialSampleCount = 0ULL;
-
         // 同じ名前の区間の計測結果をまとめた統計
         struct ProfileStatistics final
         {
@@ -73,11 +69,12 @@ namespace FWK::Graphics
 
         inline static const std::filesystem::path k_reportFilePath = "Log/FrameProfileReport.txt";
 
-        static constexpr double k_targetFrameMS = 1000.0 / 60.0;
+        static constexpr double k_targetFrameMS  = 1000.0 / 60.0;
+        static constexpr double k_initialTotalMS = 0.0;
 
-        static constexpr UINT64 k_warmupFrameCount = 30ULL;
-
-        static constexpr UINT64 k_initialFrameCount = 0ULL;
+        static constexpr UINT64 k_warmupFrameCount   = 30ULL;
+        static constexpr UINT64 k_initialFrameCount  = 0ULL;
+        static constexpr UINT64 k_initialSampleCount = 0ULL;
 
         std::vector<ProfileStatistics> m_gpuStatisticsList     = {};
         std::vector<ProfileStatistics> m_cpuStatisticsList     = {};

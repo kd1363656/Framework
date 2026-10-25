@@ -17,8 +17,6 @@ namespace FWK::Graphics
     {
     private:
 
-        static constexpr UINT k_invalidQueryIndex = UINT_MAX;
-
         // 「Begin～End」の区間1つ分の記録
         struct ScopeRecord final
         {
@@ -27,8 +25,6 @@ namespace FWK::Graphics
             UINT m_beginQueryIndex = k_invalidQueryIndex;
             UINT m_endQueryIndex   = k_invalidQueryIndex;
         };
-
-        static constexpr UINT k_initialUsedQueryCount = 0U;
 
         // フレームリソース1つ分の記録
         // GPUは数フレーム遅れて実行するため、フレームリソースの数だけ記録を分けて持つ
@@ -70,6 +66,8 @@ namespace FWK::Graphics
         static constexpr UINT64 k_invalidTimestampFrequency = 0ULL;
 
         static constexpr UINT k_maxQueryCountPerFrame = 512U;
+        static constexpr UINT k_invalidQueryIndex     = UINT_MAX;
+        static constexpr UINT k_initialUsedQueryCount = 0U;
 
         static constexpr UINT k_scopeQueryCount   = 2U;
         static constexpr UINT k_singleQueryCount  = 1U;

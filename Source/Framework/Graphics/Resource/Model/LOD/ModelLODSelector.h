@@ -23,6 +23,11 @@ namespace FWK::Graphics
 
         const Struct::ModelMeshLOD* SelectPTRModelMeshLOD(const Struct::ModelMeshletData& a_modelMeshletData, const TypeAlias::Math::Matrix& a_worldMatrix, const float a_worldMaxScale) const;
 
+        // 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離(ワールド座標。0以上)を求める
+        // LODの許容誤差(画面上でm_maxScreenSpaceErrorPixelピクセル)を、このMeshの位置での長さに直し、実際のずれの倍率を掛けた値
+        // (どのLODが選ばれても、表面のずれはこの長さ以下になるので、覆う側が沈んでも覆われる側はその奥になる)
+        float CalculateCoveredLayerDepthOffset(const Struct::ModelMeshletData& a_modelMeshletData, const TypeAlias::Math::Matrix& a_worldMatrix, const float a_worldMaxScale) const;
+
         // 距離の最小値(カメラのすぐ近くで0除算にならないようにする)
         float FetchVALMinDistance() const;
 
@@ -33,6 +38,9 @@ namespace FWK::Graphics
         float GetVALMaxScreenSpaceErrorPixel() const { return m_maxScreenSpaceErrorPixel; }
 
     private:
+
+        // カメラからMeshを囲む球の表面までの距離(LODの選び方と、沈める量の計算で同じ距離を使う)
+        float CalculateModelMeshDistance(const Struct::ModelMeshletData& a_modelMeshletData, const TypeAlias::Math::Matrix& a_worldMatrix, const float a_worldMaxScale) const;
 
         static constexpr float k_initialProjectionScale       = 0.0F;
         static constexpr float k_initialNearClip              = 0.0F;

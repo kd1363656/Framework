@@ -1,5 +1,10 @@
 ﻿#include "StandardUnLitMaterial.h"
 
+bool FWK::Graphics::StandardUnLitMaterial::Deserialize(const nlohmann::json& a_rootJson)
+{
+    return m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
 void FWK::Graphics::StandardUnLitMaterial::BuildRuntimeResources()
 {
     // テクスチャが見つからない場合は、デフォルトのベースカラーテクスチャになる
@@ -23,28 +28,25 @@ bool FWK::Graphics::StandardUnLitMaterial::CreateGPUDataBuffer(const Device&    
                                           a_cbvSRVUAVDescriptorPool);
 }
 
-std::uint64_t FWK::Graphics::StandardUnLitMaterial::CalculateBinaryPayloadSize(const Converter::MaterialBinaryConverter& a_materialBinaryConverter) const
+nlohmann::json FWK::Graphics::StandardUnLitMaterial::Serialize() const
 {
-    auto l_payloadSize = a_materialBinaryConverter.CalculateSingleSize<TypeAlias::Math::Color>();
-
-    l_payloadSize += a_materialBinaryConverter.CalculateWStringSize(m_baseColorTextureFilePath);
-
-    return l_payloadSize;
+    return m_jsonConverter.Serialize(*this);
 }
-void FWK::Graphics::StandardUnLitMaterial::WriteBinaryPayload(const Converter::MaterialBinaryConverter& a_materialBinaryConverter, std::uint64_t& a_memoryWriteOffset) const
-{
-    a_materialBinaryConverter.WriteSingle (m_baseColorFactor,          a_memoryWriteOffset);
-    a_materialBinaryConverter.WriteWString(m_baseColorTextureFilePath, a_memoryWriteOffset);
-}
-bool FWK::Graphics::StandardUnLitMaterial::ReadBinaryPayload(const Converter::MaterialBinaryConverter& a_materialBinaryConverter, std::uint64_t& a_memoryReadOffset)
-{
-    if (!a_materialBinaryConverter.TryReadSingle (m_baseColorFactor,          a_memoryReadOffset)) { return false; }
-    if (!a_materialBinaryConverter.TryReadWString(m_baseColorTextureFilePath, a_memoryReadOffset)) { return false; }
 
-    return true;
+std::uint64_t FWK::Graphics::StandardUnLitMaterial::CalculateBinaryPayloadSize(const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter) const
+{
+    return m_binaryConverter.CalculatePayloadSize(*this, a_materialBaseBinaryConverter);
+}
+void FWK::Graphics::StandardUnLitMaterial::WriteBinaryPayload(const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter, std::uint64_t& a_memoryWriteOffset) const
+{
+    m_binaryConverter.WritePayload(*this, a_materialBaseBinaryConverter, a_memoryWriteOffset);
+}
+bool FWK::Graphics::StandardUnLitMaterial::ReadBinaryPayload(const Converter::MaterialBaseBinaryConverter& a_materialBaseBinaryConverter, std::uint64_t& a_memoryReadOffset)
+{
+    return m_binaryConverter.ReadPayload(*this, a_materialBaseBinaryConverter, a_memoryReadOffset);
 }
 
 bool FWK::Graphics::StandardUnLitMaterial::EditInspectorParameter()
 {
-    return m_inspector.EditInspector(*this);
+    return m_editInspector.EditInspector(*this);
 }

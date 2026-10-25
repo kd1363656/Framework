@@ -31,7 +31,7 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         const GPUSkinnedVertex l_skinnedVertex = LoadGPUSkinnedVertex(l_modelVertexIndex);
 
         // ワールド座標、法線、接線、ビュー座標を計算する
-        const float3 l_worldPosition          = TransformModelLocalPositionToWorld(l_skinnedVertex.position);
+        const float3 l_worldPosition          = ApplyModelLODCoveredLayerDepthOffset(TransformModelLocalPositionToWorld(l_skinnedVertex.position), l_modelVertexIndex);
         const float3 l_worldNormal            = TransformModelLocalNormalToWorld  (l_skinnedVertex.normal);
         const float4 l_worldTangent           = TransformModelLocalTangentToWorld (l_skinnedVertex.tangent);
         const float4 l_viewProjectionPosition = mul                               (float4(l_worldPosition, k_modelPositionElementW), g_viewProjectionMatrix);

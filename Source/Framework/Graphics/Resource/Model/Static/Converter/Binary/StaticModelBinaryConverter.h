@@ -45,6 +45,8 @@ namespace FWK::Converter
         // Version5 : 簡略化で三角形が減らない場合は Permissive → Sloppy の順に試すように変更(LODの作り方の変更)
         // Version6 : Materialを.materialファイルへ分け、.materialファイルのパスだけを保存するように変更
         // Version7 : LODの簡略化で法線とUVのずれも誤差に含め、Sloppy簡略化をやめた(LODの作り方の変更)
-        static constexpr std::uint16_t k_modelAssetVersion = 7U;
+        // Version8 : LODにモーフの崩れ(m_morphError)を追加した(ModelMeshLODの並びの変更)
+        // Version9 : 頂点ごとの覆われている層の数(m_lodCoveredLayerCountList)と、LODのずれの倍率(m_lodSurfaceDeviationScale)を追加した
+        static constexpr std::uint16_t k_modelAssetVersion = 9U;
     };
 }

@@ -21,15 +21,14 @@ namespace FWK::Graphics
     {
     private:
 
-        static constexpr std::uint32_t k_initialWrittenViewMask = 0U;
-
         // フレームリソース1つ分のデータ
         // CPUが書き込むBufferは、GPUが前のフレームで読んでいる最中に書き換えないようにフレームリソースの数だけ用意する
         struct FrameData final
         {
-            DynamicUploadStructuredBuffer m_instanceBuffer = {};
-            DynamicUploadStructuredBuffer m_meshInfoBuffer = {};
-            DynamicUploadStructuredBuffer m_lodBuffer      = {};
+            DynamicUploadStructuredBuffer m_instanceBuffer    = {};
+            DynamicUploadStructuredBuffer m_meshInfoBuffer    = {};
+            DynamicUploadStructuredBuffer m_lodBuffer         = {};
+            DynamicUploadStructuredBuffer m_morphWeightBuffer = {};
 
             // カリング用ComputeShaderへ渡す定数バッファ(Dispatch1回につき256byteずつ使う)
             UploadBuffer m_cullingPassConstantBuffer = {};
@@ -142,6 +141,7 @@ namespace FWK::Graphics
         static constexpr std::uint32_t k_frustumPlaneCountWithoutNear = 5U;
         static constexpr std::uint32_t k_trueValue                    = 1U;
         static constexpr std::uint32_t k_singleViewBit                = 1U;
+        static constexpr std::uint32_t k_initialWrittenViewMask       = 0U;
 
         static constexpr UINT k_singleThreadGroupCount  = 1U;
         static constexpr UINT k_initialThreadGroupCount = 0U;

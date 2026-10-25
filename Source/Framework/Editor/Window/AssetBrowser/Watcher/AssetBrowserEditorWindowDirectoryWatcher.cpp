@@ -200,7 +200,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
                              &l_writtenByteSize,
                              FALSE))
     {
-        const DWORD l_errorCode = GetLastError();
+        const auto l_errorCode = GetLastError();
 
         // 非同期I/Oがまだ完全に完了していない場合
         // 今Frameでは通知Bufferへ触らず
@@ -333,7 +333,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
             //            Cancel対象のOVERLAPPED、nullptrならHandle上の全I/O対象になるが、今回はこのWatcherのReadだけをCancelするため、m_overlappedを指定する);
             if (!CancelIoEx(m_directoryHandle, &m_overlapped))
             {
-                const DWORD l_errorCode = GetLastError();
+                const auto l_errorCode = GetLastError();
 
                 // ERROR_NOT_FOUNDは、Cancelしようとした時点で既にI/Oが完了した場合などに発生する
                 // つまり「Cancel対象がもう存在しない」だけなので、異常終了として扱わない
@@ -354,7 +354,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
                                      &l_writtenByteSize,
                                      TRUE))
             {
-                const DWORD l_errorCode = GetLastError();
+                const auto l_errorCode = GetLastError();
 
                 // CancelIoEx()によって正常にCancelされたI/Oは、
                 // GetOverlappedResult()でERROR_OPERATION_ABORTEDになる

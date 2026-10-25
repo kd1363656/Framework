@@ -38,12 +38,18 @@ namespace FWK::Graphics
         // モデルのベイク済みアニメーションを取得する(まだ無ければベイクして作成する)
         std::shared_ptr<SkeletalAnimationBakedSkinning> FindOrCreateBakedSkinning(SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord) const;
 
+        // インスタンスだけのモーフのウェイトを、モデルのチャンネル数に合わせ(足りない分は0)、エディターで設定した範囲へ収めてから表へ追加する
+        // 戻り値は表の中での開始位置(入りきらない場合は無効値)
+        std::uint32_t AddMorphWeightList(const SkeletalAnimationBakedSkinning& a_bakedSkinning, const std::vector<float>& a_morphWeightList);
+
         static constexpr std::size_t k_defaultDrawViewIndex = 0ULL;
 
         Utility::SmartPointerVectorList<std::weak_ptr<Struct::SkeletalAnimationModelGPUSkinnedDrawRequestData>> m_drawRequestDataSmartPointerVectorList = {};
 
         ModelGPUDrivenTableBuilder m_gpuDrivenTableBuilder = {};
         ModelGPUDrivenDrawer       m_gpuDrivenDrawer       = {};
+
+        std::vector<float> m_morphWeightWorkList = {};
 
         std::size_t m_currentDrawViewIndex = k_defaultDrawViewIndex;
 

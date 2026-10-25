@@ -52,10 +52,11 @@ cbuffer CBModelGPUDrivenCullingPass : register(b0)
     uint   g_candidateBufferUAVDescriptorIndex;
     uint   g_candidateCounterBufferUAVDescriptorIndex;
 
+    // g_morphOverrideWeightBufferSRVDescriptorIndex : インスタンスごとに上書きするモーフのウェイトのBuffer
     uint  g_maxCandidateCount;
     uint  g_isOrthographicLOD;
     float g_minProjectedSizeTexel;
-    uint  g_padding;
+    uint  g_morphOverrideWeightBufferSRVDescriptorIndex;
 };
 
 // オクルージョンカリングの候補(1回目で隠れていると判定された組み合わせ)
@@ -95,6 +96,11 @@ static const uint k_invalidDescriptorIndex = 0xFFFFFFFFU;
 
 static const uint k_firstLODIndex = 0U;
 
+// C++側のConstant::k_invalidGPUDrivenMorphWeightOffsetと同じ値(インスタンスごとのウェイトを使わない)
+static const uint k_invalidMorphWeightOffset = 0xFFFFFFFFU;
+
+static const float k_initialMorphWeightScale = 0.0F;
+
 static const uint k_boundsCornerCount = 8U;
 
 static const float k_positionElementW = 1.0F;
@@ -113,6 +119,7 @@ static const float k_occlusionDepthBias = 0.00001F;
 static const float k_orthographicLODDistance = 1.0F;
 
 static const float k_diameterScale = 2.0F;
+
 
 // 球(中心と半径)が視錐台の内側に少しでも入っているか判定する
 // 平面の法線は視錐台の内側を向いているため、
@@ -188,23 +195,93 @@ bool IsOccludedBoundingSphere(const float3 a_worldCenter, const float a_worldRad
     return l_nearestDepth > l_farthestDepth + k_occlusionDepthBias;
 }
 
+// このMeshで効いているモーフのウェイトの最大値を求める(このMeshが使うチャンネルだけを調べる)
+// 0なら、どのターゲットも効いていないので、LODを選ぶときにモーフの崩れを足さずに済む
+float CalculateMorphWeightScale(const ModelGPUDrivenMeshInfo a_meshInfo, const uint a_morphWeightBufferSRVDescriptorIndex, const uint a_morphWeightOffset)
+{
+    StructuredBuffer<uint>  l_morphChannelListBuffer = ResourceDescriptorHeap[a_meshInfo.morphChannelListBufferSRVDescriptorIndex];
+    StructuredBuffer<float> l_morphWeightBuffer      = ResourceDescriptorHeap[a_morphWeightBufferSRVDescriptorIndex];
+
+    float l_morphWeightScale = k_initialMorphWeightScale;
+
+    for (uint l_channelListIndex = 0U; l_channelListIndex < a_meshInfo.morphChannelListCount; ++l_channelListIndex)
+    {
+        const uint l_channelIndex = l_morphChannelListBuffer[l_channelListIndex];
+
+        // ウェイトは負の値(逆向きに動かす)も使えるため、絶対値で比べる
+        l_morphWeightScale = max(l_morphWeightScale, abs(l_morphWeightBuffer[a_morphWeightOffset + l_channelIndex]));
+    }
+
+    return l_morphWeightScale;
+}
+
+// LOD1段階分の、効かせているターゲットの分だけのモーフの崩れを求める
+// 崩れ = Σ(ターゲットのウェイトの絶対値 × そのターゲットをウェイト1で効かせたときの崩れ)
+// (口だけを効かせているなら口のターゲットの崩れだけが足されるので、体まで細かいLODにならない)
+// a_localLODIndex : Mesh内でのLOD番号(0がLOD0)
+float CalculateLODMorphError(const ModelGPUDrivenMeshInfo a_meshInfo, const uint a_morphWeightBufferSRVDescriptorIndex, const uint a_morphWeightOffset, const uint a_localLODIndex)
+{
+    StructuredBuffer<uint>  l_morphChannelListBuffer    = ResourceDescriptorHeap[a_meshInfo.morphChannelListBufferSRVDescriptorIndex];
+    StructuredBuffer<float> l_morphWeightBuffer         = ResourceDescriptorHeap[a_morphWeightBufferSRVDescriptorIndex];
+    StructuredBuffer<float> l_morphLODTargetErrorBuffer = ResourceDescriptorHeap[a_meshInfo.morphLODTargetErrorBufferSRVDescriptorIndex];
+
+    const uint l_targetErrorOffset = a_localLODIndex * a_meshInfo.morphChannelListCount;
+
+    float l_morphError = k_initialMorphWeightScale;
+
+    for (uint l_targetIndex = 0U; l_targetIndex < a_meshInfo.morphChannelListCount; ++l_targetIndex)
+    {
+        const float l_weight = abs(l_morphWeightBuffer[a_morphWeightOffset + l_morphChannelListBuffer[l_targetIndex]]);
+
+        // 効いていないターゲットは崩れも0なので、崩れを読まない
+        if (l_weight <= k_initialMorphWeightScale) { continue; }
+
+        l_morphError += l_weight * l_morphLODTargetErrorBuffer[l_targetErrorOffset + l_targetIndex];
+    }
+
+    return l_morphError;
+}
+
+// カメラから、Meshを囲む球の表面までの距離(LODの選び方と、覆われている頂点を奥へ押し出す距離の計算で同じ距離を使う)
+// 影(平行投影)では距離によって大きさが変わらないため、距離を1として扱う
+// (g_lodProjectionScaleには「1メートルがシャドウマップの何テクセルか」が入っている)
+float CalculateLODDistance(const float3 a_worldCenter, const float a_worldRadius)
+{
+    if (g_isOrthographicLOD == k_trueValue) { return k_orthographicLODDistance; }
+
+    return max(distance(g_cameraWorldPosition, a_worldCenter) - a_worldRadius, g_lodMinDistance);
+}
+
 // 画面上の誤差が許容値以下になる、最も三角形の少ないLODを選ぶ
-// (C++側のModelLODSelectorと同じ計算)
-ModelGPUDrivenMeshLOD SelectMeshLOD(const ModelGPUDrivenMeshInfo a_meshInfo, const float3 a_worldCenter, const float a_worldRadius, const float a_worldMaxScale)
+// (C++側のModelLODSelectorと同じ計算に、効かせているターゲットの分のモーフの崩れを足した物)
+// a_morphWeightBufferSRVDescriptorIndex : このインスタンスのウェイトのBuffer(無効値ならモーフの崩れを足さない)
+// a_morphWeightOffset                   : このインスタンスのウェイトがBufferの何番目から始まるか
+ModelGPUDrivenMeshLOD SelectMeshLOD(const ModelGPUDrivenMeshInfo a_meshInfo,
+                                    const float3                 a_worldCenter,
+                                    const float                  a_worldRadius,
+                                    const float                  a_worldMaxScale,
+                                    const uint                   a_morphWeightBufferSRVDescriptorIndex,
+                                    const uint                   a_morphWeightOffset)
 {
     StructuredBuffer<ModelGPUDrivenMeshLOD> l_lodBuffer = ResourceDescriptorHeap[g_lodBufferSRVDescriptorIndex];
 
-    // カメラから球の表面までの距離
-    // 影(平行投影)では距離によって大きさが変わらないため、距離を1として扱う
-    // (g_lodProjectionScaleには「1メートルがシャドウマップの何テクセルか」が入っている)
-    const float l_distance = g_isOrthographicLOD == k_trueValue ? k_orthographicLODDistance : max(distance(g_cameraWorldPosition, a_worldCenter) - a_worldRadius, g_lodMinDistance);
+    const float l_distance = CalculateLODDistance(a_worldCenter, a_worldRadius);
 
     // 三角形が一番少ないLODから順に調べる
     for (uint l_lodIndex = a_meshInfo.lodCount; l_lodIndex > k_firstLODIndex; --l_lodIndex)
     {
-        const ModelGPUDrivenMeshLOD l_lod = l_lodBuffer[a_meshInfo.lodOffset + l_lodIndex - 1U];
+        const uint                  l_localLODIndex = l_lodIndex - 1U;
+        const ModelGPUDrivenMeshLOD l_lod           = l_lodBuffer[a_meshInfo.lodOffset + l_localLODIndex];
 
-        const float l_screenSpaceErrorPixel = l_lod.simplifyError * a_worldMaxScale * g_lodProjectionScale / l_distance;
+        // LODの崩れ = 形の崩れ + 効かせているターゲットの分のモーフの崩れ
+        float l_lodError = l_lod.simplifyError;
+
+        if (a_morphWeightBufferSRVDescriptorIndex != k_invalidDescriptorIndex)
+        {
+            l_lodError += CalculateLODMorphError(a_meshInfo, a_morphWeightBufferSRVDescriptorIndex, a_morphWeightOffset, l_localLODIndex);
+        }
+
+        const float l_screenSpaceErrorPixel = l_lodError * a_worldMaxScale * g_lodProjectionScale / l_distance;
 
         if (l_screenSpaceErrorPixel <= g_lodMaxScreenSpaceErrorPixel) { return l_lod; }
     }
@@ -216,6 +293,37 @@ ModelGPUDrivenMeshLOD SelectMeshLOD(const ModelGPUDrivenMeshInfo a_meshInfo, con
 // 描画1回分の定数バッファと描画コマンドを書き込む
 void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDrivenMeshInfo a_meshInfo, const float3 a_worldCenter, const float a_worldRadius)
 {
+    // モーフを持つMeshなら、このインスタンスのウェイトがどこにあるかを決める
+    // ・インスタンスごとのウェイトがあれば、上書き用ウェイトBufferの指定された位置
+    // ・無ければ、ベイクしたウェイトの「このコマ」の位置
+    uint  l_morphWeightBufferSRVDescriptorIndex = k_invalidDescriptorIndex;
+    uint  l_morphWeightOffset                   = 0U;
+    float l_morphWeightScale                    = k_initialMorphWeightScale;
+
+    if (a_meshInfo.morphDeltaBufferSRVDescriptorIndex != k_invalidDescriptorIndex)
+    {
+        if (a_instance.morphWeightOffset != k_invalidMorphWeightOffset)
+        {
+            l_morphWeightBufferSRVDescriptorIndex = g_morphOverrideWeightBufferSRVDescriptorIndex;
+            l_morphWeightOffset                   = a_instance.morphWeightOffset;
+        }
+        else if (a_meshInfo.morphWeightBufferSRVDescriptorIndex != k_invalidDescriptorIndex &&
+                 a_meshInfo.skinningFrameCount > 0U)
+        {
+            l_morphWeightBufferSRVDescriptorIndex = a_meshInfo.morphWeightBufferSRVDescriptorIndex;
+            l_morphWeightOffset                   = (a_instance.animationFrameIndex % a_meshInfo.skinningFrameCount) * a_meshInfo.morphWeightStride;
+        }
+
+        if (l_morphWeightBufferSRVDescriptorIndex != k_invalidDescriptorIndex)
+        {
+            l_morphWeightScale = CalculateMorphWeightScale(a_meshInfo, l_morphWeightBufferSRVDescriptorIndex, l_morphWeightOffset);
+        }
+
+        // どのターゲットも効いていなければ(ウェイトが全て0)、形は元のままなのでモーフは無いものとして扱う
+        // (LODにモーフの崩れを足さず、メッシュシェーダーも移動量を1つも読まずに済む)
+        if (l_morphWeightScale <= k_initialMorphWeightScale) { l_morphWeightBufferSRVDescriptorIndex = k_invalidDescriptorIndex; }
+    }
+
     // LODを選ぶ(LODが無いMeshは全Meshletを描画する)
     uint l_meshletOffset = 0U;
     uint l_meshletCount  = a_meshInfo.allMeshletCount;
@@ -223,7 +331,12 @@ void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDri
 
     if (a_meshInfo.lodCount > k_firstLODIndex)
     {
-        const ModelGPUDrivenMeshLOD l_lod = SelectMeshLOD(a_meshInfo, a_worldCenter, a_worldRadius, a_instance.worldMaxScale);
+        const ModelGPUDrivenMeshLOD l_lod = SelectMeshLOD(a_meshInfo,
+                                                          a_worldCenter,
+                                                          a_worldRadius,
+                                                          a_instance.worldMaxScale,
+                                                          l_morphWeightBufferSRVDescriptorIndex,
+                                                          l_morphWeightOffset);
 
         l_meshletOffset = l_lod.meshletOffset;
         l_meshletCount  = l_lod.meshletCount;
@@ -265,6 +378,20 @@ void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDri
     l_drawRecord.meshletCount         = l_meshletCount;
     l_drawRecord.meshletOffset        = l_meshletOffset;
 
+    // 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離(ワールド座標。0以上)
+    // どのMeshも「画面上の誤差が許容値以下」のLODで描くため、表面のずれはこの位置で
+    // 許容値(ピクセル) × 距離 ÷ g_lodProjectionScale の長さ以下になる。その長さに、実際のずれの倍率を掛けて押し出す
+    // (覆う側の服が沈んでも、覆われている肌はさらにその奥になり、透けて見えなくなる)
+    // 影の描画では、隠れている面の前後関係は影の形に関係しないので押し出さない
+    l_drawRecord.lodCoveredLayerCountBufferSRVDescriptorIndex = a_meshInfo.lodCoveredLayerCountBufferSRVDescriptorIndex;
+
+    if (g_isOrthographicLOD != k_trueValue)
+    {
+        const float l_lodDistance = CalculateLODDistance(a_worldCenter, a_worldRadius);
+
+        l_drawRecord.lodCoveredLayerDepthOffset = a_meshInfo.lodSurfaceDeviationScale * g_lodMaxScreenSpaceErrorPixel * l_lodDistance / g_lodProjectionScale;
+    }
+
     // スキニングするモデルなら、このインスタンスのアニメーションのコマに対応するスキニング行列の位置を求める
     if (a_meshInfo.skinningMatrixBufferSRVDescriptorIndex != k_invalidDescriptorIndex &&
         a_meshInfo.skinningFrameCount > 0U)
@@ -274,6 +401,23 @@ void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDri
         l_drawRecord.skinningMatrixBufferSRVDescriptorIndex = a_meshInfo.skinningMatrixBufferSRVDescriptorIndex;
         l_drawRecord.skinningMatrixOffset                   = l_frameIndex * a_meshInfo.skinningPaletteStride + a_meshInfo.skinningPaletteBase;
         l_drawRecord.isGPUSkinning                          = k_trueValue;
+    }
+
+    // モーフを持ち、0でないウェイトがある場合だけ、メッシュシェーダーがスキニングの前にモーフを足す
+    // (ウェイトが全て0でも足す処理を行うと、メッシュシェーダーが頂点ごとに全ての移動量を読んでから読み飛ばすことになり、
+    //  500体の負荷テストでGPU時間が約4倍になった)
+    if (l_morphWeightBufferSRVDescriptorIndex != k_invalidDescriptorIndex)
+    {
+        l_drawRecord.morphVertexRangeBufferSRVDescriptorIndex = a_meshInfo.morphVertexRangeBufferSRVDescriptorIndex;
+        l_drawRecord.morphDeltaBufferSRVDescriptorIndex       = a_meshInfo.morphDeltaBufferSRVDescriptorIndex;
+        l_drawRecord.morphWeightBufferSRVDescriptorIndex      = l_morphWeightBufferSRVDescriptorIndex;
+        l_drawRecord.morphWeightOffset                        = l_morphWeightOffset;
+    }
+    else
+    {
+        l_drawRecord.morphVertexRangeBufferSRVDescriptorIndex = k_invalidDescriptorIndex;
+        l_drawRecord.morphDeltaBufferSRVDescriptorIndex       = k_invalidDescriptorIndex;
+        l_drawRecord.morphWeightBufferSRVDescriptorIndex      = k_invalidDescriptorIndex;
     }
 
     l_drawRecordBuffer[l_drawIndex] = l_drawRecord;

@@ -37,7 +37,7 @@ namespace FWK::Graphics
 
     private:
 
-        bool BuildSkeletalAnimationModelAssetData(const std::filesystem::path& a_filePath, SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
+        bool BuildSkeletalAnimationModelAssetData(const std::filesystem::path& a_filePath, const SkeletalAnimationModelMorphSetting& a_morphSetting, SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
 
         bool BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord,
                                                     const Device&                                        a_device,
@@ -52,6 +52,12 @@ namespace FWK::Graphics
                                                                  TypeAlias::CBVSRVUAVDescriptorPool&              a_cbvSRVUAVDescriptorPool,
                                                                  Struct::SkeletalAnimationModelBatchUploadRecord& a_skeletalAnimationModelBatchUploadRecord) const;
 
+        // モデルの全ターゲットのうち、設定が無いターゲットの設定を既定値で追加する(追加した場合はtrue)
+        bool UpdateMorphSetting(const SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord, SkeletalAnimationModelMorphSetting& a_morphSetting) const;
+
+        // .skeletalModelを作ったときのLOD保護が、今の設定と同じか(違う場合はLODを作り直す)
+        bool IsMorphLODProtectionApplied(const SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord, const SkeletalAnimationModelMorphSetting& a_morphSetting) const;
+
         bool TryResolveCachedSkeletalAnimationModelResult(const std::filesystem::path& a_filePath, Struct::SkeletalAnimationModelLoadResult& a_skeletalAnimationModelLoadResult);
 
         PendingSkeletalAnimationModelBatchUploadRecordMap m_pendingModelBatchUploadRecordMap = {};
@@ -59,6 +65,7 @@ namespace FWK::Graphics
         AssetStorage<SkeletalAnimationModelRecord> m_modelStorage = {};
 
         SkeletalAnimationModelBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
+        SkeletalAnimationModelMorphBuilder             m_morphBuilder             = {};
 
         SkeletalAnimationModelFBXLoader                           m_loader                 = {};
         ModelMaterialRuntimeBuilder<SkeletalAnimationModelRecord> m_materialRuntimeBuilder = {};

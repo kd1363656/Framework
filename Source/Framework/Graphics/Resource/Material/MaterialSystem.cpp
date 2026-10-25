@@ -169,11 +169,11 @@ bool FWK::Graphics::MaterialSystem::SubtractMaterialReferenceCount(const std::we
 
 std::shared_ptr<FWK::Graphics::MaterialBase> FWK::Graphics::MaterialSystem::CreateMaterialFromBinaryFile(const std::filesystem::path& a_filePath) const
 {
-    Converter::MaterialBinaryConverter l_materialBinaryConverter = {};
+    Converter::MaterialBaseBinaryConverter l_materialBaseBinaryConverter = {};
 
     std::string l_typeName = {};
 
-    if (!l_materialBinaryConverter.TryReadTypeName(a_filePath, l_typeName)) { return nullptr; }
+    if (!l_materialBaseBinaryConverter.TryReadTypeName(a_filePath, l_typeName)) { return nullptr; }
 
     const auto& l_materialFactory = TypeAlias::MaterialSharedFactory::GetInstance();
 

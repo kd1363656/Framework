@@ -104,6 +104,10 @@ namespace FWK::Converter
             if (!TryReadSingleBinaryData(l_modelMeshletData.m_boundsCenter, a_memoryReadOffset)) { return false; }
             if (!TryReadSingleBinaryData(l_modelMeshletData.m_boundsRadius, a_memoryReadOffset)) { return false; }
 
+            // 頂点ごとの覆われている層の数(頂点数と同じ数)と、LODで表面が実際にずれた量の倍率
+            if (!TryReadBinaryDataList (l_modelMeshBinaryHeader.m_vertexCount, l_modelMeshletData.m_lodCoveredLayerCountList, a_memoryReadOffset)) { return false; }
+            if (!TryReadSingleBinaryData(l_modelMeshletData.m_lodSurfaceDeviationScale, a_memoryReadOffset))                                         { return false; }
+
             return true;
         }
 
@@ -147,6 +151,10 @@ namespace FWK::Converter
 
             WriteBinaryData(k_singleBinaryElementCount, &l_modelMeshletData.m_boundsCenter, a_memoryWriteOffset);
             WriteBinaryData(k_singleBinaryElementCount, &l_modelMeshletData.m_boundsRadius, a_memoryWriteOffset);
+
+            // 頂点ごとの覆われている層の数(頂点数と同じ数)と、LODで表面が実際にずれた量の倍率
+            WriteBinaryData(l_modelMeshBinaryHeader.m_vertexCount, l_modelMeshletData.m_lodCoveredLayerCountList.data(), a_memoryWriteOffset);
+            WriteBinaryData(k_singleBinaryElementCount,            &l_modelMeshletData.m_lodSurfaceDeviationScale,      a_memoryWriteOffset);
         }
 
         template <typename ModelMeshType>
@@ -175,6 +183,8 @@ namespace FWK::Converter
 
             l_modelMeshBinaryFileSize += CalculateBinaryDataSize<Struct::ModelMeshLOD>    (l_modelMeshletData.m_lodList.size());
             l_modelMeshBinaryFileSize += CalculateBinaryDataSize<TypeAlias::Math::Vector3>(k_singleBinaryElementCount);
+            l_modelMeshBinaryFileSize += CalculateBinaryDataSize<float>                   (k_singleBinaryElementCount);
+            l_modelMeshBinaryFileSize += CalculateBinaryDataSize<std::uint32_t>           (l_modelMeshletData.m_lodCoveredLayerCountList.size());
             l_modelMeshBinaryFileSize += CalculateBinaryDataSize<float>                   (k_singleBinaryElementCount);
 
             return l_modelMeshBinaryFileSize;

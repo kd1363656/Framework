@@ -5,17 +5,13 @@ namespace FWK
     template <typename Type>
     class UUIDRegistry final
     {
-    private:
-
-        static constexpr bool k_isWeakPTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak;
-
     public:
 
          UUIDRegistry() = default;
         ~UUIDRegistry() = default;
 
         bool Add(const Type& a_type, const boost::uuids::uuid& a_uuid)
-            requires k_isWeakPTR
+            requires Concept::IsWeakPTRConcept<Type>
         {
             const auto& l_type = a_type.lock();
 

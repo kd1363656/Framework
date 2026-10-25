@@ -185,6 +185,13 @@ namespace FWK::Utility
         return Utility::StringToUUID(a_json.value(l_key, std::string{}));
     }
 
+    // jsonの文字列はUTF-8で保存されているため、UTF-16(std::wstring)へ変換して取り出す
+    // キーが無い場合は空の文字列を返す
+    inline std::wstring DeserializeWString(const nlohmann::json& a_json, const std::string_view& a_key)
+    {
+        return Utility::StringToWString(a_json.value(a_key, std::string{}));
+    }
+
     inline nlohmann::json SerializeColor(const TypeAlias::Math::Color& a_color , const std::string_view& a_key)
     {
         // キーとなる文字列がなければ空の"json"を返す
@@ -281,6 +288,18 @@ namespace FWK::Utility
         return nlohmann::json
         {
             { l_key, boost::uuids::to_string(a_uuid) }
+        };
+    }
+
+    // nlohmann::jsonはUTF-8の文字列しか扱えないため、UTF-16(std::wstring)をUTF-8へ変換して保存する
+    inline nlohmann::json SerializeWString(const std::wstring& a_wString, const std::string_view& a_key)
+    {
+        // キーとなる文字列がなければ空の"json"を返す
+        if (a_key.empty()) { return {}; }
+
+        return nlohmann::json
+        {
+            { a_key, Utility::WStringToString(a_wString) }
         };
     }
 }
