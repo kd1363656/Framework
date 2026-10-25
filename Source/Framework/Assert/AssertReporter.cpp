@@ -10,7 +10,7 @@ void FWK::AssertReporter::Report(const std::string_view& a_message, const std::s
     // std::source_location::file_name()とline()で
     // 「どのファイルの何行目か」を1つの文字列にして、報告済みかどうかの目印にする
     // std::unordered_set::insert()は、既に同じ値があると.secondがfalseになる
-    if (const auto l_insertResult = m_reportedSiteSet.insert(std::format("{}:{}", a_location.file_name(), a_location.line()));
+    if (const auto l_insertResult = m_reportedSiteSet.emplace(std::format("{}:{}", a_location.file_name(), a_location.line()));
         !l_insertResult.second)
     {
         return;

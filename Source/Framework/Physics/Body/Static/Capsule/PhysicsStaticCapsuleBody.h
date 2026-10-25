@@ -4,12 +4,6 @@ namespace FWK::Physics
 {
     class PhysicsStaticCapsuleBody final : public PhysicsStaticBodyBase
     {
-    private:
-
-        // TODO
-        friend class Scene;
-
-
     public:
 
          PhysicsStaticCapsuleBody()          = default;

@@ -261,7 +261,9 @@ bool Application::IsEditorTextInputActive() const
     // ImGuiIO::WantTextInputは
     // 「いまImGuiのInputTextなどに文字を入力中である」ことを表すフラグ
     // trueの間はキーボード入力をImGui側に任せる必要がある
-    return ImGui::GetIO().WantTextInput;
+    const auto& l_io = ImGui::GetIO();
+
+    return l_io.WantTextInput;
 }
 void Application::UpdateWindowTitleBar() const
 {

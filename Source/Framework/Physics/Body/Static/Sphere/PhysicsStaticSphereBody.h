@@ -4,11 +4,6 @@ namespace FWK::Physics
 {
     class PhysicsStaticSphereBody final : public PhysicsStaticBodyBase
     {
-    private:
-
-        // TODO
-        friend class Scene;
-
     public:
 
          PhysicsStaticSphereBody()          = default;
