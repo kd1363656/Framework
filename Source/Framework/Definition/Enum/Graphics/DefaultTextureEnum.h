@@ -8,6 +8,8 @@ namespace FWK::Enum
         Normal,
         Metallic,
         Roughness,
+        Mask,
+        Matcap,
         Count,
     };
 
@@ -18,6 +20,8 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(DefaultTextureType::Normal),
         FWK_JSON_ENUM_VALUE(DefaultTextureType::Metallic),
         FWK_JSON_ENUM_VALUE(DefaultTextureType::Roughness),
+        FWK_JSON_ENUM_VALUE(DefaultTextureType::Mask),
+        FWK_JSON_ENUM_VALUE(DefaultTextureType::Matcap),
         FWK_JSON_ENUM_VALUE(DefaultTextureType::Count)
     )
 

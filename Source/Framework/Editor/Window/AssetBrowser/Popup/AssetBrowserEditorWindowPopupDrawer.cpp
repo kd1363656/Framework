@@ -139,7 +139,6 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
 {
     // アイコン + ラベル文字列を構築
     const auto& l_label        = std::string{ k_imguiFontAwesomeFolderPlusIcon } + " " + std::string{ k_createNewFolderLabel };
-          auto& l_folderPane   = a_assetBrowserEditorWindow.GetMutableREFFolderPane ();
           auto& l_assetCreator = a_assetBrowserEditorWindow.GetREFAssetCreator      ();
           auto& l_renameState  = a_assetBrowserEditorWindow.GetMutableREFRenameState();
 
@@ -161,44 +160,11 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
 
         if (l_result.m_isSuccess)
         {
-            // 作成したフォルダがツリーに見えるように
-            // 親フォルダを開状態にする
-            // これを行わないと親ノードが閉じたままで
-            // 新規フォルダ(とリネーム用InputText)が表示されない
-            // AssetPaneからの作成の場合もFolderPaneツリーの親を開いておくことで
-            // FolderPaneに切り替えた時に展開された状態で表示される
-            l_folderPane.ApplyFolderOpenState(a_targetFolderPath, true);
+            // 作成したフォルダを選択状態にする
+            // ShortcutHandler(Ctrl + Shift + N)と共通の処理
+            a_assetBrowserEditorWindow.SelectCreatedFolder(l_result.m_createdFilePath, a_targetFolderPath, a_contextPopup);
 
-            // 作成したフォルダを現在選択中のファイルパスにする
-            // 選択状態になることでハイライト表示され
-            // 次の操作(コピー/切り取り/複製等)の対象になる
-            auto& l_selectionState = l_folderPane.GetMutableREFSelectionState();
-            
-            // コンテキストに応じて現在参照中フォルダパス(m_currentSelectFolderPath)を制御
-            // AssetPane_OnEmpty   : 変更しない(現在のフォルダに留まり新規フォルダをカード表示)
-            // AssetPane_OnFolder  : 作成先(選択フォルダ)へ移動し新規フォルダをカード表示
-            //                       AssetPaneのDrawCardRenameでリネームする
-            // FolderPane_OnFolder : 新規フォルダへ移動しFolderPaneツリーでリネームする
-            if (a_contextPopup == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder)
-            {
-                // 作成先(選択フォルダ)を現在参照中フォルダにする
-                // 新規フォルダがそのフォルダ内にカードとして表示され
-                // AssetPaneのDrawCardRenameでリネーム可能になる
-                a_assetBrowserEditorWindow.SetCurrentSelectFolderPath(a_targetFolderPath);
-
-                // 新規フォルダを選択(現在参照中フォルダは上で設定済みなので更新しない)
-                l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_assetBrowserEditorWindow, false);
-            }
-            else
-            {
-                // AssetPaneOn_Empty    : 現在参照中フォルダを変更しない            (false)
-                // FolderPane_OnFolder : 新規フォルダを現在参照中のファイルダにする(true)
-                const bool l_updateCurrentFolderPath = a_contextPopup != Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
-
-                l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_assetBrowserEditorWindow, l_updateCurrentFolderPath);
-            }
-
-            // 作成性孤児、名前変更モードへ移行
+            // 作成成功時、名前変更モードへ移行
             // ユーザーがすぐにフォルダ名を編集できるようにする
             StartRename(l_result.m_createdFilePath, l_renameState);
         }

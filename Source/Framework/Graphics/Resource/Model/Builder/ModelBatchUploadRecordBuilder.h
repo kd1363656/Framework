@@ -26,6 +26,7 @@ namespace FWK::Graphics
             auto& l_meshletBoundsBuffer     = a_modelMeshRuntimeData.m_meshletBoundsBuffer;
 
             auto& l_lodCoveredLayerCountBuffer = a_modelMeshRuntimeData.m_lodCoveredLayerCountBuffer;
+            auto& l_outlineNormalBuffer        = a_modelMeshRuntimeData.m_outlineNormalBuffer;
 
             // 頂点バッファーストラクチャードバッファーの作成
             FWK_ASSERT_RETURN_VALUE_IF(!l_vertexBuffer.Create(a_modelMesh.m_modelVertexList,
@@ -82,9 +83,25 @@ namespace FWK::Graphics
                                                                             "LODCoveredLayerCountBuffer用StructuredBufferの作成に失敗しました。",
                                                                             false);
 
+            // 頂点ごとの輪郭線を押し出す向き(スムーズ法線)のストラクチャードバッファーの作成
+            // ファイルには保存せず、読み込むたびに頂点と三角形から作る(輪郭線を描くメッシュシェーダーが読む)
+            const auto& l_outlineNormalList = m_outlineNormalBuilder.BuildOutlineNormalList(a_modelMesh);
+
+            FWK_ASSERT_RETURN_VALUE_IF(!l_outlineNormalBuffer.Create(l_outlineNormalList,
+                                                                     a_device,
+                                                                     a_gpuMemoryAllocator,
+                                                                     a_bufferUploadCommandList,
+                                                                     a_cbvSRVUAVDescriptorPool),
+                                                                     "OutlineNormalBuffer用StructuredBufferの作成に失敗しました。",
+                                                                     false);
+
             return true;
         }
 
         void ReleaseModelMeshRuntimeData(Struct::ModelMeshRuntimeDataBase& a_modelMeshRuntimeData) const;
+
+    private:
+
+        ModelOutlineNormalBuilder m_outlineNormalBuilder = {};
     };
 }

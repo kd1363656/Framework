@@ -11,8 +11,6 @@ namespace FWK::Constant
 
     inline constexpr std::uint32_t k_initialGPUDrivenMeshInfoCount = 0U;
 
-    inline constexpr std::uint32_t k_initialGPUDrivenMeshInfoPadding = 0U;
-
     inline constexpr float k_initialGPUDrivenMeshInfoLODSurfaceDeviationScale = 1.0F;
 
     inline constexpr std::uint32_t k_initialGPUDrivenSkinningInfoValue = 0U;

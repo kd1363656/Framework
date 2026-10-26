@@ -8,10 +8,10 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
 
     // .staticModelが存在しない/FBXより古い/元FBXが存在しない場合は、
     // ここでは失敗扱いにして、呼び出し側でFBX読み込みへ進ませる
-    if (!CanLoadAsset(a_filePath, k_staticModelAssetExtension)) { return false; }
+    if (!CanLoadAsset(a_filePath, Constant::k_staticModelAssetExtension)) { return false; }
 
     // 読み込み用MemoryMappedFileの作成
-    if (const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath, k_staticModelAssetExtension);
+    if (const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath, Constant::k_staticModelAssetExtension);
         !CreateReadMemoryMappedFile(l_staticModelAssetFilePath))
     {
         return false;
@@ -96,7 +96,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveAsset(const Graphics::Stati
     FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "Assetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
     // FBXと同じ場所・同じ名前で拡張子だけ.staticModelにした保存先を作る
-    const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath, k_staticModelAssetExtension);
+    const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath, Constant::k_staticModelAssetExtension);
 
     // StaticModelData全体を保存したときのファイルサイズを計算する
     const auto& l_modelAssetFileSize = CalculateAssetFileSize(l_staticModelData);

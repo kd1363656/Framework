@@ -1,19 +1,8 @@
 ﻿#include "../ModelStandard.hlsli"
 #include "ModelStandardLit.hlsli"
 #include "../../Shadow/Cascade/CascadeShadowMapPass.hlsli"
+#include "../../../Light/LightPass.hlsli"
 #include "../../../Material/Standard/Lit/StandardLitMaterial.hlsli"
-
-cbuffer CBLightPass : register(b2)
-{
-    float3 g_directionalLightDirection;
-    float  g_directionalLightIntensity;
-    
-    float3 g_directionalLightColor;
-    float  g_lightPassPadding;
-    
-    float3 g_ambientLightColor;
-    float  g_ambientLightIntensity;
-};
 
 // 0除算を避けるための小さな値
 // NdotVやNdotLが0に近いと、Cook-Torranceの分母が0に近くなるため、
@@ -29,12 +18,6 @@ static const float k_minRoughnessForSpecularStability = 0.04F;
 // 非金属の基本反射率
 // 多くの非金属は真正面から見た反射率が大体0.04付近
 static const float k_defaultDielectricF0 = 0.04F;
-
-// NormalMapは通常0.0F ~ 1.0Fで保存されている
-// PBR計算では-1.0F ~ 1.0Fの方向ベクトルとして使いたいので、
-// normal * 2.0F - 1.0Fで-1.0F ~ 1.0Fの値を取得する
-static const float k_normalMapStoredRangeScale = 2.0F;
-static const float k_normalMapStoredRangeBias  = 1.0F;
 
 // Cook-TorranceSpecularの分母で使う係数。
 // MicrofacetBRDFの式では、Specular = D * G * F / (4 * NdotV * NdotL)になる
@@ -266,52 +249,6 @@ float CalculateDisneyDiffuseFactor(const float a_normalDotView,
     return l_lightScatter * l_viewScatter;
 }
 
-// NormalMapを使ってWorld空間の法線を作る。
-// 頂点法線だけでは、面の細かい凹凸を表現できない。
-// NormalMapからTangent空間の法線を読み取り、
-// TBN行列でWorld空間の法線へ変換する
-float3 FetchWorldNormal(const MSOutputLit a_input, const uint a_normalTextureSRVDescriptorIndex)
-{
-    Texture2D<float4> l_normalTexture = ResourceDescriptorHeap[a_normalTextureSRVDescriptorIndex];
-    
-    // MeshShaderから渡されたWorld空間の法線
-    // 補間後の値なので、念のためnormalizeする
-    const float3 l_worldNormal = normalize(a_input.worldNormal);
-    
-    // MeshShaderから渡されたWorld空間のTangent
-    // こちらも補間後の値なのでnormalizeする
-    const float3 l_worldTangent = normalize(a_input.worldTangent.xyz);
-    
-    // TangentをNormalに対して直交化する
-    // 頂点データやラスタライズ時の補間の影響で
-    // TangentとNormalが完全に直交していない場合がある。
-    // そのままTBN行列を作るとNormalMapの向きが歪むため、
-    // TangentからNormal方向の成分を取り除いて、直交したTangentにする
-    const float3 l_orthogonalWorldTangent = normalize(l_worldTangent - l_worldNormal * dot(l_worldNormal, l_worldTangent));
-
-    // Bitangentを作る
-    // a_input.worldTangent.wはBitangentの向きを補正
-    // ミラーUVなどでBitangentの向きが反転する場合があるため、
-    // tangent.wをかけて向きを補正する
-    const float3 l_worldBitangent = normalize(cross(l_worldNormal, l_orthogonalWorldTangent) * a_input.worldTangent.w);
-
-    // Tangent空間からWorld空間へ変換するためのTBN行列
-    // T = Tangent
-    // B = Bitangent
-    // N = Normal
-    const float3x3 l_tangentToWorldMatrix = float3x3(l_orthogonalWorldTangent, l_worldBitangent, l_worldNormal);
-    
-    // NormalMapは通常0.0F ~ 1.0Fで保存されている
-    // しかし、法線方向として使うには-1.0F ~ 1.0Fに戻す必要がある。
-    // 0.0F -> -1.0F
-    // 0.5F ->  0.0F
-    // 1.0F ->  1.0F
-    const float3 l_tangentNormal = l_normalTexture.Sample(g_textureSampler, a_input.uv).xyz * k_normalMapStoredRangeScale - k_normalMapStoredRangeBias;
-    
-    // Tangent空間のNormalMap法線をWorld空間へ変換する
-    return normalize(mul(l_tangentNormal, l_tangentToWorldMatrix));
-}
-
 float4 main(const MSOutputLit a_input) : SV_Target0
 {
     // このMeshのMaterial(Lit描画に必要な値とテクスチャ)
@@ -334,7 +271,7 @@ float4 main(const MSOutputLit a_input) : SV_Target0
     const float l_roughness = max(saturate(l_roughnessTexture.Sample(g_textureSampler, a_input.uv).r * l_material.roughnessFactor), k_minRoughnessForSpecularStability);
 
     // NormalMap込みのWorld空間法線
-    const float3 l_normal = FetchWorldNormal(a_input, l_material.normalTextureSRVDescriptorIndex);
+    const float3 l_normal = FetchWorldNormal(a_input, l_material.normalTextureSRVDescriptorIndex, k_modelFullNormalMapStrength);
 
     // Pixelからカメラへ向かう方向
     const float3 l_viewDirection = normalize(g_cameraWorldPosition - a_input.worldPosition);

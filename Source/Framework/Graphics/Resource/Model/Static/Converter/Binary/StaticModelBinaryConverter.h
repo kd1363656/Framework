@@ -32,10 +32,6 @@ namespace FWK::Converter
 
         std::uint64_t CalculateAssetFileSize(const Graphics::StaticModelRecord::ModelData& a_modelData) const;
 
-        // StaticModelのバイナリーファイル用拡張子
-        // SkeletalModelと同じFBXから作っても別ファイルになるように、モデルの種類ごとに拡張子を分ける
-        inline static const std::filesystem::path k_staticModelAssetExtension = ".staticModel";
-
         static constexpr std::uint16_t k_modelAssetTypeID = 0x5354U;
 
         // ※ 注意 : Assetとして保存する構造体が変化したらバージョンを上げる

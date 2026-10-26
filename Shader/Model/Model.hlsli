@@ -25,7 +25,10 @@ static const uint k_modelInvalidDescriptorIndex = 0xFFFFFFFFU;
 // cbufferのuint型のフラグ(bool)の偽の値
 static const uint k_modelFalseValue = 0U;
 
-static const float k_modelEmptyLODCoveredLayerDepthOffset = 0.0F;
+static const float k_modelEmptyLODCoveredLayerDepthOffsetRatio = 0.0F;
+
+// カメラと頂点が重なっている場合に0除算にならないようにする距離の最小値
+static const float k_modelMinLODCoveredLayerDistance = 0.0001F;
 
 static const uint k_modelMeshShaderThreadCountX = 32U;
 static const uint k_modelMeshShaderThreadCountY = 1U;
@@ -77,11 +80,12 @@ cbuffer CBModelPerObject : register(b1)
     // g_meshletCount     : そのLODのMeshlet数
     // 全LODのMeshletは1つのBufferへ連結して入っているため、
     // 「先頭番号 + 個数」で使う範囲を指定してLODを切り替える
-    // g_lodCoveredLayerDepthOffset                    : 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離(ワールド座標。0以上)
+    // g_lodCoveredLayerDepthOffsetRatio               : 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離の、カメラからの距離に対する割合(0以上)
+    //                                                  押し出す距離 = この値 × 頂点のカメラからの距離 × 覆われている層の数
     // g_lodCoveredLayerCountBufferSRVDescriptorIndex : 頂点ごとの覆われている層の数のBuffer
     uint  g_meshletCount;
     uint  g_meshletOffset;
-    float g_lodCoveredLayerDepthOffset;
+    float g_lodCoveredLayerDepthOffsetRatio;
     uint  g_lodCoveredLayerCountBufferSRVDescriptorIndex;
 
     // メッシュシェーダーの中でスキニングする場合に使う値
@@ -101,6 +105,13 @@ cbuffer CBModelPerObject : register(b1)
     uint g_morphDeltaBufferSRVDescriptorIndex;
     uint g_morphWeightBufferSRVDescriptorIndex;
     uint g_morphWeightOffset;
+
+    // 輪郭線を描く場合に使う値
+    // g_outlineNormalBufferSRVDescriptorIndex : 頂点ごとの輪郭線を押し出す向き(スムーズ法線)のBuffer
+    uint g_outlineNormalBufferSRVDescriptorIndex;
+    uint g_cbModelPerObjectPadding;
+    uint g_cbModelPerObjectPadding2;
+    uint g_cbModelPerObjectPadding3;
 };
 
 // 三角形1個分のPrimitiveIndexをuint3で取得する

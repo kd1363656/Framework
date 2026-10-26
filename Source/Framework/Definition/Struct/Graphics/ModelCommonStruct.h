@@ -136,5 +136,9 @@ namespace FWK::Struct
         Graphics::StaticStructuredBuffer m_meshletBoundsBuffer = {};
 
         Graphics::StaticStructuredBuffer m_lodCoveredLayerCountBuffer = {};
+
+        // 頂点ごとの輪郭線を押し出す向き(スムーズ法線)。保存はせず、読み込み時にModelOutlineNormalBuilderが作る
+        // 要素はuint(Tangent空間の向きをOctahedral符号化した物)。HLSL側(ModelRitchToon.hlsli)と同じ詰め方にする
+        Graphics::StaticStructuredBuffer m_outlineNormalBuffer = {};
     };
 }

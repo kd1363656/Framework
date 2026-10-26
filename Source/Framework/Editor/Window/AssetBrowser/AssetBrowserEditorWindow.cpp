@@ -219,6 +219,68 @@ nlohmann::json FWK::Editor::AssetBrowserEditorWindow::Serialize()
     return m_jsonConverter.Serialize(*this);
 }
 
+void FWK::Editor::AssetBrowserEditorWindow::SelectCreatedFolder(const std::filesystem::path&             a_createdFolderPath,
+                                                                const std::filesystem::path&             a_parentFolderPath,
+                                                                const Enum::AssetBrowserPopupContextType a_contextType)
+{
+    // 作成したフォルダがツリーに見えるように
+    // 親フォルダを開状態にする
+    // これを行わないと親ノードが閉じたままで
+    // 新規フォルダ(とリネーム用InputText)が表示されない
+    // AssetPaneからの作成の場合もFolderPaneツリーの親を開いておくことで
+    // FolderPaneに切り替えた時に展開された状態で表示される
+    m_folderPane.ApplyFolderOpenState(a_parentFolderPath, true);
+
+    auto& l_folderSelectionState = m_folderPane.GetMutableREFSelectionState();
+
+    // コンテキストに応じて現在参照中フォルダパス(m_currentSelectFolderPath)を制御
+    // AssetPane_OnEmpty   : 変更しない(現在のフォルダに留まり新規フォルダをカード表示)
+    // AssetPane_OnFolder  : 作成先(選択フォルダ)へ移動し新規フォルダをカード表示
+    //                       AssetPaneのDrawCardRenameでリネームする
+    // FolderPane_OnFolder : 新規フォルダへ移動しFolderPaneツリーでリネームする
+    if (a_contextType == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder)
+    {
+        // 新規フォルダをツリーで選択し、現在参照中フォルダにする
+        l_folderSelectionState.SelectSingleFolder(a_createdFolderPath, *this, true);
+
+        return;
+    }
+
+    if (a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder)
+    {
+        // 作成先(選択フォルダ)を現在参照中フォルダにする
+        // 新規フォルダがそのフォルダ内にカードとして表示される
+        m_currentSelectFolderPath = a_parentFolderPath;
+    }
+
+    // ツリー側も新規フォルダを選択(現在参照中フォルダは変更しない)
+    l_folderSelectionState.SelectSingleFolder(a_createdFolderPath, *this, false);
+
+    // AssetPaneのカードも選択状態にする(Unityと同じく作成直後のフォルダをハイライト)
+    // AssetPaneはFolderPaneとは別の選択状態を持つため
+    // こちらも選択しないとカードがハイライトされない
+    m_assetPane.SelectSingleFile(a_createdFolderPath, *this);
+}
+void FWK::Editor::AssetBrowserEditorWindow::ApplyRenamedFilePath(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath)
+{
+    if (a_oldFilePath == a_newFilePath) { return; }
+
+    // リネーム後も選択状態を維持するため
+    // 両Paneの選択状態に残っている旧パスを新パスへ付け替える
+    auto& l_folderSelectionState = m_folderPane.GetMutableREFSelectionState();
+
+    l_folderSelectionState.ReplaceFilePath(a_oldFilePath, a_newFilePath);
+    m_assetPane.ReplaceFilePath           (a_oldFilePath, a_newFilePath);
+
+    // 現在参照中フォルダがリネームされた場合も付け替える
+    // 付け替えないとDirectoryWatcherの同期時に「削除された」と判定され
+    // 親フォルダへ戻されて選択が外れてしまう
+    if (m_currentSelectFolderPath == a_oldFilePath)
+    {
+        m_currentSelectFolderPath = a_newFilePath;
+    }
+}
+
 void FWK::Editor::AssetBrowserEditorWindow::BuildFolderHierarchyMap(const std::filesystem::path& a_folderPath)
 {
     // std::filesystem::directory_iteratorでa_folderPath直下のエントリを走査する

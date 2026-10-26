@@ -28,6 +28,8 @@ namespace FWK::Editor
 
         void EraseSelectedFilePath(const std::vector<std::filesystem::path>::const_iterator& a_itr);
 
+        void ReplaceFilePath(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath);
+
         void SetSelectedFilePathList(std::vector<std::filesystem::path>&& a_set) { m_selectedFilePathList = std::move(a_set); }
 
         void SetRangeSelectionStartPath(const std::filesystem::path& a_set) { m_rangeSelectionStartPath = a_set; }

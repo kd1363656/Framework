@@ -62,11 +62,11 @@ struct ModelGPUDrivenMeshInfo
     //                                               (番号 = LOD番号 × morphChannelListCount + ターゲット番号)
     // lodSurfaceDeviationScale                    : LODで表面が実際にずれた量 ÷ LODの誤差 の最大値(覆われている頂点を奥へ押し出す距離に掛ける)
     // lodCoveredLayerCountBufferSRVDescriptorIndex : 頂点ごとの覆われている層の数のBuffer
-    // padding2 : C++側と大きさを16byte単位で揃えるための詰め物
+    // outlineNormalBufferSRVDescriptorIndex       : 頂点ごとの輪郭線を押し出す向き(スムーズ法線)のBuffer
     uint  morphLODTargetErrorBufferSRVDescriptorIndex;
     float lodSurfaceDeviationScale;
     uint  lodCoveredLayerCountBufferSRVDescriptorIndex;
-    uint  padding2;
+    uint  outlineNormalBufferSRVDescriptorIndex;
 };
 
 // LOD1段階分の情報(C++のStruct::ModelMeshLODと同じ)
@@ -83,9 +83,9 @@ struct ModelGPUDrivenMeshLOD
 };
 
 // ModelGPUDrivenDrawRecordを256byteにするための詰め物(uint4)の数
-// (行列2つ128byte + 4つずつ並べた値5行80byte = 208byte、256byteまでの残り48byte = uint4が3つ)
+// (行列2つ128byte + 4つずつ並べた値6行96byte = 224byte、256byteまでの残り32byte = uint4が2つ)
 // 並びを変えた場合は、C++側のModelGPUDrivenDrawRecordと合わせてこの数も直す
-static const uint k_modelGPUDrivenDrawRecordPaddingCount = 3U;
+static const uint k_modelGPUDrivenDrawRecordPaddingCount = 2U;
 
 // 描画1回分の定数バッファの中身
 // AS / MS / PSが読むcbuffer CBModelPerObject(Model.hlsli)と全く同じ並びで書き込み、
@@ -108,7 +108,7 @@ struct ModelGPUDrivenDrawRecord
 
     uint  meshletCount;
     uint  meshletOffset;
-    float lodCoveredLayerDepthOffset;
+    float lodCoveredLayerDepthOffsetRatio;
     uint  lodCoveredLayerCountBufferSRVDescriptorIndex;
 
     uint skinningMatrixBufferSRVDescriptorIndex;
@@ -120,6 +120,11 @@ struct ModelGPUDrivenDrawRecord
     uint morphDeltaBufferSRVDescriptorIndex;
     uint morphWeightBufferSRVDescriptorIndex;
     uint morphWeightOffset;
+
+    uint outlineNormalBufferSRVDescriptorIndex;
+    uint cbModelPerObjectPadding;
+    uint cbModelPerObjectPadding2;
+    uint cbModelPerObjectPadding3;
 
     uint4 recordPadding[k_modelGPUDrivenDrawRecordPaddingCount];
 };

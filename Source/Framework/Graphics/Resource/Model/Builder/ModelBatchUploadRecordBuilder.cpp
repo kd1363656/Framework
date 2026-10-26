@@ -10,4 +10,5 @@ void FWK::Graphics::ModelBatchUploadRecordBuilder::ReleaseModelMeshRuntimeData(S
     a_modelMeshRuntimeData.m_meshletBoundsBuffer.Release    ();
 
     a_modelMeshRuntimeData.m_lodCoveredLayerCountBuffer.Release();
+    a_modelMeshRuntimeData.m_outlineNormalBuffer.Release       ();
 }

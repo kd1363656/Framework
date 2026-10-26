@@ -1,6 +1,10 @@
 #共通無視フォルダ
 [Dd]ebug/
 [Rr]elease/
+
+# ソースコードのDebugフォルダ(D3D12DebugMessageLoggerなど)は無視しない
+# (上の[Dd]ebug/はビルド結果のフォルダを無視するための指定)
+!/Source/**/[Dd]ebug/
 packages/
 Library/
 .vs

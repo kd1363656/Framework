@@ -425,6 +425,25 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::NavigateToFolderUp(AssetBro
     NavigateToFolder(l_parentPath, a_editorWindow);
 }
 
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::SelectSingleFile(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow)
+{
+    // カードを単一選択する
+    // 第三引数falseで現在参照中フォルダは変更しない(カードの選択のみ)
+    m_selectionState.SelectSingleFolder(a_filePath, a_editorWindow, false);
+
+    // 矢印キー移動の起点も選択したカードへ合わせる
+    m_currentCursorFilePath = a_filePath;
+}
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::ReplaceFilePath(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath)
+{
+    m_selectionState.ReplaceFilePath(a_oldFilePath, a_newFilePath);
+
+    if (m_currentCursorFilePath == a_oldFilePath)
+    {
+        m_currentCursorFilePath = a_newFilePath;
+    }
+}
+
 std::vector<std::filesystem::path> FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchVALDisplayedFilePathList(AssetBrowserEditorWindow& a_editorWindow)
 {
     std::vector<std::filesystem::path> l_displayedList = {};
@@ -833,10 +852,13 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
         {
             const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator();
 
-            l_fileOperation.Rename(a_filePath,
-                                   l_newName,
-                                   l_assetCreator,
-                                   l_assetFilePathRegistry);
+            const auto& l_renamedFilePath = l_fileOperation.Rename(a_filePath,
+                                                                   l_newName,
+                                                                   l_assetCreator,
+                                                                   l_assetFilePathRegistry);
+
+            // 選択状態を旧パスから新パスへ付け替え、リネーム後もハイライトを維持する
+            a_editorWindow.ApplyRenamedFilePath(a_filePath, l_renamedFilePath);
         }
     }
 }
@@ -1110,6 +1132,13 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::BuildDisplayedFilePathList(
 
         for (const auto& l_entry : std::filesystem::directory_iterator(l_folderPath, l_errorCode))
         {
+            // .material以外のバイナリーファイルは表示しない
+            if (!l_entry.is_directory(l_errorCode) &&
+                std::ranges::find(k_hiddenBinaryAssetExtensionList, l_entry.path().extension()) != k_hiddenBinaryAssetExtensionList.end())
+            {
+                continue;
+            }
+
             a_displayedList.emplace_back(l_entry.path());
         }
     }

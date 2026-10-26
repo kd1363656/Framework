@@ -36,14 +36,12 @@ const FWK::Struct::ModelMeshLOD* FWK::Graphics::ModelLODSelector::SelectPTRModel
     return &l_lodList.front();
 }
 
-float FWK::Graphics::ModelLODSelector::CalculateCoveredLayerDepthOffset(const Struct::ModelMeshletData& a_modelMeshletData, const TypeAlias::Math::Matrix& a_worldMatrix, const float a_worldMaxScale) const
+float FWK::Graphics::ModelLODSelector::CalculateCoveredLayerDepthOffsetRatio(const Struct::ModelMeshletData& a_modelMeshletData) const
 {
-    if (m_projectionScale <= k_initialProjectionScale) { return Constant::k_initialCBModelPerObjectLODCoveredLayerDepthOffset; }
+    if (m_projectionScale <= k_initialProjectionScale) { return Constant::k_initialCBModelPerObjectLODCoveredLayerDepthOffsetRatio; }
 
-    // 画面上の誤差(ピクセル) = ワールド座標の長さ × m_projectionScale ÷ 距離 を、長さについて解く
-    const float l_distance = CalculateModelMeshDistance(a_modelMeshletData, a_worldMatrix, a_worldMaxScale);
-
-    return a_modelMeshletData.m_lodSurfaceDeviationScale * m_maxScreenSpaceErrorPixel * l_distance / m_projectionScale;
+    // 画面上の誤差(ピクセル) = ワールド座標の長さ × m_projectionScale ÷ 距離 を、長さについて解いた式から距離を除いた部分
+    return a_modelMeshletData.m_lodSurfaceDeviationScale * m_maxScreenSpaceErrorPixel / m_projectionScale;
 }
 
 float FWK::Graphics::ModelLODSelector::FetchVALMinDistance() const

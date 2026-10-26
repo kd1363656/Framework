@@ -23,8 +23,10 @@ bool FWK::Graphics::SkeletalAnimationModelRecord::ReserveRelease(const UINT64& a
         FWK_ASSERT_RETURN_VALUE_IF(!l_bonePaletteBuffer.ReserveRelease(a_retiredFenceValue, a_resourceReleaseContext),       "SkeletalAnimationModelRecordのBonePaletteBufferを遅延解放Queueへ登録できませんでした。",       false);
 
         auto& l_lodCoveredLayerCountBuffer = l_modelMeshRuntimeData.m_lodCoveredLayerCountBuffer;
+        auto& l_outlineNormalBuffer        = l_modelMeshRuntimeData.m_outlineNormalBuffer;
 
         FWK_ASSERT_RETURN_VALUE_IF(!l_lodCoveredLayerCountBuffer.ReserveRelease(a_retiredFenceValue, a_resourceReleaseContext), "SkeletalAnimationModelRecordのLODCoveredLayerCountBufferを遅延解放Queueへ登録できませんでした。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!l_outlineNormalBuffer.ReserveRelease       (a_retiredFenceValue, a_resourceReleaseContext), "SkeletalAnimationModelRecordのOutlineNormalBufferを遅延解放Queueへ登録できませんでした。",        false);
 
         // モーフのBufferは、モーフを持たないMeshでは作成していない(作成していないBufferは何もせず成功する)
         auto& l_morphVertexRangeBuffer    = l_modelMeshRuntimeData.m_morphVertexRangeBuffer;

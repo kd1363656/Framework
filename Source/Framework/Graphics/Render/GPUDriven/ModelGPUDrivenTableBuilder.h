@@ -242,6 +242,9 @@ namespace FWK::Graphics
             a_meshInfo.m_lodSurfaceDeviationScale                     = l_modelMeshletData.m_lodSurfaceDeviationScale;
             a_meshInfo.m_lodCoveredLayerCountBufferSRVDescriptorIndex = l_modelMeshRuntimeData.m_lodCoveredLayerCountBuffer.GetVALSRVDescriptorIndex();
 
+            // 輪郭線を押し出す向き(スムーズ法線)
+            a_meshInfo.m_outlineNormalBufferSRVDescriptorIndex = l_modelMeshRuntimeData.m_outlineNormalBuffer.GetVALSRVDescriptorIndex();
+
             // Materialの種類を知らなくても、GPUDataBufferの番号を渡すだけでシェーダー側が自身の型として読む
             a_meshInfo.m_materialBufferSRVDescriptorIndex = l_material->GetVALGPUDataBufferSRVDescriptorIndex();
 

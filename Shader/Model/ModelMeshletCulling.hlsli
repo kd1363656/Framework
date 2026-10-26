@@ -78,10 +78,12 @@ bool IsCameraInsideModelMeshletBoundingSphere(const float3 a_worldCenter, const 
 }
 
 // 指定したMeshletがFrustum内にあるか判定する
-bool IsVisibleModelMeshletByFrustum(const ModelMeshletBounds a_modelMeshletBounds)
+// a_worldRadiusExpansion : BoundingSphereの半径に足す距離(ワールド座標)
+//                          輪郭線のように頂点を外側へ押し出して描く物は、押し出した分だけ範囲を広げて判定する
+bool IsVisibleModelMeshletByFrustum(const ModelMeshletBounds a_modelMeshletBounds, const float a_worldRadiusExpansion)
 {
     const float3 l_worldCenter = TransformModelLocalPositionToWorld(a_modelMeshletBounds.center);
-    const float  l_worldRadius = a_modelMeshletBounds.radius * g_worldMaxScale;
+    const float  l_worldRadius = a_modelMeshletBounds.radius * g_worldMaxScale + a_worldRadiusExpansion;
     
     // カメラがBoundingSphere内にいる場合は
     // NearPlaneやFrustum側面で誤カリングされないよう
@@ -150,27 +152,38 @@ bool IsBackfaceModelMeshletByCone(const ModelMeshletBounds a_meshletBounds)
 // FrustumCullingとBackfaceConeCullingを実行し、Meshletの判定結果(k_modelCullingDebugState～)を返す
 // 「見えている」以外ならMeshShaderを起動する必要が無い
 // (カリングの可視化中は、見えていないMeshletも判定結果を付けて起動する)
-uint FetchModelMeshletCullingDebugState(const uint a_meshletIndex)
+// a_worldRadiusExpansion     : Frustumの判定でBoundingSphereの半径に足す距離(ワールド座標)
+// a_isBackfaceCullingEnabled : falseなら裏向きのMeshletも消さない(輪郭線は裏面を描くため)
+uint FetchModelMeshletCullingDebugState(const uint a_meshletIndex, const float a_worldRadiusExpansion, const bool a_isBackfaceCullingEnabled)
 {
     StructuredBuffer<ModelMeshletBounds> l_meshletBoundsBuffer = ResourceDescriptorHeap[g_meshletBoundsBufferSRVDescriptorIndex];
 
     const ModelMeshletBounds l_meshletBounds = l_meshletBoundsBuffer[a_meshletIndex];
 
     // Frustum外ならBackface判定を行わず描画しない
-    if (!IsVisibleModelMeshletByFrustum(l_meshletBounds)) { return k_modelCullingDebugStateMeshletFrustumCulled; }
+    if (!IsVisibleModelMeshletByFrustum(l_meshletBounds, a_worldRadiusExpansion)) { return k_modelCullingDebugStateMeshletFrustumCulled; }
 
     // Frustum内でも全Triangleが裏向きなら描画しない
-    if (IsBackfaceModelMeshletByCone(l_meshletBounds)) { return k_modelCullingDebugStateMeshletBackfaceCulled; }
+    if (a_isBackfaceCullingEnabled &&
+        IsBackfaceModelMeshletByCone(l_meshletBounds))
+    {
+        return k_modelCullingDebugStateMeshletBackfaceCulled;
+    }
 
     return k_modelCullingDebugStateVisible;
 }
 
 // FrustumCullingとBackfaceConeCullingを実行し、
 // MeshShaderを起動する必要があるかを判定する
-// a_outCullingDebugState : Meshletの判定結果(カリングの可視化でMeshShaderへ渡す)
-bool ShouldDispatchModelMeshlet(const uint a_meshletIndex, out uint a_outCullingDebugState)
+// a_worldRadiusExpansion     : Frustumの判定でBoundingSphereの半径に足す距離(ワールド座標)
+// a_isBackfaceCullingEnabled : falseなら裏向きのMeshletも消さない
+// a_outCullingDebugState     : Meshletの判定結果(カリングの可視化でMeshShaderへ渡す)
+bool ShouldDispatchModelMeshlet(const uint  a_meshletIndex,
+                                const float a_worldRadiusExpansion,
+                                const bool  a_isBackfaceCullingEnabled,
+                                out   uint  a_outCullingDebugState)
 {
-    a_outCullingDebugState = FetchModelMeshletCullingDebugState(a_meshletIndex);
+    a_outCullingDebugState = FetchModelMeshletCullingDebugState(a_meshletIndex, a_worldRadiusExpansion, a_isBackfaceCullingEnabled);
 
     // 見えているMeshletは常に起動する
     if (a_outCullingDebugState == k_modelCullingDebugStateVisible) { return true; }

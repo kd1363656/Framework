@@ -45,12 +45,14 @@ namespace FWK::Graphics
         // 描画申請を渡す先(RenderGraphから毎フレーム探す)
         struct TargetRequestSet final
         {
-            std::shared_ptr<SkeletalAnimationPerObjectComputeRequest>                          m_computeRequest              = nullptr;
-            std::shared_ptr<SkeletalAnimationModelStandardLitPerObjectDrawRequest>             m_standardLitDrawRequest      = nullptr;
-            std::shared_ptr<SkeletalAnimationModelStandardUnLitPerObjectDrawRequest>           m_standardUnLitDrawRequest    = nullptr;
-            std::shared_ptr<SkeletalAnimationModelCascadeShadowPerObjectDrawRequest>           m_standardShadowDrawRequest   = nullptr;
-            std::shared_ptr<SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequest>           m_gpuSkinnedLitDrawRequest    = nullptr;
-            std::shared_ptr<SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest> m_gpuSkinnedShadowDrawRequest = nullptr;
+            std::shared_ptr<SkeletalAnimationPerObjectComputeRequest>                          m_computeRequest                 = nullptr;
+            std::shared_ptr<SkeletalAnimationModelStandardLitPerObjectDrawRequest>             m_standardLitDrawRequest         = nullptr;
+            std::shared_ptr<SkeletalAnimationModelStandardUnLitPerObjectDrawRequest>           m_standardUnLitDrawRequest       = nullptr;
+            std::shared_ptr<SkeletalAnimationModelRitchToonPerObjectDrawRequest>               m_standardRitchToonDrawRequest   = nullptr;
+            std::shared_ptr<SkeletalAnimationModelCascadeShadowPerObjectDrawRequest>           m_standardShadowDrawRequest      = nullptr;
+            std::shared_ptr<SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequest>           m_gpuSkinnedLitDrawRequest       = nullptr;
+            std::shared_ptr<SkeletalAnimationModelGPUSkinnedRitchToonPerObjectDrawRequest>     m_gpuSkinnedRitchToonDrawRequest = nullptr;
+            std::shared_ptr<SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest> m_gpuSkinnedShadowDrawRequest    = nullptr;
         };
 
     public:

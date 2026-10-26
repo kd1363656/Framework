@@ -18,12 +18,12 @@ namespace FWK::Struct
         float                      m_worldMaxScale                          = Constant::k_defaultMeshletBoundWorldMaxScale;
         float                      m_worldOrientationSign                   = Constant::k_normalModelWorldOrientationSign;
 
-        // m_lodCoveredLayerDepthOffset                    : 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離(ワールド座標。0以上)
-        //                                                  頂点を「視線の向き × この値 × 覆われている層の数」だけ動かす
+        // m_lodCoveredLayerDepthOffsetRatio               : 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離の、カメラからの距離に対する割合(0以上)
+        //                                                  頂点を「視線の向き × この値 × 頂点のカメラからの距離 × 覆われている層の数」だけ動かす
         // m_lodCoveredLayerCountBufferSRVDescriptorIndex : 頂点ごとの覆われている層の数のBuffer
         std::uint32_t              m_meshletCount                                 = Constant::k_defaultMeshletCount;
         std::uint32_t              m_meshletOffset                                = Constant::k_initialMeshLODMeshletOffset;
-        float                      m_lodCoveredLayerDepthOffset                   = Constant::k_initialCBModelPerObjectLODCoveredLayerDepthOffset;
+        float                      m_lodCoveredLayerDepthOffsetRatio              = Constant::k_initialCBModelPerObjectLODCoveredLayerDepthOffsetRatio;
         TypeAlias::DescriptorIndex m_lodCoveredLayerCountBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 
         // メッシュシェーダーの中でスキニングする場合に使う値
@@ -43,7 +43,15 @@ namespace FWK::Struct
         TypeAlias::DescriptorIndex m_morphDeltaBufferSRVDescriptorIndex       = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
         TypeAlias::DescriptorIndex m_morphWeightBufferSRVDescriptorIndex      = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
         std::uint32_t              m_morphWeightOffset                        = Constant::k_initialCBModelPerObjectSkinningValue;
+
+        // 輪郭線を描く場合に使う値
+        // m_outlineNormalBufferSRVDescriptorIndex : 頂点ごとの輪郭線を押し出す向き(スムーズ法線)のBuffer
+        // m_padding～ : HLSL側と大きさを16byte単位で揃えるための詰め物
+        TypeAlias::DescriptorIndex m_outlineNormalBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+        std::uint32_t              m_padding                               = Constant::k_initialCBModelPerObjectPadding;
+        std::uint32_t              m_padding2                              = Constant::k_initialCBModelPerObjectPadding;
+        std::uint32_t              m_padding3                              = Constant::k_initialCBModelPerObjectPadding;
     };
 
-    static_assert(sizeof(CBModelPerObject) == 208ULL, "CBModelPerObjectのサイズがHLSL側と一致しません。");
+    static_assert(sizeof(CBModelPerObject) == 224ULL, "CBModelPerObjectのサイズがHLSL側と一致しません。");
 }

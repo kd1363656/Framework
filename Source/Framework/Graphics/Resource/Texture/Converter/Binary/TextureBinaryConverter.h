@@ -69,12 +69,6 @@ namespace FWK::Converter
 
         const std::filesystem::path& FetchREFTextureAssetExtension(const Enum::TextureLoadColorSpace a_textureLoadColorSpace) const;
 
-        // Textureのバイナリーファイル用拡張子
-        // 同じPNGでも読み込み方法によってピクセルの扱いが変わるため、読み込み方法ごとに別ファイルとして保存する
-        inline static const std::filesystem::path k_autoTextureAssetExtension   = ".AutoTexture";
-        inline static const std::filesystem::path k_srgbTextureAssetExtension   = ".SRGBTexture";
-        inline static const std::filesystem::path k_linearTextureAssetExtension = ".LinearTexture";
-
         static constexpr std::uint64_t k_emptyTextureDepth            = 0ULL;
         static constexpr std::uint64_t k_emptyTextureSubresourceCount = 0ULL;
 
@@ -90,6 +84,7 @@ namespace FWK::Converter
 
         // ※ 注意 : TextureAssetとして保存する構造体が変化したらバージョンを上げる
         // Version2 : Headerに読み込み方法(TextureLoadColorSpace)を追加
-        static constexpr std::uint16_t k_textureAssetVersion = 2U;
+        // Version3 : SRGBで読み込んだテクスチャのフォーマットを、必ず_SRGB付きにする(以前の物は_SRGBが付いておらず色が薄くなる)
+        static constexpr std::uint16_t k_textureAssetVersion = 3U;
     };
 }

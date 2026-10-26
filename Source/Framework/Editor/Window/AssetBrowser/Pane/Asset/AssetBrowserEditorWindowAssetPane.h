@@ -28,6 +28,9 @@ namespace FWK::Editor
         void NavigateToCurrentCursor(AssetBrowserEditorWindow& a_editorWindow);
         void NavigateToFolderUp     (AssetBrowserEditorWindow& a_editorWindow);
 
+        void SelectSingleFile(const std::filesystem::path& a_filePath,    AssetBrowserEditorWindow&    a_editorWindow);
+        void ReplaceFilePath (const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath);
+
         std::vector<std::filesystem::path> FetchVALDisplayedFilePathList(AssetBrowserEditorWindow& a_editorWindow);
 
         std::filesystem::path FetchVALOperationTargetFilePath() const;
@@ -89,6 +92,18 @@ namespace FWK::Editor
         std::uint32_t CalculateCardPerRow(const float a_availableWidth) const;
 
         std::string FetchIcon(const std::filesystem::path& a_filePath) const;
+
+        static constexpr std::size_t k_hiddenBinaryAssetExtensionNUM = 7ULL;
+
+        // アセットペインに表示しないバイナリーファイルの拡張子
+        // エディターで直接扱うバイナリーは.materialのみのため、それ以外の変換結果やキャッシュは隠す
+        inline static const std::array<std::filesystem::path, k_hiddenBinaryAssetExtensionNUM> k_hiddenBinaryAssetExtensionList = { Constant::k_staticModelAssetExtension,
+                                                                                                                                     Constant::k_skeletalModelAssetExtension,
+                                                                                                                                     Constant::k_autoTextureAssetExtension,
+                                                                                                                                     Constant::k_srgbTextureAssetExtension,
+                                                                                                                                     Constant::k_linearTextureAssetExtension,
+                                                                                                                                     Constant::k_skeletalAnimationModelMorphSettingExtension,
+                                                                                                                                     Constant::k_skeletalAnimationModelSpringBoneSettingExtension };
 
         static constexpr std::string_view k_imguiFontAwesomeImageIcon    = "\xEF\x80\xBE";
         static constexpr std::string_view k_imguiFontAwesomeFBXModelIcon = "\xEF\x86\xB2";

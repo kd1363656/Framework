@@ -26,6 +26,12 @@ namespace FWK::Enum
         GPUParticleIndirectArgumentsBuild,
         GPUParticleSimulate,
         GPUParticleBillboard,
+        StaticModelRitchToon,
+        StaticModelRitchToonOutline,
+        SkeletalAnimationModelRitchToon,
+        SkeletalAnimationModelRitchToonOutline,
+        SkeletalAnimationModelGPUSkinnedRitchToon,
+        SkeletalAnimationModelGPUSkinnedRitchToonOutline,
         Count,
     };
 
@@ -54,6 +60,12 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(PipelineStateType::GPUParticleIndirectArgumentsBuild),
         FWK_JSON_ENUM_VALUE(PipelineStateType::GPUParticleSimulate),
         FWK_JSON_ENUM_VALUE(PipelineStateType::GPUParticleBillboard),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::StaticModelRitchToon),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::StaticModelRitchToonOutline),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::SkeletalAnimationModelRitchToon),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::SkeletalAnimationModelRitchToonOutline),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::SkeletalAnimationModelGPUSkinnedRitchToon),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::SkeletalAnimationModelGPUSkinnedRitchToonOutline),
         FWK_JSON_ENUM_VALUE(PipelineStateType::Count)
     )
 }

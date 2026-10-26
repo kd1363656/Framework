@@ -102,18 +102,22 @@ void FWK::Graphics::SkeletalAnimationSkinningSelector::Update(RenderGraph& a_ren
 
 bool FWK::Graphics::SkeletalAnimationSkinningSelector::FindTargetRequestSet(RenderGraph& a_renderGraph, TargetRequestSet& a_targetRequestSet) const
 {
-    a_targetRequestSet.m_computeRequest              = a_renderGraph.FindVALComputeRequestPerObject<SkeletalAnimationPerObjectComputeRequest>                       ().lock();
-    a_targetRequestSet.m_standardLitDrawRequest      = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelStandardLitPerObjectDrawRequest>           ().lock();
-    a_targetRequestSet.m_standardUnLitDrawRequest    = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelStandardUnLitPerObjectDrawRequest>         ().lock();
-    a_targetRequestSet.m_standardShadowDrawRequest   = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelCascadeShadowPerObjectDrawRequest>         ().lock();
-    a_targetRequestSet.m_gpuSkinnedLitDrawRequest    = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequest>         ().lock();
-    a_targetRequestSet.m_gpuSkinnedShadowDrawRequest = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest>().lock();
+    a_targetRequestSet.m_computeRequest                 = a_renderGraph.FindVALComputeRequestPerObject<SkeletalAnimationPerObjectComputeRequest>                       ().lock();
+    a_targetRequestSet.m_standardLitDrawRequest         = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelStandardLitPerObjectDrawRequest>           ().lock();
+    a_targetRequestSet.m_standardUnLitDrawRequest       = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelStandardUnLitPerObjectDrawRequest>         ().lock();
+    a_targetRequestSet.m_standardRitchToonDrawRequest   = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelRitchToonPerObjectDrawRequest>             ().lock();
+    a_targetRequestSet.m_standardShadowDrawRequest      = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelCascadeShadowPerObjectDrawRequest>         ().lock();
+    a_targetRequestSet.m_gpuSkinnedLitDrawRequest       = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelGPUSkinnedLitPerObjectDrawRequest>         ().lock();
+    a_targetRequestSet.m_gpuSkinnedRitchToonDrawRequest = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelGPUSkinnedRitchToonPerObjectDrawRequest>   ().lock();
+    a_targetRequestSet.m_gpuSkinnedShadowDrawRequest    = a_renderGraph.FindVALDrawRequestPerObject   <SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest>().lock();
 
-    return a_targetRequestSet.m_computeRequest            &&
-           a_targetRequestSet.m_standardLitDrawRequest    &&
-           a_targetRequestSet.m_standardUnLitDrawRequest  &&
-           a_targetRequestSet.m_standardShadowDrawRequest &&
-           a_targetRequestSet.m_gpuSkinnedLitDrawRequest  &&
+    return a_targetRequestSet.m_computeRequest                 &&
+           a_targetRequestSet.m_standardLitDrawRequest         &&
+           a_targetRequestSet.m_standardUnLitDrawRequest       &&
+           a_targetRequestSet.m_standardRitchToonDrawRequest   &&
+           a_targetRequestSet.m_standardShadowDrawRequest      &&
+           a_targetRequestSet.m_gpuSkinnedLitDrawRequest       &&
+           a_targetRequestSet.m_gpuSkinnedRitchToonDrawRequest &&
            a_targetRequestSet.m_gpuSkinnedShadowDrawRequest;
 }
 
@@ -163,10 +167,11 @@ void FWK::Graphics::SkeletalAnimationSkinningSelector::ApplyStandardSkinning(con
 
         a_entry.m_standardDrawRequestData->m_skeletalAnimationPlayer = l_skeletalAnimationPlayer;
 
-        a_targetRequestSet.m_computeRequest->AddComputeRequest        (l_skeletalAnimationPlayer);
-        a_targetRequestSet.m_standardLitDrawRequest->AddDrawRequest   (a_entry.m_standardDrawRequestData);
-        a_targetRequestSet.m_standardUnLitDrawRequest->AddDrawRequest (a_entry.m_standardDrawRequestData);
-        a_targetRequestSet.m_standardShadowDrawRequest->AddDrawRequest(a_entry.m_standardDrawRequestData);
+        a_targetRequestSet.m_computeRequest->AddComputeRequest           (l_skeletalAnimationPlayer);
+        a_targetRequestSet.m_standardLitDrawRequest->AddDrawRequest      (a_entry.m_standardDrawRequestData);
+        a_targetRequestSet.m_standardUnLitDrawRequest->AddDrawRequest    (a_entry.m_standardDrawRequestData);
+        a_targetRequestSet.m_standardRitchToonDrawRequest->AddDrawRequest(a_entry.m_standardDrawRequestData);
+        a_targetRequestSet.m_standardShadowDrawRequest->AddDrawRequest   (a_entry.m_standardDrawRequestData);
     }
 
     a_entry.m_standardDrawRequestData->m_worldMatrix                 = a_drawRequestData.m_worldMatrix;
@@ -199,8 +204,9 @@ void FWK::Graphics::SkeletalAnimationSkinningSelector::ApplyGPUSkinning(const Ta
 
         a_entry.m_gpuSkinnedDrawRequestData->m_skeletalAnimationModelRecord = l_skeletalAnimationPlayer->GetREFSkeletalAnimationModelRecord();
 
-        a_targetRequestSet.m_gpuSkinnedLitDrawRequest->AddDrawRequest   (a_entry.m_gpuSkinnedDrawRequestData);
-        a_targetRequestSet.m_gpuSkinnedShadowDrawRequest->AddDrawRequest(a_entry.m_gpuSkinnedDrawRequestData);
+        a_targetRequestSet.m_gpuSkinnedLitDrawRequest->AddDrawRequest      (a_entry.m_gpuSkinnedDrawRequestData);
+        a_targetRequestSet.m_gpuSkinnedRitchToonDrawRequest->AddDrawRequest(a_entry.m_gpuSkinnedDrawRequestData);
+        a_targetRequestSet.m_gpuSkinnedShadowDrawRequest->AddDrawRequest   (a_entry.m_gpuSkinnedDrawRequestData);
     }
 
     // 姿勢は計算せず、再生時刻だけを進める(何コマ目を使うかは描画申請側がこの時刻から決める)

@@ -65,11 +65,11 @@ namespace FWK::Struct
         //                                                 (番号 = LOD番号 × m_morphChannelListCount + ターゲット番号)
         // m_lodSurfaceDeviationScale                    : LODで表面が実際にずれた量の倍率(ModelMeshletData::m_lodSurfaceDeviationScaleと同じ値)
         // m_lodCoveredLayerCountBufferSRVDescriptorIndex : 頂点ごとの覆われている層の数のBuffer
-        // m_padding2 : HLSL側と大きさを16byte単位で揃えるための詰め物
+        // m_outlineNormalBufferSRVDescriptorIndex       : 頂点ごとの輪郭線を押し出す向き(スムーズ法線)のBuffer
         TypeAlias::DescriptorIndex m_morphLODTargetErrorBufferSRVDescriptorIndex  = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
         float                      m_lodSurfaceDeviationScale                     = Constant::k_initialGPUDrivenMeshInfoLODSurfaceDeviationScale;
         TypeAlias::DescriptorIndex m_lodCoveredLayerCountBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
-        std::uint32_t              m_padding2                                     = Constant::k_initialGPUDrivenMeshInfoPadding;
+        TypeAlias::DescriptorIndex m_outlineNormalBufferSRVDescriptorIndex        = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
     };
 
     static_assert(sizeof(SBModelGPUDrivenMeshInfo) == 112ULL, "SBModelGPUDrivenMeshInfoのサイズがHLSL側と一致しません。");

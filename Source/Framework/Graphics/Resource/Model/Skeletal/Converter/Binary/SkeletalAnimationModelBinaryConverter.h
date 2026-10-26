@@ -122,10 +122,6 @@ namespace FWK::Converter
 
         static constexpr std::uint32_t k_initialMorphTargetPadding = 0U;
 
-        // SkeletalModelのバイナリーファイル用拡張子
-        // StaticModelと同じFBXから作っても別ファイルになるように、モデルの種類ごとに拡張子を分ける
-        inline static const std::filesystem::path k_skeletalModelAssetExtension = ".skeletalModel";
-
         static constexpr std::uint16_t k_modelAssetTypeID = 0x5341U;
 
         // Version2 : LOD一覧とMesh全体の囲み球を追加

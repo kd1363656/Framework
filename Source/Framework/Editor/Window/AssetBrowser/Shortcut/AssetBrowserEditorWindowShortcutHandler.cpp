@@ -255,7 +255,6 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleAssetPane(Asset
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const std::filesystem::path& a_parentFolderPath, const Enum::AssetBrowserPopupContextType a_contextType, AssetBrowserEditorWindow& a_editorWindow) const
 {
     const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator      ();
-          auto& l_folderPane   = a_editorWindow.GetMutableREFFolderPane ();
           auto& l_renameState  = a_editorWindow.GetMutableREFRenameState();
 
     // AssetCreator::CreateFolderでフォルダを作成
@@ -264,41 +263,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(co
 
     if (!l_result.m_isSuccess) { return; }
 
-    // 作成したフォルダがツリーに見えるように
-    // 親フォルダを開状態にする
-    // これを行わないと親ノードが閉じたままで
-    //新規フォルダが表示されない
-    l_folderPane.ApplyFolderOpenState(a_parentFolderPath, true);
-
-    // 作成したフォルダを現在選択中のファイルパスにする
-    // 選択状態になるとハイライト表示され
-    // 次の走査(コピー/切り取り/複製)の対象になる
-    auto& l_selectionState = l_folderPane.GetMutableREFSelectionState();
-
-    // コンテキストに応じて現在参照中のフォルダパスを制御
-    // PopupDrawer::DrawCreateFolderMenuと同じ挙動にする
-    // AssetPane_OnEmpty   : 変更しない(現在のフォルダにとどまり新規フォルダをカード表示)
-    // AssetPane_OnFolder  : 作成先(選択フォルダ)へ移動し新規フォルダをカード表示
-    //                       AssetPaneのDrawCardRenameでリネームする
-    // FolderPane_OnFolder : 新規フォルダへ移動しFolderPaneツリーでリネームする
-    if (a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder)
-    {
-        // 作成先(選択フォルダ)を現在参照中フォルダにする
-        // 新規フォルダがそのフォルダ内にカードとして表示され
-        // AssetPaneのDrawCardRenameでリネーム可能になる
-        a_editorWindow.SetCurrentSelectFolderPath(a_parentFolderPath);
-
-        // 新規フォルダを選択(現在参照中フォルダは上で設定済みなので更新しない)
-        l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_editorWindow, false);
-    }
-    else
-    {
-        // AssetPane_OnEmpty   : 現在選択中フォルダを変更しない(false)
-        // FolderPane_OnFolder : 新規フォルダを現在参照中フォルダにする(true)
-        const bool l_updateCurrentFolderPath = a_contextType != Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
-
-        l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_editorWindow, l_updateCurrentFolderPath);
-    }
+    // 作成したフォルダを選択状態にする
+    // PopupDrawer::DrawCreateFolderMenuと共通の処理
+    a_editorWindow.SelectCreatedFolder(l_result.m_createdFilePath, a_parentFolderPath, a_contextType);
 
     // 作成成功時、名前変更モードへ移行
     // ShortcutHandlerはPopupDrawerに依存せずに独自に名前変更モードを起動する

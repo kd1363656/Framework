@@ -1,9 +1,9 @@
 ﻿#include "AssetBrowserEditorWindowFileOperation.h"
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::filesystem::path&                a_targetFilePath, 
-                                                                const std::string&                          a_newName,
-                                                                const AssetBrowserEditorWindowAssetCreator& a_assetCreator,
-                                                                      AssetFilePathRegistry&                a_assetFilePathRegistry) const
+std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::filesystem::path&                a_targetFilePath, 
+                                                                                 const std::string&                          a_newName,
+                                                                                 const AssetBrowserEditorWindowAssetCreator& a_assetCreator,
+                                                                                       AssetFilePathRegistry&                a_assetFilePathRegistry) const
 {
     // 新しいPath = 親フォルダ / 新しい名前 + 拡張子
     const auto& l_extension   = a_targetFilePath.extension().string();
@@ -38,6 +38,10 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::files
         }
     }
 
+    // 呼び出し側(選択状態の付け替え)へ返すリネーム後のパス
+    // 失敗時はファイルが元の場所に残っているため元のパスを返す
+    const auto l_renamedFilePath = l_errorCode ? a_targetFilePath : l_resolvedNewFilePath;
+
     // AssetFilePathRegistryのPathも更新する
     // Watcher経由でも通知されるが、即座にRegistryを更新しておく
     a_assetFilePathRegistry.ReplaceFilePath(a_targetFilePath, l_resolvedNewFilePath);
@@ -48,15 +52,15 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::files
     // FileOperation自身はJson内のキー名(PrefabName/SceneName)を知らないため
     // AssetCreatorが各シリアライザ経由で更新する
     // フォルダや非JSONファイルはJSON内部名を持たないためスキップ
-    if (l_resolvedNewFilePath.extension() != Constant::k_lowerJsonExtension) { return; }
+    if (l_resolvedNewFilePath.extension() != Constant::k_lowerJsonExtension) { return l_renamedFilePath; }
 
     const auto* l_uuid = a_assetFilePathRegistry.FindPTRAssetUUID(l_resolvedNewFilePath);
 
-    if (!l_uuid) { return; }
+    if (!l_uuid) { return l_renamedFilePath; }
 
     const auto* l_assetFilePathData = a_assetFilePathRegistry.FindPTRAssetFilePathData(*l_uuid);
 
-    if (!l_assetFilePathData) { return; }
+    if (!l_assetFilePathData) { return l_renamedFilePath; }
 
     // AssetCreator::RenamePrefab/RenameSceneは既存UUIDを保持したままJSON内の名前だけ更新する
     switch (l_assetFilePathData->m_type)
@@ -76,6 +80,8 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::files
         default:
         break;
     }
+
+    return l_renamedFilePath;
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFileOperation::Delete(const std::vector<std::filesystem::path>& a_filePathList) const

@@ -11,10 +11,10 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 
     // .skeletalModelが存在しない、FBXより古い、元FBXが存在しない場合はfalse
     // 呼び出し側でFBXから再読み込みして、.skeletalModelを再生成する
-    if (!CanLoadAsset(a_filePath, k_skeletalModelAssetExtension)) { return false; }
+    if (!CanLoadAsset(a_filePath, Constant::k_skeletalModelAssetExtension)) { return false; }
 
     // FBXと同名で拡張子だけ.skeletalModelにしたパスを作成し、読み込み用MemoryMappedFileを開く
-    if (const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath, k_skeletalModelAssetExtension);
+    if (const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath, Constant::k_skeletalModelAssetExtension);
         !CreateReadMemoryMappedFile(l_modelAssetFilePath))
     {
         return false;
@@ -223,7 +223,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
     FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "Assetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
     // FBXと同じ場所・同じ名前で拡張子だけ.skeletalModelにした保存先を作る
-    const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath, k_skeletalModelAssetExtension);
+    const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath, Constant::k_skeletalModelAssetExtension);
 
     // 保存に必要なファイルサイズを先に計算する
     const auto& l_modelAssetFileSize = CalculateAssetFileSize(l_modelData);

@@ -21,6 +21,19 @@ bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path& 
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "PNGファイルからテクスチャを読み込めませんでした。", false);
 
+    // WIC_FLAGS_FORCE_SRGBを付けても、PNGの種類によってはフォーマットが_SRGBの付かない物(B8G8R8A8_UNORMなど)のまま返ってくる
+    // _SRGBが付いていないと、GPUがテクスチャを読むときに「sRGB → リニア」の変換をしないため、
+    // 最後の画面出力でもう一度ガンマ補正がかかり、色が白っぽく薄くなる(ガンマ補正が2回かかる)
+    // そこで、色として読むテクスチャは、ピクセルの中身はそのままでフォーマットだけ_SRGB付きの物に置き換える
+    if (a_textureLoadColorSpace == Enum::TextureLoadColorSpace::SRGB)
+    {
+        const auto l_srgbFormat = DirectX::MakeSRGB(a_texMetadata.format);
+
+        FWK_ASSERT_RETURN_VALUE_IF(FAILED(a_scratchImage.OverrideFormat(l_srgbFormat)), "テクスチャのフォーマットをsRGBへ置き換えられませんでした。", false);
+
+        a_texMetadata.format = l_srgbFormat;
+    }
+
     return true;
 }
 

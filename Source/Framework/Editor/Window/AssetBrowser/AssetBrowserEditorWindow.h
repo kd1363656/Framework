@@ -16,6 +16,12 @@ namespace FWK::Editor
 
         nlohmann::json Serialize() override;
 
+        void SelectCreatedFolder(const std::filesystem::path&             a_createdFolderPath,
+                                 const std::filesystem::path&             a_parentFolderPath,
+                                 const Enum::AssetBrowserPopupContextType a_contextType);
+
+        void ApplyRenamedFilePath(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath);
+
         void SetActivePane(const Enum::AssetBrowserActivePaneType a_set) { m_activePane = a_set; }
 
         void SetCurrentSelectFolderPath(const std::filesystem::path& a_set) { m_currentSelectFolderPath = a_set; }

@@ -23,10 +23,11 @@ namespace FWK::Graphics
 
         const Struct::ModelMeshLOD* SelectPTRModelMeshLOD(const Struct::ModelMeshletData& a_modelMeshletData, const TypeAlias::Math::Matrix& a_worldMatrix, const float a_worldMaxScale) const;
 
-        // 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離(ワールド座標。0以上)を求める
-        // LODの許容誤差(画面上でm_maxScreenSpaceErrorPixelピクセル)を、このMeshの位置での長さに直し、実際のずれの倍率を掛けた値
-        // (どのLODが選ばれても、表面のずれはこの長さ以下になるので、覆う側が沈んでも覆われる側はその奥になる)
-        float CalculateCoveredLayerDepthOffset(const Struct::ModelMeshletData& a_modelMeshletData, const TypeAlias::Math::Matrix& a_worldMatrix, const float a_worldMaxScale) const;
+        // 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離の、カメラからの距離に対する割合(0以上)を求める
+        // LODの許容誤差(画面上でm_maxScreenSpaceErrorPixelピクセル)を「距離1での長さ」に直し、実際のずれの倍率を掛けた値
+        // 押し出す距離は、メッシュシェーダーが頂点ごとに「この値 × 頂点のカメラからの距離」で求める
+        // (Meshごとの距離で求めると、覆う側の服と覆われる側の肌で選ばれるLODが違うときに足りなくなるため)
+        float CalculateCoveredLayerDepthOffsetRatio(const Struct::ModelMeshletData& a_modelMeshletData) const;
 
         // 距離の最小値(カメラのすぐ近くで0除算にならないようにする)
         float FetchVALMinDistance() const;

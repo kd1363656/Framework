@@ -366,20 +366,20 @@ const std::filesystem::path& FWK::Converter::TextureBinaryConverter::FetchREFTex
     {
         case Enum::TextureLoadColorSpace::SRGB:
         {
-            return k_srgbTextureAssetExtension;
+            return Constant::k_srgbTextureAssetExtension;
         }
         break;
 
         case Enum::TextureLoadColorSpace::Linear:
         {
-            return k_linearTextureAssetExtension;
+            return Constant::k_linearTextureAssetExtension;
         }
         break;
 
         case Enum::TextureLoadColorSpace::Auto:
         default:
         {
-            return k_autoTextureAssetExtension;
+            return Constant::k_autoTextureAssetExtension;
         }
         break;
     }

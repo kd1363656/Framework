@@ -719,10 +719,14 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
 
                 // FileOperation::Renameでファイルシステム上でリネーム
                 // 同名衝突時は自動で番号付与される
-                l_fileOperation.Rename(a_currentFolderPath,
-                                       l_newName,
-                                       l_assetCreator,
-                                       l_assetFilePathRegistry);
+                const auto& l_renamedFilePath = l_fileOperation.Rename(a_currentFolderPath,
+                                                                       l_newName,
+                                                                       l_assetCreator,
+                                                                       l_assetFilePathRegistry);
+
+                // 選択状態・現在参照中フォルダを旧パスから新パスへ付け替え
+                // リネーム後もハイライトを維持し、親フォルダへ戻されないようにする
+                a_editorWindow.ApplyRenamedFilePath(a_currentFolderPath, l_renamedFilePath);
             }
         }
     }

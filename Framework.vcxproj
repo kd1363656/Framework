@@ -931,6 +931,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelLODSelectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationBakedSkinningConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelBinaryConverterConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelBinaryConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationPlayerConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelRecordConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureSystemConstant.h" />
@@ -1457,6 +1458,57 @@ if "$(Configuration)"=="Debug" (
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </DXCTask>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RitchToonMaterialConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\RitchToonMaterialStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\RitchToon\RitchToonMaterial.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\RitchToon\Converter\Binary\RitchToonMaterialBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\RitchToon\Converter\Json\RitchToonMaterialJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Material\RitchToon\Inspector\RitchToonMaterialEditInspector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\RitchToon\StaticModelRitchToonPerObjectDrawRequest.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\RitchToon\SkeletalAnimationModelRitchToonPerObjectDrawRequest.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\RitchToon\SkeletalAnimationModelGPUSkinnedRitchToonPerObjectDrawRequest.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\RitchToon\StaticModelRitchToonPass.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\RitchToon\SkeletalAnimationModelRitchToonPass.h" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\RitchToon\RitchToonMaterial.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\RitchToon\Converter\Binary\RitchToonMaterialBinaryConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\RitchToon\Converter\Json\RitchToonMaterialJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Material\RitchToon\Inspector\RitchToonMaterialEditInspector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\RitchToon\StaticModelRitchToonPass.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\RitchToon\SkeletalAnimationModelRitchToonPass.cpp" />
+    <None Include="Shader\Light\LightPass.hlsli" />
+    <None Include="Shader\Model\ModelAmplification.hlsli" />
+    <None Include="Shader\Material\RitchToon\RitchToonMaterial.hlsli" />
+    <None Include="Shader\Model\RitchToon\ModelRitchToon.hlsli" />
+    <DXCTask Include="Shader\Model\RitchToon\ModelRitchToon_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Model\RitchToon\Outline\ModelRitchToonOutline_AS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Amplification</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Model\RitchToon\Outline\ModelRitchToonOutline_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Model\Static\RitchToon\Outline\StaticModelRitchToonOutline_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Model\Skeletal\RitchToon\Outline\SkeletalAnimationModelRitchToonOutline_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Model\Skeletal\GPUSkinning\RitchToon\Outline\SkeletalAnimationModelGPUSkinnedRitchToonOutline_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
+    </DXCTask>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Builder\ModelOutlineNormalBuilder.h" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Builder\ModelOutlineNormalBuilder.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -73,3 +73,17 @@ void FWK::Editor::AssetBrowserEditorWindowSelectionState::EraseSelectedFilePath(
 {
     m_selectedFilePathList.erase(a_itr);
 }
+
+void FWK::Editor::AssetBrowserEditorWindowSelectionState::ReplaceFilePath(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath)
+{
+    // リネーム後も選択状態を維持するため
+    // 選択リスト内の旧パスを新パスへ置き換える
+    // 置き換えないと旧パスが残り、カード/ツリーノードがハイライトされなくなる
+    std::ranges::replace(m_selectedFilePathList, a_oldFilePath, a_newFilePath);
+
+    // 範囲選択の開始地点も同様に置き換える
+    if (m_rangeSelectionStartPath == a_oldFilePath)
+    {
+        m_rangeSelectionStartPath = a_newFilePath;
+    }
+}

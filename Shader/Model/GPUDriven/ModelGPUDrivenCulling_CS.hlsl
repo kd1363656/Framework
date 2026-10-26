@@ -428,18 +428,18 @@ void WriteDrawCommand(const ModelGPUDrivenInstance a_instance,
     l_drawRecord.meshletOffset        = l_meshletOffset;
     l_drawRecord.cullingDebugState    = a_cullingDebugState;
 
-    // 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離(ワールド座標。0以上)
-    // どのMeshも「画面上の誤差が許容値以下」のLODで描くため、表面のずれはこの位置で
-    // 許容値(ピクセル) × 距離 ÷ g_lodProjectionScale の長さ以下になる。その長さに、実際のずれの倍率を掛けて押し出す
+    // 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離の、カメラからの距離に対する割合
+    // どのMeshも「画面上の誤差が許容値以下」のLODで描くため、表面のずれは距離dの位置で
+    // 許容値(ピクセル) × d ÷ g_lodProjectionScale の長さ以下になる。その長さに、実際のずれの倍率を掛けて押し出す
+    // (距離dはメッシュシェーダーが頂点ごとに求めて掛ける。Meshごとの距離を使うと、Meshごとに選ばれるLODの違いで足りなくなるため)
     // (覆う側の服が沈んでも、覆われている肌はさらにその奥になり、透けて見えなくなる)
     // 影の描画では、隠れている面の前後関係は影の形に関係しないので押し出さない
     l_drawRecord.lodCoveredLayerCountBufferSRVDescriptorIndex = a_meshInfo.lodCoveredLayerCountBufferSRVDescriptorIndex;
+    l_drawRecord.outlineNormalBufferSRVDescriptorIndex        = a_meshInfo.outlineNormalBufferSRVDescriptorIndex;
 
     if (g_isOrthographicLOD != k_trueValue)
     {
-        const float l_lodDistance = CalculateLODDistance(a_worldCenter, a_worldRadius);
-
-        l_drawRecord.lodCoveredLayerDepthOffset = a_meshInfo.lodSurfaceDeviationScale * g_lodMaxScreenSpaceErrorPixel * l_lodDistance / g_lodProjectionScale;
+        l_drawRecord.lodCoveredLayerDepthOffsetRatio = a_meshInfo.lodSurfaceDeviationScale * g_lodMaxScreenSpaceErrorPixel / g_lodProjectionScale;
     }
 
     // スキニングするモデルなら、このインスタンスのアニメーションのコマに対応するスキニング行列の位置を求める

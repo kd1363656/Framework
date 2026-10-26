@@ -91,7 +91,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
 
             // 他のMeshに覆われている頂点を、カメラから見て奥へ押し出す距離(覆われている層1つ分)
             // 簡略化で服が肌より奥へ沈み、肌が透けて見えるのを防ぐ
-            const float l_lodCoveredLayerDepthOffset = l_canSelectLOD ? l_modelLODSelector.CalculateCoveredLayerDepthOffset(l_modelMeshletData, l_drawRequest->m_worldMatrix, l_worldMaxScale) : Constant::k_initialCBModelPerObjectLODCoveredLayerDepthOffset;
+            const float l_lodCoveredLayerDepthOffsetRatio = l_canSelectLOD ? l_modelLODSelector.CalculateCoveredLayerDepthOffsetRatio(l_modelMeshletData) : Constant::k_initialCBModelPerObjectLODCoveredLayerDepthOffsetRatio;
 
             // Compute Shaderは処理完了後に、
             // SkinnedVertexBufferをNON_PIXEL_SHADER_RESOURCEへ遷移している
@@ -111,7 +111,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             l_cbModelPerObject.m_worldOrientationSign        = l_worldOrientationSign;
             l_cbModelPerObject.m_meshletCount                = l_meshletCount;
             l_cbModelPerObject.m_meshletOffset               = l_meshletOffset;
-            l_cbModelPerObject.m_lodCoveredLayerDepthOffset  = l_lodCoveredLayerDepthOffset;
+            l_cbModelPerObject.m_lodCoveredLayerDepthOffsetRatio = l_lodCoveredLayerDepthOffsetRatio;
 
             // Materialの種類を知らなくても、GPUDataBufferの番号を渡すだけでシェーダー側が自身の型として読む
             l_cbModelPerObject.m_materialBufferSRVDescriptorIndex = l_material->GetVALGPUDataBufferSRVDescriptorIndex();
@@ -126,6 +126,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             l_cbModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     = l_meshletBoundsBuffer.GetVALSRVDescriptorIndex                           ();
 
             l_cbModelPerObject.m_lodCoveredLayerCountBufferSRVDescriptorIndex = l_modelMeshRuntimeData.m_lodCoveredLayerCountBuffer.GetVALSRVDescriptorIndex();
+            l_cbModelPerObject.m_outlineNormalBufferSRVDescriptorIndex        = l_modelMeshRuntimeData.m_outlineNormalBuffer.GetVALSRVDescriptorIndex       ();
 
             FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_vertexBufferSRVDescriptorIndex            == DescriptorHeap::k_invalidDescriptorIndex, "SkinnedVertexBufferのSRVDescriptorIndexが無効です。");
             FWK_ASSERT_CONTINUE_IF(l_cbModelPerObject.m_meshletBufferSRVDescriptorIndex           == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBufferのSRVDescriptorIndexが無効です。");
