@@ -23,7 +23,7 @@ void FWK::Converter::SceneManagerJsonConverter::Load(const SceneManager& a_scene
     l_scene->Deserialize(l_rootJson);
 }
 
-void FWK::Converter::SceneManagerJsonConverter::Save(const SceneManager& a_sceneManager) const
+bool FWK::Converter::SceneManagerJsonConverter::Save(const SceneManager& a_sceneManager) const
 {
     const auto& l_scene                = a_sceneManager.GetVALScene               ().lock();
     const auto& l_currentSceneFilePath = a_sceneManager.GetREFCurrentSceneFilePath();
@@ -31,8 +31,8 @@ void FWK::Converter::SceneManagerJsonConverter::Save(const SceneManager& a_scene
     if (!l_scene ||
         l_currentSceneFilePath.empty())
     {
-        return;
+        return false;
     }
 
-    Utility::SaveJsonFile(l_scene->Serialize(), l_currentSceneFilePath);
+    return Utility::SaveJsonFile(l_scene->Serialize(), l_currentSceneFilePath);
 }

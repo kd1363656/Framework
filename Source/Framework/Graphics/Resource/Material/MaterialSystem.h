@@ -56,7 +56,7 @@ namespace FWK::Graphics
     private:
 
         // .materialファイルに保存された型名から、Factoryで派生クラスを作って読み込む
-        std::shared_ptr<MaterialBase> CreateMaterialFromBinaryFile(const std::filesystem::path& a_filePath) const;
+        std::shared_ptr<MaterialBase> CreateMaterialFromBinaryFile(const std::filesystem::path& a_filePath);
 
         bool TryResolveCachedMaterialResult(const std::filesystem::path& a_filePath, Struct::MaterialLoadResult& a_materialLoadResult);
 
@@ -70,6 +70,7 @@ namespace FWK::Graphics
 
         AssetStorage<MaterialBase> m_materialStorage = {};
 
-        Converter::MaterialSystemJsonConverter m_jsonConverter = {};
+        Converter::MaterialBaseBinaryConverter m_materialBaseBinaryConverter = {};
+        Converter::MaterialSystemJsonConverter m_jsonConverter               = {};
     };
 }

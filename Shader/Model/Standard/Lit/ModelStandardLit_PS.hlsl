@@ -429,5 +429,6 @@ float4 main(const MSOutputLit a_input) : SV_Target0
     // 最終色
     const float3 l_finalColor = l_directionLighting + l_ambientLighting;
     
-    return float4(l_finalColor, l_baseColor.a);
+    // カリングの可視化中は、消されたはずのMesh / Meshletに判定結果ごとの色を混ぜる(通常はそのままの色)
+    return ApplyModelCullingDebugTint(float4(l_finalColor, l_baseColor.a), a_input.cullingDebugState);
 }

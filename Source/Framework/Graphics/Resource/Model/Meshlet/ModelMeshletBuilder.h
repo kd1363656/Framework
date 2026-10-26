@@ -633,7 +633,12 @@ namespace FWK::Graphics
         // ・法線 : 陰影の崩れを防ぐ
         // ・Tangent : 法線とUVから決まるため、誤差には含めない
         // ・UV : テクスチャの崩れを防ぐ(UVは0～1なので、位置(メートル)よりずれが目立つように重くする)
-        static constexpr std::array<float, 9ULL> k_simplifyAttributeWeightList =
+        static constexpr std::size_t k_simplifyNormalAttributeCount  = 3ULL;
+        static constexpr std::size_t k_simplifyTangentAttributeCount = 4ULL;
+        static constexpr std::size_t k_simplifyUVAttributeCount      = 2ULL;
+        static constexpr std::size_t k_simplifyAttributeCount        = k_simplifyNormalAttributeCount + k_simplifyTangentAttributeCount + k_simplifyUVAttributeCount;
+
+        static constexpr std::array<float, k_simplifyAttributeCount> k_simplifyAttributeWeightList =
         {
             0.5F, 0.5F, 0.5F,
             0.0F, 0.0F, 0.0F, 0.0F,

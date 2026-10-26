@@ -26,6 +26,13 @@ static const uint k_gpuSkinningUpperHalfShiftBits = 16U;
 
 static const float k_gpuSkinningEmptyMorphWeight = 0.0F;
 
+// 影響するボーンの値を足し合わせる前の初期値
+static const float3 k_gpuSkinningInitialAccumulatedVector = float3(0.0F, 0.0F, 0.0F);
+static const float  k_gpuSkinningInitialTotalBoneWeight   = 0.0F;
+
+// 構造体を全て0で初期化するときに使う値
+static const uint k_gpuSkinningZeroInitializeValue = 0U;
+
 // ベイクしたスキニング行列1つ分
 // StructuredBufferの行列は、そのままだと列優先(column_major)として読まれるため、
 // C++のMatrix(行優先)と同じ並びとして読めるようにrow_majorを指定した構造体で包む
@@ -148,10 +155,10 @@ GPUSkinnedVertex LoadGPUSkinnedVertex(const uint a_vertexIndex)
 
     const float4 l_boneWeightList = max(l_sourceVertex.boneWeight, k_gpuSkinningMINBoneWeight);
 
-    float3 l_accumulatedPosition = float3(0.0F, 0.0F, 0.0F);
-    float3 l_accumulatedNormal   = float3(0.0F, 0.0F, 0.0F);
-    float3 l_accumulatedTangent  = float3(0.0F, 0.0F, 0.0F);
-    float  l_totalBoneWeight     = 0.0F;
+    float3 l_accumulatedPosition = k_gpuSkinningInitialAccumulatedVector;
+    float3 l_accumulatedNormal   = k_gpuSkinningInitialAccumulatedVector;
+    float3 l_accumulatedTangent  = k_gpuSkinningInitialAccumulatedVector;
+    float  l_totalBoneWeight     = k_gpuSkinningInitialTotalBoneWeight;
 
     [unroll]
     for (uint l_influenceIndex = 0U; l_influenceIndex < k_gpuSkinningMAXBoneInfluenceCount; ++l_influenceIndex)
@@ -170,7 +177,7 @@ GPUSkinnedVertex LoadGPUSkinnedVertex(const uint a_vertexIndex)
         l_totalBoneWeight     += l_boneWeight;
     }
 
-    GPUSkinnedVertex l_skinnedVertex = (GPUSkinnedVertex)0;
+    GPUSkinnedVertex l_skinnedVertex = (GPUSkinnedVertex)k_gpuSkinningZeroInitializeValue;
 
     l_skinnedVertex.uv = l_sourceVertex.uv;
 

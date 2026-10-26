@@ -154,13 +154,4 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
         l_gpuSkinnedCascadeShadowPerObjectDrawRequest->SetCurrentDrawCascadeIndex  (l_cascadeIndex);
         l_gpuSkinnedCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer, *l_skeletalAnimationModelRootSignature, *l_currentFrameResource);
     }
-
-    // LOD適用後に描画命令を出した三角形数(全カスケードの合計)を計測用に記録する
-    const auto l_gpuSkinnedShadowTriangleCount = l_gpuSkinnedCascadeShadowPerObjectDrawRequest ? l_gpuSkinnedCascadeShadowPerObjectDrawRequest->GetVALSubmittedTriangleCount() : k_initialTriangleCount;
-
-    const auto l_shadowTriangleCount = l_staticModelCascadeShadowPerObjectDrawRequest->GetVALSubmittedTriangleCount           () +
-                                       l_skeletalAnimationModelCascadeShadowPerObjectDrawRequest->GetVALSubmittedTriangleCount() +
-                                       l_gpuSkinnedShadowTriangleCount;
-
-    a_renderer.GetMutableREFFrameProfiler().AddCounterSample(k_triangleCounterName, static_cast<double>(l_shadowTriangleCount));
 }

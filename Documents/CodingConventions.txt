@@ -352,6 +352,22 @@
 	const Struct::AssetFilePathData* FindPTRAssetFilePathData(const boost::uuids::uuid&    a_uuid)          const;
 
 	※constの位置、型の位置、引数名の位置、)の位置、末尾constの位置がすべて揃っている
+
+	・型と引数名の間のスペースは一番長い型だけ1つにし、それ以外はその位置に合わせる
+	　(一番長い型の後ろに2つ以上スペースを空けない、関数を消したり型名を変えたら詰め直す)
+	理 : 余分な空白があると引数名が型から離れて見え、どこに揃えているのか分からなくなるから
+
+	例↓
+	void ApplyCurveDistanceScaler(const float                   a_value);
+	void Apply3D                 (const DirectX::AudioListener& a_listener);
+
+	ダメな例↓(一番長い型の後ろにもスペースが余っている)
+	void ApplyCurveDistanceScaler(const float                     a_value);
+	void Apply3D                 (const DirectX::AudioListener&   a_listener);
+
+	隣接する関数が1つもない場合はスペース1つ
+	例↓
+	void Apply3D(const DirectX::AudioListener& a_listener);
 }
 ・もし使う関数が行間を開けていなければ()の位置を合わせる
 {
@@ -1078,7 +1094,9 @@
 	  例↓ k_initialPadding → k_initialCBModelPerObjectPadding
 	・Framework.hでは共通定数ヘッダーを、その定数を使うヘッダーより上でインクルードする
 	・クラスの中だけで使う定数は今まで通りprivateにstatic constexprで書いてよい
-	・privateで定義した構造体の中で使う定数は、構造体の中ではなく外側のクラスのprivate(構造体の定義より上)に書く
+	・privateで定義した構造体の中で使う定数は、構造体の中ではなく外側のクラスの一番下のprivateに書く
+	  (一番上のprivateには型の定義(using、friend、構造体、Enum)だけを書き、staticは書かない。
+	   メンバ変数の初期値はクラス全体を読み終えてから解釈されるので、後ろに書いた定数も使える)
 	・例外 : TypeTraitのように、テンプレートの特殊化ごとに値を持たせるための静的メンバはそのまま書いてよい
 
 	例↓ だめな例
@@ -1110,16 +1128,22 @@
 	};
 
 	// privateの構造体で使う定数
-	class FrameProfiler final
+	class ModelGPUDrivenTableBuilder final
 	{
 	private:
 
-		static constexpr double k_initialTotalMS = 0.0;
-
-		struct ProfileStatistics final
+		struct ModelEntry final
 		{
-			double m_totalMS = k_initialTotalMS;
+			std::uint64_t m_refreshedFrameCount = k_initialFrameCount;
 		};
+
+	public:
+
+		～関数～
+
+	private:
+
+		static constexpr std::uint64_t k_initialFrameCount = 0ULL;
 	};
 }
 16.ブレース(波括弧)の位置について=============================================================================================================================
@@ -1139,4 +1163,73 @@
 	public:
 		 Hoge() = default;
 	};
+}
+17.マジックナンバーについて=====================================================================================================================================
+・C++、HLSLのどちらでもマジックナンバー(意味の名前が付いていない数値)を書かない
+・例外はfor文のカウンターの初期値だけとし、それ以外はすべてk_の定数にする
+{
+	理由 : 数値だけでは何の値なのか、他のどこと一致させる必要があるのかが分からず、
+	同じ意味の数値を変えるときに直し漏れが起きるから
+
+	対象(すべて定数にする)
+	・配列の要素数(std::array<T, 8ULL>、float4 g_planeList[6]など)※配列の要素数は例外なく定数化必須
+	・符号や初期値(1.0F、-1.0F、0U、(Struct)0など)
+	・ビットマスク、シフト量(1U、2U、4U、>> 32など)
+	・加算量、切り上げ用の値(InterlockedAdd(..., 1U, ...)、 - 1Uなど)
+	・条件演算子の結果(? 1U : 0U)
+
+	HLSLとC++で同じ値を使う場合(cbufferの配列の要素数など)は両方に定数を作り、
+	「C++側の～と同じ値」とコメントを書く
+
+	例↓ だめな例
+	float4 g_frustumPlaneList[6];
+	inline constexpr std::array<Struct::EditorWindowShortcutKeyBinding, 8ULL> k_editorWindowShortcutKeyBindingList = {};
+
+	例↓ よい例
+	// C++側のConstant::k_maxGPUDrivenFrustumPlaneCountと必ず同じ値にする
+	static const uint k_maxFrustumPlaneCount = 6U;
+	float4 g_frustumPlaneList[k_maxFrustumPlaneCount];
+
+	inline constexpr std::size_t k_editorWindowShortcutKeyBindingCount = 8ULL;
+	inline constexpr std::array<Struct::EditorWindowShortcutKeyBinding, k_editorWindowShortcutKeyBindingCount> k_editorWindowShortcutKeyBindingList = {};
+
+	for (uint l_planeIndex = 0U; l_planeIndex < g_frustumPlaneCount; ++l_planeIndex) ← 初期値の0Uだけは許可
+}
+18.Converter、EditInspectorの持ち方について=====================================================================================================================
+・JsonConverter、BinaryConverter、EditInspectorはすべて、使うクラスのメンバ変数として持つ
+・関数の中でローカル変数として作らない
+{
+	理由 : どのクラスがどのConverterを使っているのかがヘッダーを見るだけで分かり、
+	毎回作り直す無駄も無くなるから
+
+	例↓ だめな例
+	bool MaterialBase::LoadBinaryData(const std::filesystem::path& a_filePath)
+	{
+		Converter::MaterialBaseBinaryConverter l_materialBaseBinaryConverter = {};
+
+		return l_materialBaseBinaryConverter.Load(*this, a_filePath);
+	}
+
+	例↓ よい例
+	// .h
+	Converter::MaterialBaseBinaryConverter m_binaryConverter = {};
+
+	// .cpp
+	bool MaterialBase::LoadBinaryData(const std::filesystem::path& a_filePath)
+	{
+		return m_binaryConverter.Load(*this, a_filePath);
+	}
+}
+19.クラステンプレートの型エイリアスについて=====================================================================================================================
+・クラステンプレートに型引数を渡しただけの型(EditorWindowClipboard<std::filesystem::path>など)に型エイリアスをつけない
+{
+	理由 : 型エイリアスにすると、何のテンプレートに何の型を渡した物なのかが宣言を見ても分からなくなるから
+	(std::unordered_mapなど宣言が長くなるstdコンテナを、クラスの中だけで使う場合は今まで通り使ってよい)
+
+	例↓ だめな例
+	using AssetBrowserEditorWindowClipboard = Editor::EditorWindowClipboard<std::filesystem::path>;
+	TypeAlias::AssetBrowserEditorWindowClipboard m_clipboard = {};
+
+	例↓ よい例
+	EditorWindowClipboard<std::filesystem::path> m_clipboard = {};
 }

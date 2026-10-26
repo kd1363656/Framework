@@ -21,7 +21,16 @@ namespace FWK::Graphics
         RenderGraphPassBase& operator=(const RenderGraphPassBase&)  = delete;
         RenderGraphPassBase& operator=(      RenderGraphPassBase&&) = delete;
 
+        // Passごとの設定をjsonから読む(設定を持たないPassは何もしない)
+        virtual void Deserialize(const nlohmann::json&) {}
+
         virtual void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph& a_renderGraph) = 0;
+
+        // Passごとの設定をjsonへ書く(設定を持たないPassは空のjsonを返す)
+        virtual nlohmann::json Serialize() const { return nlohmann::json{}; }
+
+        // Passごとの設定をエディターで編集する(設定を持たないPassは何もしない)
+        virtual void EditInspector() {}
 
         const auto& GetREFResourceAccessList() const { return m_resourceAccessList; }
 

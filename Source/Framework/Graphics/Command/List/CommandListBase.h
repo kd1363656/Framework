@@ -92,6 +92,18 @@ namespace FWK::Graphics
                                                 a_bufferSize);
         }
 
+        // Resource全体をコピーする(コピー元とコピー先は同じ大きさ、同じFormatである必要がある)
+        // 呼び出し側でコピー元をCOPY_SOURCE、コピー先をCOPY_DESTへ遷移しておくこと
+        void CopyResource(ID3D12Resource2& a_destinationResource, ID3D12Resource2& a_sourceResource) const
+        {
+            const auto& l_copyCommandList = GetREFCommandList();
+
+            FWK_ASSERT_RETURN_IF(!l_copyCommandList, "コマンドリストが無効のため、Resourceのコピーに失敗しました。");
+
+            // CopyResource(コピー先Resource、コピー元Resource);
+            l_copyCommandList->CopyResource(&a_destinationResource, &a_sourceResource);
+        }
+
         const auto& GetREFCommandList() const { return m_commandList; }
 
     protected:

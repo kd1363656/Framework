@@ -324,6 +324,24 @@ void FWK::Graphics::DirectCommandList::ExecuteIndirect(const TypeAlias::ComPtr<I
                                          a_countBuffer.Get(),
                                          k_indirectCountBufferOffset);
 }
+void FWK::Graphics::DirectCommandList::ExecuteIndirectSingleCommand(const TypeAlias::ComPtr<ID3D12CommandSignature>& a_commandSignature, const TypeAlias::ComPtr<ID3D12Resource2>& a_argumentBuffer, const UINT64& a_argumentBufferOffset) const
+{
+    FWK_ASSERT_RETURN_IF(!a_commandSignature, "CommandSignatureが無効なため、ExecuteIndirectに失敗しました。");
+    FWK_ASSERT_RETURN_IF(!a_argumentBuffer,   "命令の引数のBufferが無効なため、ExecuteIndirectに失敗しました。");
+
+    const auto& l_directCommandList = GetREFCommandList();
+
+    FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、ExecuteIndirectに失敗しました。");
+
+    // CountBufferをnullptrにすると、最大コマンド数(ここでは1)の分だけ必ず実行される
+    // 引数のBufferの読み始め位置を指定できるため、1つのBufferに複数の命令の引数を並べておける
+    l_directCommandList->ExecuteIndirect(a_commandSignature.Get(),
+                                         k_singleIndirectCommandCount,
+                                         a_argumentBuffer.Get(),
+                                         a_argumentBufferOffset,
+                                         nullptr,
+                                         k_indirectCountBufferOffset);
+}
 
 void FWK::Graphics::DirectCommandList::SetupRootSignature(ID3D12GraphicsCommandList6& a_commandList, ID3D12RootSignature& a_rootSignature)
 {

@@ -27,7 +27,8 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID,
     // LODの先頭番号を足してBuffer全体での番号へ変換する
     const uint l_meshletIndex = g_meshletOffset + l_lodMeshletIndex;
 
-    bool l_shouldDispatch = false;
+    bool l_shouldDispatch    = false;
+    uint l_cullingDebugState = k_modelCullingDebugStateVisible;
 
     // 最後のAmplificationShaderGroupには、
     // 実際のMeshlet数を超えた余分なThreadが含まれる可能性がある
@@ -36,7 +37,7 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID,
     {
         // GPUスキニングするMeshは、Meshletの範囲(元の姿勢で計算した物)が動いた形と合わないため、
         // Meshlet単位のカリングをせずに全て描画する(Mesh単位のカリングは動いた形を囲む球で済ませている)
-        l_shouldDispatch = g_isGPUSkinning != 0U ? true : ShouldDispatchModelMeshlet(l_meshletIndex);
+        l_shouldDispatch = g_isGPUSkinning != k_modelFalseValue ? true : ShouldDispatchModelMeshlet(l_meshletIndex, l_cullingDebugState);
     }
     
     if (l_shouldDispatch)
@@ -48,7 +49,8 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID,
         // 可視Meshletは配列のZero番目から連続して格納される
         InterlockedAdd(g_modelVisibleMeshletCount, k_modelAmplificationVisibleMeshletCountIncrement, l_payloadMeshletIndex);
         
-        g_modelAmplificationPayload.meshletIndexList[l_payloadMeshletIndex] = l_meshletIndex;
+        // Meshletの番号と一緒に、カリングの可視化用の判定結果を上位ビットへ入れて渡す(通常は「見えている」)
+        g_modelAmplificationPayload.meshletIndexList[l_payloadMeshletIndex] = EncodeModelCullingDebugMeshletIndex(l_meshletIndex, l_cullingDebugState);
     }
     
     // DispatchMesh事態にGroupMemoryBarrierWithGroupSync相当の動機が含まれる

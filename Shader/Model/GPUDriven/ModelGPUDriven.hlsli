@@ -1,5 +1,6 @@
 ﻿#ifndef MODEL_GPU_DRIVEN_HLSLI
 #define MODEL_GPU_DRIVEN_HLSLI
+#include "../ModelCullingDebug.hlsli"
 
 // GPUドリブン描画で使用する構造体
 // ※ C++側(Definition/Struct/Graphics/Buffer/Structured/ModelGPUDrivenStruct.h)と必ず同じ並びにする
@@ -81,6 +82,11 @@ struct ModelGPUDrivenMeshLOD
     float morphError;
 };
 
+// ModelGPUDrivenDrawRecordを256byteにするための詰め物(uint4)の数
+// (行列2つ128byte + 4つずつ並べた値5行80byte = 208byte、256byteまでの残り48byte = uint4が3つ)
+// 並びを変えた場合は、C++側のModelGPUDrivenDrawRecordと合わせてこの数も直す
+static const uint k_modelGPUDrivenDrawRecordPaddingCount = 3U;
+
 // 描画1回分の定数バッファの中身
 // AS / MS / PSが読むcbuffer CBModelPerObject(Model.hlsli)と全く同じ並びで書き込み、
 // そのままConstantBufferViewとして使う
@@ -108,14 +114,14 @@ struct ModelGPUDrivenDrawRecord
     uint skinningMatrixBufferSRVDescriptorIndex;
     uint skinningMatrixOffset;
     uint isGPUSkinning;
-    uint skinningPadding;
+    uint cullingDebugState;
 
     uint morphVertexRangeBufferSRVDescriptorIndex;
     uint morphDeltaBufferSRVDescriptorIndex;
     uint morphWeightBufferSRVDescriptorIndex;
     uint morphWeightOffset;
 
-    uint4 recordPadding[3];
+    uint4 recordPadding[k_modelGPUDrivenDrawRecordPaddingCount];
 };
 
 // ExecuteIndirectが1回分の描画として読む引数

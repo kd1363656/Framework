@@ -149,6 +149,8 @@ namespace FWK::Graphics
 
         void SetMorphSetting(SkeletalAnimationModelMorphSetting&& a_set) { m_morphSetting = std::move(a_set); }
 
+        void SetSpringBoneSetting(SkeletalAnimationModelSpringBoneSetting&& a_set) { m_springBoneSetting = std::move(a_set); }
+
         // 名前が一致するモーフのチャンネル番号を探す(無い場合はConstant::k_invalidModelMorphTargetIndex)
         std::uint32_t FindVALMorphChannelIndex(const std::wstring& a_channelName) const;
 
@@ -158,9 +160,13 @@ namespace FWK::Graphics
 
         const auto& GetREFMorphSetting() const { return m_morphSetting; }
 
+        const auto& GetREFSpringBoneSetting() const { return m_springBoneSetting; }
+
         auto& GetMutableREFModelData() { return m_modelData; }
 
         auto& GetMutableREFMorphSetting() { return m_morphSetting; }
+
+        auto& GetMutableREFSpringBoneSetting() { return m_springBoneSetting; }
 
         static constexpr std::uint32_t k_invalidBoneIndex    = std::numeric_limits<std::uint32_t>::max();
         static constexpr std::uint32_t k_invalidPaletteIndex = std::numeric_limits<std::uint32_t>::max();
@@ -170,6 +176,8 @@ namespace FWK::Graphics
         ModelData m_modelData = {};
 
         SkeletalAnimationModelMorphSetting m_morphSetting = {};
+
+        SkeletalAnimationModelSpringBoneSetting m_springBoneSetting = {};
 
         std::shared_ptr<SkeletalAnimationBakedSkinning> m_bakedSkinning = nullptr;
     };

@@ -13,10 +13,13 @@
 // 2回目(Late)  : 1回目で描いた物から今のフレームのHi-Zを作り、候補だけを判定し直して描画する
 // こうすることで、前のフレームでは隠れていたが今は見えている物も、描き漏らさずに済む
 
+// 視錐台を作る平面の最大数(C++側のConstant::k_maxGPUDrivenFrustumPlaneCountと必ず同じ値にする)
+static const uint k_maxFrustumPlaneCount = 6U;
+
 cbuffer CBModelGPUDrivenCullingPass : register(b0)
 {
     // 視錐台を作る平面(xyz : 平面の法線、w : 原点からの距離)
-    float4 g_frustumPlaneList[6];
+    float4 g_frustumPlaneList[k_maxFrustumPlaneCount];
 
     float3 g_cameraWorldPosition;
     float  g_lodProjectionScale;
@@ -57,6 +60,10 @@ cbuffer CBModelGPUDrivenCullingPass : register(b0)
     uint  g_isOrthographicLOD;
     float g_minProjectedSizeTexel;
     uint  g_morphOverrideWeightBufferSRVDescriptorIndex;
+
+    // g_isCullingDebugVisualize : 1なら視錐台の外、又は隠れていると判定した組み合わせも、判定結果を付けて描画コマンドを書く(カリングの可視化)
+    uint  g_isCullingDebugVisualize;
+    uint3 g_cullingPassPadding;
 };
 
 // オクルージョンカリングの候補(1回目で隠れていると判定された組み合わせ)
@@ -76,10 +83,9 @@ static const uint k_cullingModeNormal = 0U;
 static const uint k_cullingModeEarly  = 1U;
 static const uint k_cullingModeLate   = 2U;
 
-// CounterBufferの要素番号
+// CounterBufferの要素番号(C++側のConstant::k_modelGPUDrivenCounterElementCountと数を合わせる)
 static const uint k_drawCountCounterIndex      = 0U;
-static const uint k_triangleCountCounterIndex  = 1U;
-static const uint k_candidateCountCounterIndex = 2U;
+static const uint k_candidateCountCounterIndex = 1U;
 
 // 1つのAmplificationShaderGroupが担当するMeshlet数(C++側と同じ)
 static const uint k_meshletCountPerAmplificationShaderGroup = 32U;
@@ -120,6 +126,45 @@ static const float k_orthographicLODDistance = 1.0F;
 
 static const float k_diameterScale = 2.0F;
 
+// 「数」から「最後の番号」へ直すときに引く値(例 : ミップ数 - 1 = 最後のミップ番号)
+static const uint k_countToLastIndexOffset = 1U;
+
+// 構造体を全て0で初期化するときに使う値
+static const uint k_zeroInitializeValue = 0U;
+
+// InterlockedAddでカウンターを1つ進めるときに足す値
+static const uint k_counterIncrementValue = 1U;
+
+static const uint k_initialCounterValue = 0U;
+static const uint k_initialIndex        = 0U;
+static const uint k_initialOffset       = 0U;
+static const uint k_emptyFrameCount     = 0U;
+
+// GPUアドレスの下位32bitが繰り上がったときに上位32bitへ足す値
+static const uint k_addressCarryValue   = 1U;
+static const uint k_addressNoCarryValue = 0U;
+
+// UVの範囲(0～1)と、深度の範囲(0が一番手前、1が一番奥)
+static const float k_minUV         = 0.0F;
+static const float k_maxUV         = 1.0F;
+static const float k_farthestDepth = 1.0F;
+
+// 箱の角の番号のビット(1bit目がx、2bit目がy、3bit目がz)で、その軸を+側にするか-側にするかを決める
+static const uint k_boundsCornerBitX = 1U;
+static const uint k_boundsCornerBitY = 2U;
+static const uint k_boundsCornerBitZ = 4U;
+
+static const float k_positiveCornerSign =  1.0F;
+static const float k_negativeCornerSign = -1.0F;
+
+// Hi-Z上で物体が覆う大きさ(テクセル)の最小値(1テクセルより小さくてもミップ0を使う)
+static const float k_minCoveredTexelSize = 1.0F;
+
+static const float k_firstMIPLevel = 0.0F;
+
+// ミップを縮小していったときの最小の大きさ(1×1テクセル)
+static const uint2 k_minMIPSize = uint2(1U, 1U);
+
 
 // 球(中心と半径)が視錐台の内側に少しでも入っているか判定する
 // 平面の法線は視錐台の内側を向いているため、
@@ -143,16 +188,16 @@ bool IsOccludedBoundingSphere(const float3 a_worldCenter, const float a_worldRad
     if (g_isOcclusionEnabled != k_trueValue) { return false; }
 
     // 1. 球を囲む箱の8つの角を画面へ投影し、画面上で覆う範囲(UV)と一番手前の深度を求める
-    float2 l_uvMIN        = float2( 1.0F,  1.0F);
-    float2 l_uvMAX        = float2( 0.0F,  0.0F);
-    float  l_nearestDepth = 1.0F;
+    float2 l_uvMIN        = float2(k_maxUV, k_maxUV);
+    float2 l_uvMAX        = float2(k_minUV, k_minUV);
+    float  l_nearestDepth = k_farthestDepth;
 
     for (uint l_cornerIndex = 0U; l_cornerIndex < k_boundsCornerCount; ++l_cornerIndex)
     {
-        // 角の番号のビット(1, 2, 4)で、x、y、zそれぞれを-側にするか+側にするかを決める
-        const float3 l_cornerSign = float3((l_cornerIndex & 1U) ? 1.0F : -1.0F,
-                                           (l_cornerIndex & 2U) ? 1.0F : -1.0F,
-                                           (l_cornerIndex & 4U) ? 1.0F : -1.0F);
+        // 角の番号のビットで、x、y、zそれぞれを-側にするか+側にするかを決める
+        const float3 l_cornerSign = float3((l_cornerIndex & k_boundsCornerBitX) ? k_positiveCornerSign : k_negativeCornerSign,
+                                           (l_cornerIndex & k_boundsCornerBitY) ? k_positiveCornerSign : k_negativeCornerSign,
+                                           (l_cornerIndex & k_boundsCornerBitZ) ? k_positiveCornerSign : k_negativeCornerSign);
 
         const float3 l_corner = a_worldCenter + l_cornerSign * a_worldRadius;
         const float4 l_clip   = mul(float4(l_corner, k_positionElementW), g_occlusionViewProjectionMatrix);
@@ -173,15 +218,18 @@ bool IsOccludedBoundingSphere(const float3 a_worldCenter, const float a_worldRad
 
     // 2. 覆う範囲がHi-Zの2×2ピクセル以内に収まるミップを選ぶ
     //    (大きい範囲ほど縮小されたミップを使うことで、読むピクセル数を常に4つにできる)
-    const float2 l_sizeInTexel = (l_uvMAX - l_uvMIN) * g_hierarchicalDepthSize;
-    const float  l_mipLevel    = clamp(ceil(log2(max(max(l_sizeInTexel.x, l_sizeInTexel.y), 1.0F))), 0.0F, (float)(g_hierarchicalDepthMIPCount - 1U));
+    const float2 l_sizeInTexel    = (l_uvMAX - l_uvMIN) * g_hierarchicalDepthSize;
+    const float  l_maxSizeInTexel = max(max(l_sizeInTexel.x, l_sizeInTexel.y), k_minCoveredTexelSize);
+    const float  l_lastMIPLevel   = (float)(g_hierarchicalDepthMIPCount - k_countToLastIndexOffset);
+    const float  l_mipLevel       = clamp(ceil(log2(l_maxSizeInTexel)), k_firstMIPLevel, l_lastMIPLevel);
 
     Texture2D<float> l_hierarchicalDepthTexture = ResourceDescriptorHeap[g_hierarchicalDepthTextureSRVDescriptorIndex];
 
-    const uint  l_mip     = (uint)l_mipLevel;
-    const uint2 l_mipSize = max(uint2(g_hierarchicalDepthSize) >> l_mip, uint2(1U, 1U));
-    const uint2 l_texelMIN = min(uint2(l_uvMIN * float2(l_mipSize)), l_mipSize - 1U);
-    const uint2 l_texelMAX = min(uint2(l_uvMAX * float2(l_mipSize)), l_mipSize - 1U);
+    const uint  l_mip       = (uint)l_mipLevel;
+    const uint2 l_mipSize   = max(uint2(g_hierarchicalDepthSize) >> l_mip, k_minMIPSize);
+    const uint2 l_lastTexel = l_mipSize - k_countToLastIndexOffset;
+    const uint2 l_texelMIN  = min(uint2(l_uvMIN * float2(l_mipSize)), l_lastTexel);
+    const uint2 l_texelMAX  = min(uint2(l_uvMAX * float2(l_mipSize)), l_lastTexel);
 
     // 3. 範囲の四隅のピクセルから、一番奥の深度を求める
     const float l_depth0 = l_hierarchicalDepthTexture.Load(int3(l_texelMIN.x, l_texelMIN.y, l_mip));
@@ -270,7 +318,7 @@ ModelGPUDrivenMeshLOD SelectMeshLOD(const ModelGPUDrivenMeshInfo a_meshInfo,
     // 三角形が一番少ないLODから順に調べる
     for (uint l_lodIndex = a_meshInfo.lodCount; l_lodIndex > k_firstLODIndex; --l_lodIndex)
     {
-        const uint                  l_localLODIndex = l_lodIndex - 1U;
+        const uint                  l_localLODIndex = l_lodIndex - k_countToLastIndexOffset;
         const ModelGPUDrivenMeshLOD l_lod           = l_lodBuffer[a_meshInfo.lodOffset + l_localLODIndex];
 
         // LODの崩れ = 形の崩れ + 効かせているターゲットの分のモーフの崩れ
@@ -291,13 +339,18 @@ ModelGPUDrivenMeshLOD SelectMeshLOD(const ModelGPUDrivenMeshInfo a_meshInfo,
 }
 
 // 描画1回分の定数バッファと描画コマンドを書き込む
-void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDrivenMeshInfo a_meshInfo, const float3 a_worldCenter, const float a_worldRadius)
+// a_cullingDebugState : カリングの可視化用の判定結果(通常の描画では常に「見えている」)
+void WriteDrawCommand(const ModelGPUDrivenInstance a_instance,
+                      const ModelGPUDrivenMeshInfo a_meshInfo,
+                      const float3                 a_worldCenter,
+                      const float                  a_worldRadius,
+                      const uint                   a_cullingDebugState)
 {
     // モーフを持つMeshなら、このインスタンスのウェイトがどこにあるかを決める
     // ・インスタンスごとのウェイトがあれば、上書き用ウェイトBufferの指定された位置
     // ・無ければ、ベイクしたウェイトの「このコマ」の位置
     uint  l_morphWeightBufferSRVDescriptorIndex = k_invalidDescriptorIndex;
-    uint  l_morphWeightOffset                   = 0U;
+    uint  l_morphWeightOffset                   = k_initialOffset;
     float l_morphWeightScale                    = k_initialMorphWeightScale;
 
     if (a_meshInfo.morphDeltaBufferSRVDescriptorIndex != k_invalidDescriptorIndex)
@@ -308,7 +361,7 @@ void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDri
             l_morphWeightOffset                   = a_instance.morphWeightOffset;
         }
         else if (a_meshInfo.morphWeightBufferSRVDescriptorIndex != k_invalidDescriptorIndex &&
-                 a_meshInfo.skinningFrameCount > 0U)
+                 a_meshInfo.skinningFrameCount                  >  k_emptyFrameCount)
         {
             l_morphWeightBufferSRVDescriptorIndex = a_meshInfo.morphWeightBufferSRVDescriptorIndex;
             l_morphWeightOffset                   = (a_instance.animationFrameIndex % a_meshInfo.skinningFrameCount) * a_meshInfo.morphWeightStride;
@@ -325,9 +378,8 @@ void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDri
     }
 
     // LODを選ぶ(LODが無いMeshは全Meshletを描画する)
-    uint l_meshletOffset = 0U;
+    uint l_meshletOffset = k_initialOffset;
     uint l_meshletCount  = a_meshInfo.allMeshletCount;
-    uint l_triangleCount = a_meshInfo.allTriangleCount;
 
     if (a_meshInfo.lodCount > k_firstLODIndex)
     {
@@ -340,7 +392,6 @@ void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDri
 
         l_meshletOffset = l_lod.meshletOffset;
         l_meshletCount  = l_lod.meshletCount;
-        l_triangleCount = l_lod.triangleCount;
     }
 
     // 描画コマンドの書き込み先を1つ確保する
@@ -348,20 +399,18 @@ void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDri
     // 第三引数に「加算前の値」が入るため、それを自分専用の書き込み位置として使う
     RWStructuredBuffer<uint> l_counterBuffer = ResourceDescriptorHeap[g_counterBufferUAVDescriptorIndex];
 
-    uint l_drawIndex = 0U;
+    uint l_drawIndex = k_initialCounterValue;
 
-    InterlockedAdd(l_counterBuffer[k_drawCountCounterIndex], 1U, l_drawIndex);
+    InterlockedAdd(l_counterBuffer[k_drawCountCounterIndex], k_counterIncrementValue, l_drawIndex);
 
     // 用意したBufferの数を超えた分は描画しない
     // (ExecuteIndirectもC++側で最大数を指定しているため、数が超えても範囲外は読まれない)
     if (l_drawIndex >= g_maxDrawCount) { return; }
 
-    InterlockedAdd(l_counterBuffer[k_triangleCountCounterIndex], l_triangleCount);
-
     // 描画1回分の定数バッファを書き込む
     RWStructuredBuffer<ModelGPUDrivenDrawRecord> l_drawRecordBuffer = ResourceDescriptorHeap[g_drawRecordBufferUAVDescriptorIndex];
 
-    ModelGPUDrivenDrawRecord l_drawRecord = (ModelGPUDrivenDrawRecord)0;
+    ModelGPUDrivenDrawRecord l_drawRecord = (ModelGPUDrivenDrawRecord)k_zeroInitializeValue;
 
     l_drawRecord.worldMatrix                 = a_instance.worldMatrix;
     l_drawRecord.worldInverseTransposeMatrix = a_instance.worldInverseTransposeMatrix;
@@ -377,6 +426,7 @@ void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDri
     l_drawRecord.worldOrientationSign = a_instance.worldOrientationSign;
     l_drawRecord.meshletCount         = l_meshletCount;
     l_drawRecord.meshletOffset        = l_meshletOffset;
+    l_drawRecord.cullingDebugState    = a_cullingDebugState;
 
     // 他のMeshに覆われている頂点を、覆われている層1つ分だけカメラから見て奥へ押し出す距離(ワールド座標。0以上)
     // どのMeshも「画面上の誤差が許容値以下」のLODで描くため、表面のずれはこの位置で
@@ -394,7 +444,7 @@ void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDri
 
     // スキニングするモデルなら、このインスタンスのアニメーションのコマに対応するスキニング行列の位置を求める
     if (a_meshInfo.skinningMatrixBufferSRVDescriptorIndex != k_invalidDescriptorIndex &&
-        a_meshInfo.skinningFrameCount > 0U)
+        a_meshInfo.skinningFrameCount                     >  k_emptyFrameCount)
     {
         const uint l_frameIndex = a_instance.animationFrameIndex % a_meshInfo.skinningFrameCount;
 
@@ -427,16 +477,17 @@ void WriteDrawCommand(const ModelGPUDrivenInstance a_instance, const ModelGPUDri
     // GPUのアドレスは64bitなので、下位32bitと上位32bitに分けて扱い、繰り上がりも計算する
     const uint l_addressOffset = l_drawIndex * k_drawRecordByteSize;
     const uint l_addressLow    = g_drawRecordBufferAddress.x + l_addressOffset;
-    const uint l_addressCarry  = l_addressLow < g_drawRecordBufferAddress.x ? 1U : 0U;
+    const uint l_addressCarry  = l_addressLow < g_drawRecordBufferAddress.x ? k_addressCarryValue : k_addressNoCarryValue;
 
     RWStructuredBuffer<ModelGPUDrivenIndirectCommand> l_indirectCommandBuffer = ResourceDescriptorHeap[g_indirectCommandBufferUAVDescriptorIndex];
 
-    ModelGPUDrivenIndirectCommand l_indirectCommand = (ModelGPUDrivenIndirectCommand)0;
+    ModelGPUDrivenIndirectCommand l_indirectCommand = (ModelGPUDrivenIndirectCommand)k_zeroInitializeValue;
 
     l_indirectCommand.constantBufferAddress = uint2(l_addressLow, g_drawRecordBufferAddress.y + l_addressCarry);
 
     // 1つのAmplificationShaderGroupが32個のMeshletを担当するため、Group数は切り上げで求める
-    l_indirectCommand.dispatchMeshArguments = uint3((l_meshletCount + k_meshletCountPerAmplificationShaderGroup - 1U) / k_meshletCountPerAmplificationShaderGroup,
+    // (「数 + 1Groupの数 - 1」を1Groupの数で割ると、余りがあるときだけ1つ増える)
+    l_indirectCommand.dispatchMeshArguments = uint3((l_meshletCount + k_meshletCountPerAmplificationShaderGroup - k_countToLastIndexOffset) / k_meshletCountPerAmplificationShaderGroup,
                                                     k_dispatchMeshGroupCountY,
                                                     k_dispatchMeshGroupCountZ);
 
@@ -448,15 +499,15 @@ void AppendOcclusionCandidate(const uint a_instanceIndex, const uint a_meshInfoI
 {
     RWStructuredBuffer<uint> l_candidateCounterBuffer = ResourceDescriptorHeap[g_candidateCounterBufferUAVDescriptorIndex];
 
-    uint l_candidateIndex = 0U;
+    uint l_candidateIndex = k_initialCounterValue;
 
-    InterlockedAdd(l_candidateCounterBuffer[k_candidateCountCounterIndex], 1U, l_candidateIndex);
+    InterlockedAdd(l_candidateCounterBuffer[k_candidateCountCounterIndex], k_counterIncrementValue, l_candidateIndex);
 
     if (l_candidateIndex >= g_maxCandidateCount) { return; }
 
     RWStructuredBuffer<ModelGPUDrivenOcclusionCandidate> l_candidateBuffer = ResourceDescriptorHeap[g_candidateBufferUAVDescriptorIndex];
 
-    ModelGPUDrivenOcclusionCandidate l_candidate = (ModelGPUDrivenOcclusionCandidate)0;
+    ModelGPUDrivenOcclusionCandidate l_candidate = (ModelGPUDrivenOcclusionCandidate)k_zeroInitializeValue;
 
     l_candidate.instanceIndex = a_instanceIndex;
     l_candidate.meshInfoIndex = a_meshInfoIndex;
@@ -467,8 +518,8 @@ void AppendOcclusionCandidate(const uint a_instanceIndex, const uint a_meshInfoI
 [numthreads(k_modelGPUDrivenCullingThreadCountX, k_modelGPUDrivenCullingThreadCountY, k_modelGPUDrivenCullingThreadCountZ)]
 void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
 {
-    uint l_instanceIndex = 0U;
-    uint l_meshInfoIndex = 0U;
+    uint l_instanceIndex = k_initialIndex;
+    uint l_meshInfoIndex = k_initialIndex;
 
     if (g_cullingMode == k_cullingModeLate)
     {
@@ -508,7 +559,20 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
     const float3 l_worldCenter = mul(float4(l_meshInfo.boundsCenter, k_positionElementW), l_instance.worldMatrix).xyz;
     const float  l_worldRadius = l_meshInfo.boundsRadius * l_instance.worldMaxScale;
 
-    if (!IsVisibleBoundingSphere(l_worldCenter, l_worldRadius)) { return; }
+    if (!IsVisibleBoundingSphere(l_worldCenter, l_worldRadius))
+    {
+        // カリングの可視化中は、視錐台の外の物も「視錐台の外」の印を付けて描画する
+        if (g_isCullingDebugVisualize == k_trueValue)
+        {
+            WriteDrawCommand(l_instance,
+                             l_meshInfo,
+                             l_worldCenter,
+                             l_worldRadius,
+                             k_modelCullingDebugStateMeshFrustumCulled);
+        }
+
+        return;
+    }
 
     // 影の描画では、シャドウマップ上で1テクセルにも満たない小さな部品は影がほとんど見えないため描画しない
     if (g_isOrthographicLOD == k_trueValue &&
@@ -520,6 +584,18 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
     // 手前の物に隠れているか判定する
     if (IsOccludedBoundingSphere(l_worldCenter, l_worldRadius))
     {
+        // カリングの可視化中は、隠れている物も「隠れている」の印を付けて描画する(2回目の候補にはしない)
+        if (g_isCullingDebugVisualize == k_trueValue)
+        {
+            WriteDrawCommand(l_instance,
+                             l_meshInfo,
+                             l_worldCenter,
+                             l_worldRadius,
+                             k_modelCullingDebugStateMeshOccluded);
+
+            return;
+        }
+
         // 1回目で隠れていた物は、今のフレームでは見えている可能性があるため候補として残す
         // 2回目で隠れていた物は、本当に見えないので描画しない
         if (g_cullingMode == k_cullingModeEarly)
@@ -530,5 +606,9 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
         return;
     }
 
-    WriteDrawCommand(l_instance, l_meshInfo, l_worldCenter, l_worldRadius);
+    WriteDrawCommand(l_instance,
+                     l_meshInfo,
+                     l_worldCenter,
+                     l_worldRadius,
+                     k_modelCullingDebugStateVisible);
 }

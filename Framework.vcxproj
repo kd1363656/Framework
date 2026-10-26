@@ -333,6 +333,11 @@ if "$(Configuration)"=="Debug" (
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Framework\Graphics\Render\Skinning\SkeletalAnimationSkinningSelector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Inspector\StaticModelStandardLitPassEditInspector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Converter\Json\StaticModelStandardLitPassJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedRenderGraphPassBaseConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelStandardLitPassConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\ModelMorphGPUStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Meshlet\Morph\ModelMorphLODEvaluator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder\SkeletalAnimationModelMorphBuilder.h" />
@@ -343,6 +348,15 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Binary\SkeletalAnimationModelMorphSettingBinaryConverter.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelMorphSettingStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelMorphSettingConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\ModelSpringBoneEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelSpringBoneSettingConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelSpringBoneSettingStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\SkeletalAnimationModelSpringBoneSetting.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Binary\SkeletalAnimationModelSpringBoneSettingBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Json\SkeletalAnimationModelSpringBoneSettingJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Inspector\SkeletalAnimationModelSpringBoneSettingEditInspector.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Command\SkeletalAnimationModelSpringBoneSettingEditCommand.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SpringBone\SkeletalAnimationSpringBoneSolver.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\AnimationSampleTimeUtility.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Graphics\AnimationSampleTimeUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\Graphics\IsModelMorphMeshConcept.h" />
@@ -356,6 +370,20 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenTableBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenDrawer.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Occlusion\HierarchicalDepthTexture.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\GPUParticleConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Structured\GPUParticleStructConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBGPUParticlePassStructConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Math\MathDivideRoundUpUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\GPUParticleEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\GPUParticleStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBGPUParticlePassStruct.h" />
+    <ClInclude Include="Source\Framework\Utility\Graphics\TransitionDynamicRWStructuredBufferUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\Math\MathDivideRoundUpUtility.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\CommandSignature\GPUParticleIndirectCommandSignature.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Particle\GPU\GPUParticleSystem.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Particle\GPU\GPUParticlePerObjectDrawRequest.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU\GPUParticleSimulatePass.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU\GPUParticleDrawPass.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBHierarchicalDepthBuildPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\ModelGPUDrivenEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Hardware\Debug\D3D12DebugMessageLogger.h" />
@@ -368,9 +396,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSurfaceSearcher.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelLODSurfaceStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelLODSurfaceStructConstant.h" />
-    <ClInclude Include="Source\Framework\Graphics\Profiler\FrameProfiler.h" />
-    <ClInclude Include="Source\Framework\Graphics\Profiler\GPUTimestampQueryRecorder.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\FrameProfilerStruct.h" />
     <ClInclude Include="..\Library\UFBX\INC\ufbx.h" />
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Application\Converter\Json\ApplicationJsonConverter.h" />
@@ -443,13 +468,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Observer\ObserverInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicaManagerJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsCharacterVirtualBaseConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticBoxBodyConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticCapsuleBodyConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticSphereBodyConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Scene\SceneJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Enum\EnumBitShiftUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\FileDialogConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictByNumberSuffixUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIBoolToStringUtilityCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIItemHighlightUtilityConstant.h" />
@@ -467,7 +489,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowPopupDrawerEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowShortcutHandlerEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowOperationEnum.h" />
-    <ClInclude Include="Source\Framework\Definition\Enum\GameObject\GameObjectComponentTaggedFactoryEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\GameObject\GameObjectEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\GameObject\TransformComponentEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DefaultTextureEnum.h" />
@@ -487,12 +508,13 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Assert\AssertReturnMacros.h" />
     <ClInclude Include="Source\Framework\Assert\AssertReporter.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Factory\FactoryMacros.h" />
-    <ClInclude Include="Source\Framework\Definition\Macros\GameObject\GameObjectComponentTaggedFactoryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Json\JsonSerializeEnumMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Json\PipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Json\RootSignatureJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Json\StandardShaderPipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFORegistryMacros.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\TypeINFO\TypeINFOTagRegistryConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFOTagRegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringValueBidirectionalRegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Asset\AssetFilePathRegistryStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowAssetCreatorStruct.h" />
@@ -555,7 +577,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Command\Component\AddGameObjectComponentCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.h" />
+    <ClInclude Include="Source\Framework\Editor\AddMenu\EditorAddMenu.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\AddMenu\EditorAddMenuConstant.h" />
     <ClInclude Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
@@ -605,7 +630,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\GameObject\Component\Camera\Inspector\GameObjectCameraComponentInspector.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.h" />
-    <ClInclude Include="Source\Framework\GameObject\Component\Factory\GameObjectComponentTaggedFactory.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentBase.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\Transform\Converter\Json\GameObjectTransformComponentJsonConverter.h" />
@@ -792,7 +816,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Physics\Body\Static\Mesh\PhysicsStaticMeshBody.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.h" />
-    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.h" />
@@ -816,6 +839,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Strategy\StrategyBase.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Tag\TypeINFOTagRegistry.h" />
     <ClInclude Include="Source\Framework\Utility\Editor\AssetBrowserEditorWindowAssetCreatorUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShift.h" />
     <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShiftUtility.h" />
@@ -825,15 +849,19 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\File\ResolveFilePathConflictByNumberSuffixUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\ReplaceRootFilePathUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\File\SaveFileDialogUtility.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Utility\File\FileDialogStruct.h" />
+    <ClInclude Include="Source\Framework\Utility\File\Dialog\FileDialog.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsSameTextureSizeUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsValidTextureUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\TypeINFO\IsDerivedTypeINFOUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\UFBXConvertUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToStringUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\ItemHighlight\IMGUIItemHighlightUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\IMGUI\IconButton\IMGUIIconButtonUtility.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIIconButtonUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\String\IMGUIStringValueBidirectionalRegistryUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Tooltip\IMGUITooltipUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />
@@ -883,7 +911,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowPopupDrawerStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\WorldOutlinerEditorWindowPopupDrawerStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DepthStencilTextureStructConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FrameProfilerStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelCascadeShadowPassStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelCommonStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteRECTStructConstant.h" />
@@ -895,7 +922,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\FPS\FPSControllerConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FrameProfilerConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RootSignatureJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UploadBufferConstant.h" />
@@ -914,14 +940,35 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Window\WindowConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\EditorWindowClipboardEnum.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Clipboard\EditorWindowClipboard.h" />
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\EditorWindowClipboardTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\EditorWindowShortcutEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\EditorWindowShortcutStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\EditorWindowShortcutUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Utility\Editor\EditorWindowShortcutUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\String\IMGUIInputTextBufferUtility.h" />
+    <ClInclude Include="Source\Framework\Scene\Play\ScenePlayState.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Capture\RenderViewCapture.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\ViewportEditorWindowEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\ViewportDebugCameraConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\ViewportCameraPreviewConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\ViewportProjectionUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\ViewportScreenRectStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\ViewportGizmoStruct.h" />
+    <ClInclude Include="Source\Framework\Utility\Editor\EditorGameObjectSelectionCommandUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\Editor\ViewportProjectionUtility.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\DebugCamera\ViewportDebugCamera.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\DebugCamera\Converter\Json\ViewportDebugCameraJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\DebugCamera\Inspector\ViewportDebugCameraEditInspector.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Preview\ViewportCameraPreview.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Gizmo\ViewportGizmo.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Gizmo\Command\TransformGameObjectCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Picking\ViewportPicker.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Overlay\ViewportOverlayToolbar.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Converter\Json\ViewportEditorWindowJsonConverter.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Framework\Graphics\Render\Skinning\SkeletalAnimationSkinningSelector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Inspector\StaticModelStandardLitPassEditInspector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Converter\Json\StaticModelStandardLitPassJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Meshlet\Morph\ModelMorphLODEvaluator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder\SkeletalAnimationModelMorphBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Morph\SkeletalAnimationModelFBXMorphExtractor.cpp" />
@@ -929,20 +976,29 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Inspector\SkeletalAnimationModelMorphSettingEditInspector.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Json\SkeletalAnimationModelMorphSettingJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Binary\SkeletalAnimationModelMorphSettingBinaryConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\SkeletalAnimationModelSpringBoneSetting.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Binary\SkeletalAnimationModelSpringBoneSettingBinaryConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Json\SkeletalAnimationModelSpringBoneSettingJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Inspector\SkeletalAnimationModelSpringBoneSettingEditInspector.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Command\SkeletalAnimationModelSpringBoneSettingEditCommand.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SpringBone\SkeletalAnimationSpringBoneSolver.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\SkeletalAnimationModelGPUSkinnedPerObjectDrawRequestBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Baked\SkeletalAnimationBakedSkinning.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenTableBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\GPUDriven\ModelGPUDrivenDrawer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Occlusion\HierarchicalDepthTexture.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\CommandSignature\GPUParticleIndirectCommandSignature.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Particle\GPU\GPUParticleSystem.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Particle\GPU\GPUParticlePerObjectDrawRequest.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU\GPUParticleSimulatePass.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU\GPUParticleDrawPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Hardware\Debug\D3D12DebugMessageLogger.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\CommandSignature\ModelIndirectDispatchMeshCommandSignature.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicUploadStructuredBuffer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSelector.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODLayerDetector.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSurfaceSearcher.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Profiler\FrameProfiler.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Profiler\GPUTimestampQueryRecorder.cpp" />
     <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp">
       <ObjectFileName>$(IntDir)Library\UFBX\%(Filename).obj</ObjectFileName>
     </ClCompile>
@@ -968,7 +1024,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Command\Component\AddGameObjectComponentCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.cpp" />
+    <ClCompile Include="Source\Framework\Editor\AddMenu\EditorAddMenu.cpp" />
     <ClCompile Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
@@ -1163,7 +1221,6 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Physics\Body\Static\Mesh\PhysicsStaticMeshBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.cpp" />
-    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.cpp" />
@@ -1185,7 +1242,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
+    <ClCompile Include="Source\Framework\TypeINFO\Tag\TypeINFOTagRegistry.cpp" />
     <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.cpp" />
+    <ClCompile Include="Source\Framework\Utility\File\Dialog\FileDialog.cpp" />
     <ClCompile Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.cpp" />
     <ClCompile Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Utility\Storage\StorageIDAllocator.cpp" />
@@ -1229,6 +1288,17 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\Lit\Inspector\StandardLitMaterialEditInspector.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\StandardUnLitMaterial.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialEditInspector.cpp" />
+    <ClCompile Include="Source\Framework\Scene\Play\ScenePlayState.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Capture\RenderViewCapture.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\DebugCamera\ViewportDebugCamera.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\DebugCamera\Converter\Json\ViewportDebugCameraJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\DebugCamera\Inspector\ViewportDebugCameraEditInspector.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Preview\ViewportCameraPreview.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Gizmo\ViewportGizmo.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Gizmo\Command\TransformGameObjectCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Picking\ViewportPicker.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Overlay\ViewportOverlayToolbar.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Converter\Json\ViewportEditorWindowJsonConverter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt" />
@@ -1243,6 +1313,8 @@ if "$(Configuration)"=="Debug" (
     <None Include="CONFIG\Window\WindowCONFIG.json" />
     <None Include="Shader\Camera\CameraPass.hlsli" />
     <None Include="Shader\Model\GPUDriven\ModelGPUDriven.hlsli" />
+    <None Include="Shader\Particle\GPU\GPUParticle.hlsli" />
+    <None Include="Shader\Particle\GPU\GPUParticleBillboard.hlsli" />
     <None Include="Shader\Model\Model.hlsli" />
     <None Include="Shader\Model\ModelMeshlet.hlsli" />
     <None Include="Shader\Model\ModelMeshletCulling.hlsli" />
@@ -1262,6 +1334,7 @@ if "$(Configuration)"=="Debug" (
     <None Include="Shader\Material\Material.hlsli" />
     <None Include="Shader\Material\Standard\Lit\StandardLitMaterial.hlsli" />
     <None Include="Shader\Material\Standard\UnLit\StandardUnLitMaterial.hlsli" />
+    <None Include="Shader\Model\ModelCullingDebug.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Shader\Model\Shadow\Cascade\ModelCascadeShadow_AS.hlsl">
@@ -1279,6 +1352,30 @@ if "$(Configuration)"=="Debug" (
     <DXCTask Include="Shader\Model\GPUDriven\ModelGPUDrivenCulling_CS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleInitialize_CS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleEmit_CS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleIndirectArgumentsBuild_CS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleSimulate_CS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleBillboard_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleBillboard_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </DXCTask>
     <DXCTask Include="Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>

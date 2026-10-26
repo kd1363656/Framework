@@ -48,8 +48,5 @@ namespace FWK
         std::unordered_set<std::string> m_reportedSiteSet = {};
 
         bool m_isEditorLogEnabled = true;
-
-        // 報告処理の中でさらに失敗して、Report()同士が無限に呼び合うのを防ぐためのフラグ
-        bool m_isReporting = false;
     };
 }

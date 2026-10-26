@@ -32,10 +32,13 @@ void FWK::Graphics::SkeletalAnimationModelStandardLitPass::Execute(const Resourc
         l_cameraPassDrawRequest &&
         l_gpuSkinnedLitPerObjectDrawRequest)
     {
-        if (const auto& l_cbCameraPass = l_cameraPassDrawRequest->GetREFSourceConstantBuffer().lock();
+        // カリングは「カリングに使うカメラ」(通常は描画カメラ、デバッグカメラで描画中はメインカメラ)で行う
+        if (const auto& l_cbCameraPass = l_cameraPassDrawRequest->FetchVALCullingConstantBuffer();
             l_cbCameraPass)
         {
-            const auto& l_cullingView = ModelGPUDrivenDrawer::BuildCullingView(l_cbCameraPass->m_viewProjectionMatrix, k_useNearPlaneForCulling);
+            auto l_cullingView = ModelGPUDrivenDrawer::BuildCullingView(l_cbCameraPass->m_viewProjectionMatrix, k_useNearPlaneForCulling);
+
+            l_cullingView.m_isCullingDebugVisualize = l_cameraPassDrawRequest->GetVALIsCullingDebugVisualize();
 
             l_isGPUSkinnedCulled = l_gpuSkinnedLitPerObjectDrawRequest->DispatchGPUCulling(a_renderer, k_cameraViewIndex, l_cullingView);
         }
@@ -65,9 +68,6 @@ void FWK::Graphics::SkeletalAnimationModelStandardLitPass::Execute(const Resourc
     // Model定数を設定してMeshShaderをDispatchする
     l_skeletalAnimationModelStandardLitPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer, *l_rootSignature, *l_currentFrameResource);
 
-    // LOD適用後に描画命令を出した三角形数を計測用に記録する
-    a_renderer.GetMutableREFFrameProfiler().AddCounterSample(k_triangleCounterName, static_cast<double>(l_skeletalAnimationModelStandardLitPerObjectDrawRequest->GetVALSubmittedTriangleCount()));
-
     if (!l_gpuSkinnedLitPerObjectDrawRequest) { return; }
 
     if (l_isGPUSkinnedCulled)
@@ -79,6 +79,4 @@ void FWK::Graphics::SkeletalAnimationModelStandardLitPass::Execute(const Resourc
         l_gpuSkinnedLitPerObjectDrawRequest->SetCurrentDrawViewIndex     (k_cameraViewIndex);
         l_gpuSkinnedLitPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer, *l_rootSignature, *l_currentFrameResource);
     }
-
-    a_renderer.GetMutableREFFrameProfiler().AddCounterSample(k_gpuSkinnedTriangleCounterName, static_cast<double>(l_gpuSkinnedLitPerObjectDrawRequest->GetVALSubmittedTriangleCount()));
 }

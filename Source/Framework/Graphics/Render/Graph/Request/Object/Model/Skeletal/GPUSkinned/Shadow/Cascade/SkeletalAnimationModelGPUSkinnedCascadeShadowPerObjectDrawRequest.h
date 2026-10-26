@@ -21,9 +21,6 @@ namespace FWK::Graphics
 
         void SetCurrentDrawCascadeIndex(const std::size_t a_set) { m_skeletalAnimationModelGPUSkinnedPerObjectDrawRequest.SetCurrentDrawViewIndex(a_set); }
 
-        // 描画した三角形の総数(全カスケードの合計、計測用)
-        auto GetVALSubmittedTriangleCount() const { return m_skeletalAnimationModelGPUSkinnedPerObjectDrawRequest.GetVALSubmittedTriangleCount(); }
-
     private:
 
         SkeletalAnimationModelGPUSkinnedPerObjectDrawRequestBase m_skeletalAnimationModelGPUSkinnedPerObjectDrawRequest = {};

@@ -1,11 +1,25 @@
 ﻿#include "SkeletalAnimationModelMorphSetting.h"
 
+FWK::Graphics::SkeletalAnimationModelMorphSetting::SkeletalAnimationModelMorphSetting(SkeletalAnimationModelMorphSetting&& a_other) noexcept :
+    m_targetSettingList(std::move(a_other.m_targetSettingList)),
+
+    m_editInspector  (),
+    m_binaryConverter(),
+    m_jsonConverter  ()
+{}
+
+FWK::Graphics::SkeletalAnimationModelMorphSetting& FWK::Graphics::SkeletalAnimationModelMorphSetting::operator=(SkeletalAnimationModelMorphSetting&& a_other) noexcept
+{
+    if (this == &a_other) { return *this; }
+
+    m_targetSettingList = std::move(a_other.m_targetSettingList);
+
+    return *this;
+}
+
 bool FWK::Graphics::SkeletalAnimationModelMorphSetting::LoadBinaryData(const std::filesystem::path& a_modelFilePath)
 {
-    // BinaryConverterは読み込み中のファイルを持つため、読み込みごとに作る
-    Converter::SkeletalAnimationModelMorphSettingBinaryConverter l_binaryConverter = {};
-
-    return l_binaryConverter.Load(*this, a_modelFilePath);
+    return m_binaryConverter.Load(*this, a_modelFilePath);
 }
 
 void FWK::Graphics::SkeletalAnimationModelMorphSetting::Deserialize(const nlohmann::json& a_rootJson)
@@ -47,12 +61,9 @@ void FWK::Graphics::SkeletalAnimationModelMorphSetting::ApplyLODProtection(std::
     }
 }
 
-bool FWK::Graphics::SkeletalAnimationModelMorphSetting::SaveBinaryData(const std::filesystem::path& a_modelFilePath) const
+bool FWK::Graphics::SkeletalAnimationModelMorphSetting::SaveBinaryData(const std::filesystem::path& a_modelFilePath)
 {
-    // BinaryConverterは書き込み中のファイルを持つため、保存ごとに作る
-    Converter::SkeletalAnimationModelMorphSettingBinaryConverter l_binaryConverter = {};
-
-    return l_binaryConverter.Save(*this, a_modelFilePath);
+    return m_binaryConverter.Save(*this, a_modelFilePath);
 }
 
 nlohmann::json FWK::Graphics::SkeletalAnimationModelMorphSetting::Serialize() const

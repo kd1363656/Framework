@@ -62,13 +62,26 @@ namespace FWK::Graphics
         SkeletalAnimationPlayer& operator=(const SkeletalAnimationPlayer&)           = delete;
         SkeletalAnimationPlayer& operator=(      SkeletalAnimationPlayer&&) noexcept = default;
 
+        // 姿勢の計算に必要なCPU側のデータだけを作る(GPUのBufferはCreateGPUFrameDataで作る)
         bool Create(const SkeletalAnimationModel& a_skeletalAnimationModel);
+
+        // 従来の方式で描画するためのGPUのBuffer(ボーン行列、1体ごとの変形後の頂点など)を作る
+        // 既に作ってあれば何もしない(AdvanceTimeは、まだ作っていなければこの関数を呼ぶ)
+        bool CreateGPUFrameData();
 
         bool PlayMotion(const std::uint32_t a_motionIndex, const bool a_isLoop, const float a_playbackSpeed);
 
-        void AdvanceTime(const float a_deltaTime);
+        // 再生時刻を進め、その時刻の姿勢をCPUで計算する(揺れものがあれば、その姿勢を揺らす)
+        // a_worldMatrix : 揺れものはワールド座標で計算するため、モデルのワールド行列を渡す
+        void AdvanceTime        (const float a_deltaTime, const TypeAlias::Math::Matrix& a_worldMatrix);
+        // 再生時刻だけを進め、姿勢は計算しない(ベイクの方式で描画している間に使う)
+        void AdvancePlaybackTime(const float a_deltaTime);
 
         bool IsAnimationEnd() const;
+
+        // 姿勢をその場で書き換える必要があるか(揺れものの設定が有効なモデル)
+        // trueの場合は、ベイクの方式(事前計算した姿勢の表)では描画できない
+        bool IsRuntimePoseRequired() const;
 
         void Stop();
 
@@ -96,6 +109,8 @@ namespace FWK::Graphics
 
         bool EvaluateCurrentPose();
 
+        bool ApplySpringBone(const float a_deltaTime, const TypeAlias::Math::Matrix& a_worldMatrix);
+
         float CalculateAdvancedTimeSecond(const Animation& a_animation, const float a_timeSecond, const float a_deltaTime) const;
 
         void CompleteAnimationBlend();
@@ -113,6 +128,8 @@ namespace FWK::Graphics
         std::weak_ptr<SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = {};
 
         SkeletalAnimationPoseEvaluator m_poseEvaluator = {};
+
+        SkeletalAnimationSpringBoneSolver m_springBoneSolver = {};
 
         Animation m_animation            = {};
         Animation m_blendTargetAnimation = {};

@@ -167,3 +167,16 @@ bool FWK::AssetFilePathRegistry::ContainsAssetUUID(const boost::uuids::uuid& a_a
 {
     return m_uuidToAssetFilePathData.contains(a_assetUUID);
 }
+bool FWK::AssetFilePathRegistry::ContainsAssetFilePath(const std::filesystem::path& a_assetFilePath, Enum::AssetFilePathRegistryType a_assetFilePathRegisterType) const
+{
+    const auto* l_assetUUID = FindPTRAssetUUID(a_assetFilePath);
+
+    if (!l_assetUUID) { return false; }
+
+    const auto* l_assetFilePathData = FindPTRAssetFilePathData(*l_assetUUID);
+
+    // FilePath -> UUID -> AssetFilePathDataの対応が取れていて、
+    // 登録されている種類(PrefabやScene)も一致している場合だけ登録済みとして扱う
+    return l_assetFilePathData                                     &&
+           l_assetFilePathData->m_type == a_assetFilePathRegisterType;
+}

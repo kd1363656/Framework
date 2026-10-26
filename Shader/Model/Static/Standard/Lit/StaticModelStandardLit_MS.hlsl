@@ -15,8 +15,11 @@ void main(in  payload  ModelAmplificationPayload a_payload,
     StructuredBuffer<uint>              l_uniqueVertexIndexBuffer = ResourceDescriptorHeap[g_uniqueVertexIndexBufferSRVDescriptorIndex];
     
     // ASからPayload経由で渡されたMeshletIndexを使う
-    const uint         l_meshletIndex = a_payload.meshletIndexList[a_groupID.x];
-    const ModelMeshlet l_modelMeshlet = l_modelMeshletBuffer      [l_meshletIndex];
+    // ASからPayload経由で渡された値には、Meshletの番号と、カリングの可視化用の判定結果が入っている
+    const uint         l_packedMeshletIndex = a_payload.meshletIndexList          [a_groupID.x];
+    const uint         l_meshletIndex       = DecodeModelCullingDebugMeshletIndex(l_packedMeshletIndex);
+    const uint         l_cullingDebugState  = SelectModelCullingDebugState        (g_cullingDebugState, DecodeModelCullingDebugState(l_packedMeshletIndex));
+    const ModelMeshlet l_modelMeshlet       = l_modelMeshletBuffer                [l_meshletIndex];
     
     // 出力頂点数、三角形数を設定
     SetMeshOutputCounts(l_modelMeshlet.vertexCount, l_modelMeshlet.triangleCount);
@@ -44,6 +47,8 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         a_vertexList[l_vertexIndex].worldNormal   = l_worldNormal;
         a_vertexList[l_vertexIndex].worldTangent  = l_worldTangent;
         a_vertexList[l_vertexIndex].uv            = l_staticModelVertex.uv;
+
+        a_vertexList[l_vertexIndex].cullingDebugState = l_cullingDebugState;
     }
     
     for (uint l_triangleIndex = a_groupThreadIndex; l_triangleIndex < l_modelMeshlet.triangleCount; l_triangleIndex += k_modelMeshShaderThreadCountX)

@@ -30,10 +30,11 @@ namespace FWK::Struct
         // m_skinningMatrixBufferSRVDescriptorIndex : 事前計算したスキニング行列のBuffer
         // m_skinningMatrixOffset                   : このMesh、このコマのスキニング行列が始まる番号
         // m_isGPUSkinning                          : 1ならスキニングする(Meshlet単位のカリングは、動いた形と合わないため行わない)
+        // m_cullingDebugState                      : カリングの可視化用。このMeshがMesh単位のカリングでどう判定されたか(HLSL側のk_modelCullingDebugState～と同じ値。0なら見えている)
         TypeAlias::DescriptorIndex m_skinningMatrixBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
         std::uint32_t              m_skinningMatrixOffset                   = Constant::k_initialCBModelPerObjectSkinningValue;
         std::uint32_t              m_isGPUSkinning                          = Constant::k_initialCBModelPerObjectSkinningValue;
-        std::uint32_t              m_skinningPadding                        = Constant::k_initialCBModelPerObjectSkinningValue;
+        std::uint32_t              m_cullingDebugState                      = Constant::k_initialCBModelPerObjectCullingDebugState;
 
         // メッシュシェーダーの中でモーフする場合に使う値(モーフを持たないMeshではm_morphDeltaBufferSRVDescriptorIndexが無効)
         // m_morphWeightBufferSRVDescriptorIndex : ウェイトのBuffer(ベイクした物か、インスタンスごとに上書きする物)

@@ -70,6 +70,9 @@ void FWK::Converter::RenderGraphJsonConverter::DeserializePassList(const nlohman
             continue;
         }
 
+        // Passごとの設定を読む(型名以外の値はPass自身のJsonConverterが読む)
+        l_renderGraphPass->Deserialize(l_json);
+
         a_renderGraph.AddPass(std::move(l_renderGraphPass));
     }
 }
@@ -153,6 +156,7 @@ nlohmann::json FWK::Converter::RenderGraphJsonConverter::SerializePassList(const
         nlohmann::json l_json = {};
 
         Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_pass, k_renderGraphPassTypeNameJsonKey));
+        Utility::UpdateJson(l_json, l_pass->Serialize());
 
         l_rootJsonArray.emplace_back(l_json);
     }

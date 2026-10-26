@@ -28,6 +28,16 @@ void FWK::Graphics::Camera::Setup()
     // 定数バッファへの登録
     RegisterCBCameraPass();
 }
+void FWK::Graphics::Camera::SetupDetached()
+{
+    // ビュー行列と射影行列だけを作り、Rendererへは登録しない
+    // (登録するとメインカメラが差し替わってしまうため)
+    SetupPerspective(m_cameraMatrix,
+                     m_aspectRatio,
+                     m_fovYDegree,
+                     m_farClip,
+                     m_nearClip);
+}
 
 void FWK::Graphics::Camera::ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)
 {

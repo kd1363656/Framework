@@ -5,33 +5,23 @@ std::shared_ptr<FWK::GameObject> FWK::Editor::WorldOutlinerEditorWindowAssetCrea
 {
     auto l_gameObject = std::make_shared<GameObject>();
 
-    // Transform / Hierarchy / ComponentContainerのOwner設定
+    // Hierarchy / ComponentContainerのOwner設定
     l_gameObject->INIT   ();
     l_gameObject->SetName(std::string{ Constant::k_gameObjectString });
+
+    // 空のGameObjectでも必ずTransformComponentを持たせる(コンポーネント一覧の先頭に入る)
+    // まだ親がいないので、行列は自分だけで完結する計算方法(Standalone)になる
+    l_gameObject->AddTransformComponent();
 
     // 親がいる場合はScene登録より先に親子関係を構築する
     // Scene::AddGameObjectは親鎖から実行レベルを計算するため
     // 接続前に登録するとルート扱いになってしまう
-    // ApplyParentは親側の子リスト登録とTransformModeの切替まで一括で行う
-    if (const auto& l_parent = a_parent.lock())
+    // ApplyParentは親側の子リスト登録と、Transformの計算方法を親に追従する方法(Hierarchical)へ切り替える処理まで一括で行う
+    if (!a_parent.expired())
     {
         auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
 
         l_hierarchy.ApplyParent(a_parent);
-
-        // 行列の合成方法を親の行列に依存するようにする(拡縮・回転・座標のすべてに依存)
-        if (const auto& l_transformComponent = l_parent->GetVALTransformComponent().lock())
-        {
-            l_transformComponent->ApplyParent();
-        }
-    }
-    else
-    {
-        // 行列の合成を自身のみで完結するようにする(拡縮・回転・座標のすべてに依存)
-        if (const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock())
-        {
-            l_transformComponent->ApplyStandalone();
-        }
     }
 
     a_scene.AddGameObject(l_gameObject);

@@ -608,6 +608,19 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
                                                               l_assetFilePathRegistry);
             }
         }
+
+        // アウトライナーからのシーンノードのドロップを受け付ける
+        // 現在のシーンをこのフォルダ内へシーンファイルとして保存する(「名前を付けて保存」と同じ扱い)
+        std::weak_ptr<Scene> l_droppedScene = {};
+
+        if (l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_sceneDragDropPayloadLabel, l_droppedScene))
+        {
+                  auto& l_application           = Application::GetInstance                        ();
+                  auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
+            const auto& l_assetCreator          = a_editorWindow.GetREFAssetCreator               ();
+
+            l_assetCreator.CreateSceneFromSceneDrop(l_droppedScene, a_currentFolderPath, l_assetFilePathRegistry);
+        }
     }
 
     // リネームモード時は同じ行でInputTextを描画

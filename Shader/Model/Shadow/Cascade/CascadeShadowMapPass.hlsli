@@ -76,7 +76,10 @@ float CalculateCascadeShadowMapVisibility(const float3 a_worldPosition)
     // Shadowを適用せずに完全に明るい状態を返す
     if (l_cascadeCount == k_cascadeShadowMapInvalidCascadeCount) { return k_cascadeShadowMapFullyLitVisibility; }
 
-    const float4 l_viewPosition = mul(float4(a_worldPosition, k_modelPositionElementW), g_viewMatrix);
+    // カスケードの区切りはメインカメラ(カリングに使うカメラ)の視錐台を分割して決めているため、
+    // どのカスケードを使うかもカリングに使うカメラから見た深度で決める
+    // (通常は描画カメラと同じ。デバッグカメラで描画中も、メインカメラから見た影の切り替わりがそのまま見える)
+    const float4 l_viewPosition = mul(float4(a_worldPosition, k_modelPositionElementW), g_cullingViewMatrix);
     const float  l_viewDepth    = l_viewPosition.z;
     
     // 最後のCascadeの終端距離を取得する

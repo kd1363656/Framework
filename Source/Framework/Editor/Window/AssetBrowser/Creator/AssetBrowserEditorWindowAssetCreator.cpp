@@ -59,7 +59,12 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
      
     l_gameObject->INIT   ();
     l_gameObject->SetName(l_prefabFilePath.stem().string());
-     
+
+    // 空のGameObjectでも必ずTransformComponentを持たせる
+    // ここで作ったTransformのUUIDがPrefabファイルに保存され、
+    // シーンに置いたインスタンスとの差分照合に使われる
+    l_gameObject->AddTransformComponent();
+
     // 新規の空GameObjectにはPrefabインスタンスの子が存在しないため
     // シリアライズ用の一時的なPrefabSystemで十分
     SceneGameObjectPrefabSystem l_prefabSystem = {};
@@ -184,6 +189,39 @@ std::vector<FWK::Struct::AssetBrowserEditorWindowAssetCreationResult> FWK::Edito
     return l_resultList;
 }
 
+FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreateSceneFromSceneDrop(const std::weak_ptr<Scene>& a_droppedScene, const std::filesystem::path& a_parentFolderPath, AssetFilePathRegistry& a_assetFilePathRegistry) const
+{
+          auto& l_sceneManager = SceneManager::GetInstance ();
+    const auto& l_currentScene = l_sceneManager.GetVALScene().lock();
+    const auto& l_droppedScene = a_droppedScene.lock();
+
+    // 保存できるのはSceneManagerが今読み込んでいるシーンだけ
+    // (ドラッグ中にシーンが読み込み直された場合などは保存しない)
+    if (!l_droppedScene ||
+        l_droppedScene != l_currentScene)
+    {
+        return {};
+    }
+
+    // ファイル名はシーン名から作る
+    // 同名ファイルが既にある場合は上書きせず、Title1.json、Title2.json...のように番号を付ける
+    const auto& l_sceneFileName = FetchVALValidFileName (l_droppedScene->GetREFName(), k_defaultSceneName);
+    const auto& l_sceneFilePath = ResolveDefaultFilePath(a_parentFolderPath, Constant::k_lowerJsonExtension, l_sceneFileName);
+
+    // 「名前を付けて保存」と同じ処理で保存する
+    // (AssetFilePathRegistryへの登録、シーン名の変更、現在のシーンのファイルパスの切り替えまで行われる)
+    if (!l_sceneManager.SaveAs(l_sceneFilePath, a_assetFilePathRegistry)) { return {}; }
+
+    FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "シーンを保存しました。\nFilePath : {}", l_sceneFilePath.string());
+
+    Struct::AssetBrowserEditorWindowAssetCreationResult l_result = {};
+
+    l_result.m_createdFilePath = l_sceneFilePath;
+    l_result.m_isSuccess       = true;
+
+    return l_result;
+}
+
 void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenamePrefab(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const
 {
     // 新しいファイル名(stem)をPrefabNameとして設定
@@ -243,11 +281,15 @@ std::string FWK::Editor::AssetBrowserEditorWindowAssetCreator::FetchVALPrefabFil
 
     if (!l_gameObject) { return std::string{ k_defaultPrefabName }; }
 
-    const auto& l_name = l_gameObject->GetREFName();
+    return FetchVALValidFileName(l_gameObject->GetREFName(), k_defaultPrefabName);
+}
+std::string FWK::Editor::AssetBrowserEditorWindowAssetCreator::FetchVALValidFileName(const std::string& a_name, const std::string_view& a_defaultName)
+{
+    // GameObject名やシーン名をそのままファイル名に使えるように整える
+    // 使えない名前になった場合はa_defaultName(NewPrefab、NewSceneなど)を返す
+    if (a_name.empty()) { return std::string{ a_defaultName }; }
 
-    if (l_name.empty()) { return std::string{ k_defaultPrefabName }; }
-
-    auto l_fileName = l_name;
+    auto l_fileName = a_name;
 
     for (auto& l_char : l_fileName)
     {
@@ -265,7 +307,7 @@ std::string FWK::Editor::AssetBrowserEditorWindowAssetCreator::FetchVALPrefabFil
         l_fileName.pop_back();
     }
  
-    if (l_fileName.empty()) { return std::string{ k_defaultPrefabName }; }
+    if (l_fileName.empty()) { return std::string{ a_defaultName }; }
  
     return l_fileName;
 }

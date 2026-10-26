@@ -9,6 +9,8 @@ namespace FWK::Physics
          PhysicsStaticBodyBase()          = default;
         ~PhysicsStaticBodyBase() override = default;
 
+        bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition);
+
     protected:
 
         bool CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>&   a_shape,
@@ -16,8 +18,7 @@ namespace FWK::Physics
                                     const TypeAlias::Math::Quaternion& a_worldRotation,
                                     const bool                         a_isPushBackEnabled);
 
-        bool ApplyStaticBodyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition);
-        bool ApplyStaticBodyShape         (const JPH::RefConst<JPH::Shape>&   a_shape);
+        bool ApplyStaticBodyShape(const JPH::RefConst<JPH::Shape>& a_shape);
 
         FWK_DEFINE_TYPE_INFO(PhysicsStaticBodyBase, PhysicsBodyBase)
     };

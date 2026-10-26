@@ -29,7 +29,7 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID,
     {
         // GPUスキニングするMeshは、Meshletの範囲(元の姿勢で計算した物)が動いた形と合わないため、
         // Meshlet単位のカリングをせずに全て描画する(Mesh単位のカリングは動いた形を囲む球で済ませている)
-        l_shouldDispatch = g_isGPUSkinning != 0U ? true : ShouldDispatchModelCascadeShadowMeshlet(l_meshletIndex);
+        l_shouldDispatch = g_isGPUSkinning != k_modelFalseValue ? true : ShouldDispatchModelCascadeShadowMeshlet(l_meshletIndex);
     }
     
     if (l_shouldDispatch)

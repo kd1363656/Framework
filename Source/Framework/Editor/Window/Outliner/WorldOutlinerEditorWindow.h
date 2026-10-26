@@ -117,7 +117,7 @@ namespace FWK::Editor
 
         Struct::WorldOutlinerEditorWindowRenameState m_renameState = {};
 
-        TypeAlias::WorldOutlinerEditorWindowClipboard m_clipboard = {};
+        EditorWindowClipboard<boost::uuids::uuid> m_clipboard = {};
         
         FWK_DEFINE_TYPE_INFO(WorldOutlinerEditorWindow, EditorWindowBase)
     };

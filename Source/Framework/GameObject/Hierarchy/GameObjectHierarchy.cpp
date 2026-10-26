@@ -232,6 +232,8 @@ void FWK::GameObjectHierarchy::ClearParent()
 
     const auto& l_transform = l_owner->GetVALTransformComponent().lock();
 
+    FWK_ASSERT_RETURN_IF(!l_transform, "TransformComponentが無効なため、Standaloneへの切り替えに失敗しました。");
+
     // 親がいなくなったのでローカル = ワールドのStrategyへ戻す
     l_transform->ApplyStandalone();
 }

@@ -9,6 +9,8 @@ void FWK::GameObjectComponentContainer::INIT()
 
     m_owner = {};
 
+    m_transformComponent = {};
+
     m_componentUUIDRegistry.Clear();
 
     m_componentSmartPointerVectorList.Clear();
@@ -212,8 +214,30 @@ bool FWK::GameObjectComponentContainer::AddComponent(const std::shared_ptr<GameO
         return false;
     }
 
-    const auto  l_staticTypeID = a_component->GetREFRuntimeTypeINFO().k_staticTypeID;
-    
+    const auto l_staticTypeID = a_component->GetREFRuntimeTypeINFO().k_staticTypeID;
+    const bool l_isHeadPinned = IsHeadPinnedComponent(*a_component);
+
+    // TransformとRectTransformのように型が違っても、先頭固定のコンポーネントは1つしか持てない
+    if (l_isHeadPinned &&
+        !m_transformComponent.expired())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "TransformComponentが既に登録されているため、ComponentContainerへの登録に失敗しました。");
+
+        return false;
+    }
+
+    // 1つしか持てないコンポーネントを2つ目として追加しようとした場合ははじく
+    // (先に本体配列へ登録してしまうと、Mapには入らず配列にだけ残る中途半端な状態になるため、何も登録する前に判定する)
+    if (const auto& l_itr = m_uniqueComponentMap.find(l_staticTypeID);
+        !a_component->IsAllowMultiple()         &&
+        l_itr != m_uniqueComponentMap.end()     &&
+        !l_itr->second.expired())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "1つしか持てないコンポーネントが既に登録されているため、ComponentContainerへの登録に失敗しました。");
+
+        return false;
+    }
+
     // 未発行、または既に使用履歴のあるUUIDなら新規発行する
     // Prefabで消されたUUIDと同じUUIDを持つシーン側コンポーネントが
     // Prefabコンポーネントと誤認されないようにするため
@@ -231,13 +255,33 @@ bool FWK::GameObjectComponentContainer::AddComponent(const std::shared_ptr<GameO
     a_component->SetOwner(m_owner);
 
     // 本体配列へ登録(重複アドレスはSmartPointerVectorList側ではじかれる)
-    m_componentSmartPointerVectorList.Add(a_component);
+    if (l_isHeadPinned)
+    {
+        // Update系のループは無効化されたコンポーネントを飛ばすため、
+        // Transformが無効化されていると行列が更新されなくなる。Transformは常に有効にする
+        a_component->SetIsDisable(Constant::k_gameObjectComponentBaseInitialValueIsDisable);
+
+        // 後から追加されても必ず一覧の先頭に置く
+        // (EarlyUpdate～PostLateUpdateは一覧の順番で呼ばれるため、Transformの行列が他のコンポーネントより先に確定する)
+        m_componentSmartPointerVectorList.AddFront(a_component);
+    }
+    else
+    {
+        m_componentSmartPointerVectorList.Add(a_component);
+    }
 
     if (!m_componentUUIDRegistry.Add(a_component, a_component->GetREFUUID()))
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントUUIDの登録に失敗したため、ComponentContainerへの登録に失敗しました。");
 
         return false;
+    }
+
+    // Transformは毎フレーム何度も参照されるため、Mapを引かずに済むようweak_ptrで覚えておく
+    // (IsHeadPinnedComponentで型を確認済みなのでstatic_pointer_castで変換できる)
+    if (l_isHeadPinned)
+    {
+        m_transformComponent = std::static_pointer_cast<GameObjectTransformComponent>(a_component);
     }
 
     // 複製が許可されているかどうかで高速アクセスするために適したマップに登録する
@@ -292,6 +336,14 @@ void FWK::GameObjectComponentContainer::RemoveComponent(const std::weak_ptr<Game
     if (!l_component)
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "削除対象Componentが無効のため、GameObjectから削除することができませんでした。");
+
+        return;
+    }
+
+    // Transformは全てのGameObjectが必ず持つ決まりなので削除させない
+    if (IsHeadPinnedComponent(*l_component))
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "TransformComponentはGameObjectから削除できません。");
 
         return;
     }
@@ -400,6 +452,13 @@ std::weak_ptr<FWK::GameObjectComponentBase> FWK::GameObjectComponentContainer::F
     if (a_uuid.is_nil()) { return {}; }
 
     return m_componentUUIDRegistry.FindVALRegisteredType(a_uuid);
+}
+
+bool FWK::GameObjectComponentContainer::IsHeadPinnedComponent(const GameObjectComponentBase& a_component) const
+{
+    // 先頭固定になるのはTransformComponentだけ(UIを作る時はその派生のRectTransformもここに入る)
+    // 基底クラスに仮想関数を足すのではなく、型情報(TypeINFO)を見て「Transformの一種か」で判定する
+    return Utility::IsDerivedTypeINFO(a_component.GetREFRuntimeTypeINFO(), GameObjectTransformComponent::GetREFTypeINFO());
 }
 
 boost::uuids::uuid FWK::GameObjectComponentContainer::GenerateVALComponentUUID() const

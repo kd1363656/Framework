@@ -11,7 +11,8 @@ namespace FWK::Graphics
 
         void BeginFrame() override;
 
-        void AddComputeRequest(const std::shared_ptr<SkeletalAnimationPlayer>& a_skeletalAnimationPlayer);
+        void AddComputeRequest   (const std::shared_ptr<SkeletalAnimationPlayer>& a_skeletalAnimationPlayer);
+        void RemoveComputeRequest(const std::weak_ptr<SkeletalAnimationPlayer>&   a_skeletalAnimationPlayer);
 
         const auto& GetREFSkeletalAnimationPlayerSmartPointerVectorList() const { return m_skeletalAnimationPlayerSmartPointerVectorList; }
 

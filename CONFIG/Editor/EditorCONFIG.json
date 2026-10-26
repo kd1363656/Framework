@@ -12,7 +12,27 @@
     },
     "WindowList": [
         {
-            "Window": null,
+            "Window": {
+                "CameraPreviewPanelSize": {
+                    "X": 320.0,
+                    "Y": 180.0
+                },
+                "DebugCamera": {
+                    "IsCullingDebugVisualize": true,
+                    "IsDrawMainCameraFrustum": true,
+                    "IsEnabled": false,
+                    "MoveSpeed": 5.0,
+                    "PitchDegree": 10.0,
+                    "Position": {
+                        "X": 0.0,
+                        "Y": 2.0,
+                        "Z": -5.0
+                    },
+                    "RotationSpeedDegree": 0.15000000596046448,
+                    "YawDegree": 0.0
+                },
+                "GizmoOperation": "ViewportGizmoOperation::Translate"
+            },
             "WindowTypeName": "ViewportEditorWindow"
         },
         {
@@ -31,9 +51,9 @@
                         "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\Data\\Prefab\\Player",
+                "CurrentSelectFolderPath": "Asset\\Model\\Player\\Antike",
                 "EditorWindowPaneSplitter": {
-                    "PrimaryPaneSize": 491.0
+                    "PrimaryPaneSize": 364.0
                 },
                 "FolderPane": {
                     "FolderOpenStateMap": [
@@ -42,16 +62,16 @@
                             "IsOpen": true
                         },
                         {
-                            "FilePath": "Asset\\Data\\Font\\Icon\\FontAwesome",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Font\\Icon",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data",
-                            "IsOpen": true
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Font\\Icon\\FontAwesome",
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Font",
@@ -67,10 +87,14 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Scene\\Title",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\NewFolder",
                             "IsOpen": false
                         },
                         {
@@ -79,18 +103,38 @@
                         },
                         {
                             "FilePath": "Asset\\Model",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Model\\Antike.fbm",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Player",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Player\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Player\\Antike",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Player\\Antike.fbm",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Player\\Antike\\Antike.fbm",
                             "IsOpen": false
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Player",
+                        "RangeSelectionStartPath": "Asset\\Model\\Player\\Antike",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Data\\Prefab\\Player"
+                                "SelectedFilePath": "Asset\\Model\\Player\\Antike"
                             }
                         ]
                     }

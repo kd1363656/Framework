@@ -21,6 +21,9 @@ namespace FWK::Editor
 
         virtual nlohmann::json Serialize() { return nlohmann::json{}; }
 
+        // エディターを描画しない(Ctrl + Pで隠している)フレームに呼ばれる
+        virtual void OnDrawSkipped() { /*必要に応じてオーバーライドしてください*/ };
+
     protected:
 
         void ReportActiveWindowIfMouseClicked(EditorManager& a_editorManager) const;

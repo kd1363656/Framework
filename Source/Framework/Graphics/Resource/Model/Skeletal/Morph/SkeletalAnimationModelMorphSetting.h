@@ -17,6 +17,14 @@ namespace FWK::Graphics
          SkeletalAnimationModelMorphSetting() = default;
         ~SkeletalAnimationModelMorphSetting() = default;
 
+        // BinaryConverterは読み書き中のファイルを持つためコピー・ムーブできない
+        // そのため、ムーブでは設定の値(ターゲットごとの設定)だけを移し、Converterなどは移さない
+        SkeletalAnimationModelMorphSetting(const SkeletalAnimationModelMorphSetting&)         = delete;
+        SkeletalAnimationModelMorphSetting(      SkeletalAnimationModelMorphSetting&& a_other) noexcept;
+
+        SkeletalAnimationModelMorphSetting& operator=(const SkeletalAnimationModelMorphSetting&)         = delete;
+        SkeletalAnimationModelMorphSetting& operator=(      SkeletalAnimationModelMorphSetting&& a_other) noexcept;
+
         // a_modelFilePath : モデル(FBX)のパス(.morphファイルのパスはここから作る)
         // .morphファイルが無い場合はfalseを返す(設定は空のまま)
         bool LoadBinaryData(const std::filesystem::path& a_modelFilePath);
@@ -33,7 +41,8 @@ namespace FWK::Graphics
         // ModelMesh1つ分のターゲットへ、設定のLOD保護を写す(設定が無いターゲットは通常にする)
         void ApplyLODProtection(std::vector<Struct::ModelMorphTarget>& a_targetList) const;
 
-        bool SaveBinaryData(const std::filesystem::path& a_modelFilePath) const;
+        // BinaryConverterが書き込み中のファイルを持つため、constにしない
+        bool SaveBinaryData(const std::filesystem::path& a_modelFilePath);
 
         nlohmann::json Serialize() const;
 
@@ -58,6 +67,7 @@ namespace FWK::Graphics
 
         SkeletalAnimationModelMorphSettingEditInspector m_editInspector = {};
 
-        Converter::SkeletalAnimationModelMorphSettingJsonConverter m_jsonConverter = {};
+        Converter::SkeletalAnimationModelMorphSettingBinaryConverter m_binaryConverter = {};
+        Converter::SkeletalAnimationModelMorphSettingJsonConverter   m_jsonConverter   = {};
     };
 }

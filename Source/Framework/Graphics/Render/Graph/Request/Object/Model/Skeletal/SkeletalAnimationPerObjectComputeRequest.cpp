@@ -12,3 +12,7 @@ void FWK::Graphics::SkeletalAnimationPerObjectComputeRequest::AddComputeRequest(
 
     m_skeletalAnimationPlayerSmartPointerVectorList.Add(a_skeletalAnimationPlayer);
 }
+void FWK::Graphics::SkeletalAnimationPerObjectComputeRequest::RemoveComputeRequest(const std::weak_ptr<SkeletalAnimationPlayer>& a_skeletalAnimationPlayer)
+{
+    m_skeletalAnimationPlayerSmartPointerVectorList.RemoveSameElement(a_skeletalAnimationPlayer);
+}

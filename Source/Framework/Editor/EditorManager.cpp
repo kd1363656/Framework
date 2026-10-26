@@ -37,7 +37,9 @@ FWK::Editor::EditorManager::~EditorManager()
     // ここから先はLogウィンドウ(m_logEditorWindow)が破棄されていくので、
     // FWK_ASSERT_RETURN系マクロの失敗をLogウィンドウへ書き込まないようにする
     // (OutputDebugStringWへの出力は引き続き行われる)
-    AssertReporter::GetInstance().SetIsEditorLogEnabled(false);
+    auto& l_assertReporter = AssertReporter::GetInstance();
+
+    l_assertReporter.SetIsEditorLogEnabled(false);
 
     Release();
 }
@@ -158,6 +160,9 @@ void FWK::Editor::EditorManager::DrawEditor()
     // ImGuiのフレーム開始
     ImGui::NewFrame();
 
+    // ImGuizmo(ビューポートで物を動かすギズモ)のフレーム開始(ImGui::NewFrameの直後に呼ぶ決まり)
+    ImGuizmo::BeginFrame();
+
     // 前フレームでDragDropが完了またはキャンセルされていれば
     // Framework側で保持しチエルPayloadを破棄する
     auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
@@ -176,6 +181,15 @@ void FWK::Editor::EditorManager::DrawEditor()
     // 描画が無効化されているなら描画しない
     if (m_isDisableDrawEditor)
     {
+        // 描画しない間も、各ウィンドウが描画の設定を元に戻せるよう知らせる
+        // (ビューポートのデバッグカメラで描画したままにならないようにするため)
+        for (const auto& l_editorWindow : m_editorWindowList)
+        {
+            if (!l_editorWindow) { continue; }
+
+            l_editorWindow->OnDrawSkipped();
+        }
+
         ImGui::EndFrame();
 
         return;

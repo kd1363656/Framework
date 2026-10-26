@@ -21,9 +21,7 @@ namespace FWK::Graphics
 
         D3D12_GPU_VIRTUAL_ADDRESS Write(const ConstantBufferType& a_constantBuffer)
         {
-            const std::span<const ConstantBufferType> l_constantBufferRange = { &a_constantBuffer, k_singleElementCount };
-
-            return WriteElementRange(l_constantBufferRange);
+            return WriteElement(a_constantBuffer);
         }
     };
 }

@@ -21,9 +21,6 @@ namespace FWK::Physics
         PhysicsBodyBase& operator=(const PhysicsBodyBase&)  = delete;
         PhysicsBodyBase& operator=(      PhysicsBodyBase&&) = delete;
 
-        virtual bool ApplyWorldTransform(const TypeAlias::Math::Quaternion&, const TypeAlias::Math::Vector3&) { return false; }
-        virtual bool ApplyWorldTransform(      TypeAlias::Math::Matrix&)                                      { return false; }
-
         bool ApplyIsPushBackEnabled(const bool a_isPushBackEnabled) const;
 
         TypeAlias::Math::Vector3 FetchVALWorldPosition() const;

@@ -2,13 +2,10 @@
 
 void FWK::GameObject::INIT()
 {
-    if (!m_transformComponent)
-    {
-        m_transformComponent = std::make_shared<GameObjectTransformComponent>();
-    }
-
-    m_transformComponent->SetOwner(weak_from_this());
-
+    // TransformComponentはここでは作らない
+    // シーン・プレハブの読み込みではJsonのComponentListからTransformが作られるため、
+    // ここで作ってしまうとJson側のTransformが「2つ目」としてはじかれてしまう
+    // (新しく作る空のGameObjectはAddTransformComponentを呼んで作る)
     m_hierarchy.INIT    ();
     m_hierarchy.SetOwner(weak_from_this());
 
@@ -25,6 +22,29 @@ void FWK::GameObject::INIT()
 
     m_isDestroyed    = false;
     m_isPrefabOrigin = Constant::k_gameObjectInitialValueIsPrefabOrigin;
+}
+
+void FWK::GameObject::AddTransformComponent()
+{
+    auto l_transformComponent = std::make_shared<GameObjectTransformComponent>();
+
+    // シーンを読み込む時と同じ順番で準備する(INIT → AddComponent)
+    l_transformComponent->INIT();
+
+    // AddComponentがTransformを一覧の先頭へ置く(既に持っている場合はfalseが返り、理由はログに出る)
+    if (!m_componentContainer.AddComponent(l_transformComponent)) { return; }
+
+    // 作ったばかりのTransformは行列の計算方法(MatrixUpdateMode)を持っていないので、親の有無に合わせて決める
+    // 親あり : 親の行列に追従する計算方法(Hierarchical)
+    // 親なし : 自分だけで完結する計算方法(Standalone)
+    if (m_hierarchy.GetREFParent().lock())
+    {
+        l_transformComponent->ApplyParent();
+    }
+    else
+    {
+        l_transformComponent->ApplyStandalone();
+    }
 }
 
 void FWK::GameObject::DeserializeScene(const nlohmann::json&              a_rootJson, 
@@ -52,11 +72,7 @@ void FWK::GameObject::DeserializePrefab(const nlohmann::json& a_rootJson, const 
 
 void FWK::GameObject::PostDeserialize()
 {
-    if (m_transformComponent) 
-    {
-        m_transformComponent->PostDeserialize();
-    }
-
+    // TransformComponentはコンポーネント一覧の先頭にあるため、他のコンポーネントより先にPostDeserializeされる
     m_componentContainer.PostDeserialize();
 
     // このゲームオブジェクトと子ゲームオブジェクトを再帰的に
@@ -78,11 +94,7 @@ void FWK::GameObject::LateUpdate() const
 }
 void FWK::GameObject::PostLateUpdate() const
 {
-    if (m_transformComponent)
-    {
-        m_transformComponent->PostLateUpdate();
-    }
-
+    // TransformComponentはコンポーネント一覧の先頭にあるため、他のコンポーネントより先に行列が確定する
     m_componentContainer.PostLateUpdate();
 }
 
@@ -156,19 +168,8 @@ std::shared_ptr<FWK::GameObject> FWK::GameObject::Clone(const std::weak_ptr<Game
     l_clone->m_prefabUUID     = m_prefabUUID;
     l_clone->m_isPrefabOrigin = m_isPrefabOrigin;
  
-    // TransformComponentはSerialize往復による値コピー
-    // Ownerはクローン側のGameObjectへ張り替える
-    if (m_transformComponent)
-    {
-        l_clone->m_transformComponent = m_transformComponent->Clone();
- 
-        if (l_clone->m_transformComponent)
-        {
-            l_clone->m_transformComponent->SetOwner(l_clone->weak_from_this());
-        }
-    }
- 
     // ComponentContainerが自身のメンバをコピーする
+    // TransformComponentも他のコンポーネントと同じくここで複製される
     m_componentContainer.Clone(l_clone->m_componentContainer);
  
     // Sceneへ登録(SceneInstanceUUIDはNilなのでここで新規発行される)

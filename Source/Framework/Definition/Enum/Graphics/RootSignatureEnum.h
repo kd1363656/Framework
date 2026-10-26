@@ -15,6 +15,8 @@ namespace FWK::Enum
         FinalPresent,
         ModelGPUDrivenCulling,
         HierarchicalDepthBuild,
+        GPUParticleCompute,
+        GPUParticleBillboard,
         Count,
     };
 
@@ -32,6 +34,8 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(RootSignatureType::FinalPresent),
         FWK_JSON_ENUM_VALUE(RootSignatureType::ModelGPUDrivenCulling),
         FWK_JSON_ENUM_VALUE(RootSignatureType::HierarchicalDepthBuild),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::GPUParticleCompute),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::GPUParticleBillboard),
         FWK_JSON_ENUM_VALUE(RootSignatureType::Count),
     )
 }

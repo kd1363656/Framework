@@ -16,6 +16,6 @@ namespace FWK::Converter
 
         void Load(const SceneManager& a_sceneManager) const;
 
-        void Save(const SceneManager& a_sceneManager) const;
+        bool Save(const SceneManager& a_sceneManager) const;
     };
 }

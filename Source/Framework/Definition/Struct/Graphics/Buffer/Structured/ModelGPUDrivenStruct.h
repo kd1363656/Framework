@@ -89,6 +89,18 @@ namespace FWK::Struct
         std::uint32_t m_morphChannelCount = Constant::k_initialGPUDrivenSkinningInfoValue;
     };
 
+    // 描画申請1つから、インスタンスの表へ書き込む値(ModelGPUDrivenTableBuilder::SetInstanceへ渡す)
+    // ポインタは描画申請のデータを指す(SetInstanceの中で表へ写すため、呼び出しの間だけ有効であればよい)
+    // m_morphWeightList : nullptr又は空なら、ベイクしたウェイトを使う
+    struct ModelGPUDrivenInstanceSource final
+    {
+        const TypeAlias::Math::Matrix* m_worldMatrix                 = nullptr;
+        const TypeAlias::Math::Matrix* m_worldInverseTransposeMatrix = nullptr;
+        const std::vector<float>*      m_morphWeightList             = nullptr;
+
+        std::uint32_t m_animationFrameIndex = Constant::k_initialGPUDrivenInstanceAnimationFrameIndex;
+    };
+
     // 1種類のモデルをまとめた単位
     // 同じモデルのインスタンスは表の中で連続して並べ、1回のDispatchでまとめてカリングする
     struct ModelGPUDrivenBatch final
@@ -99,7 +111,7 @@ namespace FWK::Struct
         std::uint32_t m_meshCount      = Constant::k_initialGPUDrivenBatchValue;
     };
 
-    // 1フレーム分の表(描画申請から作り、ModelGPUDrivenDrawerがGPUへ送る)
+    // 描画に使う表(ModelGPUDrivenTableBuilderが持ち続け、ModelGPUDrivenDrawerがGPUへ送る)
     struct ModelGPUDrivenFrameTable final
     {
         std::vector<ModelGPUDrivenBatch>      m_batchList    = {};
@@ -111,6 +123,13 @@ namespace FWK::Struct
         std::vector<float> m_morphWeightList = {};
 
         std::size_t m_totalPairCount = Constant::k_initialGPUDrivenFrameTableTotalPairCount;
+
+        // 表の中身を書き換えるたびに進める番号
+        // ModelGPUDrivenDrawerはフレームリソースごとに書き込んだときの番号を覚え、番号が変わった表だけをGPUへ送る
+        // m_meshTableVersion : m_batchList、m_meshInfoList、m_lodListの番号
+        std::uint64_t m_meshTableVersion        = Constant::k_initialGPUDrivenFrameTableVersion;
+        std::uint64_t m_instanceTableVersion    = Constant::k_initialGPUDrivenFrameTableVersion;
+        std::uint64_t m_morphWeightTableVersion = Constant::k_initialGPUDrivenFrameTableVersion;
     };
 
     // 描画1回分の定数バッファ(GPUのComputeShaderが書き込み、AS / MS / PSが定数バッファとして読む)
@@ -184,6 +203,12 @@ namespace FWK::Struct
         std::uint32_t              m_isOrthographicLOD                           = Constant::k_initialGPUDrivenCullingPassUIntValue;
         float                      m_minProjectedSizeTexel                       = Constant::k_initialGPUDrivenCullingPassFloatValue;
         TypeAlias::DescriptorIndex m_morphOverrideWeightBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+
+        // m_isCullingDebugVisualize : 1なら視錐台の外、又は隠れていると判定した組み合わせも、判定結果を付けて描画コマンドを書く(カリングの可視化)
+        std::uint32_t m_isCullingDebugVisualize = Constant::k_initialGPUDrivenCullingPassUIntValue;
+        std::uint32_t m_padding0                = Constant::k_initialGPUDrivenCullingPassUIntValue;
+        std::uint32_t m_padding1                = Constant::k_initialGPUDrivenCullingPassUIntValue;
+        std::uint32_t m_padding2                = Constant::k_initialGPUDrivenCullingPassUIntValue;
     };
 
     static_assert(sizeof(CBModelGPUDrivenCullingPass) == Constant::k_cbModelGPUDrivenCullingPassByteSize, "CBModelGPUDrivenCullingPassのサイズがHLSL側の定数バッファと一致しません。");
@@ -216,6 +241,7 @@ namespace FWK::Struct
 
         float m_orthographicTexelPerWorldUnit = Constant::k_initialGPUDrivenOrthographicTexelPerWorldUnit;
 
-        bool m_isOrthographicLOD = false;
+        bool m_isOrthographicLOD       = false;
+        bool m_isCullingDebugVisualize = false;
     };
 }

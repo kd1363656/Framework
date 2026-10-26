@@ -9,21 +9,16 @@ namespace FWK::Physics
          PhysicsStaticBoxBody()          = default;
         ~PhysicsStaticBoxBody() override = default;
 
-        bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled);
+        bool CreateBody(const TypeAlias::Math::Vector3&    a_halfExtent,
+                        const TypeAlias::Math::Quaternion& a_worldRotation,
+                        const TypeAlias::Math::Vector3&    a_worldPosition,
+                        const bool                         a_isPushBackEnabled);
 
-        bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
-
-        void SetHalfExtent(const TypeAlias::Math::Vector3& a_set) { m_halfExtent = a_set; }
-
-        const auto& GetRERHalfExtent() const { return m_halfExtent; }
+        bool ApplyShapeChange(const TypeAlias::Math::Vector3& a_halfExtent);
 
     private:
 
-        JPH::RefConst<JPH::Shape> CreateShape() const;
-
-        bool ApplyShapeChange();
-
-        TypeAlias::Math::Vector3 m_halfExtent = { Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength, Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength, Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength };
+        JPH::RefConst<JPH::Shape> CreateShape(const TypeAlias::Math::Vector3& a_halfExtent) const;
 
         FWK_DEFINE_TYPE_INFO(PhysicsStaticBoxBody, PhysicsStaticBodyBase)
     };

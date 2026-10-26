@@ -31,6 +31,9 @@ static const uint k_lastElementIndexOffsetFromCount = 1U;
 
 static const uint k_meshletBoundsUpdateSecondTriangleIndexOffset = k_meshletBoundsUpdateThreadCountX;
 
+// 構造体やベクトルを全て0で初期化するときに使う値
+static const uint k_zeroInitializeValue = 0U;
+
 groupshared float3 g_meshletPositionList     [k_meshletBoundsUpdateThreadCountX];
 groupshared float3 g_meshletMINPositionList  [k_meshletBoundsUpdateThreadCountX];
 groupshared float3 g_meshletMAXPositionList  [k_meshletBoundsUpdateThreadCountX];
@@ -41,7 +44,7 @@ groupshared float  g_meshletConeMINDotList   [k_meshletBoundsUpdateThreadCountX]
 float3 CalculateMeshletTriangleNormal(const uint a_packedPrimitiveIndex, const uint a_meshletVertexCount)
 {
     // 失敗しても未初期化値は返さない
-    float3 l_triangleNormal = (float3) 0;
+    float3 l_triangleNormal = (float3)k_zeroInitializeValue;
     
     // uint一個にPackされた三個の
     // Meshlet内VertexIndexを展開する
@@ -101,7 +104,7 @@ void main(const uint3 a_groupID          : SV_GroupID,
             // Cone情報を含め、すべてゼロで初期化する。
             // 空Meshletなので半径ゼロのBoundsを書き込み、
             // 未初期化データがASから読み取られることを防ぐ   
-            ModelMeshletBounds l_emptyMeshletBounds = (ModelMeshletBounds) 0;
+            ModelMeshletBounds l_emptyMeshletBounds = (ModelMeshletBounds)k_zeroInitializeValue;
 
             l_emptyMeshletBounds.coneCutoff       = k_modelDisabledMeshletConeCutoff;
             l_meshletBoundsBuffer[l_meshletIndex] = l_emptyMeshletBounds;
@@ -128,8 +131,8 @@ void main(const uint3 a_groupID          : SV_GroupID,
     const uint l_firstMeshletTriangleIndex  = a_groupThreadIndex;
     const uint l_secondMeshletTriangleIndex = a_groupThreadIndex + k_meshletBoundsUpdateSecondTriangleIndexOffset;
     
-    float3 l_firstTriangleNormal  = (float3) 0;
-    float3 l_secondTriangleNormal = (float3) 0;
+    float3 l_firstTriangleNormal  = (float3)k_zeroInitializeValue;
+    float3 l_secondTriangleNormal = (float3)k_zeroInitializeValue;
     
     if (l_firstMeshletTriangleIndex < l_meshlet.triangleCount)
     {
@@ -204,7 +207,7 @@ void main(const uint3 a_groupID          : SV_GroupID,
     const bool l_hasValidMeshletConeAxis = l_meshletConeAxisLengthSquared > k_triangleNormalLengthSquaredEpsilon;
     
     // 無効だった場合はZeroVerctorのままにする
-    float3 l_meshletConeAxis = (float3) 0;
+    float3 l_meshletConeAxis = (float3)k_zeroInitializeValue;
     
     // rsqrt(Zero)を避けるため、
     // 有効な長さを持つ場合だけ正規化する。
@@ -272,7 +275,7 @@ void main(const uint3 a_groupID          : SV_GroupID,
     // 完成したBoundsをUAVへ書き込む
     if (a_groupThreadIndex == k_firstThreadIndex)
     {
-        ModelMeshletBounds l_meshletBounds = (ModelMeshletBounds) 0;
+        ModelMeshletBounds l_meshletBounds = (ModelMeshletBounds)k_zeroInitializeValue;
         
         l_meshletBounds.center = l_boundingSphereCenter;
         

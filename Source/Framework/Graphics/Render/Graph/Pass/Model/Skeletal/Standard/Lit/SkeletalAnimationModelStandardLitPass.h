@@ -13,9 +13,6 @@ namespace FWK::Graphics
 
     private:
 
-        static constexpr std::string_view k_triangleCounterName           = "Triangles : SkeletalAnimationModel Lit";
-        static constexpr std::string_view k_gpuSkinnedTriangleCounterName = "Triangles : SkeletalAnimationModel GPUSkinned Lit";
-
         static constexpr std::size_t k_cameraViewIndex = 0ULL;
 
         static constexpr bool k_useNearPlaneForCulling = true;

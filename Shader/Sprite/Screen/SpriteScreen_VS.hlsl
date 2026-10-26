@@ -1,13 +1,18 @@
 ﻿#include "SpriteScreen.hlsli"
 
+// 構造体を全て0で初期化するときに使う値
+static const uint k_zeroInitializeValue = 0U;
+
+static const uint k_initialTextureSize = 0U;
+
 VSOutput main(uint a_vertexID : SV_VertexID)
 {
-    VSOutput l_output = (VSOutput) 0;
+    VSOutput l_output = (VSOutput)k_zeroInitializeValue;
     
     Texture2D<float4> l_baseColorTexture = ResourceDescriptorHeap[g_baseColorTextureSRVIndex];
 
-	uint l_textureWidth  = 0U;
-	uint l_textureHeight = 0U;
+	uint l_textureWidth  = k_initialTextureSize;
+	uint l_textureHeight = k_initialTextureSize;
 
 	l_baseColorTexture.GetDimensions(l_textureWidth, l_textureHeight);
 

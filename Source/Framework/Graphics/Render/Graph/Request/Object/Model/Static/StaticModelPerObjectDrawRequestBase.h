@@ -27,10 +27,10 @@ namespace FWK::Graphics
 
         void SetCurrentDrawViewIndex(const std::size_t a_set) { m_currentDrawViewIndex = a_set; }
 
-        // GPUが数えた、描画した三角形の総数(LOD適用後、数フレーム前の結果、計測用)
-        auto GetVALSubmittedTriangleCount() const { return m_gpuDrivenDrawer.GetVALSubmittedTriangleCount(); }
-
     private:
+
+        // 描画申請の値を、持ち続けている表へ反映する(並びが変わった場合は作り直す)
+        void UpdateGPUDrivenTable();
 
         static constexpr std::size_t k_defaultDrawViewIndex = 0ULL;
 

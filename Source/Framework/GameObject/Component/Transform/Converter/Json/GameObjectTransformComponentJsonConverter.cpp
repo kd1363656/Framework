@@ -4,6 +4,9 @@ void FWK::Converter::GameObjectTransformComponentJsonConverter::Deserialize(cons
 {
     if (a_rootJson.is_null()) { return; }
 
+    // UUID / IsDisable / IsPrefabOriginは基底クラスが読み込む
+    a_transformComponent.GameObjectComponentBase::Deserialize(a_rootJson);
+
     const auto& l_scale    = Utility::DeserializeVector3   (a_rootJson, k_scaleJsonKey);
     const auto& l_rotation = Utility::DeserializeQuaternion(a_rootJson, k_rotationJsonKey);
     const auto& l_position = Utility::DeserializeVector3   (a_rootJson, k_positionJsonKey);
@@ -33,7 +36,8 @@ void FWK::Converter::GameObjectTransformComponentJsonConverter::Deserialize(cons
 
 nlohmann::json FWK::Converter::GameObjectTransformComponentJsonConverter::Serialize(const GameObjectTransformComponent& a_gameObjectTransformComponent) const
 {
-    nlohmann::json l_rootJson = {};
+    // UUID / IsDisable / IsPrefabOriginは基底クラスが書き出す
+    auto l_rootJson = a_gameObjectTransformComponent.GameObjectComponentBase::Serialize();
 
     const auto& l_transform        = a_gameObjectTransformComponent.GetREFTransform       ();
     const auto& l_matrixUpdateMode = a_gameObjectTransformComponent.GetREFMatrixUpdateMode();

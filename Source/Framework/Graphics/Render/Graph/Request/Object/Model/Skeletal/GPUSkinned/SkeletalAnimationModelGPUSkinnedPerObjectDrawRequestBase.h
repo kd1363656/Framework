@@ -6,7 +6,7 @@ namespace FWK::Graphics
     //
     // 描画の流れ :
     // 1. 初めて使うモデルは、全モーションをベイク(事前計算)してスキニング行列をGPUへ置く
-    // 2. 描画申請ごとに「何コマ目のアニメーションか」を決め、インスタンスの表を作る
+    // 2. 描画申請ごとに「何コマ目のアニメーションか」を決め、持ち続けているインスタンスの表の変わった所だけを書き換える
     // 3. Passが描画用PipelineStateを設定する前に、DispatchGPUCullingでViewごとのカリングを行う
     // 4. Passが描画用PipelineStateと定数バッファを設定した後、SetupPerObjectConstantBufferでまとめて描画する
     //    (メッシュシェーダーが、見えている頂点だけをその場でスキニングする)
@@ -30,17 +30,17 @@ namespace FWK::Graphics
 
         void SetCurrentDrawViewIndex(const std::size_t a_set) { m_currentDrawViewIndex = a_set; }
 
-        // GPUが数えた、描画した三角形の総数(LOD適用後、数フレーム前の結果、計測用)
-        auto GetVALSubmittedTriangleCount() const { return m_gpuDrivenDrawer.GetVALSubmittedTriangleCount(); }
-
     private:
+
+        // 描画申請の値を、持ち続けている表へ反映する(並びが変わった場合は作り直す)
+        void UpdateGPUDrivenTable(const Renderer& a_renderer);
 
         // モデルのベイク済みアニメーションを取得する(まだ無ければベイクして作成する)
         std::shared_ptr<SkeletalAnimationBakedSkinning> FindOrCreateBakedSkinning(SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord) const;
 
-        // インスタンスだけのモーフのウェイトを、モデルのチャンネル数に合わせ(足りない分は0)、エディターで設定した範囲へ収めてから表へ追加する
-        // 戻り値は表の中での開始位置(入りきらない場合は無効値)
-        std::uint32_t AddMorphWeightList(const SkeletalAnimationBakedSkinning& a_bakedSkinning, const std::vector<float>& a_morphWeightList);
+        // インスタンスだけのモーフのウェイトを、モデルのチャンネル数に合わせ(足りない分は0)、エディターで設定した範囲へ収める
+        // 戻り値は作業用の配列(次に呼ぶまで有効、モーフを持たないモデルなら空)
+        const std::vector<float>& CreateMorphWeightList(const SkeletalAnimationBakedSkinning& a_bakedSkinning, const std::vector<float>& a_morphWeightList);
 
         static constexpr std::size_t k_defaultDrawViewIndex = 0ULL;
 

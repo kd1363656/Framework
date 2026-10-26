@@ -24,7 +24,8 @@ namespace FWK
         const boost::uuids::uuid*        FindPTRAssetUUID        (const std::filesystem::path& a_assetFilePath) const;
         const Struct::AssetFilePathData* FindPTRAssetFilePathData(const boost::uuids::uuid&    a_uuid)          const;
 
-        bool ContainsAssetUUID(const boost::uuids::uuid& a_assetUUID) const;
+        bool ContainsAssetUUID    (const boost::uuids::uuid&    a_assetUUID)                                                                  const;
+        bool ContainsAssetFilePath(const std::filesystem::path& a_assetFilePath, Enum::AssetFilePathRegistryType a_assetFilePathRegisterType) const;
 
         const auto& GetREFAssetFilePathToUUIDMap() const { return m_assetFilePathToUUIDMap; }
 

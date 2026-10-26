@@ -97,18 +97,18 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Delete(const std::vecto
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Copy(const std::vector<std::filesystem::path>& a_filePathList, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Copy(const std::vector<std::filesystem::path>& a_filePathList, EditorWindowClipboard<std::filesystem::path>& a_clipboard) const
 {
     // ClipboardへCopy操作として設定する
     a_clipboard.Apply(a_filePathList, Enum::EditorWindowClipboardOperationType::Copy);
 }
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Cut(const std::vector<std::filesystem::path>& a_filePathList, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Cut(const std::vector<std::filesystem::path>& a_filePathList, EditorWindowClipboard<std::filesystem::path>& a_clipboard) const
 {
     // ClipboardへCut操作として設定する
     a_clipboard.Apply(a_filePathList, Enum::EditorWindowClipboardOperationType::Cut);
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector<std::filesystem::path>& a_destinationFolderPathList, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector<std::filesystem::path>& a_destinationFolderPathList, EditorWindowClipboard<std::filesystem::path>& a_clipboard) const
 {
     // Clipboardが空なら何もしない
     if (a_clipboard.IsEmpty()) { return; }

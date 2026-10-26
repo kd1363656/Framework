@@ -35,6 +35,8 @@ namespace FWK::Graphics
 
         void SetCurrentResourceState(const D3D12_RESOURCE_STATES a_set) { m_currentResourceState = a_set; }
 
+        bool IsCreated() const { return m_gpuResource.m_resource != nullptr; }
+
         const auto& GetREFGPUResource() const { return m_gpuResource; }
 
         auto GetVALCurrentResourceState() const { return m_currentResourceState; }

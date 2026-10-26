@@ -268,7 +268,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawRenameMenu(const std:
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCopyMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList, 
                                                                     const AssetBrowserEditorWindowFileOperation& a_fileOperation,
                                                                     const bool                                   a_hasSelection, 
-                                                                          TypeAlias::AssetBrowserEditorWindowClipboard&     a_clipboard) const
+                                                                          EditorWindowClipboard<std::filesystem::path>&     a_clipboard) const
 {
     // ショートカット : Ctrl + C
     // 選択中のファイルがない場合はグレーアウト
@@ -288,7 +288,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCopyMenu(const std::v
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCutMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList, 
                                                                    const AssetBrowserEditorWindowFileOperation& a_fileOperation, 
                                                                    const bool                                   a_hasSelection,
-                                                                         TypeAlias::AssetBrowserEditorWindowClipboard&     a_clipboard) const
+                                                                         EditorWindowClipboard<std::filesystem::path>&     a_clipboard) const
 {
     // ショートカット : Ctrl + X
     const auto& l_label = std::string{ k_imguiFontAwesomeCutIcon } + " " + std::string{ k_cutLabel };
@@ -306,7 +306,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCutMenu(const std::ve
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
                                                                      const AssetBrowserEditorWindowFileOperation& a_fileOperation, 
                                                                      const bool                                   a_canPaste, 
-                                                                           TypeAlias::AssetBrowserEditorWindowClipboard&     a_clipboard) const
+                                                                           EditorWindowClipboard<std::filesystem::path>&     a_clipboard) const
 {
     // ショートカット : Ctrl + V
     // クリップボードが空の場合はグレーアウト

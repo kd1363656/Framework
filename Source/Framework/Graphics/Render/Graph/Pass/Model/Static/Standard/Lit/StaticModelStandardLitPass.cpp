@@ -18,6 +18,11 @@ FWK::Graphics::StaticModelStandardLitPass::StaticModelStandardLitPass()
 }
 FWK::Graphics::StaticModelStandardLitPass::~StaticModelStandardLitPass() = default;
 
+void FWK::Graphics::StaticModelStandardLitPass::Deserialize(const nlohmann::json& a_rootJson)
+{
+    m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
 void FWK::Graphics::StaticModelStandardLitPass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
@@ -32,20 +37,29 @@ void FWK::Graphics::StaticModelStandardLitPass::Execute(const ResourceContext&, 
     FWK_ASSERT_RETURN_IF(!l_cascadeShadowMapPassDrawRequest,         "CascadeShadowMapPassDrawRequestが無効のため、StaticModelStandardLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_staticModelStandardPerObjectDrawRequest, "StaticModelStandardPerObjectDrawRequestが無効のため、StaticModelStandardLitPassの実行に失敗しました。");
 
-    const auto& l_cbCameraPass = l_cameraPassDrawRequest->GetREFSourceConstantBuffer().lock();
+    // カリングは「カリングに使うカメラ」(通常は描画カメラ、デバッグカメラで描画中はメインカメラ)で行う
+    const auto& l_cbCameraPass = l_cameraPassDrawRequest->FetchVALCullingConstantBuffer();
+
+    // Hi-Zは直前のフレームの描画カメラの深度から作るため、描画カメラを差し替えている間(デバッグカメラ、カメラのプレビュー)は
+    // 判定が合わず、オクルージョンカリングを行えない
+    const bool l_isOcclusionCullingEnabled = m_isOcclusionCullingEnabled &&
+                                             l_cameraPassDrawRequest->FetchVALIsOcclusionCullingAllowed();
 
     // GPUドリブン描画のカリング(1回目)
     // カメラから見える範囲(視錐台)に入っていて、前のフレームのHi-Zで隠れていないMeshだけを選び、
     // LODを決めて描画コマンドを作る(隠れていた物は2回目の候補として残す)
+    // オクルージョンカリングを行わない場合は、視錐台の判定とLODの選択だけを行う(Normal)
     // ※ ComputeShader用のPipelineStateを使うため、描画用PipelineStateを設定する前に行う
     if (l_cbCameraPass)
     {
         auto l_cullingView = ModelGPUDrivenDrawer::BuildCullingView(l_cbCameraPass->m_viewProjectionMatrix, k_useNearPlaneForCulling);
 
-        l_cullingView.m_cullingMode = Enum::ModelGPUDrivenCullingMode::Early;
+        l_cullingView.m_cullingMode             = l_isOcclusionCullingEnabled ? Enum::ModelGPUDrivenCullingMode::Early : Enum::ModelGPUDrivenCullingMode::Normal;
+        l_cullingView.m_isCullingDebugVisualize = l_cameraPassDrawRequest->GetVALIsCullingDebugVisualize();
 
         // 前のフレームのHi-Zは、前のフレームのカメラから見た深度なので、前のフレームの行列で判定する
-        if (m_hasPreviousViewProjectionMatrix)
+        if (l_isOcclusionCullingEnabled &&
+            m_hasPreviousViewProjectionMatrix)
         {
             l_cullingView.m_hierarchicalDepthTexture      = &m_hierarchicalDepthTexture;
             l_cullingView.m_occlusionViewProjectionMatrix = m_previousViewProjectionMatrix;
@@ -69,7 +83,8 @@ void FWK::Graphics::StaticModelStandardLitPass::Execute(const ResourceContext&, 
     l_staticModelStandardPerObjectDrawRequest->SetCurrentDrawViewIndex     (k_earlyCullingViewIndex);
     l_staticModelStandardPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer, *l_rootSignature, *l_currentFrameResource);
 
-    if (l_cbCameraPass)
+    if (l_cbCameraPass &&
+        l_isOcclusionCullingEnabled)
     {
         // 1回目で描いた物の深度から、今のフレームのHi-Zを作る
         // (このHi-Zは2回目のカリングと、次のフレームの1回目のカリングで使う)
@@ -104,7 +119,22 @@ void FWK::Graphics::StaticModelStandardLitPass::Execute(const ResourceContext&, 
         m_previousViewProjectionMatrix    = l_cbCameraPass->m_viewProjectionMatrix;
         m_hasPreviousViewProjectionMatrix = true;
     }
+    else if (!m_isOcclusionCullingEnabled)
+    {
+        // Hi-Zを作らなかったフレームの次は、古いHi-Zで判定しないようにする
+        // (オクルージョンカリングをオンに戻した最初のフレームは、隠れているかの判定をしない)
+        // 描画カメラを差し替えている間(デバッグカメラ、カメラのプレビュー)は、メインカメラのHi-Zと行列をそのまま残しておく
+        // (Hi-Zと行列は同じフレームの物同士なので、戻ったときに判定に使っても見えている物は消えない)
+        m_hasPreviousViewProjectionMatrix = false;
+    }
+}
 
-    // LOD適用後に描画命令を出した三角形数を計測用に記録する
-    a_renderer.GetMutableREFFrameProfiler().AddCounterSample(k_triangleCounterName, static_cast<double>(l_staticModelStandardPerObjectDrawRequest->GetVALSubmittedTriangleCount()));
+nlohmann::json FWK::Graphics::StaticModelStandardLitPass::Serialize() const
+{
+    return m_jsonConverter.Serialize(*this);
+}
+
+void FWK::Graphics::StaticModelStandardLitPass::EditInspector()
+{
+    m_editInspector.EditInspector(*this);
 }

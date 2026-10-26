@@ -7,7 +7,8 @@ bool FWK::Graphics::DrawRequestPerObjectBase::SetupModelLODSelector(const Render
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_cameraPassDrawRequest, "CameraPassDrawRequestが無効のため、LOD選択の準備に失敗しました。", false);
 
-    const auto& l_cbCameraPass = l_cameraPassDrawRequest->GetREFSourceConstantBuffer().lock();
+    // LODは「カリングに使うカメラ」からの距離で選ぶ(GPUドリブン描画のLOD選択と同じ基準にする)
+    const auto& l_cbCameraPass = l_cameraPassDrawRequest->FetchVALCullingConstantBuffer();
 
     // カメラが登録されていない場合はLODを選べないため、呼び出し側で元の形(全Meshlet)を描画する
     if (!l_cbCameraPass) { return false; }

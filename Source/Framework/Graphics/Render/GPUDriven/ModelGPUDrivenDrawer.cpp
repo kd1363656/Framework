@@ -26,22 +26,36 @@ void FWK::Graphics::ModelGPUDrivenDrawer::UploadFrameTable(const Renderer& a_ren
 
     auto& l_frameData = m_frameDataList[m_currentFrameIndex];
 
-    // このフレームリソースを前回使ったときにGPUが数えた結果を読む
-    // (CommandAllocatorの再利用待ちが済んでいるため、GPUの書き込みは完了している)
-    ReadbackCounter(l_frameData);
-
     // カリングのDispatchに必要な情報を覚えておく
     m_modelBatchList = a_frameTable.m_batchList;
     m_totalPairCount = a_frameTable.m_totalPairCount;
     m_instanceCount  = a_frameTable.m_instanceList.size();
 
     // インスタンス、Mesh、LODの表を、GPUが読めるBufferへ書き込む
-    FWK_ASSERT_RETURN_IF(!l_frameData.m_instanceBuffer.Write(a_frameTable.m_instanceList), "インスタンス情報の書き込みに失敗しました。");
-    FWK_ASSERT_RETURN_IF(!l_frameData.m_meshInfoBuffer.Write(a_frameTable.m_meshInfoList), "Mesh情報の書き込みに失敗しました。");
-    FWK_ASSERT_RETURN_IF(!l_frameData.m_lodBuffer.Write     (a_frameTable.m_lodList),      "LOD情報の書き込みに失敗しました。");
+    // このフレームリソースへ前回書き込んだときから変わっていない表は書き込まない
+    // (動かない物しか無ければ、毎フレームの書き込みは0になる)
+    if (l_frameData.m_uploadedMeshTableVersion != a_frameTable.m_meshTableVersion)
+    {
+        FWK_ASSERT_RETURN_IF(!l_frameData.m_meshInfoBuffer.Write(a_frameTable.m_meshInfoList), "Mesh情報の書き込みに失敗しました。");
+        FWK_ASSERT_RETURN_IF(!l_frameData.m_lodBuffer.Write     (a_frameTable.m_lodList),      "LOD情報の書き込みに失敗しました。");
+
+        l_frameData.m_uploadedMeshTableVersion = a_frameTable.m_meshTableVersion;
+    }
+
+    if (l_frameData.m_uploadedInstanceTableVersion != a_frameTable.m_instanceTableVersion)
+    {
+        FWK_ASSERT_RETURN_IF(!l_frameData.m_instanceBuffer.Write(a_frameTable.m_instanceList), "インスタンス情報の書き込みに失敗しました。");
+
+        l_frameData.m_uploadedInstanceTableVersion = a_frameTable.m_instanceTableVersion;
+    }
 
     // インスタンスごとに上書きするモーフのウェイトを書き込む(上書きするインスタンスが無ければ何も書かない)
-    FWK_ASSERT_RETURN_IF(!l_frameData.m_morphWeightBuffer.Write(a_frameTable.m_morphWeightList), "モーフのウェイトの書き込みに失敗しました。");
+    if (l_frameData.m_uploadedMorphWeightTableVersion != a_frameTable.m_morphWeightTableVersion)
+    {
+        FWK_ASSERT_RETURN_IF(!l_frameData.m_morphWeightBuffer.Write(a_frameTable.m_morphWeightList), "モーフのウェイトの書き込みに失敗しました。");
+
+        l_frameData.m_uploadedMorphWeightTableVersion = a_frameTable.m_morphWeightTableVersion;
+    }
 }
 
 bool FWK::Graphics::ModelGPUDrivenDrawer::DispatchCulling(Renderer& a_renderer, const std::size_t a_viewIndex, const Struct::ModelGPUDrivenCullingView& a_cullingView)
@@ -80,7 +94,9 @@ bool FWK::Graphics::ModelGPUDrivenDrawer::DispatchCulling(Renderer& a_renderer, 
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_cameraPassDrawRequest, "CameraPassDrawRequestが見つからないため、GPUドリブン描画のカリングに失敗しました。", false);
 
-    const auto& l_cbCameraPass = l_cameraPassDrawRequest->GetREFSourceConstantBuffer().lock();
+    // LODは「カリングに使うカメラ」からの距離で選ぶ
+    // (デバッグカメラで描画している間も、メインカメラから見たLODの選ばれ方をそのまま見られるようにするため)
+    const auto& l_cbCameraPass = l_cameraPassDrawRequest->FetchVALCullingConstantBuffer();
 
     // カメラが無ければLODを選べないため描画しない
     if (!l_cbCameraPass) { return false; }
@@ -126,7 +142,7 @@ bool FWK::Graphics::ModelGPUDrivenDrawer::DispatchCulling(Renderer& a_renderer, 
     auto& l_candidateViewData = l_isLateCulling ? m_viewDataList[a_cullingView.m_candidateSourceViewIndex] : l_viewData;
 
     // 1. 描画数、三角形数、候補数のカウンターを0に戻す(0が入ったBufferからコピーする)
-    TransitionBuffer(l_directCommandList, l_viewData.m_counterBuffer, D3D12_RESOURCE_STATE_COPY_DEST);
+    Utility::TransitionDynamicRWStructuredBuffer(l_directCommandList, l_viewData.m_counterBuffer, D3D12_RESOURCE_STATE_COPY_DEST);
 
     l_directCommandList.CopyBufferRegion(k_bufferStartOffset,
                                          k_bufferStartOffset,
@@ -135,15 +151,15 @@ bool FWK::Graphics::ModelGPUDrivenDrawer::DispatchCulling(Renderer& a_renderer, 
                                          *l_zeroCounterBuffer.Get());
 
     // 2. ComputeShaderが書き込めるように、書き込み先のBufferをUNORDERED_ACCESS状態へ遷移する
-    TransitionBuffer(l_directCommandList, l_viewData.m_counterBuffer,         D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-    TransitionBuffer(l_directCommandList, l_viewData.m_drawRecordBuffer,      D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-    TransitionBuffer(l_directCommandList, l_viewData.m_indirectCommandBuffer, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+    Utility::TransitionDynamicRWStructuredBuffer(l_directCommandList, l_viewData.m_counterBuffer,         D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+    Utility::TransitionDynamicRWStructuredBuffer(l_directCommandList, l_viewData.m_drawRecordBuffer,      D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+    Utility::TransitionDynamicRWStructuredBuffer(l_directCommandList, l_viewData.m_indirectCommandBuffer, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 
     if (l_isEarlyCulling ||
         l_isLateCulling)
     {
-        TransitionBuffer(l_directCommandList, l_candidateViewData.m_counterBuffer,   D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-        TransitionBuffer(l_directCommandList, l_candidateViewData.m_candidateBuffer, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+        Utility::TransitionDynamicRWStructuredBuffer(l_directCommandList, l_candidateViewData.m_counterBuffer,   D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+        Utility::TransitionDynamicRWStructuredBuffer(l_directCommandList, l_candidateViewData.m_candidateBuffer, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
     }
 
     // 3. カリング用ComputeShaderを実行する
@@ -187,9 +203,9 @@ bool FWK::Graphics::ModelGPUDrivenDrawer::DispatchCulling(Renderer& a_renderer, 
     //    DrawRecord      : AS / MS / PSが定数バッファとして読む
     //    IndirectCommand : ExecuteIndirectが描画コマンドとして読む
     //    Counter         : ExecuteIndirectが実行するコマンド数として読む
-    TransitionBuffer(l_directCommandList, l_viewData.m_drawRecordBuffer,      D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
-    TransitionBuffer(l_directCommandList, l_viewData.m_indirectCommandBuffer, D3D12_RESOURCE_STATE_INDIRECT_ARGUMENT);
-    TransitionBuffer(l_directCommandList, l_viewData.m_counterBuffer,         D3D12_RESOURCE_STATE_INDIRECT_ARGUMENT);
+    Utility::TransitionDynamicRWStructuredBuffer(l_directCommandList, l_viewData.m_drawRecordBuffer,      D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
+    Utility::TransitionDynamicRWStructuredBuffer(l_directCommandList, l_viewData.m_indirectCommandBuffer, D3D12_RESOURCE_STATE_INDIRECT_ARGUMENT);
+    Utility::TransitionDynamicRWStructuredBuffer(l_directCommandList, l_viewData.m_counterBuffer,         D3D12_RESOURCE_STATE_INDIRECT_ARGUMENT);
 
     l_viewData.m_isCulled = true;
 
@@ -232,20 +248,6 @@ void FWK::Graphics::ModelGPUDrivenDrawer::ExecuteIndirect(const Renderer& a_rend
                                         static_cast<UINT>(k_maxDrawCountPerView),
                                         l_viewData.m_indirectCommandBuffer.GetREFBufferGPUResource().m_resource,
                                         l_viewData.m_counterBuffer.GetREFBufferGPUResource().m_resource);
-
-    // 計測用に、描画数と三角形数をCPUが読めるBufferへコピーしておく
-    // (GPUが実行し終わる数フレーム後に、同じフレームリソースを使うときに読む)
-    auto& l_frameData = m_frameDataList[m_currentFrameIndex];
-
-    TransitionBuffer(l_directCommandList, l_viewData.m_counterBuffer, D3D12_RESOURCE_STATE_COPY_SOURCE);
-
-    l_directCommandList.CopyBufferRegion(a_viewIndex * k_counterByteSize,
-                                         k_bufferStartOffset,
-                                         k_counterByteSize,
-                                         *l_frameData.m_counterReadbackBuffer.Get(),
-                                         *l_viewData.m_counterBuffer.GetREFBufferGPUResource().m_resource.Get());
-
-    l_frameData.m_writtenViewMask |= k_singleViewBit << a_viewIndex;
 
     // 同じフレームで2回描画しないように、使い終わったことを記録する
     l_viewData.m_isCulled = false;
@@ -311,8 +313,6 @@ bool FWK::Graphics::ModelGPUDrivenDrawer::Create(const Renderer& a_renderer)
         FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_morphWeightBuffer.Create<float>(l_device, Constant::k_modelGPUDrivenMaxMorphWeightCount, l_cbvSRVUAVDescriptorPool), "モーフのウェイト用Bufferの作成に失敗しました。", false);
 
         FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_cullingPassConstantBuffer.Create(l_device, k_maxCullingDispatchCountPerFrame * k_cullingPassConstantBufferStride), "カリング用定数バッファの作成に失敗しました。", false);
-
-        FWK_ASSERT_RETURN_VALUE_IF(!CreateCounterReadbackBuffer(l_device, l_frameData), "カウンター読み戻し用Bufferの作成に失敗しました。", false);
     }
 
     // カウンターを0に戻すためのコピー元を作成し、中身を0にしておく
@@ -322,7 +322,7 @@ bool FWK::Graphics::ModelGPUDrivenDrawer::Create(const Renderer& a_renderer)
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_zeroCounterMappedData, "カウンター初期化用BufferがMapされていません。", false);
 
-    std::memset(l_zeroCounterMappedData, 0, k_counterByteSize);
+    std::memset(l_zeroCounterMappedData, k_zeroFillByte, k_counterByteSize);
 
     m_isCreated = true;
 
@@ -362,70 +362,6 @@ bool FWK::Graphics::ModelGPUDrivenDrawer::CreateViewData(ViewData& a_viewData) c
     return true;
 }
 
-bool FWK::Graphics::ModelGPUDrivenDrawer::CreateCounterReadbackBuffer(const Device& a_device, FrameData& a_frameData) const
-{
-    const auto& l_device = a_device.GetREFDevice();
-
-    FWK_ASSERT_RETURN_VALUE_IF(!l_device, "デバイスが作成されておらず、カウンター読み戻し用Bufferの作成に失敗しました。", false);
-
-    // READBACKヒープは「GPUが書き込んだ結果をCPUが読む」ためのメモリ
-    // 作成時からCOPY_DEST(コピー先)状態にする決まりがある
-    const auto l_heapProperties = CD3DX12_HEAP_PROPERTIES     (D3D12_HEAP_TYPE_READBACK);
-    const auto l_resourceDesc   = CD3DX12_RESOURCE_DESC::Buffer(k_counterByteSize * k_maxViewCount);
-
-    const auto l_hr = l_device->CreateCommittedResource(&l_heapProperties,
-                                                        D3D12_HEAP_FLAG_NONE,
-                                                        &l_resourceDesc,
-                                                        D3D12_RESOURCE_STATE_COPY_DEST,
-                                                        nullptr,
-                                                        IID_PPV_ARGS(a_frameData.m_counterReadbackBuffer.ReleaseAndGetAddressOf()));
-
-    FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "カウンター読み戻し用Bufferの作成に失敗しました。", false);
-
-    return true;
-}
-
-void FWK::Graphics::ModelGPUDrivenDrawer::ReadbackCounter(FrameData& a_frameData)
-{
-    if (a_frameData.m_writtenViewMask == k_initialWrittenViewMask) { return; }
-
-    // CPUが読む範囲(全Viewのカウンター)
-    const D3D12_RANGE l_readRange =
-    {
-        k_bufferStartOffset,
-        k_maxViewCount * k_counterByteSize
-    };
-
-    void* l_mappedData = nullptr;
-
-    const auto l_hr = a_frameData.m_counterReadbackBuffer->Map(Constant::k_firstSubresourceIndex, &l_readRange, &l_mappedData);
-
-    FWK_ASSERT_RETURN_IF(FAILED(l_hr), "カウンター読み戻し用BufferのMapに失敗しました。");
-
-    const auto* const l_counterList = static_cast<const std::uint32_t*>(l_mappedData);
-
-    m_submittedTriangleCount = k_initialSubmittedTriangleCount;
-
-    // このフレームリソースで描画したViewのカウンターだけを合計する
-    for (std::size_t l_viewIndex = 0ULL; l_viewIndex < k_maxViewCount; ++l_viewIndex)
-    {
-        if ((a_frameData.m_writtenViewMask & (k_singleViewBit << l_viewIndex)) == k_initialWrittenViewMask) { continue; }
-
-        m_submittedTriangleCount += l_counterList[l_viewIndex * Constant::k_modelGPUDrivenCounterElementCount + k_triangleCountCounterIndex];
-    }
-
-    // CPUは読んだだけなので、書き込み範囲は空にしてUnmapする
-    const D3D12_RANGE l_writtenRange =
-    {
-        k_bufferStartOffset,
-        k_bufferStartOffset
-    };
-
-    a_frameData.m_counterReadbackBuffer->Unmap(Constant::k_firstSubresourceIndex, &l_writtenRange);
-
-    a_frameData.m_writtenViewMask = k_initialWrittenViewMask;
-}
-
 FWK::Struct::CBModelGPUDrivenCullingPass FWK::Graphics::ModelGPUDrivenDrawer::CreateCullingPass(const Struct::ModelGPUDrivenBatch&       a_modelBatch,
                                                                                                          const Struct::ModelGPUDrivenCullingView& a_cullingView,
                                                                                                          const ModelLODSelector&                  a_modelLODSelector,
@@ -452,6 +388,8 @@ FWK::Struct::CBModelGPUDrivenCullingPass FWK::Graphics::ModelGPUDrivenDrawer::Cr
         l_cullingPass.m_lodMaxScreenSpaceErrorPixel = k_shadowMaxErrorTexel;
         l_cullingPass.m_minProjectedSizeTexel       = k_shadowMinCasterSizeTexel;
     }
+
+    l_cullingPass.m_isCullingDebugVisualize = a_cullingView.m_isCullingDebugVisualize ? k_trueValue : Constant::k_initialGPUDrivenCullingPassUIntValue;
 
     l_cullingPass.m_maxDrawCount   = static_cast<std::uint32_t>(k_maxDrawCountPerView);
     l_cullingPass.m_instanceOffset = a_modelBatch.m_instanceOffset;
@@ -523,7 +461,7 @@ void FWK::Graphics::ModelGPUDrivenDrawer::WriteCullingPassAndDispatch(const Dire
     a_directCommandList.SetupComputeConstantBufferView(l_cullingPassBaseAddress + l_constantBufferOffset, a_rootSignature, Enum::RootParameterType::CBModelGPUDrivenCullingPass);
 
     // 1Groupあたり64Threadで、必要なThread数を切り上げでGroup数に変換する
-    const auto l_threadGroupCount = (a_threadCount + Constant::k_modelGPUDrivenCullingThreadCount - k_singleThreadGroupCount) / Constant::k_modelGPUDrivenCullingThreadCount;
+    const auto l_threadGroupCount = Utility::DivideRoundUp(a_threadCount, Constant::k_modelGPUDrivenCullingThreadCount);
 
     if (l_threadGroupCount != k_initialThreadGroupCount)
     {
@@ -531,15 +469,4 @@ void FWK::Graphics::ModelGPUDrivenDrawer::WriteCullingPassAndDispatch(const Dire
     }
 
     ++m_cullingDispatchCount;
-}
-
-void FWK::Graphics::ModelGPUDrivenDrawer::TransitionBuffer(const DirectCommandList& a_directCommandList, DynamicRWStructuredBuffer& a_buffer, const D3D12_RESOURCE_STATES a_afterState) const
-{
-    const auto l_beforeState = a_buffer.GetVALCurrentResourceState();
-
-    if (l_beforeState == a_afterState) { return; }
-
-    a_directCommandList.TransitionResourceBarrier(a_buffer.GetREFBufferGPUResource().m_resource, l_beforeState, a_afterState);
-
-    a_buffer.SetCurrentResourceState(a_afterState);
 }

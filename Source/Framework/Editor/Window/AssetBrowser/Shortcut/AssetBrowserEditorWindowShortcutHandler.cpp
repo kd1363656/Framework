@@ -319,19 +319,19 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleRename(const st
     // 初回フォーカス制御用フラグをリセット
     a_renameState.m_isFocused = false;
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCopy(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCopy(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, EditorWindowClipboard<std::filesystem::path>& a_clipboard) const
 {
     // FileOperation::Copyで選択中のファイルをクリップボードへコピー
     // コピー元ファイルは削除されない
     a_fileOperation.Copy(a_selectedFilePathList, a_clipboard);
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCut(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCut(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, EditorWindowClipboard<std::filesystem::path>& a_clipboard) const
 {
     // FileOperation::Cutで選択中のファイルをクリップボードへ切り取り
     // 貼り付け時に元ファイルが削除される
     a_fileOperation.Cut(a_selectedFilePathList, a_clipboard);
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandlePaste(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandlePaste(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, EditorWindowClipboard<std::filesystem::path>& a_clipboard) const
 {
     // FileOperation::Pasteでクリップボードのファイルを現在フォルダへ張り付け
     // Cutの場合は元ファイルを削除、Copyの場合は複製

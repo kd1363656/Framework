@@ -400,6 +400,24 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
         m_popupDrawer.BeginPopup(k_sceneContextMenuLabel);
     }
 
+    // リネーム中でなければシーンノードをドラッグ元として登録する
+    // アセットブラウザーのフォルダへドロップすると、そのフォルダへ現在のシーンを保存する
+    // 直前のアイテム(TreeNodeEx)を対象にするため、ポップアップなど別アイテムを挟む前に呼ぶ
+    if (!l_isRenaming)
+    {
+        auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+
+        // ラムダ式はDrag開始Frameに一度だけ実行される
+        // Scene&からはweak_ptrを作れないため、Sceneを所有しているSceneManagerから受け取る
+        l_imguiDragDropPayloadStorage.DragDropSource(Constant::k_sceneDragDropPayloadLabel,
+                                                     []
+                                                     {
+                                                         const auto& l_sceneManager = SceneManager::GetInstance();
+
+                                                         return l_sceneManager.GetVALScene();
+                                                     });
+    }
+
     // ポップアップ描画
     // OpenPopupと同じIDスタックスコープで呼ぶ必要があるためここで行う
     m_popupDrawer.DrawScenePopup(k_sceneContextMenuLabel, 
@@ -409,11 +427,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
 
     // アセットブラウザーからのPrefabファイルのドロップ先
     // SceneノードへドロップされたPrefabはルートGameObjectとして生成する
-
+    // シーンファイルがドロップされた場合はそのシーンを読み込み、Prefabの生成は行わない
     std::vector<std::filesystem::path> l_droppedFilePathList = {};
  
     if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-        l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList))
+        l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList) &&
+        !m_sceneOperation.RequestLoadSceneFromDrop(l_droppedFilePathList))
     {
         // Prefabとして登録されているファイルのみ生成対象になる
         auto l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
@@ -896,6 +915,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
 
     if (!l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList)) { return; }
 
+    // シーンファイルがドロップされた場合はそのシーンを読み込み、Prefabの生成は行わない
+    if (m_sceneOperation.RequestLoadSceneFromDrop(l_droppedFilePathList)) { return; }
+
     auto l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, a_targetGameObject, a_scene);
 
     if (l_createdList.empty()) { return; }
@@ -957,6 +979,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
         return;
     }
 
+    // シーンファイルがドロップされた場合はそのシーンを読み込み、Prefabの生成は行わない
+    if (m_sceneOperation.RequestLoadSceneFromDrop(l_droppedFilePathList)) { return; }
+
     // Prefabとして登録されているファイルのみ生成対象になる
     auto l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
  
@@ -981,61 +1006,21 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
 
 void FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const
 {
-    // 現在の選択状態をUUIDリストとして取得する
-    const auto& l_selectedList = a_gameObjectSelectionState.GetREFSelectedGameObjectList();
-    const auto& l_anchor       = a_gameObjectSelectionState.GetREFRangeSelectionAnchor  ().lock();
-
-    a_outUUIDList.clear  ();
-    a_outUUIDList.reserve(l_selectedList.size());
-
-    for (const auto& l_selectedWeak : l_selectedList)
-    {
-        const auto& l_selectedGameObject = l_selectedWeak.lock();
-
-        if (!l_selectedGameObject) { continue; }
-
-        a_outUUIDList.emplace_back(l_selectedGameObject->GetREFSceneInstanceUUID());
-    }
-
-    a_outAnchorUUID = {};
-
-    if (l_anchor)
-    {
-        a_outAnchorUUID = l_anchor->GetREFSceneInstanceUUID();
-    }
+    // 現在の選択状態をUUIDリストとして取得する(Viewportでの選択と共通の処理)
+    Utility::FetchEditorGameObjectSelectionSnapshot(a_gameObjectSelectionState, a_outUUIDList, a_outAnchorUUID);
 }
 
-void FWK::Editor::WorldOutlinerEditorWindow::PushSelectionChangeCommand(const bool                              a_beforeIsSceneSelected, 
-                                                                              std::vector<boost::uuids::uuid>&& a_beforeUUIDList, 
-                                                                              EditorGameObjectSelectionState&   a_gameObjectSelectionState, 
+void FWK::Editor::WorldOutlinerEditorWindow::PushSelectionChangeCommand(const bool                              a_beforeIsSceneSelected,
+                                                                              std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
+                                                                              EditorGameObjectSelectionState&   a_gameObjectSelectionState,
                                                                               boost::uuids::uuid&&              a_beforeAnchorUUID) const
 {
-    // 変更後の選択状態をUUIDリストとして取得する
-    std::vector<boost::uuids::uuid> l_afterUUIDList   = {};
-    boost::uuids::uuid              l_afterAnchorUUID = {};
-
-    FetchVALSelectionSnapshot(a_gameObjectSelectionState, l_afterUUIDList, l_afterAnchorUUID);
-
-    const bool l_afterIsSceneSelected = m_sceneSelectionState.GetVALIsSceneSelected();
-
-    // 変更前後で選択状態が同じならコマンドをPushしない
-    if (l_afterIsSceneSelected == a_beforeIsSceneSelected &&
-        l_afterUUIDList        == a_beforeUUIDList        &&
-        l_afterAnchorUUID      == a_beforeAnchorUUID)
-    {
-        return;
-    }
-
-    // EditorManager経由でUndoRedoSystemへコマンドをPushする
-    auto& l_editorManager  = EditorManager::GetInstance                 ();
-    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
-
-    l_undoRedoSystem.PushUndoCommand<ChangeSelectionCommand>(a_beforeIsSceneSelected,
-                                                             l_afterIsSceneSelected,
-                                                             std::move(a_beforeUUIDList),
-                                                             std::move(l_afterUUIDList),
-                                                             a_beforeAnchorUUID,
-                                                             l_afterAnchorUUID);
+    // 変更前後を比べて、変わっていればコマンドをPushする(Viewportでの選択と共通の処理)
+    Utility::PushEditorGameObjectSelectionChangeCommand(a_beforeIsSceneSelected,
+                                                        m_sceneSelectionState.GetVALIsSceneSelected(),
+                                                        std::move(a_beforeUUIDList),
+                                                        std::move(a_beforeAnchorUUID),
+                                                        a_gameObjectSelectionState);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::SelectScene(EditorGameObjectSelectionState& a_gameObjectSelectionState, const bool a_isToggleSelection)

@@ -21,6 +21,11 @@ namespace FWK::Enum
         HierarchicalDepthBuild,
         SkeletalAnimationModelGPUSkinnedLit,
         SkeletalAnimationModelGPUSkinnedCascadeShadow,
+        GPUParticleInitialize,
+        GPUParticleEmit,
+        GPUParticleIndirectArgumentsBuild,
+        GPUParticleSimulate,
+        GPUParticleBillboard,
         Count,
     };
 
@@ -44,6 +49,11 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(PipelineStateType::HierarchicalDepthBuild),
         FWK_JSON_ENUM_VALUE(PipelineStateType::SkeletalAnimationModelGPUSkinnedLit),
         FWK_JSON_ENUM_VALUE(PipelineStateType::SkeletalAnimationModelGPUSkinnedCascadeShadow),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::GPUParticleInitialize),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::GPUParticleEmit),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::GPUParticleIndirectArgumentsBuild),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::GPUParticleSimulate),
+        FWK_JSON_ENUM_VALUE(PipelineStateType::GPUParticleBillboard),
         FWK_JSON_ENUM_VALUE(PipelineStateType::Count)
     )
 }

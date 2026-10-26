@@ -72,6 +72,14 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
 
     l_skeletalAnimationModelRecord->SetMorphSetting(std::move(l_morphSetting));
 
+    // エディターで編集する揺れものの設定(.spring)を読み込む
+    // (無い場合は空のまま = 揺らさない。モーフと違い、どのボーンを揺らすかは自動で決められないため自動では作らない)
+    SkeletalAnimationModelSpringBoneSetting l_springBoneSetting = {};
+
+    l_springBoneSetting.LoadBinaryData(a_filePath);
+
+    l_skeletalAnimationModelRecord->SetSpringBoneSetting(std::move(l_springBoneSetting));
+
     // モーフのチャンネル(同じ名前のターゲットをモデル全体で1つにまとめた物)を決める
     // バイナリーファイルには保存しないため、FBXから作った場合もバイナリーファイルから読んだ場合も、GPUへ送る前にここで作る
     m_morphBuilder.BuildModelRecordMorphChannel(*l_skeletalAnimationModelRecord);

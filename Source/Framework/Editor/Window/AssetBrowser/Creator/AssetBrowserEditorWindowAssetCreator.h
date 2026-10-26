@@ -17,16 +17,18 @@ namespace FWK::Editor
                                                                                                         const std::filesystem::path&     a_parentFolderPath,
                                                                                                               Scene&                     a_scene,
                                                                                                               AssetFilePathRegistry&     a_assetFilePathRegistry) const;
- 
+
+        Struct::AssetBrowserEditorWindowAssetCreationResult CreateSceneFromSceneDrop(const std::weak_ptr<Scene>& a_droppedScene, const std::filesystem::path& a_parentFolderPath, AssetFilePathRegistry& a_assetFilePathRegistry) const;
 
         void RenamePrefab(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const;
         void RenameScene (const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const;
 
     private:
 
-        static std::filesystem::path ResolveDefaultFilePath(const std::filesystem::path&     a_parentFolderPath, const std::filesystem::path& a_extension, const std::string_view& a_defaultName);
+        static std::filesystem::path ResolveDefaultFilePath(const std::filesystem::path& a_parentFolderPath, const std::filesystem::path& a_extension, const std::string_view& a_defaultName);
 
         static std::string FetchVALPrefabFileName(const std::weak_ptr<GameObject>& a_gameObject);
+        static std::string FetchVALValidFileName (const std::string&               a_name, const std::string_view& a_defaultName);
 
         Struct::AssetBrowserEditorWindowAssetCreationResult CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, 
                                                                                        const std::filesystem::path&     a_parentFolderPath,

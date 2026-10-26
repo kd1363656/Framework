@@ -11,7 +11,7 @@ namespace FWK::Physics
 
         bool CreateBody(const Graphics::StaticModelRecord::ModelData& a_modelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix);
 
-        bool ApplyWorldTransform(TypeAlias::Math::Matrix& a_worldMatrix) override;
+        bool ApplyWorldTransform(TypeAlias::Math::Matrix& a_worldMatrix);
 
     private:
 

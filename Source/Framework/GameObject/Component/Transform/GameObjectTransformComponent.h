@@ -3,29 +3,30 @@
 namespace FWK
 {
     class GameObjectTransformComponentMatrixUpdateModeBase;
-    class GameObject;
 }
 
 namespace FWK
 {
-    class GameObjectTransformComponent final
+    // 全てのGameObjectが必ず1つ持ち、コンポーネント一覧の先頭に固定されるコンポーネント
+    // (削除・並べ替え不可。先頭固定かどうかはGameObjectComponentContainerがTypeINFOで判定する)
+    class GameObjectTransformComponent final : public GameObjectComponentBase
     {
     public:
 
-         GameObjectTransformComponent() = default;
-        ~GameObjectTransformComponent() = default;
+         GameObjectTransformComponent()          = default;
+        ~GameObjectTransformComponent() override = default;
  
-        void Deserialize(const nlohmann::json& a_rootJson);
+        void Deserialize(const nlohmann::json& a_rootJson) override;
 
-        void PostDeserialize();
+        void PostDeserialize() override;
 
-        void PostLateUpdate();
+        void PostLateUpdate() override;
 
-        void EditInspector();
+        void EditInspector() override;
 
-        nlohmann::json Serialize() const;
+        nlohmann::json Serialize() const override;
 
-        std::shared_ptr<GameObjectTransformComponent> Clone() const;
+        std::shared_ptr<GameObjectComponentBase> Clone() const override;
 
         TypeAlias::Math::Matrix CalculateScaleMatrix      () const { return TypeAlias::Math::Matrix::CreateScale         (m_transform.m_scale); }
         TypeAlias::Math::Matrix CalculateRotationMatrix   () const { return TypeAlias::Math::Matrix::CreateFromQuaternion(m_transform.m_rotation); }
@@ -38,15 +39,11 @@ namespace FWK
         void ApplyTransformRotation(const TypeAlias::Math::Quaternion& a_rotation);
         void ApplyTransformPosition(const TypeAlias::Math::Vector3&    a_position);
 
-        void SetOwner(const std::weak_ptr<GameObject>& a_set) { m_owner = a_set; }
-
         void SetMatrix(TypeAlias::Math::Matrix&& a_set) { m_matrix = std::move(a_set); }
 
         void SetShouldUpdateMatrixDirty(const bool a_set) { m_shouldUpdateMatrixDirty = a_set; }
 
         const auto& GetREFMatrixUpdateMode() const { return m_matrixUpdateMode; }
-
-        const auto& GetREFOwner() const { return m_owner; }
 
         const auto& GetREFMatrix() const { return m_matrix; }
 
@@ -69,8 +66,6 @@ namespace FWK
 
         std::unique_ptr<GameObjectTransformComponentMatrixUpdateModeBase> m_matrixUpdateMode = nullptr;
 
-        std::weak_ptr<GameObject> m_owner = {};
-
         GameObjectTransformComponentInspector m_inspector = {};
 
         Converter::GameObjectTransformComponentJsonConverter m_jsonConverter = {};
@@ -81,6 +76,10 @@ namespace FWK
 
         bool m_shouldUpdateMatrixDirty = false;
 
-        FWK_DEFINE_TYPE_INFO_SINGLE(GameObjectTransformComponent)
+        FWK_DEFINE_TYPE_INFO(GameObjectTransformComponent, GameObjectComponentBase)
     };
 }
+
+// シーン読み込み時にComponentTypeの名前から生成できるようファクトリーへ登録する
+// Add Componentメニューから手動で追加させないため、TypeINFOのタグには登録しない
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::GameObjectComponentSharedFactory, FWK::GameObjectTransformComponent)

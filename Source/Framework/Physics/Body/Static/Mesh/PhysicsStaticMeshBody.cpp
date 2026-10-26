@@ -92,7 +92,7 @@ bool FWK::Physics::PhysicsStaticMeshBody::ApplyWorldTransform(TypeAlias::Math::M
     }
 
     // PositionとRotationはScaleとは独立してBodyへ反映する
-    return ApplyStaticBodyWorldTransform(l_worldRotation, l_worldPosition);
+    return PhysicsStaticBodyBase::ApplyWorldTransform(l_worldRotation, l_worldPosition);
 }
 
 JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const Graphics::StaticModelRecord::ModelData& a_modelData) const

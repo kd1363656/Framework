@@ -63,6 +63,10 @@ namespace FWK::Graphics
                              const TypeAlias::ComPtr<ID3D12Resource2>&        a_argumentBuffer,
                              const TypeAlias::ComPtr<ID3D12Resource2>&        a_countBuffer) const;
 
+        // GPU上のBufferに書かれた命令1件(DispatchやDispatchMeshの引数)を実行する
+        // 実行する数は常に1件なので、CountBufferは使わない(GPUパーティクルのように「引数の中身」だけをGPUが決める場合に使う)
+        void ExecuteIndirectSingleCommand(const TypeAlias::ComPtr<ID3D12CommandSignature>& a_commandSignature, const TypeAlias::ComPtr<ID3D12Resource2>& a_argumentBuffer, const UINT64& a_argumentBufferOffset) const;
+
     protected:
 
         void SetupRootSignature(ID3D12GraphicsCommandList6& a_commandList, ID3D12RootSignature& a_rootSignature) override;
@@ -71,6 +75,8 @@ namespace FWK::Graphics
 
         static constexpr UINT64 k_indirectArgumentBufferOffset = 0ULL;
         static constexpr UINT64 k_indirectCountBufferOffset    = 0ULL;
+
+        static constexpr UINT k_singleIndirectCommandCount = 1U;
 
         static constexpr UINT k_emptySetupRenderTargetNUM  = 0U;
         static constexpr UINT k_singleSetupRenderTargetNUM = 1U;

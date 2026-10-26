@@ -51,7 +51,8 @@ namespace FWK::Graphics
 
         // .materialファイルへの保存
         // ファイルの先頭には自身の型名を保存する
-        bool SaveBinaryData(const std::filesystem::path& a_filePath) const;
+        // BinaryConverterが書き込み中のファイルを持つため、constにしない
+        bool SaveBinaryData(const std::filesystem::path& a_filePath);
 
         virtual nlohmann::json Serialize() const;
 
@@ -113,7 +114,8 @@ namespace FWK::Graphics
 
         MaterialBaseEditInspector m_editInspector = {};
 
-        Converter::MaterialBaseJsonConverter m_jsonConverter = {};
+        Converter::MaterialBaseBinaryConverter m_materialBaseBinaryConverter = {};
+        Converter::MaterialBaseJsonConverter   m_jsonConverter               = {};
 
         bool m_isGPUDataDirty = false;
 

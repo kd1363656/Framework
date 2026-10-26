@@ -149,7 +149,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::MoveGameObjectSi
     a_scene.RebuildGameObjectExecutionLevelList();
 }
 
-void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CopySelectedGameObjects(const EditorGameObjectSelectionState& a_gameObjectSelectionState, TypeAlias::WorldOutlinerEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CopySelectedGameObjects(const EditorGameObjectSelectionState& a_gameObjectSelectionState, EditorWindowClipboard<boost::uuids::uuid>& a_clipboard) const
 {
     // 選択中のGameObjectのSceneInstanceUUIDを集める
     const auto& l_selectedList = a_gameObjectSelectionState.GetREFSelectedGameObjectList();
@@ -181,7 +181,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CopySelectedGame
     // ClipboardへCopy種別で格納
     a_clipboard.Apply(l_uuidList, Enum::EditorWindowClipboardOperationType::Copy);
 }
-void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CutSelectedGameObjects(TypeAlias::WorldOutlinerEditorWindowClipboard& a_clipboard, EditorGameObjectSelectionState& a_gameObjectSelectionState) const
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CutSelectedGameObjects(EditorWindowClipboard<boost::uuids::uuid>& a_clipboard, EditorGameObjectSelectionState& a_gameObjectSelectionState) const
 {
     // 選択中のGameObjectのSceneInstanceUUIDを集める
     const auto& l_selectedList = a_gameObjectSelectionState.GetREFSelectedGameObjectList();
@@ -267,7 +267,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DuplicateSelecte
         a_gameObjectSelectionState.AddSelectedGameObject(l_duplicated);
     }
 }
-void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects(TypeAlias::WorldOutlinerEditorWindowClipboard& a_clipboard, EditorGameObjectSelectionState& a_gameObjectSelectionState, Scene& a_scene) const
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects(EditorWindowClipboard<boost::uuids::uuid>& a_clipboard, EditorGameObjectSelectionState& a_gameObjectSelectionState, Scene& a_scene) const
 {
      // クリップボードにゲームオブジェクトのUUIDがコピーされていなければreturn
     if (a_clipboard.IsEmpty()) { return; }

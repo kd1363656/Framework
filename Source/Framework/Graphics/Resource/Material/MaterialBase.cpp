@@ -2,10 +2,7 @@
 
 bool FWK::Graphics::MaterialBase::LoadBinaryData(const std::filesystem::path& a_filePath)
 {
-    // BinaryConverterは読み込み中のファイルを持つため、読み込みごとに作る
-    Converter::MaterialBaseBinaryConverter l_materialBaseBinaryConverter = {};
-
-    return l_materialBaseBinaryConverter.Load(*this, a_filePath);
+    return m_materialBaseBinaryConverter.Load(*this, a_filePath);
 }
 
 bool FWK::Graphics::MaterialBase::Deserialize(const nlohmann::json& a_rootJson)
@@ -23,12 +20,9 @@ bool FWK::Graphics::MaterialBase::ReserveRelease(const UINT64& a_retiredFenceVal
     return m_gpuDataBuffer.ReserveRelease(a_retiredFenceValue, a_resourceReleaseContext);
 }
 
-bool FWK::Graphics::MaterialBase::SaveBinaryData(const std::filesystem::path& a_filePath) const
+bool FWK::Graphics::MaterialBase::SaveBinaryData(const std::filesystem::path& a_filePath)
 {
-    // BinaryConverterは書き込み中のファイルを持つため、保存ごとに作る
-    Converter::MaterialBaseBinaryConverter l_materialBaseBinaryConverter = {};
-
-    return l_materialBaseBinaryConverter.Save(*this, a_filePath);
+    return m_materialBaseBinaryConverter.Save(*this, a_filePath);
 }
 
 nlohmann::json FWK::Graphics::MaterialBase::Serialize() const

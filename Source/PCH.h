@@ -28,6 +28,7 @@
 #include <filesystem>
 #include <fstream>
 #include <thread>
+#include <future>
 #include <queue>
 #include <unordered_set>
 #include <format>
@@ -161,6 +162,7 @@
 #include <imgui_impl_dx12.h>
 #include <imgui_stdlib.h>
 #include <imgui_node_editor.h>
+#include <ImGuizmo.h>
 
 //================================================
 // フレームワーク

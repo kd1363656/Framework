@@ -1,6 +1,7 @@
 ﻿#ifndef MODEL_HLSLI
 #define MODEL_HLSLI
 #include "ModelMeshlet.hlsli"
+#include "ModelCullingDebug.hlsli"
 
 static const float k_modelPositionElementW  = 1.0F;
 static const float k_modelDirectionElementW = 0.0F;
@@ -20,6 +21,9 @@ static const uint k_modelMaxLODCoveredLayerCount = 2U;
 
 // C++側のDescriptorHeap::k_invalidDescriptorIndexと同じ値(無効なDescriptorの番号)
 static const uint k_modelInvalidDescriptorIndex = 0xFFFFFFFFU;
+
+// cbufferのuint型のフラグ(bool)の偽の値
+static const uint k_modelFalseValue = 0U;
 
 static const float k_modelEmptyLODCoveredLayerDepthOffset = 0.0F;
 
@@ -84,10 +88,11 @@ cbuffer CBModelPerObject : register(b1)
     // g_skinningMatrixBufferSRVDescriptorIndex : 事前計算したスキニング行列のBuffer
     // g_skinningMatrixOffset                   : このMesh、このコマのスキニング行列が始まる番号
     // g_isGPUSkinning                          : 1ならスキニングする(Meshlet単位のカリングは、動いた形と合わないため行わない)
+    // g_cullingDebugState                      : カリングの可視化用。このMeshがMesh単位のカリングでどう判定されたか(k_modelCullingDebugState～。0なら見えている)
     uint g_skinningMatrixBufferSRVDescriptorIndex;
     uint g_skinningMatrixOffset;
     uint g_isGPUSkinning;
-    uint g_skinningPadding;
+    uint g_cullingDebugState;
 
     // メッシュシェーダーの中でモーフする場合に使う値(モーフを持たないMeshではg_morphDeltaBufferSRVDescriptorIndexが無効)
     // g_morphWeightBufferSRVDescriptorIndex : ウェイトのBuffer(ベイクした物か、インスタンスごとに上書きする物)

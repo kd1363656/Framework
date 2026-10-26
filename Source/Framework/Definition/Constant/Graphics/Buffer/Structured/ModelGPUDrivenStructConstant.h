@@ -21,6 +21,8 @@ namespace FWK::Constant
 
     inline constexpr std::size_t k_initialGPUDrivenFrameTableTotalPairCount = 0ULL;
 
+    inline constexpr std::uint64_t k_initialGPUDrivenFrameTableVersion = 0ULL;
+
     inline constexpr std::size_t k_modelGPUDrivenDrawRecordByteSize = D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT;
 
     inline constexpr std::size_t k_modelGPUDrivenIndirectCommandByteSize = 24ULL;
@@ -28,7 +30,7 @@ namespace FWK::Constant
     inline constexpr std::uint32_t k_initialGPUDrivenIndirectCommandPadding = 0U;
 
     // HLSL側の定数バッファのサイズ
-    inline constexpr std::size_t k_cbModelGPUDrivenCullingPassByteSize = 288ULL;
+    inline constexpr std::size_t k_cbModelGPUDrivenCullingPassByteSize = 304ULL;
 
     inline constexpr std::size_t k_maxGPUDrivenFrustumPlaneCount = 6ULL;
 

@@ -39,6 +39,19 @@ void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceCon
 }
 void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer)
 {
+    ExecutePassList(a_resourceContext, a_renderer, false);
+}
+void FWK::Graphics::RenderGraph::ExecuteAdditionalView(const ResourceContext& a_resourceContext, Renderer& a_renderer)
+{
+    ExecutePassList(a_resourceContext, a_renderer, true);
+}
+void FWK::Graphics::RenderGraph::ClearCurrentFramePassTextureList(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const
+{
+    m_resourceClearer.ClearCurrentFramePassTextureList(a_resourceContext, a_renderer);
+}
+
+void FWK::Graphics::RenderGraph::ExecutePassList(const ResourceContext& a_resourceContext, Renderer& a_renderer, const bool a_isAdditionalView)
+{
     const auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetREFCBVSRVUAVDescriptorPool();
     const auto& l_directCommandList       = a_renderer.GetREFDirectCommandList             ();
     const auto& l_computeCommandList      = a_renderer.GetREFComputeCommandList            ();
@@ -52,14 +65,16 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
     // ComputeCommandListへも設定する
     l_computeCommandList.SetupDescriptorHeap(l_cbvSRVUAVDescriptorPool);
 
-    auto& l_frameProfiler = a_renderer.GetMutableREFFrameProfiler();
-
     for (const auto& l_pass : m_passList)
     {
         if (!l_pass) { continue; }
 
-        // Passごとに、GPUが何ミリ秒かかったかを計測する(区間名はPassのクラス名)
-        l_frameProfiler.BeginGPUScope(l_directCommandList, l_pass->GetREFRuntimeTypeINFO().k_name);
+        // 追加の描画では、メインの描画で済ませるPass(影、アニメーションなど)を実行しない
+        if (a_isAdditionalView &&
+            IsAdditionalViewSkipLayer(l_pass->GetVALExecutionLayer()))
+        {
+            continue;
+        }
 
         // Pass実行前に、ResourceAccessのbeforeUsageへ遷移する
         m_resourceTransitioner.TransitionPassResourceBefore(*l_pass, a_renderer);
@@ -71,8 +86,6 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
 
         // Pass実行後に、ResourceAccessのafterUsageへ遷移する
         m_resourceTransitioner.TransitionPassResourceAfter(*l_pass, a_renderer);
-
-        l_frameProfiler.EndGPUScope(l_directCommandList);
     }
 }
 void FWK::Graphics::RenderGraph::EndFrame(Renderer& a_renderer) const
@@ -165,6 +178,11 @@ void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resour
 
     // 描画先に設定したBackBufferを指定色でClearする。
     l_directCommandList.ClearRenderTarget(l_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);
+}
+
+bool FWK::Graphics::RenderGraph::IsAdditionalViewSkipLayer(const Enum::RenderGraphPassExecutionLayer a_executionLayer) const
+{
+    return std::ranges::find(k_additionalViewSkipLayerList, a_executionLayer) != k_additionalViewSkipLayerList.end();
 }
 
 void FWK::Graphics::RenderGraph::RemoveExpiredPassList()

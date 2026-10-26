@@ -982,6 +982,24 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardDragDrop(const st
                 NavigateToFolder(a_filePath, a_editorWindow);
             }
         }
+
+        // アウトライナーからのシーンノードのドロップを受け付ける
+        // 現在のシーンをこのフォルダ内へシーンファイルとして保存する(「名前を付けて保存」と同じ扱い)
+        std::weak_ptr<Scene> l_droppedScene = {};
+
+        if (l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_sceneDragDropPayloadLabel, l_droppedScene))
+        {
+                  auto& l_application           = Application::GetInstance                        ();
+                  auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
+            const auto& l_assetCreator          = a_editorWindow.GetREFAssetCreator               ();
+
+            // 保存できたなら保存先フォルダを現在参照中フォルダにして、作成されたシーンファイルを見えるようにする
+            if (const auto& l_result = l_assetCreator.CreateSceneFromSceneDrop(l_droppedScene, a_filePath, l_assetFilePathRegistry);
+                l_result.m_isSuccess)
+            {
+                NavigateToFolder(a_filePath, a_editorWindow);
+            }
+        }
     }
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandlePaneBackgroundDragDrop(const AssetBrowserEditorWindow& a_editorWindow) const
@@ -1010,6 +1028,22 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandlePaneBackgroundDragDro
         // 現在参照中フォルダへ移動するだけなので
         // SelectSingleFolder/SetCurrentSelectFolderPathは呼ばない
         l_fileOperation.Move(l_droppedFilePathList, l_destinationFolderPath);
+    }
+
+    // アウトライナーからのシーンノードのドロップを受け付ける
+    // 現在のシーンを現在参照中フォルダへシーンファイルとして保存する(「名前を付けて保存」と同じ扱い)
+    // GameObjectのドロップ判定より先に行う(GameObjectが届かなかった場合に下でreturnしているため)
+    if (std::weak_ptr<Scene> l_droppedScene = {};
+        l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
+                                                           ImGui::GetID(k_paneSceneDropTargetLabel.data()),
+                                                           Constant::k_sceneDragDropPayloadLabel,
+                                                           l_droppedScene))
+    {
+              auto& l_application           = Application::GetInstance                        ();
+              auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
+        const auto& l_assetCreator          = a_editorWindow.GetREFAssetCreator               ();
+
+        l_assetCreator.CreateSceneFromSceneDrop(l_droppedScene, l_destinationFolderPath, l_assetFilePathRegistry);
     }
 
     // アウトライナーからのGameObjectドロップを受け付ける

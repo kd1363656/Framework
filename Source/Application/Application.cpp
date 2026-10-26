@@ -75,22 +75,11 @@ void Application::Execute()
     // while分に入る前にもう一度計測時間をリセットしておく
     m_fpsController.PostLoadCONFIG();
 
-    // CPU、GPUの処理時間を計測するクラス
-    auto& l_renderer      = l_graphicsManager.GetMutableREFRenderer();
-    auto& l_frameProfiler = l_renderer.GetMutableREFFrameProfiler  ();
-
     while (true)
     {
-        // FPS調整のためのSleepを除いた、1フレームの処理全体の時間を計測する
-        l_frameProfiler.BeginCPUScope(k_frameTotalCPUScopeName);
-
         // ウィンドウメッセージやアプリケーションを終了するかの処理をしているので
         // falseが戻り値ならbreakする
-        if (!BeginFrame())
-        {
-            l_frameProfiler.EndCPUScope();
-            break;
-        }
+        if (!BeginFrame()) { break; }
 
         // AudioEngineや内部のVoice管理やAudioDevice状態の更新は、
         // Sceneや描画を停止している場合でも行う
@@ -108,8 +97,7 @@ void Application::Execute()
             // リサイズ要求フラグをクリア(サイズ変更時に一回だけ検知してほしいため)
             ClearWindowResizeRequest();
 
-            l_frameProfiler.EndCPUScope();
-            m_fpsController.EndFrame   ();
+            m_fpsController.EndFrame();
 
             continue;
         }
@@ -118,15 +106,10 @@ void Application::Execute()
         l_physicsManager.ClearFrame();
 
         // 更新
-        // シーン(GameObject)の更新にかかる時間を計測する
-        l_frameProfiler.BeginCPUScope(k_sceneUpdateCPUScopeName);
-
         l_sceneManager.EarlyUpdate   ();
         l_sceneManager.Update        ();
         l_sceneManager.LateUpdate    ();
         l_sceneManager.PostLateUpdate();
-
-        l_frameProfiler.EndCPUScope();
 
         // ロードが完了したということは前回のシーンのコマンド履歴も消すべきなので消す
         if (l_sceneManager.LoadNextSceneIfNeeded())
@@ -141,10 +124,6 @@ void Application::Execute()
         l_physicsManager.CollectPhysicsDebugDrawCommands();
 
         // 描画処理
-        // 描画命令の記録(CommandListへ命令を積む処理)にかかる時間を計測する
-        // GPU完了待ちとPresentの待ち時間はRendererの中で別に計測している
-        l_frameProfiler.BeginCPUScope(k_graphicsRecordCPUScopeName);
-
         l_graphicsManager.BeginFrame();
         l_graphicsManager.Execute   ();
 
@@ -154,15 +133,8 @@ void Application::Execute()
 
         l_graphicsManager.EndFrame();
 
-        // 描画命令の記録区間と、1フレーム全体の区間を閉じる
-        l_frameProfiler.EndCPUScope();
-        l_frameProfiler.EndCPUScope();
-
         EndFrame();
     }
-
-    // 計測したCPU、GPUの処理時間をレポートファイルへ書き出す
-    l_frameProfiler.WriteReport();
 
     // もしゲームデータがセーブされていなくても変更が適用されるべき項目を自動セーブする
     SaveCONFIG                  ();

@@ -73,7 +73,7 @@ namespace FWK::Editor
         AssetBrowserEditorWindowAssetCreator       m_assetCreator       = {};
         AssetBrowserEditorWindowDeleteConfirmPopup m_deleteConfirmPopup = {};
 
-        TypeAlias::AssetBrowserEditorWindowClipboard m_clipboard = {};
+        EditorWindowClipboard<std::filesystem::path> m_clipboard = {};
 
         std::filesystem::path m_currentSelectFolderPath = {};
 

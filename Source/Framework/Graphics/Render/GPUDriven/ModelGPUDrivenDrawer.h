@@ -14,7 +14,7 @@ namespace FWK::Graphics
     //        → CPUの処理量がモデル数にほとんど影響されなくなる
     //
     // 表(インスタンス、Mesh、LOD)の作り方はモデルの種類ごとに異なるため、
-    // 表の作成は各描画申請クラス(TableBuilder)が行い、このクラスはそれを受け取ってGPUへ送る
+    // 表は各描画申請クラスのTableBuilderが持ち続け、このクラスは変わった表だけをGPUへ送る
     //
     // 「見る範囲(View)」はカメラ1つ、又は影のカスケード1枚ごとに用意し、Viewごとに別々のBufferへ書き込む
     class ModelGPUDrivenDrawer final
@@ -33,11 +33,13 @@ namespace FWK::Graphics
             // カリング用ComputeShaderへ渡す定数バッファ(Dispatch1回につき256byteずつ使う)
             UploadBuffer m_cullingPassConstantBuffer = {};
 
-            TypeAlias::ComPtr<ID3D12Resource2> m_counterReadbackBuffer = nullptr;
-
             // どのViewのカウンターを書き込んだか(1ビットが1つのViewを表す)
             // 描画しなかったViewの古い値を読まないようにするため
-            std::uint32_t m_writtenViewMask = k_initialWrittenViewMask;
+            // 最後に書き込んだ表の番号(ModelGPUDrivenFrameTableのVersionと比べ、変わった表だけを書き込む)
+            std::uint64_t m_uploadedMeshTableVersion        = k_notUploadedTableVersion;
+            std::uint64_t m_uploadedInstanceTableVersion    = k_notUploadedTableVersion;
+            std::uint64_t m_uploadedMorphWeightTableVersion = k_notUploadedTableVersion;
+
         };
 
         // View(カメラ又は影のカスケード)1つ分のGPU上のBuffer
@@ -60,7 +62,7 @@ namespace FWK::Graphics
 
         void BeginFrame();
 
-        // 描画申請から作った表(インスタンス、Mesh、LOD)を、このフレームで使うBufferへ書き込む
+        // TableBuilderの表(インスタンス、Mesh、LOD)のうち、変わった物だけをこのフレームで使うBufferへ書き込む
         // 1フレームに1回、最初のカリングの前に呼ぶ(IsTableUploadRequiredで呼ぶ必要があるか確認する)
         void UploadFrameTable(const Renderer& a_renderer, const Struct::ModelGPUDrivenFrameTable& a_frameTable);
 
@@ -74,18 +76,11 @@ namespace FWK::Graphics
         // a_useNearPlane : 手前の平面で判定するか(影はライトより手前の物も影を落とすため使わない)
         static Struct::ModelGPUDrivenCullingView BuildCullingView(const TypeAlias::Math::Matrix& a_viewProjectionMatrix, const bool a_useNearPlane);
 
-        // GPUが数えた、描画した三角形の総数(数フレーム前の結果、計測用)
-        auto GetVALSubmittedTriangleCount() const { return m_submittedTriangleCount; }
-
     private:
 
         bool Create(const Renderer& a_renderer);
 
         bool CreateViewData(ViewData& a_viewData) const;
-
-        bool CreateCounterReadbackBuffer(const Device& a_device, FrameData& a_frameData) const;
-
-        void ReadbackCounter(FrameData& a_frameData);
 
         Struct::CBModelGPUDrivenCullingPass CreateCullingPass(const Struct::ModelGPUDrivenBatch&       a_modelBatch,
                                                               const Struct::ModelGPUDrivenCullingView& a_cullingView,
@@ -98,8 +93,6 @@ namespace FWK::Graphics
                                          const RootSignature&                       a_rootSignature,
                                          const Struct::CBModelGPUDrivenCullingPass& a_cullingPass,
                                          const UINT                                 a_threadCount);
-
-        void TransitionBuffer(const DirectCommandList& a_directCommandList, DynamicRWStructuredBuffer& a_buffer, const D3D12_RESOURCE_STATES a_afterState) const;
 
         static constexpr std::size_t k_maxDrawCountPerView             = 32768ULL;
         static constexpr std::size_t k_maxCullingDispatchCountPerFrame = 256ULL;
@@ -115,10 +108,6 @@ namespace FWK::Graphics
 
         static constexpr std::size_t k_initialSize = 0ULL;
 
-        // CounterBufferの要素番号(HLSL側と同じ)
-        static constexpr std::size_t k_drawCountCounterIndex     = 0ULL;
-        static constexpr std::size_t k_triangleCountCounterIndex = 1ULL;
-
         static constexpr std::size_t k_frustumLeftPlaneIndex   = 0ULL;
         static constexpr std::size_t k_frustumRightPlaneIndex  = 1ULL;
         static constexpr std::size_t k_frustumBottomPlaneIndex = 2ULL;
@@ -132,7 +121,10 @@ namespace FWK::Graphics
 
         static constexpr float k_shadowMinCasterSizeTexel = 1.0F;
 
-        static constexpr UINT64 k_initialSubmittedTriangleCount = 0ULL;
+        static constexpr std::uint64_t k_notUploadedTableVersion = std::numeric_limits<std::uint64_t>::max();
+
+        static constexpr int k_zeroFillByte = 0;
+
         static constexpr UINT64 k_bufferStartOffset             = 0ULL;
         static constexpr UINT64 k_addressHighShiftBit           = 32ULL;
         static constexpr UINT64 k_addressLowMask                = 0xFFFFFFFFULL;
@@ -140,8 +132,6 @@ namespace FWK::Graphics
         static constexpr std::uint32_t k_frustumPlaneCountWithNear    = 6U;
         static constexpr std::uint32_t k_frustumPlaneCountWithoutNear = 5U;
         static constexpr std::uint32_t k_trueValue                    = 1U;
-        static constexpr std::uint32_t k_singleViewBit                = 1U;
-        static constexpr std::uint32_t k_initialWrittenViewMask       = 0U;
 
         static constexpr UINT k_singleThreadGroupCount  = 1U;
         static constexpr UINT k_initialThreadGroupCount = 0U;
@@ -162,8 +152,6 @@ namespace FWK::Graphics
         std::size_t m_totalPairCount = k_initialSize;
 
         std::size_t m_instanceCount = k_initialSize;
-
-        UINT64 m_submittedTriangleCount = k_initialSubmittedTriangleCount;
 
         bool m_isCreated             = false;
         bool m_isTableUploadRequired = true;

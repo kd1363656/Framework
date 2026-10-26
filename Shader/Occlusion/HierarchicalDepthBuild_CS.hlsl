@@ -32,6 +32,12 @@ static const uint k_trueValue = 1U;
 // 深度の最小値(一番手前)
 static const float k_nearestDepth = 0.0F;
 
+// 隣のピクセル(1つ先)を指すときに足す値
+static const uint k_nextPixelOffset = 1U;
+
+// 割り算を切り上げにするときに、割る数から引く値(「割られる数 + 割る数 - 1」を割ると切り上げになる)
+static const uint k_ceilDivideOffset = 1U;
+
 // 元テクスチャの1ピクセル分の深度を読む
 float LoadSourceDepth(const uint2 a_position)
 {
@@ -57,8 +63,11 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
 
     // 書き込み先の1ピクセルが、元テクスチャのどの範囲に当たるかを求める
     // (2段目以降はちょうど2×2、1段目は大きさが2の累乗に切り捨てられているため最大3×3になる)
-    const uint2 l_sourceBegin = l_destinationPosition * g_sourceSize / g_destinationSize;
-    const uint2 l_sourceEnd   = min(((l_destinationPosition + 1U) * g_sourceSize + g_destinationSize - 1U) / g_destinationSize, g_sourceSize);
+    // 範囲の始まり = 書き込み先の位置 × 元の大きさ ÷ 書き込み先の大きさ(切り捨て)
+    // 範囲の終わり = 次の書き込み先の位置 × 元の大きさ ÷ 書き込み先の大きさ(切り上げ、元の大きさを超えない)
+    const uint2 l_nextDestinationPosition = l_destinationPosition + k_nextPixelOffset;
+    const uint2 l_sourceBegin             = l_destinationPosition * g_sourceSize / g_destinationSize;
+    const uint2 l_sourceEnd               = min((l_nextDestinationPosition * g_sourceSize + g_destinationSize - k_ceilDivideOffset) / g_destinationSize, g_sourceSize);
 
     // 範囲内で一番奥(最大)の深度を求める
     float l_maxDepth = k_nearestDepth;

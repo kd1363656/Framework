@@ -35,18 +35,38 @@ namespace FWK::Graphics
         bool CreateUploadBuffer(const Device& a_device, const UINT64& a_alignment);
 
         template <typename Type>
-        D3D12_GPU_VIRTUAL_ADDRESS WriteElementRange(const std::span<const Type>& a_elementRange)
+        D3D12_GPU_VIRTUAL_ADDRESS WriteElement(const Type& a_element)
         {
-            FWK_ASSERT_RETURN_VALUE_IF(a_elementRange.empty(), "ElementRangeが空のため、書き込み処理に失敗しました。", Constant::k_invalidDynamicBufferGPUVirtualAddress);
+            return WriteElementRange(&a_element, k_singleElementCount);
+        }
 
-            const auto& l_elementCount = a_elementRange.size();
+        template <typename Type>
+        D3D12_GPU_VIRTUAL_ADDRESS WriteElementList(const std::vector<Type>& a_elementList)
+        {
+            return WriteElementRange(a_elementList.data(), a_elementList.size());
+        }
+
+        static constexpr UINT64 k_singleElementCount = 1ULL;
+
+        static constexpr bool k_advanceWritePosition = true;
+        static constexpr bool k_keepWritePosition    = false;
+
+    private:
+
+        // WriteElement / WriteElementListの共通処理
+        // 先頭アドレスと要素数で受け取り、連続した範囲をUploadBufferへまとめてコピーする
+        template <typename Type>
+        D3D12_GPU_VIRTUAL_ADDRESS WriteElementRange(const Type* const a_elementData, const UINT64& a_elementCount)
+        {
+            FWK_ASSERT_RETURN_VALUE_IF(!a_elementData,                       "ElementDataが無効のため、書き込み処理に失敗しました。", Constant::k_invalidDynamicBufferGPUVirtualAddress);
+            FWK_ASSERT_RETURN_VALUE_IF(a_elementCount == k_emptyElementCount, "ElementRangeが空のため、書き込み処理に失敗しました。",   Constant::k_invalidDynamicBufferGPUVirtualAddress);
 
             const auto& l_remainingElementCount = m_createCount - m_currentElementIndex;
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_elementCount > l_remainingElementCount, "ElementRangeが書き込み可能な残りElement数を超えているため、書き込み処理に失敗しました。", Constant::k_invalidDynamicBufferGPUVirtualAddress);
+            FWK_ASSERT_RETURN_VALUE_IF(a_elementCount > l_remainingElementCount, "ElementRangeが書き込み可能な残りElement数を超えているため、書き込み処理に失敗しました。", Constant::k_invalidDynamicBufferGPUVirtualAddress);
             FWK_ASSERT_RETURN_VALUE_IF(sizeof(Type)   > m_elementStrideSize,     "書き込みTypeのサイズがElementStrideSizeを超えているため、書き込み処理に失敗しました。",   Constant::k_invalidDynamicBufferGPUVirtualAddress);
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_elementCount       > k_singleElementCount &&
+            FWK_ASSERT_RETURN_VALUE_IF(a_elementCount       > k_singleElementCount &&
                                        m_elementStrideSize != sizeof(Type),
                                        "複数Elementを連続書き込みできないElementStrideSizeのため、書き込み処理に失敗しました。",
                                        Constant::k_invalidDynamicBufferGPUVirtualAddress);
@@ -58,27 +78,21 @@ namespace FWK::Graphics
             FWK_ASSERT_RETURN_VALUE_IF(!l_mappedData, "Mapデータが無効のため、書き込み処理に失敗しました。", Constant::k_invalidDynamicBufferGPUVirtualAddress);
 
             const auto& l_byteOffset = l_startElementIndex * m_elementStrideSize;
-            const auto& l_writeSize  = a_elementRange.size_bytes();
+            const auto& l_writeSize  = sizeof(Type) * a_elementCount;
 
-            std::memcpy(l_mappedData + l_byteOffset, a_elementRange.data(), l_writeSize);
+            std::memcpy(l_mappedData + l_byteOffset, a_elementData, l_writeSize);
 
             // 書き込みが正常に完了した後でのみ位置を進める。
             // 固定位置Uploaderでは常に先頭Elementを上書きする。
             if (k_shouldAdvanceWritePosition)
             {
-                m_currentElementIndex += l_elementCount;
+                m_currentElementIndex += a_elementCount;
             }
 
             return m_uploadBuffer.FetchVALGPUVirtualAddress() + l_byteOffset;
         }
 
-        static constexpr UINT64 k_singleElementCount = 1ULL;
-
-        static constexpr bool k_advanceWritePosition = true;
-        static constexpr bool k_keepWritePosition    = false;
-
-    private:
-
+        static constexpr UINT64 k_emptyElementCount         = 0ULL;
         static constexpr UINT64 k_initialElementBufferIndex = 0ULL;
         static constexpr UINT64 k_initialElementStrideSize  = 0ULL;
 

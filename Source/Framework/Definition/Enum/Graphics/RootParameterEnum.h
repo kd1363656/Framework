@@ -18,6 +18,7 @@ namespace FWK::Enum
         CBFinalPresentPass,
         CBModelGPUDrivenCullingPass,
         CBHierarchicalDepthBuildPass,
+        CBGPUParticlePass,
         Count,
     };
 
@@ -38,6 +39,7 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(RootParameterType::CBFinalPresentPass),
         FWK_JSON_ENUM_VALUE(RootParameterType::CBModelGPUDrivenCullingPass),
         FWK_JSON_ENUM_VALUE(RootParameterType::CBHierarchicalDepthBuildPass),
+        FWK_JSON_ENUM_VALUE(RootParameterType::CBGPUParticlePass),
         FWK_JSON_ENUM_VALUE(RootParameterType::Count),
     )
 }

@@ -27,10 +27,13 @@ void FWK::Graphics::StaticModelStandardUnLitPass::Execute(const ResourceContext&
     // GPUドリブン描画のカリング
     // カメラから見える範囲(視錐台)に入っているMeshだけを選び、LODを決めて描画コマンドを作る
     // ※ ComputeShader用のPipelineStateを使うため、描画用PipelineStateを設定する前に行う
-    if (const auto& l_cbCameraPass = l_cameraPassDrawRequest->GetREFSourceConstantBuffer().lock();
+    // カリングは「カリングに使うカメラ」(通常は描画カメラ、デバッグカメラで描画中はメインカメラ)で行う
+    if (const auto& l_cbCameraPass = l_cameraPassDrawRequest->FetchVALCullingConstantBuffer();
         l_cbCameraPass)
     {
-        const auto& l_cullingView = ModelGPUDrivenDrawer::BuildCullingView(l_cbCameraPass->m_viewProjectionMatrix, k_useNearPlaneForCulling);
+        auto l_cullingView = ModelGPUDrivenDrawer::BuildCullingView(l_cbCameraPass->m_viewProjectionMatrix, k_useNearPlaneForCulling);
+
+        l_cullingView.m_isCullingDebugVisualize = l_cameraPassDrawRequest->GetVALIsCullingDebugVisualize();
 
         l_staticModelStandardPerObjectDrawRequest->DispatchGPUCulling(a_renderer, k_cameraViewIndex, l_cullingView);
     }

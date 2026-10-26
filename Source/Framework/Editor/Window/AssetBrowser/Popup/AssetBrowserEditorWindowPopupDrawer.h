@@ -46,17 +46,17 @@ namespace FWK::Editor
         void DrawCopyMenu(const std::vector<std::filesystem::path>&     a_selectedFilePathList,
                           const AssetBrowserEditorWindowFileOperation&  a_fileOperation,
                           const bool                                    a_hasSelection,
-                                TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const;
+                                EditorWindowClipboard<std::filesystem::path>& a_clipboard) const;
 
         void DrawCutMenu(const std::vector<std::filesystem::path>&     a_selectedFilePathList,
                          const AssetBrowserEditorWindowFileOperation&  a_fileOperation,
                          const bool                                    a_hasSelection,
-                               TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const;
+                               EditorWindowClipboard<std::filesystem::path>& a_clipboard) const;
 
         void DrawPasteMenu(const std::vector<std::filesystem::path>&     a_selectedFilePathList,
                            const AssetBrowserEditorWindowFileOperation&  a_fileOperation,
                            const bool                                    a_canPaste,
-                                 TypeAlias::AssetBrowserEditorWindowClipboard& a_clipboard) const;
+                                 EditorWindowClipboard<std::filesystem::path>& a_clipboard) const;
 
         void DrawDuplicateMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, const bool               a_hasSelection) const;
         void DrawDeleteMenu   (const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool                                   a_hasSelection, AssetBrowserEditorWindow& a_editorWindow) const;

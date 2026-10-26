@@ -48,24 +48,9 @@ namespace FWK::Graphics
 
             if (!l_pipelineState) { return {}; }
 
-
-            const auto* l_currentINFO  = &l_pipelineState->GetREFRuntimeTypeINFO();
-            const auto& l_baseTypeINFO = PipelineStateType::GetREFTypeINFO      ();
-                  bool  l_isDeriveFrom = false;
-
-            while (l_currentINFO)
-            {
-                if (l_currentINFO->k_staticTypeID == l_baseTypeINFO.k_staticTypeID)
-                {
-                    l_isDeriveFrom = true;
-                }
-
-                l_currentINFO = l_currentINFO->k_baseINFO;
-            }
-
             // もし基底クラスの型情報と、派生クラスの型情報が一致したらキャスト
             // 一致しなければreturn
-            if (!l_isDeriveFrom) { return {}; }
+            if (!Utility::IsDerivedTypeINFO(l_pipelineState->GetREFRuntimeTypeINFO(), PipelineStateType::GetREFTypeINFO())) { return {}; }
 
             return std::static_pointer_cast<PipelineStateType>(l_pipelineState);
         }
@@ -82,6 +67,8 @@ namespace FWK::Graphics
 
         const auto& GetREFRenderGraph() const { return m_renderGraph; }
 
+        const auto& GetREFRenderViewCapture() const { return m_renderViewCapture; }
+
         const auto& GetREFDirectCommandQueue() const { return m_directCommandQueue; }
         const auto& GetREFDirectCommandList () const { return m_directCommandList; }
 
@@ -90,17 +77,17 @@ namespace FWK::Graphics
 
         const auto& GetREFCurrentFrameResourceIndex() const { return m_currentFrameResourceIndex; }
 
-        const auto& GetREFFrameProfiler() const { return m_frameProfiler; }
-
         auto& GetMutableREFSwapChain  () { return m_swapChain; }
         auto& GetMutableREFRenderGraph() { return m_renderGraph; }
+
+        auto& GetMutableREFSkeletalAnimationSkinningSelector() { return m_skeletalAnimationSkinningSelector; }
+
+        auto& GetMutableREFRenderViewCapture() { return m_renderViewCapture; }
 
         auto& GetMutableREFShadowContext() { return m_shadowContext; }
 
         auto& GetMutableREFDirectCommandList () { return m_directCommandList; }
         auto& GetMutableREFComputeCommandList() { return m_computeCommandList; }
-
-        auto& GetMutableREFFrameProfiler() { return m_frameProfiler; }
 
     private:
 
@@ -113,9 +100,6 @@ namespace FWK::Graphics
         bool PrepareForSwapChainResize();
 
         void SyncSpritePassDrawRequest();
-
-        static constexpr std::string_view k_waitForGPUCPUScopeName = "CPU : Wait For GPU (FrameResource)";
-        static constexpr std::string_view k_presentCPUScopeName    = "CPU : Present";
 
         static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
         static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;
@@ -140,7 +124,9 @@ namespace FWK::Graphics
 
         RenderGraph m_renderGraph = {};
 
-        FrameProfiler m_frameProfiler = {};
+        SkeletalAnimationSkinningSelector m_skeletalAnimationSkinningSelector = {};
+
+        RenderViewCapture m_renderViewCapture = {};
 
         Converter::RendererJsonConverter m_jsonConverter = {};
 

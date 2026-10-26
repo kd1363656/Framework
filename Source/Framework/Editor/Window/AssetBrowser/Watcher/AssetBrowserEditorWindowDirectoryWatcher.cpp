@@ -451,10 +451,10 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::PrepareNotificationR
     //                         非同期I/O状態を保持するOVERLAPPED、
     //                         CompletionRoutine、Event + GetOverlappedResult()方式を使用するのでnullptr、
     //                         通知情報形式、FileIdやCreationTimeも取得したいためReadDirectoryNotifyExtendedInformationを使用する);
-    if (const auto& l_notificationBufferList = m_notificationProcessor.GetVALNotificationBufferList();
+    if (auto& l_notificationBufferList = m_notificationProcessor.GetMutableREFNotificationBufferList();
         !ReadDirectoryChangesExW(m_directoryHandle,
                                  l_notificationBufferList.data(),
-                                 static_cast<DWORD>(l_notificationBufferList.size_bytes()),
+                                 static_cast<DWORD>(l_notificationBufferList.size()),
                                  TRUE,
                                  k_directoryChangeNotificationFilter,
                                  nullptr,

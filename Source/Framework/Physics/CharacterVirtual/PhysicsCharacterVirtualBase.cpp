@@ -3,29 +3,24 @@
 FWK::Physics::PhysicsCharacterVirtualBase::PhysicsCharacterVirtualBase() :
     m_characterVirtual(nullptr),
 
-    m_extendedUpdateSettings(),
-
-    m_jsonConverter(),
-
-    m_capsuleHalfHeightOfCylinder(Constant::k_defaultCharacterVirtualCapsuleHalfHeightOfCylinder),
-    m_capsuleRadius              (Constant::k_defaultCharacterVirtualCapsuleRadius),
-    m_maxSlopeAngleRadians       (Constant::k_defaultCharacterVirtualMaxSlopeAngleRadians),
-
-    m_isEnhancedInternalEdgeRemovalDisabled(false)
+    m_extendedUpdateSettings()
 {}
 FWK::Physics::PhysicsCharacterVirtualBase::~PhysicsCharacterVirtualBase()
 {
     ReleaseCharacterVirtual();
 }
 
-bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition)
+bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const float                        a_capsuleHalfHeightOfCylinder,
+                                                                       const float                        a_capsuleRadius,
+                                                                       const float                        a_maxSlopeAngleRadians,
+                                                                       const bool                         a_isEnhancedInternalEdgeRemovalDisabled,
+                                                                       const TypeAlias::Math::Quaternion& a_worldRotation,
+                                                                       const TypeAlias::Math::Vector3&    a_worldPosition)
 {
-    FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtual,                                                                "CharacterVirtualが既に作成されています。",                                         false);
-    FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下のため、作成に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CharacterVirtualのCapsuleRadiusが0以下のため、作成に失敗しました。",               false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtual, "CharacterVirtualが既に作成されています。", false);
 
-    FWK_ASSERT_RETURN_VALUE_IF(m_maxSlopeAngleRadians < k_minCharacterVirtualMaxSlopeAngleRadians ||
-                               m_maxSlopeAngleRadians > k_maxCharacterVirtualMaxSlopeAngleRadians,
+    FWK_ASSERT_RETURN_VALUE_IF(a_maxSlopeAngleRadians < k_minCharacterVirtualMaxSlopeAngleRadians ||
+                               a_maxSlopeAngleRadians > k_maxCharacterVirtualMaxSlopeAngleRadians,
                                "CharacterVirtualのMaxSlopeAngleが0度から90度の範囲外のため、作成に失敗しました。",
                                false);
 
@@ -41,9 +36,9 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
 
     l_physicsWorldRotation = l_physicsWorldRotation.Normalized();
 
-    // 保存されているCapsuleの高さと半径から、
+    // 受け取ったCapsuleの高さと半径から、
     // CharacterVirtualが衝突判定に使用するShapeを作成する
-    const auto l_shape = CreateShape();
+    const auto l_shape = CreateShape(a_capsuleHalfHeightOfCylinder, a_capsuleRadius);
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_shape, "CharacterVirtual用CapsuleShapeが無効なため、作成に失敗しました。", false);
 
@@ -61,14 +56,14 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
 
     // CharacterVirtualが歩行可能な斜面の最大角度
     // 接触面の角度がこの値を超えた場合、Joltはその面を急すぎる斜面として扱う
-    l_characterVirtualSettings.mMaxSlopeAngle = m_maxSlopeAngleRadians;
+    l_characterVirtualSettings.mMaxSlopeAngle = a_maxSlopeAngleRadians;
 
     // MeshShapeなどを構成する三角形同士の境界で
     // ChacacterVirtualが不要に引っかかる現象を軽減する
-    l_characterVirtualSettings.mEnhancedInternalEdgeRemoval = !m_isEnhancedInternalEdgeRemovalDisabled;
+    l_characterVirtualSettings.mEnhancedInternalEdgeRemoval = !a_isEnhancedInternalEdgeRemovalDisabled;
 
     // Charactervirtualのどの範囲に接触した面を、Charactervirtualを支える床として扱うかを設定する平面
-    l_characterVirtualSettings.mSupportingVolume = JPH::Plane{ JPH::Vec3::sAxisY(), -m_capsuleRadius };
+    l_characterVirtualSettings.mSupportingVolume = JPH::Plane{ JPH::Vec3::sAxisY(), -a_capsuleRadius };
 
     l_characterVirtualSettings.mInnerBodyShape = nullptr;
 
@@ -91,13 +86,6 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
     ApplyExtendedUpdateSettings(*m_characterVirtual, m_extendedUpdateSettings);
 
     return true;
-}
-
-void FWK::Physics::PhysicsCharacterVirtualBase::Deserialize(const nlohmann::json& a_rootJson)
-{
-    if (a_rootJson.is_null()) { return; }
-
-    m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
 void FWK::Physics::PhysicsCharacterVirtualBase::Update(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime)
@@ -191,11 +179,6 @@ void FWK::Physics::PhysicsCharacterVirtualBase::DrawDebug(const JPH::ColorArg a_
 
 }
 
-nlohmann::json FWK::Physics::PhysicsCharacterVirtualBase::Serialize() const
-{
-    return m_jsonConverter.Serialize(*this);
-}
-
 void FWK::Physics::PhysicsCharacterVirtualBase::ReleaseCharacterVirtual()
 {
     // JPH::Refをnullptrへ戻すことで、このクラスが持っている参照カウントを解放する
@@ -227,60 +210,11 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyWorldTransform(const TypeAl
 
     return true;
 }
-
-FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsCharacterVirtualBase::FetchVALWorldPosition() const
-{
-    FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "CharacterVirtualが作成されていないため、ワールド座標取得に失敗しました。", {});
-
-    return Utility::JoltRVec3ToDirectXMathVector3(m_characterVirtual->GetPosition());
-}
-FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsCharacterVirtualBase::FetchVALLinearVelocity() const
-{
-    FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "CharacterVirtualが作成されていないため、速度取得に失敗しました。", {});
-
-    return Utility::JoltVec3ToDirectXMathVector3(m_characterVirtual->GetLinearVelocity());
-}
-
-bool FWK::Physics::PhysicsCharacterVirtualBase::FetchVALIsOnGround() const
-{
-    FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "CharacterVirtualが作成されていないため、接地状態取得に失敗しました。", false);
-
-    return m_characterVirtual->GetGroundState() == JPH::CharacterBase::EGroundState::OnGround;
-}
-
-JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsCharacterVirtualBase::CreateShape() const
-{
-    FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CapsuleHalfHeightOfCylinderが0以下のため、Shapeの作成に失敗しました。", {});
-    FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CapsuleRadiusが0以下のため、Shapeの作成に失敗しました。", {});
-
-    const JPH::CapsuleShapeSettings l_capsuleShapeSettings = { m_capsuleHalfHeightOfCylinder, m_capsuleRadius };
-
-    const auto& l_capsuleShapeResult = l_capsuleShapeSettings.Create();
-
-    FWK_ASSERT_RETURN_VALUE_IF(l_capsuleShapeResult.HasError(), "CharacterVirtual用CapsuleShapeの作成に失敗しました。", {});
-
-    const auto& l_capsuleShape = l_capsuleShapeResult.Get();
-
-    // CapsuleShapeは中心がローカル原点にあるため、
-    // Chacactervirtualの座標を足元として扱えるように上方向へずらす
-    const float l_capsuleCenterOffsetY = m_capsuleHalfHeightOfCylinder + m_capsuleRadius;
-
-    const JPH::RotatedTranslatedShapeSettings l_characterShapeSettings = { JPH::Vec3(JPH::Vec3::sZero().GetX(), l_capsuleCenterOffsetY, JPH::Vec3::sZero().GetZ()),
-                                                                           JPH::Quat::sIdentity(),
-                                                                           l_capsuleShape.GetPtr() };
-
-    const auto& l_characterShapeResult = l_characterShapeSettings.Create();
-
-    FWK_ASSERT_RETURN_VALUE_IF(l_characterShapeResult.HasError(), "CharacterVirtual用の足元原点CapsuleShapeの作成に失敗しました。", {});
-
-    return l_characterShapeResult.Get();
-}
-
-bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyShapeChange()
+bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyShapeChange(const float a_capsuleHalfHeightOfCylinder, const float a_capsuleRadius)
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "CharacterVirtualが作成されていないため、Shape変更に失敗しました。", false);
 
-    const auto l_shape = CreateShape();
+    const auto l_shape = CreateShape(a_capsuleHalfHeightOfCylinder, a_capsuleRadius);
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_shape, "変更後のCharacterVirtual用CapsuleShapeが無効です。", false);
 
@@ -323,7 +257,55 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyShapeChange()
 
     // Radiusが変更されると、CharacterVirtualを支える床の判定範囲も変わるため、
     // 新しいRadiusから作成したSupportingVolumeへ更新する。
-    m_characterVirtual->SetSupportingVolume(JPH::Plane{ JPH::Vec3::sAxisY(), -m_capsuleRadius });
+    m_characterVirtual->SetSupportingVolume(JPH::Plane{ JPH::Vec3::sAxisY(), -a_capsuleRadius });
 
     return true;
+}
+
+FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsCharacterVirtualBase::FetchVALWorldPosition() const
+{
+    FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "CharacterVirtualが作成されていないため、ワールド座標取得に失敗しました。", {});
+
+    return Utility::JoltRVec3ToDirectXMathVector3(m_characterVirtual->GetPosition());
+}
+FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsCharacterVirtualBase::FetchVALLinearVelocity() const
+{
+    FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "CharacterVirtualが作成されていないため、速度取得に失敗しました。", {});
+
+    return Utility::JoltVec3ToDirectXMathVector3(m_characterVirtual->GetLinearVelocity());
+}
+
+bool FWK::Physics::PhysicsCharacterVirtualBase::FetchVALIsOnGround() const
+{
+    FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "CharacterVirtualが作成されていないため、接地状態取得に失敗しました。", false);
+
+    return m_characterVirtual->GetGroundState() == JPH::CharacterBase::EGroundState::OnGround;
+}
+
+JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsCharacterVirtualBase::CreateShape(const float a_capsuleHalfHeightOfCylinder, const float a_capsuleRadius) const
+{
+    FWK_ASSERT_RETURN_VALUE_IF(a_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CapsuleHalfHeightOfCylinderが0以下のため、Shapeの作成に失敗しました。", {});
+    FWK_ASSERT_RETURN_VALUE_IF(a_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CapsuleRadiusが0以下のため、Shapeの作成に失敗しました。",               {});
+
+    const JPH::CapsuleShapeSettings l_capsuleShapeSettings = { a_capsuleHalfHeightOfCylinder, a_capsuleRadius };
+
+    const auto& l_capsuleShapeResult = l_capsuleShapeSettings.Create();
+
+    FWK_ASSERT_RETURN_VALUE_IF(l_capsuleShapeResult.HasError(), "CharacterVirtual用CapsuleShapeの作成に失敗しました。", {});
+
+    const auto& l_capsuleShape = l_capsuleShapeResult.Get();
+
+    // CapsuleShapeは中心がローカル原点にあるため、
+    // Chacactervirtualの座標を足元として扱えるように上方向へずらす
+    const float l_capsuleCenterOffsetY = a_capsuleHalfHeightOfCylinder + a_capsuleRadius;
+
+    const JPH::RotatedTranslatedShapeSettings l_characterShapeSettings = { JPH::Vec3(JPH::Vec3::sZero().GetX(), l_capsuleCenterOffsetY, JPH::Vec3::sZero().GetZ()),
+                                                                           JPH::Quat::sIdentity(),
+                                                                           l_capsuleShape.GetPtr() };
+
+    const auto& l_characterShapeResult = l_characterShapeSettings.Create();
+
+    FWK_ASSERT_RETURN_VALUE_IF(l_characterShapeResult.HasError(), "CharacterVirtual用の足元原点CapsuleShapeの作成に失敗しました。", {});
+
+    return l_characterShapeResult.Get();
 }

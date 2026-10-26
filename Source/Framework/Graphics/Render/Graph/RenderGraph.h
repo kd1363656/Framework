@@ -29,6 +29,14 @@ namespace FWK::Graphics
         void Execute    (const ResourceContext& a_resourceContext, Renderer& a_renderer);
         void EndFrame   (      Renderer&        a_renderer) const;
 
+        // メインの描画とは別のカメラから見た絵を追加で描く(RenderViewCaptureが使う)
+        // 影、アニメーション、物理のデバッグ表示、バックバッファへの出力はメインの描画で行うため実行しない
+        void ExecuteAdditionalView(const ResourceContext& a_resourceContext, Renderer& a_renderer);
+
+        // 現在のフレームのPassTexture(SceneColor、FinalColor、SceneDepth)をクリアする
+        // (追加の描画の後、メインの描画を真っ新な状態から始めるために使う)
+        void ClearCurrentFramePassTextureList(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const;
+
         nlohmann::json Serialize() const;
 
         void AddPass(std::unique_ptr<RenderGraphPassBase>&& a_pass);
@@ -85,6 +93,26 @@ namespace FWK::Graphics
             return std::static_pointer_cast<DrawRequestPerObjectType>(l_drawRequestPerObject);
         }
 
+        // 指定した型のPassを探す(見つからない場合はnullptr)
+        template <Concept::IsDerivedRenderGraphPassBaseConcept PassType>
+        PassType* FindMutablePTRPass()
+        {
+            const auto l_staticTypeID = PassType::GetREFTypeINFO().k_staticTypeID;
+
+            for (const auto& l_pass : m_passList)
+            {
+                if (!l_pass) { continue; }
+
+                const auto& l_runtimeTypeINFO = l_pass->GetREFRuntimeTypeINFO();
+
+                if (l_runtimeTypeINFO.k_staticTypeID != l_staticTypeID) { continue; }
+
+                return static_cast<PassType*>(l_pass.get());
+            }
+
+            return nullptr;
+        }
+
         const auto& GetREFPassList() const { return m_passList; }
 
         const auto& GetREFDrawRequestPassList        () const { return m_drawRequestPassList; }
@@ -95,7 +123,22 @@ namespace FWK::Graphics
 
         void BeginBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const;
 
+        void ExecutePassList(const ResourceContext& a_resourceContext, Renderer& a_renderer, const bool a_isAdditionalView);
+
+        bool IsAdditionalViewSkipLayer(const Enum::RenderGraphPassExecutionLayer a_executionLayer) const;
+
         void RemoveExpiredPassList();
+
+        static constexpr std::size_t k_additionalViewSkipLayerCount = 5ULL;
+
+        static constexpr std::array<Enum::RenderGraphPassExecutionLayer, k_additionalViewSkipLayerCount> k_additionalViewSkipLayerList =
+        {
+            Enum::RenderGraphPassExecutionLayer::Animation,
+            Enum::RenderGraphPassExecutionLayer::ParticleSimulate,
+            Enum::RenderGraphPassExecutionLayer::Shadow,
+            Enum::RenderGraphPassExecutionLayer::PhysicsDebug,
+            Enum::RenderGraphPassExecutionLayer::FinalPresent,
+        };
 
         DrawRequestPassMap         m_drawRequestPassMap         = {};
         ComputeRequestPerObjectMap m_computeRequestPerObjectMap = {};

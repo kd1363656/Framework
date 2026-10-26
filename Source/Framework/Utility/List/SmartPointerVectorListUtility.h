@@ -74,6 +74,23 @@ namespace FWK::Utility
             m_elementDataList.emplace_back(std::move(l_arrayElementData));
         }
 
+        // shared_ptrの場合(末尾ではなく先頭へ登録する)
+        // 「必ず一番前に置く」と決まっている要素(コンポーネント一覧のTransformなど)用
+        void AddFront(const Type& a_type)
+            requires k_isSharedPTR
+        {
+            const auto l_previousElementCount = m_elementDataList.size();
+
+            // 重複チェックや登録はAddに任せる
+            Add(a_type);
+
+            // 無効・重複で登録されなかった場合は並べ替えるものが無い
+            if (m_elementDataList.size() == l_previousElementCount) { return; }
+
+            // 末尾に入った要素を先頭へ移動し、残りの要素を1つずつ後ろへずらす(元の並び順は保たれる)
+            std::rotate(m_elementDataList.rbegin(), std::next(m_elementDataList.rbegin()), m_elementDataList.rend());
+        }
+
         void Clear()
         {
             m_elementDataList.clear     ();

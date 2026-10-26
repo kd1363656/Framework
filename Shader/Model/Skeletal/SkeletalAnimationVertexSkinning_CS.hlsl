@@ -61,6 +61,9 @@ static const uint k_initialBonePaletteElementByteStride = 0U;
 static const uint k_initialBoneMatrixElementCount       = 0U;
 static const uint k_initialBoneMatrixElementByteStride  = 0U;
 
+// 構造体を全て0で初期化するときに使う値
+static const uint k_zeroInitializeValue = 0U;
+
 // スキニング後の法線または接線を安全に正規化する
 // 通常はnormalizeでもよいが、長さがほぼゼロのベクトルを
 // normalizeすると、NaNなどの不正な値が発生する可能性がある
@@ -194,7 +197,7 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
     }
     
     // ComputeShaderから出力するスキニング済み頂点
-    SkeletalAnimationSkinnedVertex l_skinnedVertex = (SkeletalAnimationSkinnedVertex) 0;
+    SkeletalAnimationSkinnedVertex l_skinnedVertex = (SkeletalAnimationSkinnedVertex)k_zeroInitializeValue;
     
     // 有効なBoneInfluenceを一つも使用できなかった場合は、
     // 頂点が原点へ移動したり、法線がゼロになったりしないよう、

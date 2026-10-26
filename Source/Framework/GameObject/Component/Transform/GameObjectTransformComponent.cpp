@@ -41,10 +41,14 @@ nlohmann::json FWK::GameObjectTransformComponent::Serialize() const
     return m_jsonConverter.Serialize(*this);
 }
 
-std::shared_ptr<FWK::GameObjectTransformComponent> FWK::GameObjectTransformComponent::Clone() const
+std::shared_ptr<FWK::GameObjectComponentBase> FWK::GameObjectTransformComponent::Clone() const
 {
     auto l_clone = std::make_shared<GameObjectTransformComponent>();
 
+    // INIT()はUUIDなどをリセットするため、値をコピーするDeserialize()より前に呼ぶ
+    l_clone->INIT();
+
+    // jsonに乗る部分(UUIDも含む)はDeserialize/Serializeで一括生成
     l_clone->Deserialize(Serialize());
 
     return l_clone;
@@ -52,7 +56,7 @@ std::shared_ptr<FWK::GameObjectTransformComponent> FWK::GameObjectTransformCompo
 
 void FWK::GameObjectTransformComponent::ApplyParent()
 {
-    const auto& l_ownerGameObject = m_owner.lock();
+    const auto& l_ownerGameObject = GetREFOwner().lock();
  
     if (!l_ownerGameObject) { return; }
  
@@ -147,7 +151,7 @@ void FWK::GameObjectTransformComponent::UpdateMatrix()
 
 void FWK::GameObjectTransformComponent::MarkChildrenMatrixDirty() const
 {
-    const auto& l_ownerGameObject = m_owner.lock();
+    const auto& l_ownerGameObject = GetREFOwner().lock();
 
     if (!l_ownerGameObject) { return; }
 
@@ -176,7 +180,7 @@ void FWK::GameObjectTransformComponent::ConfirmMatrixFromRootToSelf() const
     // 自分からルートまでのTransformチェーンを収集
     std::vector<std::shared_ptr<GameObjectTransformComponent>> l_chain = {};
  
-    auto l_currentGameObject = m_owner.lock();
+    auto l_currentGameObject = GetREFOwner().lock();
  
     while (l_currentGameObject)
     {

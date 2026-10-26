@@ -102,6 +102,7 @@ namespace FWK::Editor
         static constexpr std::string_view k_renameInputTextLabel          = "##AssetPaneRenameInputText";
         static constexpr std::string_view k_paneDropTargetLabel           = "##AssetPaneDropTarget";
         static constexpr std::string_view k_paneGameObjectDropTargetLabel = "##AssetPaneGameObjectDropTarget";
+        static constexpr std::string_view k_paneSceneDropTargetLabel      = "##AssetPaneSceneDropTarget";
         static constexpr std::string_view k_paneTitleLabel                = "アセット";
         static constexpr std::string_view k_ellipsis                      = "...";
 

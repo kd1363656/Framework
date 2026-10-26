@@ -22,6 +22,36 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
 
     FWK_ASSERT_RETURN_VALUE_IF(l_bindPoseGlobalBoneMatrixList.size() != l_modelBoneList.size(), "BindPoseGlobalBoneMatrixListの要素数がModelBoneListと一致しません。", false);
 
+    m_skeletalAnimationModelRecord = a_skeletalAnimationModel.GetREFSkeletalAnimationModelRecord();
+
+    // GPUのBuffer(1体ごとの変形後の頂点など)は、従来の方式で描画するときに初めて作る
+    // (ベイクの方式で描画している間は使わないため、大量のキャラクターでもメモリを使わない)
+    m_frameDataList.clear();
+
+    // 新しいModelへ切り替えたため、
+    // 以前のMotion再生状態を残さないように初期化する
+    ResetPlaybackState();
+
+    // 揺れものも、新しいModelのボーンでチェーンを作り直す
+    m_springBoneSolver.Reset();
+
+    return true;
+}
+
+bool FWK::Graphics::SkeletalAnimationPlayer::CreateGPUFrameData()
+{
+    if (!m_frameDataList.empty()) { return true; }
+
+    const auto& l_skeletalAnimationModelRecord = m_skeletalAnimationModelRecord.lock();
+
+    FWK_ASSERT_RETURN_VALUE_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効のため、SkeletalAnimationPlayerのFrameData作成に失敗しました。", false);
+
+    const auto& l_modelData     = l_skeletalAnimationModelRecord->GetREFModelData();
+    const auto& l_modelBoneList = l_modelData.m_boneList;
+    const auto& l_modelMeshList = l_modelData.m_modelMeshList;
+
+    const auto& l_bindPoseGlobalBoneMatrixList = m_poseEvaluator.GetREFBindPoseGlobalBoneMatrixList();
+
     auto& l_graphicsManager = GraphicsManager::GetInstance();
 
     const auto& l_device   = l_graphicsManager.GetREFDevice  ();
@@ -130,12 +160,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
     }
 
     // 全ての作成処理が成功してからメンバ変数へ反映する
-    m_skeletalAnimationModelRecord = a_skeletalAnimationModel.GetREFSkeletalAnimationModelRecord();
-    m_frameDataList                = std::move                                                  (l_frameDataList);
-
-    // 新しいModelへ切り替えたため、
-    // 以前のMotion再生状態を残さないように初期化する
-    ResetPlaybackState();
+    m_frameDataList = std::move(l_frameDataList);
 
     return true;
 }
@@ -162,12 +187,38 @@ bool FWK::Graphics::SkeletalAnimationPlayer::PlayMotion(const std::uint32_t a_mo
     return ApplyAnimation(l_animation);
 }
 
-void FWK::Graphics::SkeletalAnimationPlayer::AdvanceTime(const float a_deltaTime)
+void FWK::Graphics::SkeletalAnimationPlayer::AdvanceTime(const float a_deltaTime, const TypeAlias::Math::Matrix& a_worldMatrix)
 {
-    FWK_ASSERT_RETURN_IF(a_deltaTime < Constant::k_minDeltaTime, "DeltaTimeが0未満のため、Animationの再生時刻を更新できません。");
+    // 姿勢の書き込み先(GPUへ送るBuffer)をまだ作っていなければ作る
+    // 従来の方式ではComputeShaderが毎フレームこのBufferを読むため、Motionが無い(BindPoseの)場合でも先に作っておく
+    FWK_ASSERT_RETURN_IF(!CreateGPUFrameData(), "SkeletalAnimationPlayerのFrameDataの作成に失敗しました。");
+
+    const bool l_isRuntimePoseRequired = IsRuntimePoseRequired();
 
     // Motionが設定されていない場合は、
     // Create()またはStop()で設定されたBindPoseを使用する。
+    // (揺れものがある場合は、BindPoseのままでもキャラクターが動けば揺れるため計算する)
+    if (m_animation.m_motionIndex == SkeletalAnimationPoseEvaluator::k_invalidMotionIndex &&
+        !l_isRuntimePoseRequired)
+    {
+        return;
+    }
+
+    AdvancePlaybackTime(a_deltaTime);
+
+    // 更新したAnimation時刻から、
+    // 現在FrameResource用のGlobalBoneMatrixをCPUで計算する。
+    FWK_ASSERT_RETURN_IF(!EvaluateCurrentPose(), "現在Poseの計算に失敗しました。");
+
+    if (!l_isRuntimePoseRequired) { return; }
+
+    // アニメーションの姿勢を、揺れもので上書きする
+    FWK_ASSERT_RETURN_IF(!ApplySpringBone(a_deltaTime, a_worldMatrix), "揺れものの計算に失敗しました。");
+}
+void FWK::Graphics::SkeletalAnimationPlayer::AdvancePlaybackTime(const float a_deltaTime)
+{
+    FWK_ASSERT_RETURN_IF(a_deltaTime < Constant::k_minDeltaTime, "DeltaTimeが0未満のため、Animationの再生時刻を更新できません。");
+
     if (m_animation.m_motionIndex == SkeletalAnimationPoseEvaluator::k_invalidMotionIndex) { return; }
 
     // 現在Animationの再生時刻を更新する
@@ -188,10 +239,6 @@ void FWK::Graphics::SkeletalAnimationPlayer::AdvanceTime(const float a_deltaTime
             CompleteAnimationBlend();
         }
     }
-
-    // 更新したAnimation時刻から、
-    // 現在FrameResource用のGlobalBoneMatrixをCPUで計算する。
-    FWK_ASSERT_RETURN_IF(!EvaluateCurrentPose(), "現在Poseの計算に失敗しました。");
 }
 
 bool FWK::Graphics::SkeletalAnimationPlayer::IsAnimationEnd() const
@@ -216,6 +263,17 @@ bool FWK::Graphics::SkeletalAnimationPlayer::IsAnimationEnd() const
     // 通常再生または停止状態では、
     // Motion終端へ到達した時点で終了する
     return m_animationTimeSecond >= l_motionDurationSecond;
+}
+
+bool FWK::Graphics::SkeletalAnimationPlayer::IsRuntimePoseRequired() const
+{
+    const auto& l_skeletalAnimationModelRecord = m_skeletalAnimationModelRecord.lock();
+
+    if (!l_skeletalAnimationModelRecord) { return false; }
+
+    const auto& l_springBoneSetting = l_skeletalAnimationModelRecord->GetREFSpringBoneSetting();
+
+    return l_springBoneSetting.IsActive();
 }
 
 void FWK::Graphics::SkeletalAnimationPlayer::Stop()
@@ -348,6 +406,25 @@ bool FWK::Graphics::SkeletalAnimationPlayer::EvaluateCurrentPose()
                                         m_blendTargetAnimation.m_motionIndex,
                                         m_isBlending,
                                         l_frameData->m_globalBoneMatrixList);
+}
+
+bool FWK::Graphics::SkeletalAnimationPlayer::ApplySpringBone(const float a_deltaTime, const TypeAlias::Math::Matrix& a_worldMatrix)
+{
+    const auto& l_skeletalAnimationModelRecord = m_skeletalAnimationModelRecord.lock();
+
+    FWK_ASSERT_RETURN_VALUE_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効のため、揺れものを計算できません。", false);
+
+    auto* l_frameData = FindMutablePTRCurrentFrameData();
+
+    FWK_ASSERT_RETURN_VALUE_IF(!l_frameData, "現在FrameDataを取得できないため、揺れものを計算できません。", false);
+
+    m_springBoneSolver.Update(l_skeletalAnimationModelRecord->GetREFModelData(),
+                              l_skeletalAnimationModelRecord->GetREFSpringBoneSetting(),
+                              a_deltaTime,
+                              a_worldMatrix,
+                              l_frameData->m_globalBoneMatrixList);
+
+    return true;
 }
 
 float FWK::Graphics::SkeletalAnimationPlayer::CalculateAdvancedTimeSecond(const Animation& a_animation, const float a_timeSecond, const float a_deltaTime) const

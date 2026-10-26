@@ -5,9 +5,6 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::BeginFrame()
     // DrawRequestDataの所有権が破棄されていた場合は、
     // 内部配列から期限切れのstd::weak_ptrを削除する
     m_forwardDrawRequestDataSmartPointerVectorList.RemoveExpiredElements();
-
-    // 描画した三角形数の計測をフレームごとにやり直す
-    m_submittedTriangleCount = k_initialSubmittedTriangleCount;
 }
 
 void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
@@ -90,8 +87,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             const auto* const l_modelMeshLOD = l_canSelectLOD ? l_modelLODSelector.SelectPTRModelMeshLOD(l_modelMeshletData, l_drawRequest->m_worldMatrix, l_worldMaxScale) : nullptr;
 
             const auto l_meshletOffset = l_modelMeshLOD ? l_modelMeshLOD->m_meshletOffset                      : Constant::k_initialMeshLODMeshletOffset;
-            const auto l_meshletCount  = l_modelMeshLOD ? l_modelMeshLOD->m_meshletCount                       : static_cast<std::uint32_t>(l_modelMeshletData.m_meshletList.size());
-            const auto l_triangleCount = l_modelMeshLOD ? static_cast<UINT64>(l_modelMeshLOD->m_triangleCount) : static_cast<UINT64>(l_modelMesh.m_indexList.size() / Constant::k_triangleVertexCount);
+            const auto l_meshletCount  = l_modelMeshLOD ? l_modelMeshLOD->m_meshletCount  : static_cast<std::uint32_t>(l_modelMeshletData.m_meshletList.size());
 
             // 他のMeshに覆われている頂点を、カメラから見て奥へ押し出す距離(覆われている層1つ分)
             // 簡略化で服が肌より奥へ沈み、肌が透けて見えるのを防ぐ
@@ -149,8 +145,6 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             const bool l_isDispatchModelMeshSuccess = DispatchModelMesh(l_directCommandList, l_meshletCount);
 
             FWK_ASSERT_CONTINUE_IF(!l_isDispatchModelMeshSuccess, "Skeletal Animation ModelのMeshlet描画に失敗しました。");
-
-            m_submittedTriangleCount += l_triangleCount;
         }
     }
 }

@@ -17,6 +17,10 @@ namespace FWK::Graphics
 
         void Setup();
 
+        // 定数バッファをRendererへ登録しない(メインカメラにならない)カメラとして準備する
+        // エディターのデバッグカメラなど、描画に使うかどうかをCameraPassDrawRequest側で切り替えるカメラに使う
+        void SetupDetached();
+
         void ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix);
 
         void ApplyProjectionMatrix(const float a_aspectRatio,
@@ -27,6 +31,8 @@ namespace FWK::Graphics
         void ApplyProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix);
 
         void ApplyPerspectiveAspectRatio(const float a_aspectRatio);
+
+        const auto& GetREFCBCameraPass() const { return m_cbCameraPass; }
 
         const auto& GetREFCameraMatrix() const { return m_cameraMatrix; }
 

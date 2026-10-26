@@ -11,6 +11,8 @@ namespace FWK
     
         void INIT();
 
+        void AddTransformComponent();
+
         void DeserializeScene(const nlohmann::json&              a_rootJson,
                               const nlohmann::json&              a_baseJson,
                               const SceneGameObjectPrefabSystem& a_prefabSystem,
@@ -65,16 +67,13 @@ namespace FWK
         auto& GetMutableREFHierarchy         () { return m_hierarchy; }
         auto& GetMutableREFComponentContainer() { return m_componentContainer; }
 
-        std::weak_ptr<GameObjectTransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
+        std::weak_ptr<GameObjectTransformComponent> GetVALTransformComponent() const { return m_componentContainer.GetVALTransformComponent(); }
 
         bool GetVALIsDestroyed   () const { return m_isDestroyed; }
         bool GetVALIsPrefabOrigin() const { return m_isPrefabOrigin; }
 
     private:
     
-        // ポインタの共有したいが絶対に存在すべきコンポーネントなのでメンバイニシャライザで生成
-        std::shared_ptr<GameObjectTransformComponent> m_transformComponent = std::make_shared<GameObjectTransformComponent>();
-
         GameObjectHierarchy          m_hierarchy          = {};
         GameObjectComponentContainer m_componentContainer = {};
 

@@ -1,11 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Source\Framework\Graphics\Render\Skinning">
+      <UniqueIdentifier>{74c97fbf-af37-442c-9ac6-a4cc0daf2525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Inspector">
+      <UniqueIdentifier>{12017b43-44de-4050-af88-c6062592a420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Converter\Json">
+      <UniqueIdentifier>{42adad79-99fd-46d0-935e-fa93bbe95ecb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Converter">
+      <UniqueIdentifier>{562240e4-adbc-4e3f-9321-1284f5a9fe47}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Definition\Concept\Graphics">
       <UniqueIdentifier>{a646416b-aa28-480f-9675-f72188da6aa4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Utility\Graphics">
       <UniqueIdentifier>{1e4f4b7d-201b-440e-a553-54c605d1cfc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone">
+      <UniqueIdentifier>{a8c9ebab-9ee4-47e5-a6a7-42050530f319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter">
+      <UniqueIdentifier>{c2820592-1008-4bb8-9d3e-454ef2ca26e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Binary">
+      <UniqueIdentifier>{f503460b-9b9d-49ad-ad60-78386e18edf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Json">
+      <UniqueIdentifier>{0bad89f9-de24-49a9-85f2-4b92f7478e39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Inspector">
+      <UniqueIdentifier>{db6b194f-d6ff-407f-918e-7dd58c678b83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Command">
+      <UniqueIdentifier>{830f6dd9-5678-4bcc-a84e-b9b4c996039d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SpringBone">
+      <UniqueIdentifier>{84e7e154-5a07-4d65-b90d-612388ff2ee7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph">
       <UniqueIdentifier>{7b82a4a8-4817-409d-be07-f1d9faa72898}</UniqueIdentifier>
@@ -58,6 +91,30 @@
     <Filter Include="Source\Framework\Graphics\Render\Occlusion">
       <UniqueIdentifier>{9462b2d9-9654-4848-93a1-17e44516c8bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Particle">
+      <UniqueIdentifier>{fafda276-9fcd-4073-b830-464aba72a142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Particle\GPU">
+      <UniqueIdentifier>{d3cfa26c-d241-48d3-a2b1-d2e1c9fe8fbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Particle">
+      <UniqueIdentifier>{bd2f3eed-62d6-4173-b4a7-df4f32387b55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU">
+      <UniqueIdentifier>{6cd6bc9a-a486-4bb8-9cbd-7899fbcbac46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Particle">
+      <UniqueIdentifier>{f86c2e9d-e2b0-42f3-9bfe-6f41dda4543f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Particle\GPU">
+      <UniqueIdentifier>{7ef3d69c-b3f7-4900-8fd2-2f12f2eddd08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Particle">
+      <UniqueIdentifier>{e9fb4e87-c737-4b72-a665-c73205e104a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Particle\GPU">
+      <UniqueIdentifier>{9fa7e29e-d9f5-4662-b436-f48b876eeb83}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Graphics\Hardware\Debug">
       <UniqueIdentifier>{0426b225-54d9-4808-b7d3-c05f26312955}</UniqueIdentifier>
     </Filter>
@@ -69,9 +126,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model\LOD">
       <UniqueIdentifier>{5bf11802-5e7a-4e0e-b56b-b1bcdf2f1da4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Profiler">
-      <UniqueIdentifier>{b4df3c27-daea-4492-9f0c-a0bdd65adc32}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{d9e0643d-0144-41d0-9a90-8fadd99411c7}</UniqueIdentifier>
@@ -93,6 +147,12 @@
     </Filter>
     <Filter Include="Source\Framework\TypeINFO\StaticTypeID">
       <UniqueIdentifier>{2988603d-13b3-4019-8ab6-9134a66babe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\TypeINFO">
+      <UniqueIdentifier>{36f6f45e-9379-4e1c-bc1a-fdb9a8b42225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Tag">
+      <UniqueIdentifier>{2ddaaaa4-2f39-4e35-a6cf-7d0f59c41f17}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\TypeINFO\Registry">
       <UniqueIdentifier>{02620fa5-941a-4dc6-bb35-00128b908027}</UniqueIdentifier>
@@ -577,6 +637,15 @@
     <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor">
       <UniqueIdentifier>{0487bce6-b94d-46d6-be2c-9a26323c2afc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\File\Dialog">
+      <UniqueIdentifier>{1fbff401-c3cb-4061-bfaf-fc7a8384e0a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Utility">
+      <UniqueIdentifier>{ff962e21-2160-4685-bd5a-1c4c546e7ad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Utility\File">
+      <UniqueIdentifier>{6fedb3dc-1143-49d5-87ea-7dadf5a44154}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Utility\File">
       <UniqueIdentifier>{4f64cc80-ea3c-4e7e-ba91-ed7044d263c2}</UniqueIdentifier>
     </Filter>
@@ -892,12 +961,6 @@
     <Filter Include="Source\Framework\Definition\Constant\Physics">
       <UniqueIdentifier>{ebb3554d-826d-4ebd-9883-65cf4fd01cdd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Physics\CharacterVirtual\Converter">
-      <UniqueIdentifier>{b4648bf6-26fe-411a-a833-52f059ff92dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\CharacterVirtual\Converter\Json">
-      <UniqueIdentifier>{6346a33a-61c0-4e07-a9ef-1ac84dfe84d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Shadow">
       <UniqueIdentifier>{f02050bd-b903-4ff5-b643-7121bc310987}</UniqueIdentifier>
     </Filter>
@@ -918,6 +981,9 @@
     </Filter>
     <Filter Include="Source\Framework\Utility\UUID">
       <UniqueIdentifier>{856e5243-73b1-488f-8ce4-72c0cab8432d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\TypeINFO">
+      <UniqueIdentifier>{3b6f1d2e-8c47-4a5e-9f21-7d0c4e8a9b13}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant">
       <UniqueIdentifier>{c2b0d355-98da-4589-bf0b-a857e636b12a}</UniqueIdentifier>
@@ -1014,6 +1080,9 @@
     </Filter>
     <Filter Include="Source\Framework\Utility\IMGUI\ItemHighlight">
       <UniqueIdentifier>{9e1b7c34-2d5a-4f86-b812-4a7f3e9c1d56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\IMGUI\IconButton">
+      <UniqueIdentifier>{df0dc4d8-1852-47b1-831e-0574c2d15281}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Viewport">
       <UniqueIdentifier>{3cffe2af-0671-4cdd-b5b3-65850c307981}</UniqueIdentifier>
@@ -1528,6 +1597,12 @@
     <Filter Include="Source\Framework\Editor\Selection">
       <UniqueIdentifier>{29f03aac-a259-42db-9716-c1ace82e2f2b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\AddMenu">
+      <UniqueIdentifier>{4866990e-9351-4453-b60b-91b7b11c9dfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Editor\AddMenu">
+      <UniqueIdentifier>{da4acf9a-a204-45ba-8beb-ac0b6593f260}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Editor\Window\Outliner\Popup">
       <UniqueIdentifier>{17cb459c-d27b-4d4a-9035-8fddeedf21b9}</UniqueIdentifier>
     </Filter>
@@ -1555,14 +1630,11 @@
     <Filter Include="Source\Framework\Editor\Window\Command\GameObject">
       <UniqueIdentifier>{8d4b6f12-5c93-4a7e-b3d1-9f2e6a4c7b18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Command\Component">
+      <UniqueIdentifier>{da1407dd-a531-492d-8563-9c73b865d5ea}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Utility\Editor">
       <UniqueIdentifier>{22dd4cde-ce04-4c6d-b52e-417c87936af1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\GameObject\Component\Factory">
-      <UniqueIdentifier>{681cec79-3025-4d78-85ab-b8852095e7bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Macros\GameObject">
-      <UniqueIdentifier>{32307e8a-e037-4f3d-a17f-d17a075fd860}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shader\Material">
       <UniqueIdentifier>{04d96116-c824-4bf9-9baf-6723bc69ead5}</UniqueIdentifier>
@@ -1642,8 +1714,62 @@
     <Filter Include="Source\Framework\Editor\Window\Clipboard">
       <UniqueIdentifier>{51b75225-1332-48b3-b5a9-27c2778d130d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\Converter">
+      <UniqueIdentifier>{5082f003-3e84-453c-9602-e2832e5f669a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\Converter\Json">
+      <UniqueIdentifier>{23e9cefe-f6c7-4d3a-bd6a-768d5a848d20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\DebugCamera">
+      <UniqueIdentifier>{a25f86e6-d32b-47bb-8166-5e52da4997f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\DebugCamera\Converter">
+      <UniqueIdentifier>{7f757db1-3b0f-4377-ba49-dc4bcbdf1bfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\DebugCamera\Converter\Json">
+      <UniqueIdentifier>{e6939e61-00b2-4ed1-9549-a2dcf4759318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\DebugCamera\Inspector">
+      <UniqueIdentifier>{9868f378-3f4c-4e54-b769-f224cb650ea6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\Gizmo">
+      <UniqueIdentifier>{30c4d4bf-f4f8-4429-ad1f-fc7cc6bc59b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\Gizmo\Command">
+      <UniqueIdentifier>{a9b0f10e-30ac-4c91-a62f-fa08f2ebbe84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\Overlay">
+      <UniqueIdentifier>{9983d15d-a4c3-47eb-8a3e-d5317594814d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\Picking">
+      <UniqueIdentifier>{e16b4239-4c6d-483b-8068-b3f449de8da6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\Preview">
+      <UniqueIdentifier>{fb746a38-54be-44cc-b692-c0281be4647e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Capture">
+      <UniqueIdentifier>{6f237e87-9bf0-4a74-99ca-a1681cb27226}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Scene\Play">
+      <UniqueIdentifier>{8236e422-fb23-4b20-bbcf-9aea6acffc14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Framework\Graphics\Render\Skinning\SkeletalAnimationSkinningSelector.h">
+      <Filter>Source\Framework\Graphics\Render\Skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Inspector\StaticModelStandardLitPassEditInspector.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Converter\Json\StaticModelStandardLitPassJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedRenderGraphPassBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelStandardLitPassConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\ModelMorphGPUStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Structured</Filter>
     </ClInclude>
@@ -1673,6 +1799,33 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelMorphSettingConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\ModelSpringBoneEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelSpringBoneSettingConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelSpringBoneSettingStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\SkeletalAnimationModelSpringBoneSetting.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Binary\SkeletalAnimationModelSpringBoneSettingBinaryConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Json\SkeletalAnimationModelSpringBoneSettingJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Inspector\SkeletalAnimationModelSpringBoneSettingEditInspector.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Command\SkeletalAnimationModelSpringBoneSettingEditCommand.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SpringBone\SkeletalAnimationSpringBoneSolver.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Player\SpringBone</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Graphics\AnimationSampleTimeUtility.h">
       <Filter>Source\Framework\Utility\Graphics</Filter>
@@ -1713,6 +1866,48 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Occlusion\HierarchicalDepthTexture.h">
       <Filter>Source\Framework\Graphics\Render\Occlusion</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\GPUParticleConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Structured\GPUParticleStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Structured</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBGPUParticlePassStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Math\MathDivideRoundUpUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\GPUParticleEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Structured\GPUParticleStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Structured</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBGPUParticlePassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Graphics\TransitionDynamicRWStructuredBufferUtility.h">
+      <Filter>Source\Framework\Utility\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Math\MathDivideRoundUpUtility.h">
+      <Filter>Source\Framework\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\CommandSignature\GPUParticleIndirectCommandSignature.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\CommandSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Particle\GPU\GPUParticleSystem.h">
+      <Filter>Source\Framework\Graphics\Render\Particle\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Particle\GPU\GPUParticlePerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Particle\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU\GPUParticleSimulatePass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU\GPUParticleDrawPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBHierarchicalDepthBuildPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
@@ -1749,15 +1944,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelLODSurfaceStructConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Profiler\FrameProfiler.h">
-      <Filter>Source\Framework\Graphics\Profiler</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Profiler\GPUTimestampQueryRecorder.h">
-      <Filter>Source\Framework\Graphics\Profiler</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\FrameProfilerStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\PCH.h">
       <Filter>Source</Filter>
     </ClInclude>
@@ -1775,6 +1961,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h">
       <Filter>Source\Framework\TypeINFO\Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\Tag\TypeINFOTagRegistry.h">
+      <Filter>Source\Framework\TypeINFO\Tag</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h">
       <Filter>Source\Framework\Window\Converter\Json</Filter>
@@ -2106,6 +2295,12 @@
     <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFORegistryMacros.h">
       <Filter>Source\Framework\Definition\Macros\TypeINFO</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\TypeINFO\TypeINFOTagRegistryConstant.h">
+      <Filter>Source\Framework\Definition\Constant\TypeINFO</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFOTagRegistryMacros.h">
+      <Filter>Source\Framework\Definition\Macros\TypeINFO</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Macros\Json\JsonSerializeEnumMacros.h">
       <Filter>Source\Framework\Definition\Macros\Json</Filter>
     </ClInclude>
@@ -2195,6 +2390,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Graphics\IsValidTextureUtility.h">
       <Filter>Source\Framework\Utility\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\TypeINFO\IsDerivedTypeINFOUtility.h">
+      <Filter>Source\Framework\Utility\TypeINFO</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h">
       <Filter>Source\Framework\Utility\Math</Filter>
@@ -2568,18 +2766,6 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationMeshletBoundsUpdatePerObjectStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticSphereBodyConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticBoxBodyConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticCapsuleBodyConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.h">
-      <Filter>Source\Framework\Physics\CharacterVirtual\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsCharacterVirtualBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
@@ -2730,6 +2916,12 @@
     <ClInclude Include="Source\Framework\Utility\IMGUI\ItemHighlight\IMGUIItemHighlightUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\ItemHighlight</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\IMGUI\IconButton\IMGUIIconButtonUtility.h">
+      <Filter>Source\Framework\Utility\IMGUI\IconButton</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIIconButtonUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
     </ClInclude>
@@ -2811,10 +3003,13 @@
     <ClInclude Include="Source\Framework\Utility\IMGUI\String\IMGUIStringValueBidirectionalRegistryUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\String</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\File\SaveFileDialogUtility.h">
-      <Filter>Source\Framework\Utility\File</Filter>
+    <ClInclude Include="Source\Framework\Utility\File\Dialog\FileDialog.h">
+      <Filter>Source\Framework\Utility\File\Dialog</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h">
+    <ClInclude Include="Source\Framework\Definition\Struct\Utility\File\FileDialogStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Utility\File</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\FileDialogConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\File</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictByNumberSuffixUtilityConstant.h">
@@ -3156,6 +3351,12 @@
     <ClInclude Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.h">
       <Filter>Source\Framework\Editor\Selection</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\AddMenu\EditorAddMenu.h">
+      <Filter>Source\Framework\Editor\AddMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\AddMenu\EditorAddMenuConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\AddMenu</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\WorldOutlinerEditorWindowPopupDrawerStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
     </ClInclude>
@@ -3186,6 +3387,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.h">
       <Filter>Source\Framework\Editor\Window\Command\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Command\Component\AddGameObjectComponentCommand.h">
+      <Filter>Source\Framework\Editor\Window\Command\Component</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Command</Filter>
     </ClInclude>
@@ -3198,17 +3402,8 @@
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Component\Factory\GameObjectComponentTaggedFactory.h">
-      <Filter>Source\Framework\GameObject\Component\Factory</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\GameObject\TransformComponentEnum.h">
       <Filter>Source\Framework\Definition\Enum\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\GameObject\GameObjectComponentTaggedFactoryEnum.h">
-      <Filter>Source\Framework\Definition\Enum\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\GameObject\GameObjectComponentTaggedFactoryMacros.h">
-      <Filter>Source\Framework\Definition\Macros\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\MaterialConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
@@ -3294,9 +3489,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DepthStencilTextureStructConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FrameProfilerStructConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelCascadeShadowPassStructConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
@@ -3328,9 +3520,6 @@
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FrameProfilerConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RootSignatureJsonConverterConstant.h">
@@ -3387,9 +3576,6 @@
     <ClInclude Include="Source\Framework\Editor\Window\Clipboard\EditorWindowClipboard.h">
       <Filter>Source\Framework\Editor\Window\Clipboard</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\EditorWindowClipboardTypeAlias.h">
-      <Filter>Source\Framework\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\EditorWindowShortcutEnum.h">
       <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
     </ClInclude>
@@ -3405,8 +3591,74 @@
     <ClInclude Include="Source\Framework\Utility\IMGUI\String\IMGUIInputTextBufferUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\String</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Scene\Play\ScenePlayState.h">
+      <Filter>Source\Framework\Scene\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Capture\RenderViewCapture.h">
+      <Filter>Source\Framework\Graphics\Render\Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\ViewportEditorWindowEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\ViewportDebugCameraConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\ViewportCameraPreviewConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\ViewportProjectionUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\ViewportScreenRectStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\ViewportGizmoStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Editor\EditorGameObjectSelectionCommandUtility.h">
+      <Filter>Source\Framework\Utility\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Editor\ViewportProjectionUtility.h">
+      <Filter>Source\Framework\Utility\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\DebugCamera\ViewportDebugCamera.h">
+      <Filter>Source\Framework\Editor\Window\Viewport\DebugCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\DebugCamera\Converter\Json\ViewportDebugCameraJsonConverter.h">
+      <Filter>Source\Framework\Editor\Window\Viewport\DebugCamera\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\DebugCamera\Inspector\ViewportDebugCameraEditInspector.h">
+      <Filter>Source\Framework\Editor\Window\Viewport\DebugCamera\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Preview\ViewportCameraPreview.h">
+      <Filter>Source\Framework\Editor\Window\Viewport\Preview</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Gizmo\ViewportGizmo.h">
+      <Filter>Source\Framework\Editor\Window\Viewport\Gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Gizmo\Command\TransformGameObjectCommand.h">
+      <Filter>Source\Framework\Editor\Window\Viewport\Gizmo\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Picking\ViewportPicker.h">
+      <Filter>Source\Framework\Editor\Window\Viewport\Picking</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Overlay\ViewportOverlayToolbar.h">
+      <Filter>Source\Framework\Editor\Window\Viewport\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Converter\Json\ViewportEditorWindowJsonConverter.h">
+      <Filter>Source\Framework\Editor\Window\Viewport\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Framework\Graphics\Render\Skinning\SkeletalAnimationSkinningSelector.cpp">
+      <Filter>Source\Framework\Graphics\Render\Skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Inspector\StaticModelStandardLitPassEditInspector.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Converter\Json\StaticModelStandardLitPassJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\Converter\Json</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Meshlet\Morph\ModelMorphLODEvaluator.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Meshlet\Morph</Filter>
     </ClCompile>
@@ -3428,6 +3680,24 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Binary\SkeletalAnimationModelMorphSettingBinaryConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Morph\Converter\Binary</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\SkeletalAnimationModelSpringBoneSetting.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Binary\SkeletalAnimationModelSpringBoneSettingBinaryConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Json\SkeletalAnimationModelSpringBoneSettingJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Inspector\SkeletalAnimationModelSpringBoneSettingEditInspector.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Command\SkeletalAnimationModelSpringBoneSettingEditCommand.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\SpringBone\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SpringBone\SkeletalAnimationSpringBoneSolver.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeletal\Player\SpringBone</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade\SkeletalAnimationModelGPUSkinnedCascadeShadowPerObjectDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\GPUSkinned\Shadow\Cascade</Filter>
     </ClCompile>
@@ -3445,6 +3715,21 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Occlusion\HierarchicalDepthTexture.cpp">
       <Filter>Source\Framework\Graphics\Render\Occlusion</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\CommandSignature\GPUParticleIndirectCommandSignature.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\CommandSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Particle\GPU\GPUParticleSystem.cpp">
+      <Filter>Source\Framework\Graphics\Render\Particle\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Particle\GPU\GPUParticlePerObjectDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Particle\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU\GPUParticleSimulatePass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU\GPUParticleDrawPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Particle\GPU</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Hardware\Debug\D3D12DebugMessageLogger.cpp">
       <Filter>Source\Framework\Graphics\Hardware\Debug</Filter>
@@ -3464,12 +3749,6 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\LOD\ModelLODSurfaceSearcher.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\LOD</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Profiler\FrameProfiler.cpp">
-      <Filter>Source\Framework\Graphics\Profiler</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Profiler\GPUTimestampQueryRecorder.cpp">
-      <Filter>Source\Framework\Graphics\Profiler</Filter>
-    </ClCompile>
     <ClCompile Include="Source\PCH.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -3481,6 +3760,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp">
       <Filter>Source\Framework\TypeINFO\Registry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\TypeINFO\Tag\TypeINFOTagRegistry.cpp">
+      <Filter>Source\Framework\TypeINFO\Tag</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.cpp">
       <Filter>Source\Framework\Window\Converter\Json</Filter>
@@ -3908,9 +4190,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.cpp">
-      <Filter>Source\Framework\Physics\CharacterVirtual\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Shadow\ShadowContext.cpp">
       <Filter>Source\Framework\Graphics\Render\Shadow</Filter>
     </ClCompile>
@@ -3967,6 +4246,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerConverterJson.cpp">
       <Filter>Source\Framework\Physics\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\File\Dialog\FileDialog.cpp">
+      <Filter>Source\Framework\Utility\File\Dialog</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.cpp">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
@@ -4187,6 +4469,9 @@
     <ClCompile Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.cpp">
       <Filter>Source\Framework\Editor\Selection</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\AddMenu\EditorAddMenu.cpp">
+      <Filter>Source\Framework\Editor\AddMenu</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Popup\WorldOutlinerEditorWindowPopupDrawer.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Popup</Filter>
     </ClCompile>
@@ -4210,6 +4495,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.cpp">
       <Filter>Source\Framework\Editor\Window\Command\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Command\Component\AddGameObjectComponentCommand.cpp">
+      <Filter>Source\Framework\Editor\Window\Command\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Command</Filter>
@@ -4259,6 +4547,39 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector\StandardUnLitMaterialEditInspector.cpp">
       <Filter>Source\Framework\Graphics\Resource\Material\Standard\UnLit\Inspector</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Scene\Play\ScenePlayState.cpp">
+      <Filter>Source\Framework\Scene\Play</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Capture\RenderViewCapture.cpp">
+      <Filter>Source\Framework\Graphics\Render\Capture</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\DebugCamera\ViewportDebugCamera.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport\DebugCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\DebugCamera\Converter\Json\ViewportDebugCameraJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport\DebugCamera\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\DebugCamera\Inspector\ViewportDebugCameraEditInspector.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport\DebugCamera\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Preview\ViewportCameraPreview.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport\Preview</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Gizmo\ViewportGizmo.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport\Gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Gizmo\Command\TransformGameObjectCommand.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport\Gizmo\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Picking\ViewportPicker.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport\Picking</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Overlay\ViewportOverlayToolbar.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport\Overlay</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Converter\Json\ViewportEditorWindowJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport\Converter\Json</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">
@@ -4292,6 +4613,12 @@
     </None>
     <None Include="Shader\Model\GPUDriven\ModelGPUDriven.hlsli">
       <Filter>Shader\Model\GPUDriven</Filter>
+    </None>
+    <None Include="Shader\Particle\GPU\GPUParticle.hlsli">
+      <Filter>Shader\Particle\GPU</Filter>
+    </None>
+    <None Include="Shader\Particle\GPU\GPUParticleBillboard.hlsli">
+      <Filter>Shader\Particle\GPU</Filter>
     </None>
     <None Include="Shader\Model\ModelMeshlet.hlsli">
       <Filter>Shader\Model</Filter>
@@ -4350,6 +4677,9 @@
     <None Include="Shader\Material\Standard\UnLit\StandardUnLitMaterial.hlsli">
       <Filter>Shader\Material\Standard\UnLit</Filter>
     </None>
+    <None Include="Shader\Model\ModelCullingDebug.hlsli">
+      <Filter>Shader\Model</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Shader\Model\Shadow\Cascade\ModelCascadeShadow_AS.hlsl">
@@ -4360,6 +4690,24 @@
     </DXCTask>
     <DXCTask Include="Shader\Occlusion\HierarchicalDepthBuild_CS.hlsl">
       <Filter>Shader\Occlusion</Filter>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleInitialize_CS.hlsl">
+      <Filter>Shader\Particle\GPU</Filter>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleEmit_CS.hlsl">
+      <Filter>Shader\Particle\GPU</Filter>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleIndirectArgumentsBuild_CS.hlsl">
+      <Filter>Shader\Particle\GPU</Filter>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleSimulate_CS.hlsl">
+      <Filter>Shader\Particle\GPU</Filter>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleBillboard_MS.hlsl">
+      <Filter>Shader\Particle\GPU</Filter>
+    </DXCTask>
+    <DXCTask Include="Shader\Particle\GPU\GPUParticleBillboard_PS.hlsl">
+      <Filter>Shader\Particle\GPU</Filter>
     </DXCTask>
     <DXCTask Include="Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
       <Filter>Shader\Model\Skeletal</Filter>

@@ -88,7 +88,11 @@ namespace FWK
 
         std::weak_ptr<GameObjectComponentBase> FindVALComponentByUUID(const boost::uuids::uuid& a_uuid) const;
 
+        bool IsHeadPinnedComponent(const GameObjectComponentBase& a_component) const;
+
         const auto& GetREFComponentSmartPointerVectorList() const { return m_componentSmartPointerVectorList; }
+
+        std::weak_ptr<GameObjectTransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
 
     private:
    
@@ -100,6 +104,8 @@ namespace FWK
         std::unordered_set<boost::uuids::uuid> m_prefabRemovedComponentUUIDSet = {};
 
         std::weak_ptr<GameObject> m_owner = {};
+
+        std::weak_ptr<GameObjectTransformComponent> m_transformComponent = {};
 
         Utility::SmartPointerVectorList<std::shared_ptr<GameObjectComponentBase>> m_componentSmartPointerVectorList = {};
 

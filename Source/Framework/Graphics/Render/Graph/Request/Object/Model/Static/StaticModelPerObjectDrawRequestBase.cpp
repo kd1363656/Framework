@@ -23,34 +23,62 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::AddDrawRequest(const st
     FWK_ASSERT_RETURN_IF(!a_drawRequestData, "DrawRequestDataが無効のため、描画申請の追加が出来ませんでした。");
 
     m_forwardDrawRequestDataSmartPointerVectorList.Add(a_drawRequestData);
+
+    // 描画申請の並びが変わるため、次のフレームで表を作り直す
+    m_gpuDrivenTableBuilder.RequestRebuild();
 }
 
 bool FWK::Graphics::StaticModelPerObjectDrawRequestBase::DispatchGPUCulling(Renderer& a_renderer, const std::size_t a_viewIndex, const Struct::ModelGPUDrivenCullingView& a_cullingView)
 {
-    // 1フレームに1回だけ、描画申請からインスタンスやMeshの表を作ってGPUへ送る
+    // 1フレームに1回だけ、描画申請からインスタンスやMeshの表を更新してGPUへ送る
+    // (表は持ち続けているため、変わった所だけが書き換わる)
     if (m_gpuDrivenDrawer.IsTableUploadRequired())
     {
-        m_gpuDrivenTableBuilder.Clear                        ();
-        m_gpuDrivenTableBuilder.SetTargetMaterialStaticTypeID(GetVALTargetMaterialStaticTypeID());
+        UpdateGPUDrivenTable();
 
-        for (const auto& l_drawRequestDataElement : m_forwardDrawRequestDataSmartPointerVectorList.GetREFElementDataList())
-        {
-            const auto& l_drawRequestData = l_drawRequestDataElement.m_type.lock();
-
-            if (!l_drawRequestData) { continue; }
-
-            const auto& l_staticModelRecord = l_drawRequestData->m_staticModelRecord.lock();
-
-            if (!l_staticModelRecord) { continue; }
-
-            const auto l_instance = m_gpuDrivenTableBuilder.CreateInstance(l_drawRequestData->m_worldMatrix, l_drawRequestData->m_worldInverseTransposeMatrix);
-
-            // StaticModelはスキニングしないため、追加情報は無し
-            m_gpuDrivenTableBuilder.AddInstance(*l_staticModelRecord, l_instance, nullptr);
-        }
-
-        m_gpuDrivenDrawer.UploadFrameTable(a_renderer, m_gpuDrivenTableBuilder.Build());
+        m_gpuDrivenDrawer.UploadFrameTable(a_renderer, m_gpuDrivenTableBuilder.EndTable());
     }
 
     return m_gpuDrivenDrawer.DispatchCulling(a_renderer, a_viewIndex, a_cullingView);
+}
+
+void FWK::Graphics::StaticModelPerObjectDrawRequestBase::UpdateGPUDrivenTable()
+{
+    const auto& l_drawRequestDataElementList = m_forwardDrawRequestDataSmartPointerVectorList.GetREFElementDataList();
+
+    m_gpuDrivenTableBuilder.ApplyTargetMaterialStaticTypeID(GetVALTargetMaterialStaticTypeID());
+    m_gpuDrivenTableBuilder.BeginTable                     (l_drawRequestDataElementList.size());
+
+    for (std::size_t l_drawRequestIndex = 0ULL; l_drawRequestIndex < l_drawRequestDataElementList.size(); ++l_drawRequestIndex)
+    {
+        const auto& l_drawRequestDataElement = l_drawRequestDataElementList[l_drawRequestIndex];
+        const auto& l_drawRequestData        = l_drawRequestDataElement.m_type.lock();
+
+        if (!l_drawRequestData)
+        {
+            m_gpuDrivenTableBuilder.SetInvalidInstance(l_drawRequestIndex);
+
+            continue;
+        }
+
+        const auto& l_staticModelRecord = l_drawRequestData->m_staticModelRecord.lock();
+
+        if (!l_staticModelRecord)
+        {
+            m_gpuDrivenTableBuilder.SetInvalidInstance(l_drawRequestIndex);
+
+            continue;
+        }
+
+        Struct::ModelGPUDrivenInstanceSource l_instanceSource = {};
+
+        l_instanceSource.m_worldMatrix                 = &l_drawRequestData->m_worldMatrix;
+        l_instanceSource.m_worldInverseTransposeMatrix = &l_drawRequestData->m_worldInverseTransposeMatrix;
+
+        // StaticModelはスキニングしないため、追加情報は無し
+        m_gpuDrivenTableBuilder.SetInstance(l_drawRequestIndex,
+                                            *l_staticModelRecord,
+                                            l_instanceSource,
+                                            nullptr);
+    }
 }

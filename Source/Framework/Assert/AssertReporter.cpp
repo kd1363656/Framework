@@ -2,21 +2,16 @@
 
 void FWK::AssertReporter::Report(const std::string_view& a_message, const std::source_location& a_location)
 {
-    // 報告処理の中(Logウィンドウへの追加など)で、さらにFWK_ASSERT_RETURN系マクロが
-    // 失敗すると、この関数がもう一度呼ばれて無限に呼び合ってしまう
-    // そのため「今報告中かどうか」を覚えておき、報告中なら何もしない
-    if (m_isReporting) { return; }
-
     // std::source_location::file_name()とline()で
     // 「どのファイルの何行目か」を1つの文字列にして、報告済みかどうかの目印にする
-    // std::unordered_set::insert()は、既に同じ値があると.secondがfalseになる
+    // std::unordered_set::emplace()は、既に同じ値があると.secondがfalseになる
+    // ※報告処理の中(Logウィンドウへの追加など)で同じ場所の失敗がもう一度起きても、
+    //   ここで登録済みになっているため2回目は必ずここで終わる(無限に呼び合わない)
     if (const auto l_insertResult = m_reportedSiteSet.emplace(std::format("{}:{}", a_location.file_name(), a_location.line()));
         !l_insertResult.second)
     {
         return;
     }
-
-    m_isReporting = true;
 
     // 例 : [ASSERT][C:\...\UploadSystem.cpp : 45][関数名]
     //      TextureRecordが無効になっているため、このテクスチャのコピーをスキップしました。
@@ -39,8 +34,6 @@ void FWK::AssertReporter::Report(const std::string_view& a_message, const std::s
                                "[ASSERT]\n{}",
                                a_message);
     }
-
-    m_isReporting = false;
 }
 
 void FWK::AssertReporter::OutputDebugReport(const std::string& a_report) const
