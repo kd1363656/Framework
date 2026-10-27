@@ -47,13 +47,17 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "",
-                        "SelectedFilePathList": []
+                        "RangeSelectionStartPath": "Asset\\Model\\Player\\Antike\\Antike.fbx",
+                        "SelectedFilePathList": [
+                            {
+                                "SelectedFilePath": "Asset\\Model\\Player\\Antike\\Antike.fbx"
+                            }
+                        ]
                     }
                 },
                 "CurrentSelectFolderPath": "Asset\\Model\\Player\\Antike",
                 "EditorWindowPaneSplitter": {
-                    "PrimaryPaneSize": 364.0
+                    "PrimaryPaneSize": 328.0
                 },
                 "FolderPane": {
                     "FolderOpenStateMap": [
@@ -86,16 +90,8 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Scene\\Title",
                             "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Data\\Prefab\\Player",
-                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Model",
